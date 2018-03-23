@@ -4,76 +4,60 @@
   2017-2018.
   Released into the public domain.
 */
+#ifndef AutomationShield_h  // Include guard - prevents multiple header inclusions
+#define AutomationShiled_h  // If not already there, include
 
-#ifndef AutomationShield_h
-#define AutomationShiled_h
+#if (ARDUINO >= 100)  // Libraries don't include this, normal Arduino sketches do
+#else
+ #include "WProgram.h" // For old Arduino IDE
+#endif       
 
-#include "Arduino.h"
+// Pin definitions
+#define OPTICAL_YPIN 0 // Output (sensor) pin
+#define OPTICAL_UPIN 9 // Input (actuator) pin
+#define OPTICAL_RPIN 1 // Reference pin
 
+// #define MOTOR_YPIN 0 
+// ETC...
+// ...
+
+//--------------------------------------
+// AutomationShield - common functions
+//--------------------------------------
 class AutomationShield
 {
   public:
-    void Optical(void);  // Initialize for OpticalShield
-    // void Motor(void); // Initialize for MotorShield
-    // ...
-    void  input(float u);  // Drive the actuator
-    float output(void);    // Read the sensor
-    float reference(void); // Read user reference
-    // ...
+    // void Common functions;  // 
+    // PID, LQ, filters, etc.
   private:
     //   int x;
 };
 
-void AutomationShield::Optical(void) // Initialize for OpticalShield
+
+extern AutomationShield AutomationShield;
+//--------------------------------------
+// AutomationShield - common functions
+//--------------------------------------
+
+
+//--------------------------------------
+// Optical Shield
+//--------------------------------------
+class OpticalClass
 {
-#define OPTICAL
-#define UPIN 9 
-#define YPIN 0 
-  //const int sensorPin = 1;
-  //const int referencePin = 2;
-  //....
-  pinMode(UPIN, OUTPUT);
-}
+  public:
+    void begin(void);  // Initialize for OpticalShield
+    void input(float); 
+    float output(void);
+  //float reference(void);
+  //...
+  private:
+    //   int x;
+};
 
-#ifdef OPTICAL // For OpticalShield.
+extern OpticalClass Optical;
 
-// Just an example
-void AutomationShield::input(float u)     // Sends % power to actuator
-{
-  pinMode(10, OUTPUT); //delete
-  digitalWrite(10, 0); //delete
-
-  constrain(u, 0, 100);		                // Constrain input to 0-100 %
-  int upwm = map((int)u, 0, 100, 0, 255); // Map percents to 8-bit PWM
-  analogWrite(UPIN, upwm); 	              // Write to actuator pin
-}
-
-float AutomationShield::output(void)
-{
-  // Function to read outputs from the sensor
-  int y = analogRead(YPIN);
-  return y;
-}
-
-float AutomationShield::reference(void)
-{
-  // Function to read reference levels from user
-}
-#endif         // For OpticalShield.
-
-
-
-
-
-
-// #ifdef Motor // For MotorShield.
-// Analogously repeated (with the ifdef/endif) for other shields
-// #ifdef Motor // For MotorShield
-
-
-
-
-
-
-
+//--------------------------------------
+// Optical Shield
+//--------------------------------------
 #endif // End of AutomationShield library.

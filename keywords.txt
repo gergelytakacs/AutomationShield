@@ -1,11 +1,35 @@
-# Syntax coloring map for ArduinoShield library
+#######################################
+# 
+#Syntax Coloring Map For ArduinoShield
+#######################################
 
+#
+
+######################################
+# 
 #Datatypes (KEYWORD1)
+
+#######################################
+
+
 AutomationShiled   KEYWORD1
 Optical            KEYWORD1
 
-#Functions and methods (KEYWORD2)
-Motor		   KEYWORD2
+
+######################################
+# 
+#Methods and Functions (KEYWORD2)
+
+#######################################
+
+
 input              KEYWORD2
 output             KEYWORD2
 reference	   KEYWORD2
+
+######################################
+# 
+#Constants (LITERAL1)
+
+#######################################
+
