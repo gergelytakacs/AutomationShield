@@ -22,8 +22,6 @@ float OpticalClass::output(void){
 OpticalClass Optical;
 
 //--------------------------------------
-// Optical Shield
-//--------------------------------------
 
 // Motor shield....:
 
