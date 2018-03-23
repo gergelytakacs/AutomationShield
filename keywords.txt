@@ -12,7 +12,7 @@
 #######################################
 
 
-AutomationShiled   KEYWORD1
+AutomationShield   KEYWORD1
 Optical            KEYWORD1
 
 
@@ -23,9 +23,9 @@ Optical            KEYWORD1
 #######################################
 
 
-input              KEYWORD2
-output             KEYWORD2
-reference	   KEYWORD2
+sensorRead         KEYWORD2
+actuatorWrite      KEYWORD2
+referenceRead	   KEYWORD2
 
 ######################################
 # 

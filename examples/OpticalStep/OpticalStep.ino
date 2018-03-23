@@ -1,8 +1,9 @@
-#include <AutomationShield.h>
+//#include <AutomationShield.h>
+#include "AutomationShield.h"
 
 void setup() {
 Optical.begin();
-Optical.input(50);
+Optical.actuatorWrite(50);
 }
 
 void loop() {
