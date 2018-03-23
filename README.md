@@ -2,7 +2,7 @@
 
 ## About AutomationShield
 
-Arduino library for the AutomationShield Arduino expansion boards for control engineering education.
+Arduino library for the AutomationShield Arduino expansion boards for control engineering education. You can read mora about the AutomationShield project in our [Wiki page](https://github.com/gergelytakacs/AutomationShield/wiki).
 
 ## Installing the library
 
