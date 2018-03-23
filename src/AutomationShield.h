@@ -8,6 +8,7 @@
 #define AutomationShiled_h  // If not already there, include
 
 #if (ARDUINO >= 100)  // Libraries don't include this, normal Arduino sketches do
+ #include "Arduino.h" // For new Arduino IDE
 #else
  #include "WProgram.h" // For old Arduino IDE
 #endif       
