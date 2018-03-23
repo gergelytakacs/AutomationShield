@@ -13,7 +13,7 @@ The harware library for a particular board is initialized by the board name floo
 Optical.begin();
 ```
 
-# OpticalShield
+# OptoShield
 
 
-# MotorShield
+# MotoShield
