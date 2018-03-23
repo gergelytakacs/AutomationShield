@@ -8,6 +8,12 @@ Arduino library for the AutomationShield Arduino expansion boards for control en
 
 ## Library usage
 
+The harware library for a particular board is initialized by the board name floowed by `begin` for example to initialize the OpticalShield call:
+```
+Optical.begin();
+```
+
 # OpticalShield
+
 
 # MotorShield
