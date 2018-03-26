@@ -4,6 +4,7 @@
   Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs
   2017-2018.
   Released into the public domain.
+  Last change by Tibor Konkoly on 26.03.2018 at 20:51 .
 */
 
 #ifndef AutomationShield_h  // Include guard - prevents multiple header inclusions
@@ -13,57 +14,31 @@
  #include "Arduino.h" // For new Arduino IDE
 #else
  #include "WProgram.h" // For old Arduino IDE
-#endif       
+#endif  
 
-#define VERSION 2       // Version of this library
-// Pin definitions
-#define OPTICAL_YPIN  0 // Output (sensor) pin
-#define OPTICAL_UPIN  9 // Input (actuator) pin
-#define OPTICAL_RPIN  1 // Reference pin
+// Defining the pins used by the Optical board
+  #define OPTICAL_YPIN 1   // defining the pin of the LDR
+  #define OPTICAL_UPIN 3   // defining the pin of the Led diodes (pwm)
+  #define OPTICAL_RPIN 0  // defining the pin of the potentiometer's runner
 
-// #define MOTOR_YPIN 0 
-// ETC...
-// ...
+// classes
+ class Optical{
 
-/*
----Common functions for all shields---
-*/
-
-class AutomationShield
-{
   public:
-    // void Common functions;  // 
-    // PID, LQ, filters, etc.
+  // Constructor
+  Optical();
+  
+  // Methods
+  void actuatorWrite(int value);
+  int sensorRead();
+  int referenceRead();
+  void begin(void);
+
   private:
-    //   int x;
-};
-
-
-extern AutomationShield AutomationShield;
-
-/*
----Optical Shield---
-*/
-class OpticalClass
-{
-  public:
-    void  begin(void);           // Initialize for OpticalShield
-    void  actuatorWrite(float);  // Write to actuator
-    float sensorRead(void);      // Read from sensor
-    float referenceRead(void);   // Read from reference pot
-  //...
-  private:
-    //   int x;
-};
-
-extern OpticalClass Optical;
-
-/*
----Motor Shield---
-*/
-
-
-// Here comes the motor library
+  int _valueRead;
+  
+ }; // end of the class
 
 
 #endif // End of AutomationShield library.
+
