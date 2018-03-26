@@ -15,5 +15,10 @@ Optical.begin();
 
 # OptoShield
 
+The board is initialized by calling
+```
+Optical.begin();
+```
+this will initialize the pins necessary for the feedback experiment (LDR, LED) and the potentiometer for user input.
 
 # MotoShield
