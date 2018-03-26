@@ -4,7 +4,7 @@
   Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs
   2017-2018.
   Released into the public domain.
-  Last change by Tibor Konkoly on 26.03.2018 at 21:05 .
+  Last change by Tibor Konkoly on 26.03.2018 at 20:51 .
 */
 
 #ifndef AutomationShield_h  // Include guard - prevents multiple header inclusions
@@ -16,30 +16,26 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
-#define OPTICAL_YPIN 1   // defining the pin of the LDR
-#define OPTICAL_UPIN 3   // defining the pin of the Led diodes (pwm)
-#define OPTICAL_RPIN 0   // defining the pin of the potentiometer's runner
+// Defining the pins used by the Optical board
+  #define OPTICAL_YPIN 1   // defining the pin of the LDR
+  #define OPTICAL_UPIN 3   // defining the pin of the Led diodes (pwm)
+  #define OPTICAL_RPIN 0  // defining the pin of the potentiometer's runner
 
+// classes
  class Optical{
 
   public:
-  
   // Constructor
   Optical();
-
+  
   // Methods
   void actuatorWrite(int value);
   int sensorRead();
   int referenceRead();
-  void begin(int pin1, int pin2, int pin3);
-
+  void begin(void);
 
   private:
-  
   int _valueRead;
-  int _pin1;
-  int _pin2;
-  int _pin3;
   
  }; // end of the class
 
