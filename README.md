@@ -8,16 +8,16 @@ Arduino library for the AutomationShield Arduino expansion boards for control en
 
 ## Library usage
 
-The harware library for a particular board is initialized by the board name followed by `begin` for example to initialize the OpticalShield call:
+The harware library for a particular board is initialized by the board name followed by `begin` for example to initialize the OptoShield call:
 ```
-Optical.begin();
+Opto.begin();
 ```
 
 # OptoShield
 
 The board is initialized by calling
 ```
-Optical.begin();
+Opto.begin();
 ```
 this will initialize the pins necessary for the feedback experiment (LDR, LED) and the potentiometer for user input.
 
