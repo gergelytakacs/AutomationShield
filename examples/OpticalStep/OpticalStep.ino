@@ -2,8 +2,8 @@
 #include "AutomationShield.h"
 
 void setup() {
-Optical.begin();
-Optical.actuatorWrite(50);
+Opto.begin();
+Opto.actuatorWrite(50);
 }
 
 void loop() {
