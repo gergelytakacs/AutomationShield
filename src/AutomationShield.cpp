@@ -12,35 +12,35 @@
 #include "Arduino.h"
 
         
-Optical::Optical(){
+Opto::Opto(){
  
 }
 
-void Optical::begin(void){                  // begin function initializes the pins used by the hardware. Optoshield uses three pins, pin A1 is used by the LDR, 
+void Opto::begin(void){                  // begin function initializes the pins used by the hardware. Optoshield uses three pins, pin A1 is used by the LDR, 
                                             //pin A0 is connected to the runner of the potentiometer and digital pin 3 is for setting the intensity of the leds' light                                            
-  pinMode(OPTICAL_YPIN, INPUT);
-  pinMode(OPTICAL_UPIN, OUTPUT);
-  pinMode(OPTICAL_RPIN, INPUT); 
+  pinMode(OPTO_YPIN, INPUT);
+  pinMode(OPTO_UPIN, OUTPUT);
+  pinMode(OPTO_RPIN, INPUT); 
 }
 
 
-void Optical::actuatorWrite(int value){
+void Opto::actuatorWrite(int value){
  
   if(value <= 255){                                                 // nested if statement, if the condition is true check the following
       if(value > 0){                                                  // if the second condition is also true, write the value of the sensor
-        analogWrite(OPTICAL_UPIN,value);
+        analogWrite(OPTO_UPIN,value);
       }
     }
     else {Serial.println("The number You added doesn't fit the conditions, please choose a number between 0-255");} // if any of the statements is true, you receive a report 
 }
 
-int Optical::sensorRead(){
-  int _valueRead = analogRead(OPTICAL_YPIN);
+int Opto::sensorRead(){
+  int _valueRead = analogRead(OPTO_YPIN);
   return _valueRead;
 }
 
-int Optical::referenceRead(){
-  int _valueRead = analogRead(OPTICAL_RPIN);
+int Opto::referenceRead(){
+  int _valueRead = analogRead(OPTO_RPIN);
   return _valueRead;
 }
             
