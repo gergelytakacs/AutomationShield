@@ -16,17 +16,17 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
-// Defining the pins used by the Optical board
-  #define OPTICAL_YPIN 1   // defining the pin of the LDR
-  #define OPTICAL_UPIN 3   // defining the pin of the Led diodes (pwm)
-  #define OPTICAL_RPIN 0  // defining the pin of the potentiometer's runner
+// Defining the pins used by the Opto board
+  #define OPTO_YPIN 1   // defining the pin of the LDR
+  #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
+  #define OPTO_RPIN 0  // defining the pin of the potentiometer's runner
 
 // classes
- class Optical{
+ class Opto{
 
   public:
   // Constructor
-  Optical();
+  Opto();
   
   // Methods
   void actuatorWrite(int value);
