@@ -7,7 +7,7 @@
 ######################################
 
 AutomationShield   KEYWORD1
-Optical            KEYWORD1
+Opto               KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
