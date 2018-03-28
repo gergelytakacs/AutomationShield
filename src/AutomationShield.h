@@ -22,6 +22,18 @@
   #define OPTO_RPIN 0  // defining the pin of the potentiometer's runner
 
 // classes
+ class AutomationShield{
+
+  public:
+  // Constructor
+  AutomationShield();
+  
+  // Methods
+ float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
+
+  private:
+ }; // end of the class
+
  class Opto{
 
   public:
