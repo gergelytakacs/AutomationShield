@@ -15,9 +15,13 @@ Opto.begin();
 ```
 
 # Common functions
+
+# mapFloat()
+To linearly map a floating point number `value` from a given input range to a given output range, you should use  
 ```
-AutomationShield.mapFloats();
+AutomationShield.mapFloat(value, fromLow, fromHigh, toLow, toHigh);
 ```
+where `fromLow` is the start of the input range and `fromHigh` the end, while `toLow` is the start of the output range and `toHigh` is its end.
 
 # OptoShield
 
