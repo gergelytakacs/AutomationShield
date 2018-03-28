@@ -11,10 +11,19 @@
 #include "AutomationShield.h"
 #include "Arduino.h"
 
-        
-Opto::Opto(){
- 
+
+AutomationShield::AuotmationShield(){
 }
+
+float AutomationShield::mapFloat(float x, float in_min, float in_max, float out_min, float out_max) // same as Arudino map() but with floating point numbers
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; // linear mapping, same as Arduino map()
+}
+
+
+Opto::Opto(){ 
+}
+
 
 void Opto::begin(void){                  // begin function initializes the pins used by the hardware. Optoshield uses three pins, pin A1 is used by the LDR, 
                                             //pin A0 is connected to the runner of the potentiometer and digital pin 3 is for setting the intensity of the leds' light                                            
