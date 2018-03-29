@@ -11,13 +11,23 @@
 #include "AutomationShield.h"
 #include "Arduino.h"
 
-
 AutomationShield::AuotmationShield(){
 }
 
 float AutomationShield::mapFloat(float x, float in_min, float in_max, float out_min, float out_max) // same as Arudino map() but with floating point numbers
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; // linear mapping, same as Arduino map()
+}
+
+
+void AutomationShield::error(char *str) // Error handler function
+{
+  #if ECHO_TO_SERIAL                    // If Serial Echo is turned on in the DEFINE (by advanced user)
+  Serial.print("Error: ");
+  Serial.println(str);
+  #endif
+  digitalWrite(ErrorPin, HIGH);           // Enable generic error pin, should be 13 w/ the onboard LED
+  while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
 
@@ -34,13 +44,13 @@ void Opto::begin(void){                  // begin function initializes the pins 
 
 
 void Opto::actuatorWrite(int value){
- 
+ // Do it in percents @TiborKonkoly :)
   if(value <= 255){                                                 // nested if statement, if the condition is true check the following
       if(value > 0){                                                  // if the second condition is also true, write the value of the sensor
         analogWrite(OPTO_UPIN,value);
       }
     }
-    else {Serial.println("The number You added doesn't fit the conditions, please choose a number between 0-255");} // if any of the statements is true, you receive a report 
+    else {AutomationShield.error("Input must be between 0-100.");} // if any of the statements is true, you receive a report 
 }
 
 int Opto::sensorRead(){
