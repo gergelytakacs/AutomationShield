@@ -21,6 +21,12 @@
   #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
   #define OPTO_RPIN 0  // defining the pin of the potentiometer's runner
 
+// Diagnostics
+#define ECHO_TO_SERIAL      1                // echo data to serial port
+#define ERRORPIN            13               // Overload Signal
+
+
+
 // classes
  class AutomationShield{
 
@@ -31,6 +37,7 @@
   // Methods
  float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
 //constrainFloat?
+ void error(char *str)
   private:
  }; // end of the class
 
