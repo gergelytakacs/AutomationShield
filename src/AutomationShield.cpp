@@ -26,7 +26,7 @@ void AutomationShield::error(char *str) // Error handler function
   Serial.print("Error: ");
   Serial.println(str);
   #endif
-  digitalWrite(ErrorPin, HIGH);           // Enable generic error pin, should be 13 w/ the onboard LED
+  digitalWrite(ERRORPIN, HIGH);           // Enable generic error pin, should be 13 w/ the onboard LED
   while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
