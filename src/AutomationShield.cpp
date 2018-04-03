@@ -19,6 +19,9 @@ float AutomationShield::mapFloat(float x, float in_min, float in_max, float out_
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; // linear mapping, same as Arduino map()
 }
 
+float AutomationShield::constrain(float x, float min_x, float max_x){
+//
+}
 
 void AutomationShield::error(char *str) // Error handler function
 {
