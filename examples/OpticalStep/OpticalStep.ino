@@ -3,7 +3,7 @@
 
 void setup() {
 Opto.begin();
-Opto.actuatorWrite(50);
+Opto.actuatorWrite(75);
 }
 
 void loop() {
