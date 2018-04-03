@@ -37,7 +37,9 @@
   // Methods
  float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
 //constrainFloat?
- void error(char *str)
+ void error(char *str);
+  float constrain(float x, float min_x, float max_x); 
+   
   private:
  }; // end of the class
 
