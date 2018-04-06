@@ -37,6 +37,12 @@ float AutomationShield::PID(float err,int input, float SampleTime, float Kp,floa
 {
   float output;
   
+    if (direction == 1) // reverse acting system (FloatShield)
+    {
+        Kp = (0 - Kp);
+        Ki = (0 - Ki);
+        Kd = (0 - Kd);
+    }
   integral = integral + (err)*SampleTime;
   if (integral > outMax)
   {
