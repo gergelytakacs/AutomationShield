@@ -39,6 +39,7 @@
 //constrainFloat?
  void error(char *str);
   float constrain(float x, float min_x, float max_x); 
+   float PID(float err,int input, float SampleTime, float Kp,float Ki, float Kd, float outMin, float outMax);
    
   private:
  }; // end of the class

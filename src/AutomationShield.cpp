@@ -33,6 +33,36 @@ void AutomationShield::error(char *str) // Error handler function
   while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
+float AutomationShield::PID(float err,int input, float SampleTime, float Kp,float Ki, float Kd, float outMin, float outMax)
+{
+  float output;
+  
+  integral = integral + (err)*SampleTime;
+  if (integral > outMax)
+  {
+    integral = outMax;
+  }
+  else if( integral < outMin)
+  {
+    integral = outMin;
+  }
+
+   derivative = (input - lastinput)/SampleTime; //removes Derivative kick
+   output = Kp *err + Ki*integral - Kd*derivative;
+
+  if (output > outMax)
+  {
+    output = outMax;
+  }
+  else if( output < outMin)
+  {
+    output = outMin;
+  }
+
+ lastinput = input;
+  return output;
+}
+
 
 Opto::Opto(){ 
 }
