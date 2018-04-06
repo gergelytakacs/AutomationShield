@@ -1,14 +1,14 @@
 /*
-  AutomationShield.cpp
+  AutomationShield.h
   Arduino library for teaching control engineering.
   Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs
   2017-2018.
   Released into the public domain.
-  Last change by Tibor Konkoly on 26.03.2018 at 20:51 .
+  Last change by Tibor Konkoly on 06.04.2018 at 21:25 .
 */
 
 #ifndef AutomationShield_h  // Include guard - prevents multiple header inclusions
-#define AutomationShiled_h  // If not already there, include
+#define AutomationShield_h  // If not already there, include
 
 #if (ARDUINO >= 100)  // Libraries don't include this, normal Arduino sketches do
  #include "Arduino.h" // For new Arduino IDE
@@ -16,50 +16,70 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
-// Defining the pins used by the Opto board
-  #define OPTO_YPIN 1   // defining the pin of the LDR
-  #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
-  #define OPTO_RPIN 0  // defining the pin of the potentiometer's runner
-
-// Diagnostics
-#define ECHO_TO_SERIAL      1                // echo data to serial port
-#define ERRORPIN            13               // Overload Signal
+// functions defined by us
+// 1.
+ extern float mapFloat(float x, float in_min, float in_max, float out_min, float out_max); // same as Arudino map() but with floating point numbers
 
 
 
-// classes
- class AutomationShield{
+class AutomationShield{
 
   public:
-  // Constructor
-  AutomationShield();
-  
-  // Methods
- float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
-//constrainFloat?
- void error(char *str);
-  float constrain(float x, float min_x, float max_x); 
-   
+
+   // Constructor
+   AutomationShield();
+
+   // Methods
+
   private:
- }; // end of the class
 
- class Opto{
+  
+ }; // end of the AutomationShield class
+
+
+
+
+// Defining pins used by the Optoshield board
+  #define OPTO_RPIN 0   // defining the pin of the potentiometer's runner
+  #define OPTO_YPIN 1   // defining the pin of the LDR
+  #define OPTO_YAUX 2   // defining the pin of the auxiliary LDR
+  #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
+  
+ 
+  class Opto{
 
   public:
+  
   // Constructor
   Opto();
   
   // Methods
-  void actuatorWrite(int value);
-  int sensorRead();
-  int referenceRead();
-  void begin(void);
+  void  begin(void);
+  void  calibration();
+  void  actuatorWrite(float value);
+  float sensorRead();
+  float sensorReadVoltage();
+  float sensorAuxRead();
+  float referenceRead();
 
   private:
-  int _valueRead;
+
+  float _convertedValue;
+  float _valueRead;
+  float _sensorVoltage;
+  float _auxRead;
+  float _auxVoltage;
+  float _referenceRead;
+  float _referenceValue;
   
- }; // end of the class
+  float _sensorRead;
+  float _sensorValue;
+  float _minVal;
+  float _maxVal;
 
-
-#endif // End of AutomationShield library.
-
+  bool indicator;
+  
+ }; // end of the Opto class
+ 
+ #endif // End of AutomationShield library.
+ 
