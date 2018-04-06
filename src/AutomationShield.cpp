@@ -33,7 +33,7 @@ void AutomationShield::error(char *str) // Error handler function
   while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
-float AutomationShield::PID(float err,int input, float SampleTime, float Kp,float Ki, float Kd, float outMin, float outMax)
+float AutomationShield::pid(float err,int input, float SampleTime, float Kp,float Ki, float Kd, float outMin, float outMax)
 {
   float output;
   
