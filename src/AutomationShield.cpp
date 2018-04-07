@@ -83,6 +83,48 @@ float pid::comp(float err,float input)
   return output;
 }
 
+
+pid1::pid1(float Kp,float Ti,float Td,float Ts,float outMin, float outMax)
+ {
+     _Kp = Kp;
+     _Ti = Ti;
+     _Td = Td;
+     _Ts = Ts;
+     _outMin = outMin;
+     _outMax = outMax;
+     
+ }
+float pid1::comp1(float err)
+{
+  float output;
+  r_p = _Kp;
+  r_i = _Kp/_Ti;
+  r_d = _Kp*_Td;
+
+  q0 = r_p+r_i*_Ts+r_d/_Ts;
+  q1 = -r_p - (2*r_d)/_Ts;
+  q2 = r_d/_Ts;
+
+  output = lastoutput+ q0*err + q1*lasterror +q2*lastlasterror;
+
+  lastoutput = output;
+  if (output > _outMax)
+  {
+    output = _outMax;
+  }
+  else if( output < _outMin)
+  {
+    output = _outMin;
+  }
+
+  
+  lastlasterror = lasterror;
+  lasterror= err;
+
+  return output;
+   
+}
+
 Opto::Opto(){ 
 }
 

@@ -70,6 +70,33 @@ class pid
     
 };
 
+class pid1
+{
+  public:
+
+  
+    pid1(float Kp,float Ti,float Td,float Ts, float outMin, float outMax);
+    float comp1(float err);
+
+  private:
+    float _Kp;
+    float _Ti;
+    float _Td;
+    float _Ts;
+    float r_p;
+    float r_i;
+    float r_d;
+    float q0;
+    float q1;
+    float q2;
+    float _outMin;
+    float _outMax;
+    float lastoutput = 0;
+    float lastlasterror = 0;
+    float lasterror = 0;
+    
+};
+
  class Opto{
 
   public:
