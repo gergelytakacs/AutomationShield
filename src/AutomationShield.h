@@ -4,7 +4,7 @@
   Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs
   2017-2018.
   Released into the public domain.
-  Last change by Tibor Konkoly on 06.04.2018 at 21:25 .
+  Last change by Tibor Konkoly on 07.04.2018 at 18:48 .
 */
 
 #ifndef AutomationShield_h  // Include guard - prevents multiple header inclusions
@@ -20,7 +20,9 @@
 // 1.
  extern float mapFloat(float x, float in_min, float in_max, float out_min, float out_max); // same as Arudino map() but with floating point numbers
 
-
+// Diagnostics
+#define ECHO_TO_SERIAL      1                // echo data to serial port
+#define ERRORPIN            13               // Overload Signal
 
 class AutomationShield{
 
@@ -30,7 +32,8 @@ class AutomationShield{
    AutomationShield();
 
    // Methods
-
+ void error(char *str);
+  
   private:
 
   
