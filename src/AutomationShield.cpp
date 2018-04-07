@@ -4,7 +4,7 @@
   Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs
   2017-2018.
   Released into the public domain.
-  Last change by Tibor Konkoly on 06.04.2018 at 21:25 .
+  Last change by Tibor Konkoly on 07.04.2018 at 18:48 .
 */
 
 
@@ -20,6 +20,16 @@ float mapFloat(float x, float in_min, float in_max, float out_min, float out_max
 
 AutomationShield::AutomationShield(){
   
+}
+
+void AutomationShield::error(char *str) // Error handler function
+{
+  #if ECHO_TO_SERIAL                    // If Serial Echo is turned on in the DEFINE (by advanced user)
+  Serial.print("Error: ");
+  Serial.println(str);
+  #endif
+  digitalWrite(ERRORPIN, HIGH);           // Enable generic error pin, should be 13 w/ the onboard LED
+  while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
 // Opto
