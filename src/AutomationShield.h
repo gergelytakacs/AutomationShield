@@ -39,10 +39,34 @@
 //constrainFloat?
  void error(char *str);
   float constrain(float x, float min_x, float max_x); 
-   float pid(float err,int input, float SampleTime, float Kp,float Ki, float Kd, float outMin, float outMax, int direction);
+   
    
   private:
  }; // end of the class
+
+
+class pid
+{
+  public:
+
+    #define REV 1
+    #define DIR 0
+    pid(float Kp,float Ki,float Kd,float SampleTime,float outMin, float outMax, int direct);
+    float comp(float err, int input);
+
+  private:
+    float _Kp;
+    float _Ki;
+    float _Kd;
+    float _SampleTime;
+    float _outMin;
+    float _outMax;
+    float _direct;
+    float integral;
+    float derivative;
+    float lastinput;
+    
+};
 
  class Opto{
 

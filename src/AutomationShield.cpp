@@ -33,42 +33,55 @@ void AutomationShield::error(char *str) // Error handler function
   while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
-float AutomationShield::pid(float err,int input, float SampleTime, float Kp,float Ki, float Kd, float outMin, float outMax)
+
+pid::pid(float Kp,float Ki,float Kd,float SampleTime,float outMin, float outMax ,int direct)
+ {
+     _Kp = Kp;
+     _Ki = Ki;
+     _Kd = Kd;
+     _SampleTime = SampleTime;
+     _outMin = outMin;
+     _outMax = outMax;
+     _direct = direct;
+ }
+    
+
+float pid::comp(float err,int input)
 {
   float output;
+
+    if (_direct == 1) // reverse acting system (FloatShield) 
+    { 
+        _Kp = (0 - _Kp); 
+        _Ki = (0 - _Ki); 
+        _Kd = (0 - _Kd); 
+    } 
   
-    if (direction == 1) // reverse acting system (FloatShield)
-    {
-        Kp = (0 - Kp);
-        Ki = (0 - Ki);
-        Kd = (0 - Kd);
-    }
-  integral = integral + (err)*SampleTime;
-  if (integral > outMax)
+   integral = integral + (err)*_SampleTime;
+  if (integral > _outMax)
   {
-    integral = outMax;
+    integral = _outMax;
   }
-  else if( integral < outMin)
+  else if( integral < _outMin)
   {
-    integral = outMin;
+    integral = _outMin;
   }
 
-   derivative = (input - lastinput)/SampleTime; //removes Derivative kick
-   output = Kp *err + Ki*integral - Kd*derivative;
+   derivative = (input - lastinput)/_SampleTime; //removes Derivative kick
+   output = _Kp *err + _Ki*integral - _Kd*derivative;
 
-  if (output > outMax)
+  if (output > _outMax)
   {
-    output = outMax;
+    output = _outMax;
   }
-  else if( output < outMin)
+  else if( output < _outMin)
   {
-    output = outMin;
+    output = _outMin;
   }
 
  lastinput = input;
   return output;
 }
-
 
 Opto::Opto(){ 
 }
