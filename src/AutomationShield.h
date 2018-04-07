@@ -49,9 +49,11 @@ class pid
 {
   public:
 
-    #define REV 1
-    #define DIR 0
+    #define REV 1 //reverse acting
+    #define DIR 0 //direct acting
+    //constructor
     pid(float Kp,float Ki,float Kd,float SampleTime,float outMin, float outMax, int direct);
+    //method
     float comp(float err, int input);
 
   private:
