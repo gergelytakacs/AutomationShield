@@ -46,7 +46,7 @@ pid::pid(float Kp,float Ki,float Kd,float SampleTime,float outMin, float outMax 
  }
     
 
-float pid::comp(float err,int input)
+float pid::comp(float err,float input)
 {
   float output;
 
