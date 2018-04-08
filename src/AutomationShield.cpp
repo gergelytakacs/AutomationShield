@@ -59,7 +59,7 @@ float AutomationShield::pid(float err, float input,float Kp,float Ki,float Kd,fl
    output = Kp *err + Ki*integral - Kd*derivative;
 
   if (output > outMax)
-  
+  {
     output = outMax;
   }
   else if( output < outMin)
