@@ -55,6 +55,7 @@
     float q0;
     float q1;
     float q2;
+    float output;
  }; // end of the class
 
 

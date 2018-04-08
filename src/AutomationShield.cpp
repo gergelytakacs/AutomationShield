@@ -36,7 +36,7 @@ void AutomationShield::error(char *str) // Error handler function
 
 float AutomationShield::pid(float err, float input,float Kp,float Ki,float Kd,float outMin, float outMax ,int direct)
  {
-     float output;
+     
 
     if (direct == 1) // reverse acting system (FloatShield) 
     { 
