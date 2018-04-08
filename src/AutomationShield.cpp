@@ -34,87 +34,69 @@ void AutomationShield::error(char *str) // Error handler function
 }
 
 
-pid::pid(float Kp,float Ki,float Kd,float SampleTime,float outMin, float outMax ,int direct)
+float AutomationShield::pid(float err, float input,float Kp,float Ki,float Kd,float outMin, float outMax ,int direct)
  {
-     _Kp = Kp;
-     _Ki = Ki;
-     _Kd = Kd;
-     _SampleTime = SampleTime;
-     _outMin = outMin;
-     _outMax = outMax;
-     _direct = direct;
- }
-    
-
-float pid::comp(float err,float input)
-{
-  float output;
+     float output;
 
     if (_direct == 1) // reverse acting system (FloatShield) 
     { 
-        _Kp = (0 - _Kp); 
-        _Ki = (0 - _Ki); 
-        _Kd = (0 - _Kd); 
+        Kp = (0 - Kp); 
+        Ki = (0 - Ki); 
+        Kd = (0 - Kd); 
     } 
   
-   integral = integral + (err)*_SampleTime;
-  if (integral > _outMax)
+   integral = integral + (err)*Ts;
+  if (integral > outMax)
   {
-    integral = _outMax;
+    integral = outMax;
   }
-  else if( integral < _outMin)
+  else if( integral < outMin)
   {
-    integral = _outMin;
+    integral = outMin;
   }
 
-   derivative = (input - lastinput)/_SampleTime; //removes Derivative kick
-   output = _Kp *err + _Ki*integral - _Kd*derivative;
+   derivative = (input - lastinput)/Ts; //removes Derivative kick
+   output = Kp *err + Ki*integral - Kd*derivative;
 
-  if (output > _outMax)
-  {
-    output = _outMax;
+  if (output > outMax)
+  
+    output = outMax;
   }
-  else if( output < _outMin)
+  else if( output < outMin)
   {
-    output = _outMin;
+    output = outMin;
   }
 
  lastinput = input;
   return output;
-}
-
-
-pid1::pid1(float Kp,float Ti,float Td,float Ts,float outMin, float outMax)
- {
-     _Kp = Kp;
-     _Ti = Ti;
-     _Td = Td;
-     _Ts = Ts;
-     _outMin = outMin;
-     _outMax = outMax;
-     
  }
-float pid1::comp1(float err)
-{
-  float output;
-  r_p = _Kp;
-  r_i = _Kp/_Ti;
-  r_d = _Kp*_Td;
+    
 
-  q0 = r_p+r_i*_Ts+r_d/_Ts;
-  q1 = -r_p - (2*r_d)/_Ts;
-  q2 = r_d/_Ts;
+
+
+
+float AutomationShield::pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax)
+ {
+    
+     float output;
+  r_p = Kp;
+  r_i = Kp/Ti;
+  r_d = Kp*Td;
+
+  q0 = r_p+r_i*Ts+r_d/Ts;
+  q1 = -r_p - (2*r_d)/Ts;
+  q2 = r_d/Ts;
 
   output = lastoutput+ q0*err + q1*lasterror +q2*lastlasterror;
 
   lastoutput = output;
-  if (output > _outMax)
+  if (output > outMax)
   {
-    output = _outMax;
+    output = outMax;
   }
-  else if( output < _outMin)
+  else if( output < outMin)
   {
-    output = _outMin;
+    output = outMin;
   }
 
   
@@ -122,8 +104,8 @@ float pid1::comp1(float err)
   lasterror= err;
 
   return output;
-   
-}
+ }
+
 
 Opto::Opto(){ 
 }

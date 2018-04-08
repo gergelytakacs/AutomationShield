@@ -31,6 +31,8 @@
  class AutomationShield{
 
   public:
+    #define REV 1 //reverse acting
+    #define DIR 0
   // Constructor
   AutomationShield();
   
@@ -39,63 +41,25 @@
 //constrainFloat?
  void error(char *str);
   float constrain(float x, float min_x, float max_x); 
-   
-   
+  float pid(float err,float input,float Kp,float Ki,float Kd,float outMin,float outMax,int direct);
+  float pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
   private:
- }; // end of the class
-
-
-class pid
-{
-  public:
-
-    #define REV 1 //reverse acting
-    #define DIR 0 //direct acting
-    //constructor
-    pid(float Kp,float Ki,float Kd,float SampleTime,float outMin, float outMax, int direct);
-    //method
-    float comp(float err, float input);
-
-  private:
-    float _Kp;
-    float _Ki;
-    float _Kd;
-    float _SampleTime;
-    float _outMin;
-    float _outMax;
-    float _direct;
     float integral;
     float derivative;
     float lastinput;
-    
-};
-
-class pid1
-{
-  public:
-
-  
-    pid1(float Kp,float Ti,float Td,float Ts, float outMin, float outMax);
-    float comp1(float err);
-
-  private:
-    float _Kp;
-    float _Ti;
-    float _Td;
-    float _Ts;
+    float lastoutput = 0;
+    float lastlasterror = 0;
+    float lasterror = 0;
     float r_p;
     float r_i;
     float r_d;
     float q0;
     float q1;
     float q2;
-    float _outMin;
-    float _outMax;
-    float lastoutput = 0;
-    float lastlasterror = 0;
-    float lasterror = 0;
-    
-};
+ }; // end of the class
+
+
+
 
  class Opto{
 
