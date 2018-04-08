@@ -38,7 +38,7 @@ float AutomationShield::pid(float err, float input,float Kp,float Ki,float Kd,fl
  {
      float output;
 
-    if (_direct == 1) // reverse acting system (FloatShield) 
+    if (direct == 1) // reverse acting system (FloatShield) 
     { 
         Kp = (0 - Kp); 
         Ki = (0 - Ki); 
