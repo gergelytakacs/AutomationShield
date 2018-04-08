@@ -47,9 +47,8 @@
     float integral;
     float derivative;
     float lastinput;
-    float lastoutput = 0;
-    float lastlasterror = 0;
-    float lasterror = 0;
+    float error[3] = {0,0,0};
+    float out[2] = {0,0};
     float r_p;
     float r_i;
     float r_d;

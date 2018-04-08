@@ -78,7 +78,7 @@ float AutomationShield::pid(float err, float input,float Kp,float Ki,float Kd,fl
 float AutomationShield::pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax)
  {
     
-     float output;
+  error[0] = err;
   r_p = Kp;
   r_i = Kp/Ti;
   r_d = Kp*Td;
@@ -87,23 +87,23 @@ float AutomationShield::pid1(float err,float Kp,float Ti,float Td,float outMin, 
   q1 = -r_p - (2*r_d)/Ts;
   q2 = r_d/Ts;
 
-  output = lastoutput+ q0*err + q1*lasterror +q2*lastlasterror;
+  out[1] = out[0]+ q0*error[0] + q1*error[1] +q2*error[2];
 
-  lastoutput = output;
-  if (output > outMax)
+  out[0] = out[1];
+  if (out[1] > outMax)
   {
-    output = outMax;
+    out[1] = outMax;
   }
-  else if( output < outMin)
+  else if( out[1] < outMin)
   {
-    output = outMin;
+    out[1] = outMin;
   }
 
   
-  lastlasterror = lasterror;
-  lasterror= err;
+  error[2] = error[1];
+  error[1]= error[0];
 
-  return output;
+  return out[1];
  }
 
 
