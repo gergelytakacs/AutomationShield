@@ -14,7 +14,9 @@ float AutomationShieldClass::mapFloat(float x, float in_min, float in_max, float
 }
 
 float AutomationShieldClass::constrain(float x, float min_x, float max_x){
-//
+ if (x>=max_x){x=max_x;} // if x larger than maximum, it's maximum
+ if (x<=min_x){x=min_x;} // if x smaller than minimum, it's minimum
+ return x; // return x
 }
 
 void AutomationShieldClass::error(char *str) // Error handler function
