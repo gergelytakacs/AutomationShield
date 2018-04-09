@@ -4,7 +4,7 @@
   Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs
   2017-2018.
   Released into the public domain.
-  Last change by Tibor Konkoly on 07.04.2018 at 18:48 .
+  Last change by Tibor Konkoly on 09.04.2018 at 21:15 .
 */
 
 #ifndef AutomationShield_h  // Include guard - prevents multiple header inclusions
@@ -16,30 +16,9 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
-// functions defined by us
-// 1.
- extern float mapFloat(float x, float in_min, float in_max, float out_min, float out_max); // same as Arudino map() but with floating point numbers
-
 // Diagnostics
 #define ECHO_TO_SERIAL      1                // echo data to serial port
 #define ERRORPIN            13               // Overload Signal
-
-class AutomationShield{
-
-  public:
-
-   // Constructor
-   AutomationShield();
-
-   // Methods
- void error(char *str);
-  
-  private:
-
-  
- }; // end of the AutomationShield class
-
-
 
 
 // Defining pins used by the Optoshield board
@@ -48,15 +27,39 @@ class AutomationShield{
   #define OPTO_YAUX 2   // defining the pin of the auxiliary LDR
   #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
   
+
+
+ // class(es) .h part of the library
+
+ class AutomationShieldClass{
+
+  public:
+
+   public:
+    #define REV 1 //reverse acting
+    #define DIR 0
+  // Methods
+ float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
+ void error(char *str);
+
+     
+
+  private:
+
+  
+ }; // end of the AutomationShield class
  
-  class Opto{
+
+ extern AutomationShieldClass Automationshield; // Declare external instance
+ 
+ 
+ 
+ class OptoClass{
 
   public:
   
-  // Constructor
-  Opto();
-  
   // Methods
+
   void  begin(void);
   void  calibration();
   void  actuatorWrite(float value);
@@ -64,7 +67,8 @@ class AutomationShield{
   float sensorReadVoltage();
   float sensorAuxRead();
   float referenceRead();
-
+ 
+  
   private:
 
   float _convertedValue;
@@ -79,10 +83,14 @@ class AutomationShield{
   float _sensorValue;
   float _minVal;
   float _maxVal;
-
+  
   bool indicator;
   
  }; // end of the Opto class
+
+ extern OptoClass OptoShield; // Declare external instance
+ 
+ 
  
  #endif // End of AutomationShield library.
  
