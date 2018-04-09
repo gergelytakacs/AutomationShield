@@ -67,7 +67,7 @@ extern AutomationShieldClass Automationshield; // Declare external instance
   private:
   int _valueRead;  
  }; // end of the class
-extern OptoClass Opto; // Declare external instance
+extern OptoClass OptoShield; // Declare external instance
 
 
 #endif // End of AutomationShield library.
