@@ -34,6 +34,79 @@ void AutomationShield::error(char *str) // Error handler function
 }
 
 
+float AutomationShield::pid(float err, float input,float Kp,float Ki,float Kd,float outMin, float outMax ,int direct)
+ {
+     
+
+    if (direct == 1) // reverse acting system (FloatShield) 
+    { 
+        Kp = (0 - Kp); 
+        Ki = (0 - Ki); 
+        Kd = (0 - Kd); 
+    } 
+  
+   integral = integral + (err)*Ts;
+  if (integral > outMax)
+  {
+    integral = outMax;
+  }
+  else if( integral < outMin)
+  {
+    integral = outMin;
+  }
+
+   derivative = (input - lastinput)/Ts; //removes Derivative kick
+   output = Kp *err + Ki*integral - Kd*derivative;
+
+  if (output > outMax)
+  {
+    output = outMax;
+  }
+  else if( output < outMin)
+  {
+    output = outMin;
+  }
+
+ lastinput = input;
+  return output;
+ }
+    
+
+
+
+
+float AutomationShield::pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax)
+ {
+    
+  error[0] = err;
+  r_p = Kp;
+  r_i = Kp/Ti;
+  r_d = Kp*Td;
+
+  q0 = r_p+r_i*Ts+r_d/Ts;
+  q1 = -r_p - (2*r_d)/Ts;
+  q2 = r_d/Ts;
+
+  out[1] = out[0]+ q0*error[0] + q1*error[1] +q2*error[2];
+
+  out[0] = out[1];
+  if (out[1] > outMax)
+  {
+    out[1] = outMax;
+  }
+  else if( out[1] < outMin)
+  {
+    out[1] = outMin;
+  }
+
+  
+  error[2] = error[1];
+  error[1]= error[0];
+
+  return out[1];
+ }
+
+
 Opto::Opto(){ 
 }
 

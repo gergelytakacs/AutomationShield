@@ -31,6 +31,8 @@
  class AutomationShield{
 
   public:
+    #define REV 1 //reverse acting
+    #define DIR 0
   // Constructor
   AutomationShield();
   
@@ -39,9 +41,25 @@
 //constrainFloat?
  void error(char *str);
   float constrain(float x, float min_x, float max_x); 
-   
+  float pid(float err,float input,float Kp,float Ki,float Kd,float outMin,float outMax,int direct);
+  float pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
   private:
+    float integral;
+    float derivative;
+    float lastinput;
+    float error[3] = {0,0,0};
+    float out[2] = {0,0};
+    float r_p;
+    float r_i;
+    float r_d;
+    float q0;
+    float q1;
+    float q2;
+    float output;
  }; // end of the class
+
+
+
 
  class Opto{
 
