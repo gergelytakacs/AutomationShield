@@ -84,7 +84,7 @@
   float _minVal;
   float _maxVal;
   
-  bool indicator;
+  bool _indicator;
   
  }; // end of the Opto class
 
