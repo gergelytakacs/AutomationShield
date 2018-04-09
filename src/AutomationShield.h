@@ -24,15 +24,12 @@
 #define ECHO_TO_SERIAL      1                // echo data to serial port
 #define ERRORPIN            13               // Overload Signal
 
-
-
 // classes
  class AutomationShieldClass{
 
   public:
     #define REV 1 //reverse acting
     #define DIR 0
-
   // Methods
  float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
 //constrainFloat?
@@ -55,13 +52,12 @@
     float output;
  }; // end of the class
 
-extern AutomationShieldClass Automationshield; // Construct instance named AutomationShield
+extern AutomationShieldClass Automationshield; // Declare external instance
 
 
  class OptoClass{
 
   public:
-  
   // Methods
   void actuatorWrite(int value);
   int sensorRead();
@@ -71,9 +67,7 @@ extern AutomationShieldClass Automationshield; // Construct instance named Autom
   private:
   int _valueRead;  
  }; // end of the class
-
-extern OptoClass Opto; // Construct instance named AutomationShield
+extern OptoClass Opto; // Declare external instance
 
 
 #endif // End of AutomationShield library.
-
