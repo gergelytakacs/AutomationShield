@@ -5,11 +5,8 @@
   2017-2018.
   Released into the public domain.
 */
-
-
 #include "AutomationShield.h"
 #include "Arduino.h"
-
 
 float AutomationShieldClass::mapFloat(float x, float in_min, float in_max, float out_min, float out_max) // same as Arudino map() but with floating point numbers
 {
@@ -30,10 +27,8 @@ void AutomationShieldClass::error(char *str) // Error handler function
   while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
-
 float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd,float outMin, float outMax ,int direct)
- {
-     
+ {     
 
     if (direct == 1) // reverse acting system (FloatShield) 
     { 
@@ -68,10 +63,6 @@ float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float 
   return output;
  }
     
-
-
-
-
 float AutomationShieldClass::pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax)
  {
     
@@ -103,7 +94,7 @@ float AutomationShieldClass::pid1(float err,float Kp,float Ti,float Td,float out
   return out[1];
  }
 
-
+AutomationShieldClass AutomationShield; // Construct instance
 
 
 void OptoClass::begin(void){                  // begin function initializes the pins used by the hardware. Optoshield uses three pins, pin A1 is used by the LDR, 
@@ -134,6 +125,5 @@ int OptoClass::referenceRead(){
   return _valueRead;
 }
             
-
-                     
+OptoClass OptoShield; // Construct instance                   
 
