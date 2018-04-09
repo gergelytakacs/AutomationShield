@@ -4,7 +4,6 @@
   Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs
   2017-2018.
   Released into the public domain.
-  Last change by Tibor Konkoly on 26.03.2018 at 20:51 .
 */
 
 #ifndef AutomationShield_h  // Include guard - prevents multiple header inclusions
@@ -28,14 +27,12 @@
 
 
 // classes
- class AutomationShield{
+ class AutomationShieldClass{
 
   public:
     #define REV 1 //reverse acting
     #define DIR 0
-  // Constructor
-  AutomationShield();
-  
+
   // Methods
  float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
 //constrainFloat?
@@ -58,14 +55,12 @@
     float output;
  }; // end of the class
 
+extern AutomationShieldClass Automationshield; // Construct instance named AutomationShield
 
 
-
- class Opto{
+ class OptoClass{
 
   public:
-  // Constructor
-  Opto();
   
   // Methods
   void actuatorWrite(int value);
@@ -74,9 +69,10 @@
   void begin(void);
 
   private:
-  int _valueRead;
-  
+  int _valueRead;  
  }; // end of the class
+
+extern OptoClass Opto; // Construct instance named AutomationShield
 
 
 #endif // End of AutomationShield library.
