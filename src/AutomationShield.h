@@ -31,6 +31,8 @@
  class AutomationShield{
 
   public:
+    #define REV 1 //reverse acting
+    #define DIR 0
   // Constructor
   AutomationShield();
   
@@ -38,26 +40,26 @@
  float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
 //constrainFloat?
  void error(char *str);
-  float constrain(float x, float min_x, float max_x);
-  void initializePID(float _KP, float _KI, float _KD, int _Ts, float _min_u, float _max_u);
-  float PID(float request_val, float current_val);
-  float PID(float user_error);
-     
+  float constrain(float x, float min_x, float max_x); 
+  float pid(float err,float input,float Kp,float Ki,float Kd,float outMin,float outMax,int direct);
+  float pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
   private:
-     float Ts;
-     float KP;
-     float KI;
-     float KD;
-     float integral=0;
-     float derivative=0;
-     float error_pid=0;
-     float error_prior=0;
-     float u=0;
-     unsigned long now;
-     unsigned long time_prior=0;
-     int time_change;
-     int real_Ts;
+    float integral;
+    float derivative;
+    float lastinput;
+    float error[3] = {0,0,0};
+    float out[2] = {0,0};
+    float r_p;
+    float r_i;
+    float r_d;
+    float q0;
+    float q1;
+    float q2;
+    float output;
  }; // end of the class
+
+
+
 
  class Opto{
 
