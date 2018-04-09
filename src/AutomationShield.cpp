@@ -44,7 +44,7 @@ void OptoClass::calibration(){                           // a function determine
 
   analogWrite(OPTO_UPIN,0);                          // this line switches off the LEDs
 
-  indicator = true;
+  _indicator = true;
 
   // summary
   Serial.println("_______________________________________");
@@ -75,7 +75,7 @@ void OptoClass::actuatorWrite(float value){          // actuatorWrite() sets the
 float OptoClass::sensorRead(){
    _sensorRead = analogRead(OPTO_YPIN);
    
-   if(indicator){                                                   // with an if statement I can check, if the calibration function was called (recommended)
+   if(_indicator){                                                   // with an if statement I can check, if the calibration function was called (recommended)
    _sensorValue = AutomationShield.mapFloat(_sensorRead, _minVal, _maxVal, 0.00, 100.00); 
    }
    else{
