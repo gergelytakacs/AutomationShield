@@ -94,7 +94,7 @@ float AutomationShieldClass::pid1(float err,float Kp,float Ti,float Td,float out
   return out[1];
  }
 
-AutomationShieldClass AutomationShield; // Construct instance
+AutomationShieldClass AutomationShield; // Construct instance (define)
 
 
 void OptoClass::begin(void){                  // begin function initializes the pins used by the hardware. Optoshield uses three pins, pin A1 is used by the LDR, 
@@ -125,5 +125,5 @@ int OptoClass::referenceRead(){
   return _valueRead;
 }
             
-OptoClass OptoShield; // Construct instance                   
+OptoClass OptoShield; // Construct instance (define)                  
 
