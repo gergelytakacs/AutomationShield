@@ -1,10 +1,9 @@
 /* 
  AutomationShield.cpp
   Arduino library for teaching control engineering.
-  Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs
+  Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs to be continued
   2017-2018.
   Released into the public domain.
-  Last change by Tibor Konkoly on 26.03.2018 at 20:51.
 */
 
 
