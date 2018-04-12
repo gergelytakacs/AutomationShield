@@ -20,3 +20,5 @@ Opto.begin();
 The library contains examples in the `\examples\` directory that will also show up in the Examples collection of the Arduino IDE. You can access this by clicking *File*, *Examples* and look for the *AutomationShield* library and its examples.
 
 Examples showcase the use of the AutomationShield library in Arduino sketches.
+
+Lorem ipsum
