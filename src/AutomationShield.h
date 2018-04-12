@@ -6,8 +6,18 @@
   Released into the public domain.
 */
 
-#ifndef AutomationShield_h  // Include guard - prevents multiple header inclusions
-#define AutomationShield_h  // If not already there, include
+/* ======================================== N O T E ======================================================  
+I deleted the whole part of the branch. This branch was created for finalizing the sampling function, 
+and just contains my version of the function. After assembling and finalizing the final function can be put into the 
+AutomationShield class or into another one. 
+The only problem is that I can not hide the interrupt service routine (yet). 
+I think the solution might be using the same method which was also used by Richard.
+===========================================================================================================
+*/
+
+
+#ifndef Sampling_h  // Include guard - prevents multiple header inclusions
+#define Sampling_h  // If not already there, include
 
 #if (ARDUINO >= 100)  // Libraries don't include this, normal Arduino sketches do
  #include "Arduino.h" // For new Arduino IDE
@@ -15,69 +25,29 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
-// Diagnostics
-#define ECHO_TO_SERIAL      1                // echo data to serial port
-#define ERRORPIN            13               // Overload Signal
 
-// Defining pins used by the Optoshield board
-  #define OPTO_RPIN 0   // defining the pin of the potentiometer's runner
-  #define OPTO_YPIN 1   // defining the pin of the LDR
-  #define OPTO_YAUX 2   // defining the pin of the auxiliary LDR
-  #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
 
- // class(es) .h part of the library
- class AutomationShieldClass{
-  public:
-    #define REV 1 //reverse acting
-    #define DIR 0
-  // Methods
- float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
- void error(char *str);
-float constrain(float x, float min_x, float max_x); 
-  float pid(float err,float input,float Kp,float Ki,float Kd,float outMin,float outMax,int direct);
-  float pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
-  private:
-    float integral;
-    float derivative;
-    float lastinput;
-    float error[3] = {0,0,0};
-    float out[2] = {0,0};
-    float r_p;
-    float r_i;
-    float r_d;
-    float q0;
-    float q1;
-    float q2;
-    float output;
- }; // end of the class
- extern AutomationShieldClass Automationshield; // Declare external instance
-
- class OptoClass{
-  public:
-  void  begin(void);
-  void  calibration();
-  void  actuatorWrite(float value);
-  float sensorRead();
-  float sensorReadVoltage();
-  float sensorAuxRead();
-  float referenceRead();
- 
+class Sampling {
   
-  private:
-  float _convertedValue;
-  float _valueRead;
-  float _sensorVoltage;
-  float _auxRead;
-  float _auxVoltage;
-  float _referenceRead;
-  float _referenceValue;
-  float _sensorRead;
-  float _sensorValue;
-  float _minVal;
-  float _maxVal;
-  bool _indicator;
- }; // end of the Opto class
+public:   
 
- extern OptoClass OptoShield; // Declare external instance
- 
- #endif // End of AutomationShield library.
+       // methods
+       void samplingTime(float Ts); 
+       float test;
+       int i;
+       
+       
+private:
+
+
+
+
+};
+
+extern Sampling testSample;
+
+extern bool StepEnable;
+
+
+
+#endif 
