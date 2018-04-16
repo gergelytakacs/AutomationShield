@@ -21,9 +21,9 @@ float  Lt = 65535;    // the maximal value which can be stored in the Timer1 on 
 
  float uTs = (Ts * 1000.00); // sampling Time given by the user in microseconds (us)
 
-for(i = 0; i < 5; i++){               // the for loop determines the test value and the i, knowing the value of these varaibles is essential to choose the right prescaler
-  test = uTs / resolution[i];
-  if(test <= Lt){
+for(_i = 0; _i < 5; _i++){               // the for loop determines the test value and the i, knowing the value of these varaibles is essential to choose the right prescaler
+  _testValue = uTs / resolution[_i];
+  if(_testValue <= Lt){
     break;
   } // end of the if statement
   } // end of the for loop
@@ -34,8 +34,9 @@ for(i = 0; i < 5; i++){               // the for loop determines the test value 
 TCCR1A = 0;                   // resets all bits
 TCCR1B = 0;
 TCNT1  = 0;
+cli();                        // disabling global interrupts
 
-OCR1A = test - 1;       // max. value when it has to reset
+OCR1A = _testValue - 1;       // max. value when it has to reset
 
 TCCR1B |= (1 << WGM12);      // CTC mode
   
@@ -43,7 +44,7 @@ TCCR1B |= (1 << WGM12);      // CTC mode
 // choosing the right prescaler
 
 
-switch (i){
+switch (_i){
 
   case 0:
   TCCR1B |= (1 << CS10);       // prescaler 1 (basic)
@@ -92,5 +93,12 @@ interrupts();               // enable global interrupts
 
   
 }// end of the sampling function
+
+
+ISR(TIMER1_COMPA_vect){   // pre-set interrupt which checks the value of the indicator. when the Timer register fills up, it changes from false to true
+  StepEnable = true;
+  }
+
+
   
 Sampling testSample;
