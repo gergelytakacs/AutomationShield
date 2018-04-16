@@ -10,8 +10,8 @@
 I deleted the whole part of the branch. This branch was created for finalizing the sampling function, 
 and just contains my version of the function. After assembling and finalizing the final function can be put into the 
 AutomationShield class or into another one. 
-The only problem is that I can not hide the interrupt service routine (yet). 
-I think the solution might be using the same method which was also used by Richard.
+The ISR function is now hidden, but it has some problems with the accuracy of sampling. Not every sample is accurate, some of 
+them are triggered sooner or later by 1ms. I must figure out what causes this problem.
 ===========================================================================================================
 */
 
@@ -33,11 +33,12 @@ public:
 
        // methods
        void samplingTime(float Ts); 
-       float test;
-       int i;
+
        
        
 private:
+       float _testValue;
+       int   _i;
 
 
 
@@ -47,6 +48,7 @@ private:
 extern Sampling testSample;
 
 extern bool StepEnable;
+
 
 
 
