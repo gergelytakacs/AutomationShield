@@ -1,32 +1,30 @@
-// Timer.h
+#include "Arduino.h"
 
-  #include "Arduino.h"
+typedef void (*p_to_void_func)();
 
-  typedef void (*p_to_void_func)();
+class Timer{
 
-  class Timer{
-
-    public:
+  public:
     
-      void interruptInitialize(unsigned long microseconds);
+    void interruptInitialize(unsigned long microseconds);
 
-      void setInterruptCallback(p_to_void_func isr);
+    void setInterruptCallback(p_to_void_func isr);
 
-      p_to_void_func getInterruptCallback ();
+    p_to_void_func getInterruptCallback ();
 
-      unsigned long getSamplingPeriod();
+    unsigned long getSamplingPeriod();
           
-    private:
+  private:
 
-      unsigned long samplingPeriod;
+    unsigned long samplingPeriod;
       
-      p_to_void_func interruptCallback;
+    p_to_void_func interruptCallback;
 
-      const unsigned long timer1Resolution = 65536; // timer1 is 16bit
+    const unsigned long timer1Resolution = 65536; // timer1 is 16bit
             
-      const unsigned char cpuFrequence = 16; // cpu frequence in microseconds      
+    const unsigned char cpuFrequence = 16; // cpu frequence in microseconds      
     
-      bool setSamplingPeriod(unsigned long microseconds);
+    bool setSamplingPeriod(unsigned long microseconds);
   };
 
   extern Timer timer;
