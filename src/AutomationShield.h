@@ -26,17 +26,23 @@
   #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
 
  // class(es) .h part of the library
- class AutomationShieldClass{
+ class AutomationShield{
+   
   public:
     #define REV 1 //reverse acting
     #define DIR 0
+  //Constructor
+AutomationShield();
+   
   // Methods
  float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
- void error(char *str);
-float constrain(float x, float min_x, float max_x); 
+  //constrainFloat?
+   void error(char *str);
+  float constrain(float x, float min_x, float max_x); 
   float pid(float err,float input,float Kp,float Ki,float Kd,float outMin,float outMax,int direct);
   float pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
   private:
+    float delta;
     float integral;
     float derivative;
     float lastinput;
