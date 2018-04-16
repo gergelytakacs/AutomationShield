@@ -3,11 +3,14 @@
 
 bool StepEnable = false;
 
+float Ts; 
 
 
 
-void Sampling::samplingTime(float Ts){
 
+void Sampling::samplingTime(float sampleTime){
+
+   Ts = sampleTime; 
 
 float  Lt = 65535;    // the maximal value which can be stored in the Timer1 on Arduino Uno (16 bit timer,  Lt = 2^16 -1)
  
@@ -19,7 +22,7 @@ float  Lt = 65535;    // the maximal value which can be stored in the Timer1 on 
 
  float resolution[] = {Tr1 , Tr8 , Tr64 , Tr256 , Tr1024}; // array which contains the available resolutions, helps to set the prescaler
 
- float uTs = (Ts * 1000.00); // sampling Time given by the user in microseconds (us)
+ float uTs = (sampleTime * 1000.00); // sampling Time given by the user in microseconds (us)
 
 for(_i = 0; _i < 5; _i++){               // the for loop determines the test value and the i, knowing the value of these varaibles is essential to choose the right prescaler
   _testValue = uTs / resolution[_i];
@@ -89,7 +92,7 @@ switch (_i){
 // when the prescaler is chosen we have to enable the interrupts
 
 TIMSK1 |= (1 << OCIE1A);    // enable timer interrupts
-interrupts();               // enable global interrupts
+sei();               // enable global interrupts
 
   
 }// end of the sampling function
