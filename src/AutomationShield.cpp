@@ -77,19 +77,20 @@ float AutomationShieldClass::pid1(float err,float Kp,float Ti,float Td,float out
   q0 = r_p+r_i*Ts+r_d/Ts;
   q1 = -r_p - (2*r_d)/Ts;
   q2 = r_d/Ts;
+  delta = q0*error[o] + q1*error[1] + q2*error[2];
+  out[1] = out[0] + delta;      //difference eq.
 
-  out[1] = out[0]+ q0*error[0] + q1*error[1] +q2*error[2];
-
-  out[0] = out[1];
-  if (out[1] > outMax)
+  if (out[1] > outMax)   //anti-wind up
   {
+    delta = 0;
     out[1] = outMax;
   }
   else if( out[1] < outMin)
   {
+    delta = 0;
     out[1] = outMin;
   }
-
+  out[0] = out[1];   //last output
   
   error[2] = error[1];
   error[1]= error[0];
