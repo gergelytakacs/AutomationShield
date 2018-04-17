@@ -32,7 +32,7 @@ class Sampling {
 public:   
 
        // methods
-       void samplingTime(float sampleTime); 
+       void samplingTime(int sampleTime); 
        
 
        
@@ -49,7 +49,7 @@ private:
 extern Sampling testSample;
 
 extern bool StepEnable;
-extern float Ts;    // external variable for the sampling time
+extern int Ts;    // external variable for the sampling time
 
 
 
