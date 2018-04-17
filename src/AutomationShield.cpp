@@ -14,7 +14,7 @@ float AutomationShieldClass::mapFloat(float x, float in_min, float in_max, float
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; // linear mapping, same as Arduino map()
 }
 
-float AutomationShieldClass::constrain(float x, float min_x, float max_x){
+float AutomationShieldClass::constrainFloat(float x, float min_x, float max_x){
  if (x>=max_x){x=max_x;} // if x larger than maximum, it's maximum
  if (x<=min_x){x=min_x;} // if x smaller than minimum, it's minimum
  return x; // return x
@@ -69,7 +69,7 @@ float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float 
 float AutomationShieldClass::pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax)
  {
     
-  error[0] = err;
+  e[0] = err;
   r_p = Kp;
   r_i = Kp/Ti;
   r_d = Kp*Td;
@@ -78,7 +78,7 @@ float AutomationShieldClass::pid1(float err,float Kp,float Ti,float Td,float out
   q1 = -r_p - (2*r_d)/Ts;
   q2 = r_d/Ts;
 
-  out[1] = out[0]+ q0*error[0] + q1*error[1] +q2*error[2];
+  out[1] = out[0]+ q0*e[0] + q1*e[1] +q2*e[2];
 
   out[0] = out[1];
   if (out[1] > outMax)
@@ -91,8 +91,8 @@ float AutomationShieldClass::pid1(float err,float Kp,float Ti,float Td,float out
   }
 
   
-  error[2] = error[1];
-  error[1]= error[0];
+  e[2] = e[1];
+  e[1]= e[0];
 
   return out[1];
  }
