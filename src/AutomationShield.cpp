@@ -3,12 +3,12 @@
 
 bool StepEnable = false;
 
-float Ts; 
+int Ts; 
 
 
 
 
-void Sampling::samplingTime(float sampleTime){
+void Sampling::samplingTime(int sampleTime){
 
    Ts = sampleTime; 
 
@@ -22,7 +22,7 @@ float  Lt = 65535;    // the maximal value which can be stored in the Timer1 on 
 
  float resolution[] = {Tr1 , Tr8 , Tr64 , Tr256 , Tr1024}; // array which contains the available resolutions, helps to set the prescaler
 
- float uTs = (sampleTime * 1000.00); // sampling Time given by the user in microseconds (us)
+ float uTs = (float(sampleTime) * 1000.00); // sampling Time given by the user in microseconds (us)
 
 for(_i = 0; _i < 5; _i++){               // the for loop determines the test value and the i, knowing the value of these varaibles is essential to choose the right prescaler
   _testValue = uTs / resolution[_i];
