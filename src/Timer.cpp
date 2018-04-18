@@ -1,8 +1,15 @@
 #include "Timer.h"
 
-Timer timer;
+void defaultInterrupt()
+{
+}
 
-void Timer::interruptInitialize(unsigned long microseconds){
+TimerClass::TimerClass(){
+
+  interruptCallback=defaultInterrupt;
+}
+
+void TimerClass::interruptInitialize(unsigned long microseconds){
 
   noInterrupts();           // disable all interrupts
   TCCR1A = 0;
@@ -18,7 +25,7 @@ void Timer::interruptInitialize(unsigned long microseconds){
   interrupts();             // enable all interrupts                
 }
 
-bool Timer::setSamplingPeriod(unsigned long microseconds){
+bool TimerClass::setSamplingPeriod(unsigned long microseconds){
 
   const unsigned long cycles = microseconds * cpuFrequence;
         
@@ -45,23 +52,25 @@ bool Timer::setSamplingPeriod(unsigned long microseconds){
   else{
     return false;
   }
-  samplingPeriod=microseconds;
+  samplingPeriod=microseconds/1000000.0; //in seconds
   return true;               
 }
 
-unsigned long Timer::getSamplingPeriod(){
+float TimerClass::getSamplingPeriod(){
   return samplingPeriod;
 }
 
-void Timer::setInterruptCallback(p_to_void_func isr){
+void TimerClass::setInterruptCallback(p_to_void_func isr){
   interruptCallback = isr;        
 }
 
-p_to_void_func Timer::getInterruptCallback (){
+p_to_void_func TimerClass::getInterruptCallback (){
   return interruptCallback;
 }
 
+TimerClass Timer;
+
 ISR(TIMER1_COMPA_vect)
 {
-  (timer.getInterruptCallback())();
+  (Timer.getInterruptCallback())();
 }
