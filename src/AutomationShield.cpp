@@ -14,7 +14,7 @@ float AutomationShieldClass::pid(float e, float Kp, float Ti, float Td){
   float u=(Kp*eArray[1])+((Kp*Ts/Ti)*eSum)+((Kp*Td/Ts)*(eArray[1]-eArray[0]));
   if (u>100)
     u=100.0;
-  if (u<0)
+  else if (u<0)
     u=0.0;
   eArray[0]=eArray[1];
   return u;
