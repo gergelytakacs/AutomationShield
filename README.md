@@ -12,7 +12,7 @@ Download the library from the `master` branch of the [Git repository](https://gi
 
 The harware library for a particular board is initialized by the board name followed by `begin` for example to initialize the OptoShield call:
 ```
-Opto.begin();
+OptoShield.begin();
 ```
 
 ## Examples
