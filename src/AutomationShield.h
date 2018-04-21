@@ -2,6 +2,7 @@
 #define AUTOMATIONSHIELD_H_
 
 #include "Timer.h"
+#include "HeatShield.h"
 
 class AutomationShieldClass{
   
