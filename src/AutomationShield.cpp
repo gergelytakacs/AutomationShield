@@ -33,7 +33,7 @@ void AutomationShieldClass::error(char *str) // Error handler function
 float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd,float outMin, float outMax)
  {     
   
-   integral = integral + (err)*Ts;
+   integral = integral + (err)*T;
   if (integral > outMax)
   {
     integral = outMax;
@@ -43,7 +43,7 @@ float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float 
     integral = outMin;
   }
 
-   derivative = (err - lasterr)/Ts; 
+   derivative = (err - lasterr)/T; 
    output = Kp *err + Ki*integral + Kd*derivative;
 
   if (output > outMax)
@@ -62,10 +62,10 @@ float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float 
 float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd)
  {     
   
-    integral = integral + (err)*Ts;
+    integral = integral + (err)*T;
   
 
-    derivative = (err - lasterr)/Ts; 
+    derivative = (err - lasterr)/T; 
     output = Kp *err + Ki*integral + Kd*derivative;
 
 
@@ -80,9 +80,9 @@ float AutomationShieldClass::pidInc(float err,float Kp,float Ti,float Td,float o
   r_i = Kp/Ti;
   r_d = Kp*Td;
 
-  q0 = r_p+r_i*Ts+r_d/Ts;
-  q1 = -r_p - (2*r_d)/Ts;
-  q2 = r_d/Ts;
+  q0 = r_p+r_i*T+r_d/T;
+  q1 = -r_p - (2*r_d)/T;
+  q2 = r_d/T;
   delta = q0*e[o] + q1*e[1] + q2*e[2];
   out[1] = out[0] + delta;      //difference eq.
 
