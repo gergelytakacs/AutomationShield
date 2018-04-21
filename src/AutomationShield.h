@@ -29,24 +29,10 @@
  class AutomationShield{
    
   public:
-    #define REV 1 //reverse acting
-    #define DIR 0
-  //Constructor
-AutomationShield();
-   
-  // Methods
- float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
-
- void error(char *str);
-float constrainFloat(float x, float min_x, float max_x); 
-
-  float pid(float err,float input,float Kp,float Ki,float Kd,float outMin,float outMax,int direct);
-  float pid1(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
-  private:
     float delta;
     float integral;
     float derivative;
-    float lastinput;
+    float lasterr;
     float e[3] = {0,0,0};
     float out[2] = {0,0};
     float r_p;
@@ -56,6 +42,21 @@ float constrainFloat(float x, float min_x, float max_x);
     float q1;
     float q2;
     float output;
+    
+  //Constructor
+AutomationShield();
+   
+  // Methods
+ float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
+
+ void error(char *str);
+float constrainFloat(float x, float min_x, float max_x); 
+
+  float pid(float err,float input,float Kp,float Ki,float Kd,float outMin,float outMax);
+  float pid(float err,float input,float Kp,float Ki,float Kd);
+  float pidInc(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
+  private:
+   
  }; // end of the class
  extern AutomationShieldClass Automationshield; // Declare external instance
 
