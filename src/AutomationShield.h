@@ -42,7 +42,7 @@
     float q1;
     float q2;
     float output;
-    float T = Ts/1000; //convert ms to s
+    float T = (float)Ts/1000; //convert ms to s
     
   //Constructor
 AutomationShield();
