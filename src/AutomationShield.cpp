@@ -30,23 +30,23 @@ void AutomationShieldClass::error(char *str) // Error handler function
   while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
-float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd,float outMin, float outMax)
+float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd,float outMin, float outMax)   //PID function with anti wind-up and saturation limits
  {     
   
-   integral = integral + (err)*T;
-  if (integral > outMax)
+   integral = integral + (err)*T;     //integral section
+  if (integral > outMax)              //anti wind-up
   {
     integral = outMax;
   }
-  else if( integral < outMin)
+  else if( integral < outMin)    
   {
     integral = outMin;
   }
 
-   derivative = (err - lasterr)/T; 
-   output = Kp *err + Ki*integral + Kd*derivative;
+   derivative = (err - lasterr)/T;                   //derivative section
+   output = Kp *err + Ki*integral + Kd*derivative;   //PID action
 
-  if (output > outMax)
+  if (output > outMax)                               //saturation limits
   {
     output = outMax;
   }
@@ -55,11 +55,11 @@ float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float 
     output = outMin;
   }
 
- lasterr = err;
+ lasterr = err;                                   
   return output;
  }
     
-float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd)
+float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd)    //PID function without anti wind-up and saturation limits
  {     
   
     integral = integral + (err)*T;
@@ -72,7 +72,7 @@ float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float 
     lasterr = err;
     return output;
  }
-float AutomationShieldClass::pidInc(float err,float Kp,float Ti,float Td,float outMin, float outMax)
+float AutomationShieldClass::pidInc(float err,float Kp,float Ti,float Td,float outMin, float outMax)   //incremental PID function
  {
     
   e[0] = err;
@@ -84,13 +84,10 @@ float AutomationShieldClass::pidInc(float err,float Kp,float Ti,float Td,float o
   q1 = -r_p - (2*r_d)/T;
   q2 = r_d/T;
   delta = q0*e[o] + q1*e[1] + q2*e[2];
-  out[1] = out[0] + delta;      //difference eq.
+  out[1] = out[0] + delta;              //difference eq.
 
-
-  out[1] = out[0]+ q0*e[0] + q1*e[1] +q2*e[2];
-
-  
-  if (out[1] > outMax)
+    
+  if (out[1] > outMax)                  //saturation limits
 
   {
     
@@ -101,10 +98,10 @@ float AutomationShieldClass::pidInc(float err,float Kp,float Ti,float Td,float o
     
     out[1] = outMin;
   }
-  out[0] = out[1];   //last output
+  out[0] = out[1];                     //last output
   
-  e[2] = e[1];
-  e[1]= e[0];
+  e[2] = e[1];                       //last last error
+  e[1]= e[0];                        //last error
 
   return out[1];
  }
