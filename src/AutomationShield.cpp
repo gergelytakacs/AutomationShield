@@ -30,7 +30,7 @@ void AutomationShieldClass::error(char *str) // Error handler function
   while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
 
-float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd,float outMin, float outMax)   //PID function with anti wind-up and saturation limits
+float AutomationShieldClass::pid(float err,float Kp,float Ki,float Kd,float outMin, float outMax)   //PID function with anti wind-up and saturation limits
  {     
   
    integral = integral + (err)*T;     //integral section
@@ -59,7 +59,7 @@ float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float 
   return output;
  }
     
-float AutomationShieldClass::pid(float err, float input,float Kp,float Ki,float Kd)    //PID function without anti wind-up and saturation limits
+float AutomationShieldClass::pid(float err,float Kp,float Ki,float Kd)    //PID function without anti wind-up and saturation limits
  {     
   
     integral = integral + (err)*T;
@@ -83,7 +83,7 @@ float AutomationShieldClass::pidInc(float err,float Kp,float Ti,float Td,float o
   q0 = r_p+r_i*T+r_d/T;
   q1 = -r_p - (2*r_d)/T;
   q2 = r_d/T;
-  delta = q0*e[o] + q1*e[1] + q2*e[2];
+  delta = q0*e[0] + q1*e[1] + q2*e[2];
   out[1] = out[0] + delta;              //difference eq.
 
     
