@@ -15,6 +15,8 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
+#include "HeatShield.h"
+
 // Diagnostics
 #define ECHO_TO_SERIAL      1                // echo data to serial port
 #define ERRORPIN            13               // Overload Signal
@@ -44,8 +46,7 @@
     float output;
     float T = (float)Ts/1000; //convert ms to s
     
-  //Constructor
-AutomationShield();
+  
    
   // Methods
  float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
@@ -56,7 +57,13 @@ float constrainFloat(float x, float min_x, float max_x);
   float pid(float err,float Kp,float Ki,float Kd,float outMin,float outMax);
   float pid(float err,float Kp,float Ki,float Kd);
   float pidInc(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
+
+    AutomationShieldClass(); 
+    float pidExp(float e, float Kp, float Ti, float Td);
   private:
+
+    float eSum;
+    float eArray[2]; 
    
  }; // end of the class
  extern AutomationShieldClass AutomationShield; // Declare external instance
