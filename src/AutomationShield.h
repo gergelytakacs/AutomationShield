@@ -53,8 +53,8 @@ AutomationShield();
  void error(char *str);
 float constrainFloat(float x, float min_x, float max_x); 
 
-  float pid(float err,float input,float Kp,float Ki,float Kd,float outMin,float outMax);
-  float pid(float err,float input,float Kp,float Ki,float Kd);
+  float pid(float err,float Kp,float Ki,float Kd,float outMin,float outMax);
+  float pid(float err,float Kp,float Ki,float Kd);
   float pidInc(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
   private:
    
