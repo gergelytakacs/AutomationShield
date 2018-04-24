@@ -26,7 +26,7 @@
   #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
 
  // class(es) .h part of the library
- class AutomationShield{
+ class AutomationShieldClass{
    
   public:
     float delta;
@@ -59,7 +59,7 @@ float constrainFloat(float x, float min_x, float max_x);
   private:
    
  }; // end of the class
- extern AutomationShieldClass Automationshield; // Declare external instance
+ extern AutomationShieldClass AutomationShield; // Declare external instance
 
  class OptoClass{
   public:
