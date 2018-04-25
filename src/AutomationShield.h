@@ -15,7 +15,10 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
-#include "HeatShield.h"
+// Headers for individual shields
+#include "HeatShield.h" 
+#include "OptoShield.h"
+
 
 // Diagnostics
 #define ECHO_TO_SERIAL      1                // echo data to serial port
@@ -68,32 +71,6 @@ float constrainFloat(float x, float min_x, float max_x);
  }; // end of the class
  extern AutomationShieldClass AutomationShield; // Declare external instance
 
- class OptoClass{
-  public:
-  void  begin(void);
-  void  calibration();
-  void  actuatorWrite(float value);
-  float sensorRead();
-  float sensorReadVoltage();
-  float sensorAuxRead();
-  float referenceRead();
- 
-  
-  private:
-  float _convertedValue;
-  float _valueRead;
-  float _sensorVoltage;
-  float _auxRead;
-  float _auxVoltage;
-  float _referenceRead;
-  float _referenceValue;
-  float _sensorRead;
-  float _sensorValue;
-  float _minVal;
-  float _maxVal;
-  bool _indicator;
- }; // end of the Opto class
 
- extern OptoClass OptoShield; // Declare external instance
  
  #endif // End of AutomationShield library.
