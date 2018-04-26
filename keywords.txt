@@ -6,8 +6,14 @@
 #Datatypes (KEYWORD1)
 ######################################
 
-AutomationShield	KEYWORD1
-Opto	KEYWORD1
+AutomationShield  KEYWORD1
+Opto  KEYWORD1
+AutomationShield  KEYWORD1
+OptoShield  KEYWORD1
+FloatShield KEYWORD1
+HeatShield  KEYWORD1
+MotoShield  KEYWORD1
+MagnetoShield KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
@@ -17,6 +23,12 @@ Opto	KEYWORD1
 sensorRead	KEYWORD2
 actuatorWrite	KEYWORD2
 referenceRead	KEYWORD2
+
+pid KEYWORD2 
+pidInc  KEYWORD2
+
+constrainFloat  KEYWORD2
+mapFloat  KEYWORD2
 
 ######################################
 #Constants (LITERAL1)
