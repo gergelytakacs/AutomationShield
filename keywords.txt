@@ -6,17 +6,17 @@
 #Datatypes (KEYWORD1)
 ######################################
 
-AutomationShield   KEYWORD1
-Opto               KEYWORD1
+AutomationShield	KEYWORD1
+Opto	KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
 ######################################
 
 
-sensorRead         KEYWORD2
-actuatorWrite      KEYWORD2
-referenceRead	     KEYWORD2
+sensorRead	KEYWORD2
+actuatorWrite	KEYWORD2
+referenceRead	KEYWORD2
 
 ######################################
 #Constants (LITERAL1)
