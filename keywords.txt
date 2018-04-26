@@ -17,10 +17,15 @@ MagnetoShield      KEYWORD1
 #Methods and Functions (KEYWORD2)
 ######################################
 
-
 sensorRead         KEYWORD2
 actuatorWrite      KEYWORD2
 referenceRead	     KEYWORD2
+
+pid                KEYWORD2 
+pidInc             KEYWORD2
+
+constrainFloat     KEYWORD2
+mapFloat           KEYWORD2
 
 ######################################
 #Constants (LITERAL1)
