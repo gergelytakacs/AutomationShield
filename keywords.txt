@@ -7,7 +7,11 @@
 ######################################
 
 AutomationShield   KEYWORD1
-Opto               KEYWORD1
+OptoShield         KEYWORD1
+FloatShield        KEYWORD1
+HeatShield         KEYWORD1
+MotoShield         KEYWORD1
+MagnetoShield      KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
