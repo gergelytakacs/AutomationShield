@@ -15,9 +15,15 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
+
+// Headers for essential functionality
+#include "Timer.h" 
+#include "PID.h"
+
 // Headers for individual shields
 #include "HeatShield.h" 
 #include "OptoShield.h"
+
 
 
 // Diagnostics
