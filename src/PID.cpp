@@ -104,9 +104,8 @@ float PIDClass::compute(float err){
 
 float PIDClass::compute(float err,float saturationMin,float saturationMax){    
   
-  loadVariables(err);
-  u[1]=computeU();    
-  u[1]=constrainFloat(u[1],saturationMin,saturationMax);
+  loadVariables(err);   
+  u[1]=constrainFloat(computeU(),saturationMin,saturationMax);
   shiftVariables();
   return u[1];
 }
@@ -114,9 +113,8 @@ float PIDClass::compute(float err,float saturationMin,float saturationMax){
 float PIDClass::compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax){    
   
   loadVariables(err);
-  eSum=constrainFloat((Kp*Ts/Ti)*eSum,antiWindupMin,antiWindupMax)/(Kp*Ts/Ti);  
-  u[1]=computeU();   
-  u[1]=constrainFloat(u[1],saturationMin,saturationMax);
+  eSum=constrainFloat((Kp*Ts/Ti)*eSum,antiWindupMin,antiWindupMax)/(Kp*Ts/Ti);    
+  u[1]=constrainFloat(computeU(),saturationMin,saturationMax);
   shiftVariables();
   return u[1];
 }
