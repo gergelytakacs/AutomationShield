@@ -15,6 +15,8 @@ class PIDClass{
     PIDClass();
      
     float compute(float err);
+    float compute(float err,float saturationMin,float saturationMax);
+    float compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax);
 
     void setKp(float Kp);
     void setKi(float Ki);
@@ -30,28 +32,22 @@ class PIDClass{
 
     void beginAbsolute();
     void beginIncremental();
-
-    void beginSaturation(float saturationMin,float saturationMax);
-    void stopSaturation();
-    void beginAntiWindup(float antiWindupMin,float antiWindupMax);
-    void stopAntiWindup();
   
   private:
 
-    float computeAbsForm(float Ts);
-    float computeIncForm(float Ts);
+    float computeAbsForm();
+    
+    float computeIncForm();
+
+    void loadVariables(float err);
+    
+    float computeU();
+    
+    void shiftVariables();
 
     float constrainFloat(float x, float min_x, float max_x);
 
     PidForms pidForm;
-    
-    bool saturation;
-    float saturationMin;
-    float saturationMax;
-    
-    bool antiWindup;
-    float antiWindupMin;
-    float antiWindupMax;
     
     float eSum;
     float e[3];
@@ -61,7 +57,9 @@ class PIDClass{
     float Ki;
     float Kd;
     float Ti;
-    float Td;    
+    float Td;
+
+    float Ts;        
 };
 extern PIDClass PID; // Declare external instance
 #endif

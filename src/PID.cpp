@@ -14,15 +14,9 @@ PIDClass::PIDClass(){
   Kd=1.0;
   Ti=1.0;
   Td=1.0;
+  Ts=1.0;
 
   pidForm=absolute;
-  saturation=false;
-  antiWindup=false;
-
-  saturationMin=0.0;
-  saturationMax=0.0;
-  antiWindupMin=0.0;
-  antiWindupMax=0.0;
 }
 
 void PIDClass::setKp(float Kp){
@@ -77,25 +71,6 @@ void PIDClass::beginIncremental(){
   pidForm=incremental;
 }
 
-void PIDClass::beginSaturation(float saturationMin,float saturationMax){
-  saturation=true;
-  this->saturationMin=saturationMin;
-  this->saturationMax=saturationMax;
-}
-  
-void PIDClass::stopSaturation(){
-  saturation=false;
-}
-  
-void PIDClass::beginAntiWindup(float antiWindupMin,float antiWindupMax){
-  antiWindup=true;
-  this->antiWindupMin=antiWindupMin;
-  this->antiWindupMax=antiWindupMax;
-}
-  
-void PIDClass::stopAntiWindup(){
-  antiWindup=false;
-}
 
 float PIDClass::constrainFloat(float x, float min_x, float max_x){
   if (x<=min_x)
@@ -105,38 +80,64 @@ float PIDClass::constrainFloat(float x, float min_x, float max_x){
   return x;
 }
 
-float PIDClass::compute(float err){    
+void PIDClass::loadVariables(float err){
+
   e[2]=err;
   eSum+=e[2];
-  float Ts=Timer.getSamplingPeriod();
-  
-  if(pidForm==absolute)
-    u[1]=computeAbsForm(Ts);
-  else
-    u[1]=computeIncForm(Ts);
+  Ts=Timer.getSamplingPeriod();
+}
 
-  if(saturation)
-    u[1]=constrainFloat(u[1],saturationMin,saturationMax);
-    
+void PIDClass::shiftVariables(){
+
   e[0]=e[1];
   e[1]=e[2];
   u[0]=u[1];
+}
+
+float PIDClass::compute(float err){    
+
+  loadVariables(err);
+  u[1]=computeU();
+  shiftVariables();  
   return u[1];
 }
 
-float PIDClass::computeAbsForm(float Ts){      
-
-  if(antiWindup)
-    return (Kp*e[2])+constrainFloat((Kp*Ts/Ti)*eSum,antiWindupMin,antiWindupMax)+((Kp*Td/Ts)*(e[2]-e[1]));
-  else
-    return (Kp*e[2])+((Kp*Ts/Ti)*eSum)+((Kp*Td/Ts)*(e[2]-e[1]));
+float PIDClass::compute(float err,float saturationMin,float saturationMax){    
+  
+  loadVariables(err);
+  u[1]=computeU();    
+  u[1]=constrainFloat(u[1],saturationMin,saturationMax);
+  shiftVariables();
+  return u[1];
 }
 
-float PIDClass::computeIncForm(float Ts){     
+float PIDClass::compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax){    
+  
+  loadVariables(err);
+  eSum=constrainFloat((Kp*Ts/Ti)*eSum,antiWindupMin,antiWindupMax)/(Kp*Ts/Ti);  
+  u[1]=computeU();   
+  u[1]=constrainFloat(u[1],saturationMin,saturationMax);
+  shiftVariables();
+  return u[1];
+}
+
+float PIDClass::computeU(){
+  
+  if(pidForm==absolute)
+    return computeAbsForm();
+  else
+    return computeIncForm();
+}
+
+float PIDClass::computeAbsForm(){      
+
+  return (Kp*e[2])+((Kp*Ts/Ti)*eSum)+((Kp*Td/Ts)*(e[2]-e[1]));
+}
+
+float PIDClass::computeIncForm(){     
 
   return u[0]+((Kp+(Kp*Ts/Ti)+(Kp*Td/Ts))*e[2])+((-Kp-(2*Kp*Td/Ts))*e[1])+((Kp*Td/Ts)*e[0]);
 }
-
 
 
 PIDClass PID; // Construct instance (define)
