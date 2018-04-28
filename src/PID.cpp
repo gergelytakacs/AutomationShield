@@ -127,7 +127,8 @@ float PIDClass::compute(float err){
 float PIDClass::computeAbsForm(float Ts){      
 
   if(antiWindup)
-    return (Kp*e[2])+constrainFloat((Kp*Ts/Ti)*eSum,antiWindupMin,antiWindupMax)+((Kp*Td/Ts)*(e[2]-e[1]));
+    eSum = constrainFloat(eSum/(Kp*Ts/Ti),antiWindupMin,antiWindupMax);
+    return (Kp*e[2])+(Kp*Ts/Ti)*eSum+((Kp*Td/Ts)*(e[2]-e[1]));
   else
     return (Kp*e[2])+((Kp*Ts/Ti)*eSum)+((Kp*Td/Ts)*(e[2]-e[1]));
 }
