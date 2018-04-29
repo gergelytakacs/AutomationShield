@@ -3,18 +3,14 @@
 
 #include "Timer.h"
 
-enum PidForms{
-  absolute,
-  incremental
-};
-
-class PIDClass{
+class PidClass{
   
   public:
 
-    PIDClass();
+    PidClass();
      
     float compute(float err);
+    float compute(float err,float saturationMin,float saturationMax);
 
     void setKp(float Kp);
     void setKi(float Ki);
@@ -27,41 +23,24 @@ class PIDClass{
     float getKd();
     float getTi();
     float getTd();
-
-    void beginAbsolute();
-    void beginIncremental();
-
-    void beginSaturation(float saturationMin,float saturationMax);
-    void stopSaturation();
-    void beginAntiWindup(float antiWindupMin,float antiWindupMax);
-    void stopAntiWindup();
   
-  private:
+  protected:
 
-    float computeAbsForm(float Ts);
-    float computeIncForm(float Ts);
+    virtual void loadVariables(float err);   
+    virtual void shiftVariables()=0;
+
+    virtual float getU()=0;
+    virtual float computeU()=0;
+    virtual void setU(float u)=0;
 
     float constrainFloat(float x, float min_x, float max_x);
-
-    PidForms pidForm;
-    
-    bool saturation;
-    float saturationMin;
-    float saturationMax;
-    
-    bool antiWindup;
-    float antiWindupMin;
-    float antiWindupMax;
-    
-    float eSum;
-    float e[3];
-    float u[2];
 
     float Kp;
     float Ki;
     float Kd;
     float Ti;
-    float Td;    
+    float Td;
+
+    float Ts;        
 };
-extern PIDClass PID; // Declare external instance
 #endif
