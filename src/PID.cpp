@@ -4,7 +4,7 @@ PIDClass::PIDClass(){
 
   eSum=0.0;
   e[0]=0.0;
-  e[1]=0.0;  
+  e[1]=0.0;
   e[2]=0.0;
   u[0]=0.0;
   u[1]=0.0;
@@ -72,7 +72,7 @@ float PIDClass::getTd(){
 void PIDClass::beginAbsolute(){
   pidForm=absolute;
 }
-  
+
 void PIDClass::beginIncremental(){
   pidForm=incremental;
 }
@@ -82,17 +82,17 @@ void PIDClass::beginSaturation(float saturationMin,float saturationMax){
   this->saturationMin=saturationMin;
   this->saturationMax=saturationMax;
 }
-  
+
 void PIDClass::stopSaturation(){
   saturation=false;
 }
-  
+
 void PIDClass::beginAntiWindup(float antiWindupMin,float antiWindupMax){
   antiWindup=true;
   this->antiWindupMin=antiWindupMin;
   this->antiWindupMax=antiWindupMax;
 }
-  
+
 void PIDClass::stopAntiWindup(){
   antiWindup=false;
 }
@@ -101,11 +101,11 @@ float PIDClass::constrainFloat(float x, float min_x, float max_x){
   if (x<=min_x)
     return min_x;
   else if (x>=max_x)
-    return max_x;  
+    return max_x;
   return x;
 }
 
-float PIDClass::compute(float err){    
+float PIDClass::compute(float err){
   e[2]=err;
   eSum+=e[2];
   float Ts=Timer.getSamplingPeriod();
@@ -124,19 +124,43 @@ float PIDClass::compute(float err){
   return u[1];
 }
 
-float PIDClass::computeAbsForm(float Ts){      
+float PIDClass::compute(float err, float _q0, float _q1, float _q2){
+    e[2]=err;
+    eSum+=e[2];
+    
+    q0 = _q0;
+    q1 = _q1;
+    q2 = _q2;
+    
+    u[1]=computeIncForm();
+    
+    if(saturation)
+        u[1]=constrainFloat(u[1],saturationMin,saturationMax);
+    
+    e[0]=e[1];
+    e[1]=e[2];
+    u[0]=u[1];
+    return u[1];
+}
+
+
+float PIDClass::computeAbsForm(float Ts){
 
   if(antiWindup)
-    return (Kp*e[2])+constrainFloat((Kp*Ts/Ti)*eSum,antiWindupMin,antiWindupMax)+((Kp*Td/Ts)*(e[2]-e[1]));
+    eSum = constrainFloat(eSum/(Kp*Ts/Ti),antiWindupMin,antiWindupMax);
+    return (Kp*e[2])+(Kp*Ts/Ti)*eSum+((Kp*Td/Ts)*(e[2]-e[1]));
   else
     return (Kp*e[2])+((Kp*Ts/Ti)*eSum)+((Kp*Td/Ts)*(e[2]-e[1]));
 }
 
-float PIDClass::computeIncForm(float Ts){     
+float PIDClass::computeIncForm(float Ts){
 
   return u[0]+((Kp+(Kp*Ts/Ti)+(Kp*Td/Ts))*e[2])+((-Kp-(2*Kp*Td/Ts))*e[1])+((Kp*Td/Ts)*e[0]);
 }
 
-
+float PIDClass::computeIncForm(){
+    
+    return u[0] + q0*e[2] + q1*e[1] + q2*e[0];
+}
 
 PIDClass PID; // Construct instance (define)

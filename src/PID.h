@@ -61,7 +61,10 @@ class PIDClass{
     float Ki;
     float Kd;
     float Ti;
-    float Td;    
+    float Td;
+    float q0;
+    float q1;
+    float q2;
 };
 extern PIDClass PID; // Declare external instance
 #endif
