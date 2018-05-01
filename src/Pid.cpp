@@ -1,7 +1,6 @@
 #include "Pid.h"
 
 PidClass::PidClass(){
-
   Kp=1.0;
   Ki=1.0;
   Kd=1.0;
@@ -68,7 +67,6 @@ void PidClass::loadVariables(float err){
 }
 
 float PidClass::compute(float err){    
-
   loadVariables(err);
   setU(computeU());
   shiftVariables();
@@ -80,5 +78,4 @@ float PidClass::compute(float err,float saturationMin,float saturationMax){
   setU(constrainFloat(computeU(),saturationMin,saturationMax));
   shiftVariables();
   return getU();
-
 }
