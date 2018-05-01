@@ -1,13 +1,13 @@
 #ifndef PIDINC_H_
 #define PIDINC_H_
 
-#include "Pid.h"
+#include "PID.h"
 
-class PidIncClass:public PidClass{
+class PIDIncClass:public PIDClass{
   
   public:
 
-    PidIncClass();
+    PIDIncClass();
     
   private:
 
@@ -21,5 +21,5 @@ class PidIncClass:public PidClass{
     float u[2];
           
 };
-extern PidIncClass PidInc; // Declare external instance
+extern PIDIncClass PIDInc; // Declare external instance
 #endif

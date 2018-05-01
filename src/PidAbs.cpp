@@ -1,6 +1,6 @@
-#include "PidAbs.h"
+#include "PIDAbs.h"
 
-PidAbsClass::PidAbsClass(){
+PIDAbsClass::PIDAbsClass(){
 
   eSum=0.0;
   e[0]=0.0;
@@ -9,29 +9,29 @@ PidAbsClass::PidAbsClass(){
 }
 
 
-void PidAbsClass::loadVariables(float err){
+void PIDAbsClass::loadVariables(float err){
   
-  PidClass::loadVariables(err);
+  PIDClass::loadVariables(err);
   e[1]=err;
   eSum+=e[1];
 }
 
-void PidAbsClass::shiftVariables(){
+void PIDAbsClass::shiftVariables(){
 
   e[0]=e[1];
 }
 
-float PidAbsClass::getU(){
+float PIDAbsClass::getU(){
 
   return u;
 }
 
-void PidAbsClass::setU(float u){
+void PIDAbsClass::setU(float u){
 
   this->u=u;
 }
 
-float PidAbsClass::compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax){    
+float PIDAbsClass::compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax){    
   
   loadVariables(err);
   eSum=constrainFloat((Kp*Ts/Ti)*eSum,antiWindupMin,antiWindupMax)/(Kp*Ts/Ti);    
@@ -40,9 +40,9 @@ float PidAbsClass::compute(float err,float saturationMin,float saturationMax,flo
   return getU();
 }
 
-float PidAbsClass::computeU(){      
+float PIDAbsClass::computeU(){      
 
   return (Kp*e[1])+((Kp*Ts/Ti)*eSum)+((Kp*Td/Ts)*(e[1]-e[0]));
 }
 
-PidAbsClass PidAbs; // Construct instance (define)
+PIDAbsClass PIDAbs; // Construct instance (define)

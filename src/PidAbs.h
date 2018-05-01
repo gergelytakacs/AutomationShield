@@ -1,14 +1,14 @@
 #ifndef PIDABS_H_
 #define PIDABS_H_
 
-#include "Pid.h"
+#include "PID.h"
 
-class PidAbsClass:public PidClass{
+class PIDAbsClass:public PIDClass{
   
   public:
 
-    PidAbsClass();
-    using PidClass::compute;
+    PIDAbsClass();
+    using PIDClass::compute;
     float compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax);
     
   private:
@@ -24,5 +24,5 @@ class PidAbsClass:public PidClass{
     float eSum;
           
 };
-extern PidAbsClass PidAbs; // Declare external instance
+extern PIDAbsClass PIDAbs; // Declare external instance
 #endif

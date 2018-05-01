@@ -3,11 +3,11 @@
 
 #include "Timer.h"
 
-class PidClass{
+class PIDClass{
   
   public:
 
-    PidClass();
+    PIDClass();
      
     float compute(float err);
     float compute(float err,float saturationMin,float saturationMax);
