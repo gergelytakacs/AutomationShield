@@ -21,8 +21,9 @@
 #include "PID.h"
 
 // Headers for individual shields
-#include "HeatShield.h" 
-#include "OptoShield.h"
+//#include "HeatShield.h" 
+//#include "OptoShield.h"
+//#include "FloatShield.h"
 
 
 
@@ -53,7 +54,7 @@
     float q1;
     float q2;
     float output;
-    float T = (float)Ts/1000; //convert ms to s
+    //float T = (float)Ts/1000; //convert ms to s
     
   
    
@@ -63,13 +64,13 @@
  void error(char *str);
 float constrainFloat(float x, float min_x, float max_x); 
 
-  float pid(float err,float Kp,float Ki,float Kd,float outMin,float outMax);
-  float pid(float err,float Kp,float Ki,float Kd);
-  float pidInc(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
+//  float pid(float err,float Kp,float Ki,float Kd,float outMin,float outMax);
+//  float pid(float err,float Kp,float Ki,float Kd);
+//  float pidInc(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
 
     AutomationShieldClass(); 
-    float pidExp(float e, float Kp, float Ti, float Td);
-  private:
+//    float pidExp(float e, float Kp, float Ti, float Td);
+//  private:
 
     float eSum;
     float eArray[2]; 
