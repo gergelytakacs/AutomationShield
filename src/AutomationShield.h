@@ -30,13 +30,7 @@
 #define ECHO_TO_SERIAL      1                // echo data to serial port
 #define ERRORPIN            13               // Overload Signal
 
-// Defining pins used by the Optoshield board
-  #define OPTO_RPIN 0   // defining the pin of the potentiometer's runner
-  #define OPTO_YPIN 1   // defining the pin of the LDR
-  #define OPTO_YAUX 2   // defining the pin of the auxiliary LDR
-  #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
-
- // class(es) .h part of the library
+// class(es) .h part of the library
  class AutomationShieldClass{
    
   public:

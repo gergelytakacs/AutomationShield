@@ -73,12 +73,12 @@ void AutomationShieldClass::error(char *str) // Error handler function
 //    return output;
 // }
 
- AutomationShieldClass::AutomationShieldClass(){
-
-  eSum=0.0;
-  eArray[0]=0.0;
-  eArray[1]=0.0;  
+AutomationShieldClass::AutomationShieldClass(){
+ eSum=0.0;
+ eArray[0]=0.0;
+ eArray[1]=0.0;  
 }
+
 //
 //float AutomationShieldClass::pidExp(float e, float Kp, float Ti, float Td){     
 //  eArray[1]=e;
