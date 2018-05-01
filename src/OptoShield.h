@@ -1,7 +1,8 @@
 #ifndef OPTOSHIELD_H_
 #define OPTOSHIELD_H_
 
-#include "Arduino.h"
+#include "AutomationShield.h"
+
 
 // Defining pins used by the Optoshield board
   #define OPTO_RPIN 0   // defining the pin of the potentiometer's runner
