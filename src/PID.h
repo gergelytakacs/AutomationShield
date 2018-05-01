@@ -1,7 +1,7 @@
 #ifndef PID_H_
 #define PID_H_
 
-#include "Sampling.h"
+#include "Timer.h"
 
 class PIDClass{
   

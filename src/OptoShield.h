@@ -4,10 +4,10 @@
 #include "Arduino.h"
 
 // Defining pins used by the Optoshield board
-#define OPTO_RPIN 0   // defining the pin of the potentiometer's runner
-#define OPTO_YPIN 1   // defining the pin of the LDR
-#define OPTO_YAUX 2   // defining the pin of the auxiliary LDR
-#define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
+  #define OPTO_RPIN 0   // defining the pin of the potentiometer's runner
+  #define OPTO_YPIN 1   // defining the pin of the LDR
+  #define OPTO_YAUX 2   // defining the pin of the auxiliary LDR
+  #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
   
  class OptoClass{
   public:

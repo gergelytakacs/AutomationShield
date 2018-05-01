@@ -5,11 +5,11 @@
 
 typedef void (*p_to_void_func)();
 
-class SamplingClass{
+class TimerClass{
 
   public:
 
-    SamplingClass(); 
+    TimerClass(); 
     void interruptInitialize(unsigned long microseconds);
     void setInterruptCallback(p_to_void_func isr);
     p_to_void_func getInterruptCallback ();
@@ -23,5 +23,5 @@ class SamplingClass{
     float samplingPeriod;          
     bool setSamplingPeriod(unsigned long microseconds);
 };
-extern SamplingClass Sampling;  
+extern TimerClass Timer;  
 #endif
