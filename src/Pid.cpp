@@ -75,8 +75,7 @@ float PidClass::compute(float err){
   return getU();  
 }
 
-float PidClass::compute(float err,float saturationMin,float saturationMax){    
-  
+float PidClass::compute(float err,float saturationMin,float saturationMax){
   loadVariables(err);   
   setU(constrainFloat(computeU(),saturationMin,saturationMax));
   shiftVariables();
