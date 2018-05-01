@@ -1,6 +1,6 @@
-#include "Pid.h"
+#include "PID.h"
 
-PidClass::PidClass(){
+PIDClass::PIDClass(){
   Kp=1.0;
   Ki=1.0;
   Kd=1.0;
@@ -9,51 +9,51 @@ PidClass::PidClass(){
   Ts=1.0;
 }
 
-void PidClass::setKp(float Kp){
+void PIDClass::setKp(float Kp){
   this->Kp=Kp;
 }
 
-void PidClass::setKi(float Ki){
+void PIDClass::setKi(float Ki){
   this->Ki=Ki;
   Ti=Kp/Ki;
 }
 
-void PidClass::setKd(float Kd){
+void PIDClass::setKd(float Kd){
   this->Kd=Kd;
   Td=Kd/Kp;
 }
 
-void PidClass::setTi(float Ti){
+void PIDClass::setTi(float Ti){
   this->Ti=Ti;
   Ki=Kp/Ti;
 }
 
-void PidClass::setTd(float Td){
+void PIDClass::setTd(float Td){
   this->Td=Td;
   Kd=Kp*Td;
 }
 
-float PidClass::getKp(){
+float PIDClass::getKp(){
   return Kp;
 }
 
-float PidClass::getKi(){
+float PIDClass::getKi(){
   return Ki;
 }
 
-float PidClass::getKd(){
+float PIDClass::getKd(){
   return Kd;
 }
 
-float PidClass::getTi(){
+float PIDClass::getTi(){
   return Ti;
 }
 
-float PidClass::getTd(){
+float PIDClass::getTd(){
   return Td;
 }
 
-float PidClass::constrainFloat(float x, float min_x, float max_x){
+float PIDClass::constrainFloat(float x, float min_x, float max_x){
   if (x<=min_x)
     return min_x;
   else if (x>=max_x)
@@ -61,19 +61,19 @@ float PidClass::constrainFloat(float x, float min_x, float max_x){
   return x;
 }
 
-void PidClass::loadVariables(float err){
+void PIDClass::loadVariables(float err){
   
   Ts=Timer.getSamplingPeriod();
 }
 
-float PidClass::compute(float err){    
+float PIDClass::compute(float err){    
   loadVariables(err);
   setU(computeU());
   shiftVariables();
   return getU();  
 }
 
-float PidClass::compute(float err,float saturationMin,float saturationMax){
+float PIDClass::compute(float err,float saturationMin,float saturationMax){
   loadVariables(err);   
   setU(constrainFloat(computeU(),saturationMin,saturationMax));
   shiftVariables();
