@@ -21,8 +21,8 @@
 #include "PID.h"
 
 // Headers for individual shields
-#include "HeatShield.h" 
-#include "OptoShield.h"
+//#include "HeatShield.h" 
+//#include "OptoShield.h"
 
 
 
@@ -40,20 +40,20 @@
  class AutomationShieldClass{
    
   public:
-    float delta;
-    float integral;
-    float derivative;
-    float lasterr;
-    float e[3] = {0,0,0};
-    float out[2] = {0,0};
-    float r_p;
-    float r_i;
-    float r_d;
-    float q0;
-    float q1;
-    float q2;
-    float output;
-    float T = (float)Ts/1000; //convert ms to s
+//    float delta;
+//    float integral;
+//    float derivative;
+//    float lasterr;
+//    float e[3] = {0,0,0};
+//    float out[2] = {0,0};
+//    float r_p;
+//    float r_i;
+//    float r_d;
+//    float q0;
+//    float q1;
+//    float q2;
+//    float output;
+//    float T = (float)Ts/1000; //convert ms to s
     
   
    
