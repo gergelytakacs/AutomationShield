@@ -11,7 +11,7 @@ PIDAbsClass::PIDAbsClass(){
 
 void PIDAbsClass::loadVariables(float err){
   
-  PIDClass::loadVariables(err);
+  PIDClass::loadVariables(err); // Common, brings in Ts
   e[1]=err;
   eSum+=e[1];
 }

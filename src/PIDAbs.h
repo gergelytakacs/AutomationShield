@@ -8,7 +8,7 @@ class PIDAbsClass:public PIDClass{
   public:
 
     PIDAbsClass();
-    using PIDClass::compute;
+    using PIDClass::compute; // Because of overloading
     float compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax);
     
   private:

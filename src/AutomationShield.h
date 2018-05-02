@@ -18,7 +18,8 @@
 
 // Headers for essential functionality
 #include "Sampling.h" 
-#include "PID.h"
+#include "PIDInc.h"
+#include "PIDAbs.h"
 
 // Headers for individual shields
 //#include "HeatShield.h" 
@@ -72,5 +73,4 @@ float constrainFloat(float x, float min_x, float max_x);
  extern AutomationShieldClass AutomationShield; // Declare external instance
 
 
- 
- #endif // End of AutomationShield library.
+#endif // End of AutomationShield library.
