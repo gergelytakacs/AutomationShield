@@ -41,7 +41,7 @@ float PIDAbsClass::compute(float err,float saturationMin,float saturationMax,flo
 }
 
 float PIDAbsClass::computeU(){      
-
+  // How about q0, q1, q2
   return (Kp*e[1])+((Kp*Ts/Ti)*eSum)+((Kp*Td/Ts)*(e[1]-e[0]));
 }
 
