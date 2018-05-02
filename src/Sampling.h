@@ -1,15 +1,15 @@
-#ifndef TIMER_H_
-#define TIMER_H_
+#ifndef SAMPLING_H_
+#define SAMPLING_H_
 
 #include "Arduino.h"
 
 typedef void (*p_to_void_func)();
 
-class TimerClass{
+class SamplingClass{
 
   public:
 
-    TimerClass(); 
+    SamplingClass(); 
     void interruptInitialize(unsigned long microseconds);
     void setInterruptCallback(p_to_void_func isr);
     p_to_void_func getInterruptCallback ();
@@ -23,5 +23,5 @@ class TimerClass{
     float samplingPeriod;          
     bool setSamplingPeriod(unsigned long microseconds);
 };
-extern TimerClass Timer;  
+extern SamplingClass Sampling;  
 #endif

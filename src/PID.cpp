@@ -63,7 +63,7 @@ float PIDClass::constrainFloat(float x, float min_x, float max_x){
 
 void PIDClass::loadVariables(float err){
   
-  Ts=Timer.getSamplingPeriod();
+  Ts=Sampling.getSamplingPeriod();
 }
 
 float PIDClass::compute(float err){    

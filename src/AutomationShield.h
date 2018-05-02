@@ -17,7 +17,7 @@
 
 
 // Headers for essential functionality
-#include "Timer.h" 
+#include "Sampling.h" 
 #include "PID.h"
 
 // Headers for individual shields
