@@ -2,7 +2,7 @@
 #define FLOATSHIELD_H_
 
 #include "Arduino.h"
-#include "Adafruit_VL53L0X.h"
+#include "src/lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h"
 
 #define vent 3
 #define pot A0;
