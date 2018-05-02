@@ -1,0 +1,6 @@
+[submodule "Adafruit_VL53L0X"]
+	path = Adafruit_VL53L0X
+	url = https://github.com/adafruit/Adafruit_VL53L0X.git
+[submodule "EigenArduino"]
+	path = EigenArduino
+	url = https://github.com/vancegroup/EigenArduino.git
