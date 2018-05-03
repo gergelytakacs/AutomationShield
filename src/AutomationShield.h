@@ -35,20 +35,7 @@
  class AutomationShieldClass{
    
   public:
-//    float delta;
-//    float integral;
-//    float derivative;
-//    float lasterr;
-//    float e[3] = {0,0,0};
-//    float out[2] = {0,0};
-//    float r_p;
-//    float r_i;
-//    float r_d;
-//    float q0;
-//    float q1;
-//    float q2;
-//    float output;
-//    float T = (float)Ts/1000; //convert ms to s
+
     
   
    
@@ -58,19 +45,13 @@
  void error(char *str);
 float constrainFloat(float x, float min_x, float max_x); 
 
-  float pid(float err,float Kp,float Ki,float Kd,float outMin,float outMax);
-  float pid(float err,float Kp,float Ki,float Kd);
-  float pidInc(float err,float Kp,float Ti,float Td,float outMin, float outMax); 
-
-    AutomationShieldClass(); 
-    float pidExp(float e, float Kp, float Ti, float Td);
+ 
   private:
 
-    float eSum;
-    float eArray[2]; 
+    
    
  }; // end of the class
- extern AutomationShieldClass AutomationShield; // Declare external instance
+
 
 
 #endif // End of AutomationShield library.
