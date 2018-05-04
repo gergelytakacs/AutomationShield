@@ -1,6 +1,7 @@
 #include "FloatShield.h"
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+void FloatShieldClass::initialize() {
 
-float FloatShieldClass::FloatShieldClass() {
     Adafruit_VL53L0X lox = Adafruit_VL53L0X();
     while (! Serial) {
         delay(1);
@@ -15,9 +16,9 @@ float FloatShieldClass::FloatShieldClass() {
 }
 
 int FloatShieldClass::referencePercent() {
-    int _value = analogRead(pot);
-    int _ref = map(_value, 0, 1023, 0, 100);
-    return _ref;
+    value = analogRead(pot);
+    ref = map(value, 0, 1023, 0, 100);
+    return ref;
 }
 
 int FloatShieldClass::positionPercent() {
@@ -25,29 +26,29 @@ int FloatShieldClass::positionPercent() {
     lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
     
     if (measure.RangeStatus != 4) {  // phase failures have incorrect data
-        int _value =measure.RangeMilliMeter;
+        value =measure.RangeMilliMeter;
     } else {}
     
-    if (_value < 20) {_value = 0;}
-    else if (_value > 370) {_value = _lastValue;}
+    if (value < 20) {value = 0;}
+    else if (value > 370) {value = lastValue;}
     
-    int _pos = map(_value,0,370,0,100);
+    pos = map(value,0,370,0,100);
     
-    _lastValue = _value;
-    return _pos;
+    lastValue = value;
+    return pos;
 }
 
-void FloatShieldClass::ventInPercent(int _value) {
-    int _u = map(_value, 0, 100, 0, 255);
-    analogWrite(vent, _u);
+void FloatShieldClass::ventInPercent(int value) {
+    int u = map(value, 0, 100, 0, 255);
+    analogWrite(vent, u);
 }
 
 float FloatShieldClass::manualControl() {
-    int _value = analogRead(pot);
-    int _in = map(_value, 0, 1023, 0, 255);
-    analogWrite(vent, _in);
-    _value = map(_value, 0, 1023, 0, 100);
-    return _value;
+    value = analogRead(pot);
+    in = map(value, 0, 1023, 0, 255);
+    analogWrite(vent, in);
+    value = map(value, 0, 1023, 0, 100);
+    return value;
 }
 
 FloatShieldClass FloatShield;
