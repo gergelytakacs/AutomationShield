@@ -13,7 +13,7 @@ void setup() {
 
 void loop() {
   FloatShield.manualControl();
-  dist = FloatShield.positionMilimeter();
+  dist = FloatShield.positionMillimeter();
   Serial.print("Distance (mm): ");
   Serial.println(dist);
 }
