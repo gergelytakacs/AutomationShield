@@ -17,7 +17,7 @@ class SamplingClass{
          
   private:
 	
-	static void defaultInterrupt();
+    static void defaultInterrupt();
     p_to_void_func interruptCallback;    
     const unsigned long timer1Resolution = 65536; // timer1 is 16bit            
     const unsigned char cpuFrequence = 16; // cpu frequence in microseconds 
