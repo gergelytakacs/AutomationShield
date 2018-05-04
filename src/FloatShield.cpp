@@ -38,6 +38,23 @@ int FloatShieldClass::positionPercent() {
     return pos;
 }
 
+int FloatShieldClass::positionMillimeter() {
+    VL53L0X_RangingMeasurementData_t measure;
+    lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+    
+    if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+        value =measure.RangeMilliMeter;
+    } else {}
+    
+    if (value < 20) {value = 0;}
+    else if (value > 1000) {value = 1000;}
+    
+    
+    pos = value;
+    
+    return pos;
+}
+
 void FloatShieldClass::ventInPercent(int value) {
     int u = map(value, 0, 100, 0, 255);
     analogWrite(vent, u);
