@@ -1,17 +1,17 @@
 #include "HeatShield.h"
 
-void HeatShieldClass::pinInitialization(){
+void HeatShieldClass::begin(){
   
       pinMode(thermPin, INPUT);  //thermistor pin
       pinMode(pwmOutputPin, OUTPUT); //pwm output
 }
 
-void HeatShieldClass::power(float percent){
+void HeatShieldClass::actuatorWrite(float percent){
   
       analogWrite(pwmOutputPin,(255.0/100.0)*percent);
 }
 
-float HeatShieldClass::getTemperature() {
+float HeatShieldClass::sensorReadTemperature() {
 
     return (1 / ((1 / referenceTemperature) + (log(getThermistorResist() / resistorResistance) / (float)beta))) - 273.15;    
 }
