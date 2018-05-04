@@ -1,6 +1,6 @@
 #include "Sampling.h"
 
-void defaultInterrupt()
+void SamplingClass::defaultInterrupt()
 {
 }
 
@@ -60,8 +60,8 @@ float SamplingClass::getSamplingPeriod(){
   return samplingPeriod;
 }
 
-void SamplingClass::setInterruptCallback(p_to_void_func isr){
-  interruptCallback = isr;        
+void SamplingClass::setInterruptCallback(p_to_void_func interruptCallback){
+  this->interruptCallback = interruptCallback;
 }
 
 p_to_void_func SamplingClass::getInterruptCallback (){

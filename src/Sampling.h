@@ -11,12 +11,13 @@ class SamplingClass{
 
     SamplingClass(); 
     void interruptInitialize(unsigned long microseconds);
-    void setInterruptCallback(p_to_void_func isr);
+    void setInterruptCallback(p_to_void_func interruptCallback);
     p_to_void_func getInterruptCallback ();
     float getSamplingPeriod();  
          
   private:
-  
+	
+	static void defaultInterrupt();
     p_to_void_func interruptCallback;    
     const unsigned long timer1Resolution = 65536; // timer1 is 16bit            
     const unsigned char cpuFrequence = 16; // cpu frequence in microseconds 
