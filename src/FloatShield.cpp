@@ -38,7 +38,7 @@ int FloatShieldClass::positionPercent() {
     return pos;
 }
 
-int FloatShieldClass::positionMilimeter() {
+int FloatShieldClass::positionMillimeter() {
     VL53L0X_RangingMeasurementData_t measure;
     lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
     
@@ -54,6 +54,7 @@ int FloatShieldClass::positionMilimeter() {
     
     return pos;
 }
+
 
 void FloatShieldClass::ventInPercent(int value) {
     int u = map(value, 0, 100, 0, 255);

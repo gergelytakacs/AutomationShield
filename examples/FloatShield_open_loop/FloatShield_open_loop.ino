@@ -8,7 +8,7 @@ void setup() {
  
   Serial.begin(115200);
   FloatShield.initialize();
-
+  FloatShield.calibrate();
 }
 
 void loop() {

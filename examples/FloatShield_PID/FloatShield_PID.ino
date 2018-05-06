@@ -13,6 +13,7 @@ float error;
 void setup() {
   Serial.begin(115200);
   FloatShield.initialize();
+  FloatShield.calibrate();
   Sampling.interruptInitialize(Ts*1000);
   Sampling.setInterruptCallback(StepEnable);
   PIDAbs.setKp(0.86);

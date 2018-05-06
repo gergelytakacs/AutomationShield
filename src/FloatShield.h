@@ -16,9 +16,9 @@ class FloatShieldClass{
     void initialize();
     int referencePercent();             // returns potenciometer value in percent
     int positionPercent();              // returns position value in percent
-    void ventInPercent(int _value);     // sets ventilator output to value in percent
+    void ventInPercent(int value);     // sets ventilator output to value in percent
     float manualControl();              // returns potenciometer value in percent
-    int FloatShieldClass::positionMillimeter(); // returns position value in millimeters
+    int  positionMillimeter();          // returns position value in millimeters
     void calibrate();                   //calibration
     private:
     
