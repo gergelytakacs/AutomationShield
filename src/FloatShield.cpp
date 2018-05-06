@@ -29,16 +29,16 @@ int FloatShieldClass::positionPercent() {
         value =measure.RangeMilliMeter;
     } else {}
     
-    if (value < 20) {value = 0;}
-    else if (value > 370) {value = lastValue;}
+    if (value < minimum) {value = minimum;}
+    else if (value > maximum) {value = lastValue;}
     
-    pos = map(value,0,370,0,100);
+    pos = map(value,minimum,maximum,0,100);
     
     lastValue = value;
     return pos;
 }
 
-int FloatShieldClass::positionMillimeter() {
+int FloatShieldClass::positionMilimeter() {
     VL53L0X_RangingMeasurementData_t measure;
     lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
     
@@ -46,8 +46,8 @@ int FloatShieldClass::positionMillimeter() {
         value =measure.RangeMilliMeter;
     } else {}
     
-    if (value < 20) {value = 0;}
-    else if (value > 1000) {value = 1000;}
+    if (value < minimum) {value = minimum;}
+    else if (value > maximum) {value = maximum;}
     
     
     pos = value;
@@ -68,4 +68,47 @@ float FloatShieldClass::manualControl() {
     return value;
 }
 
+void FloatShieldClass::calibrate(void){
+ int i=0;
+ int temp;
+  minimum = 5000;
+ analogWrite(vent,255);
+ delay(1000);
+ for(i=0;i <= 100;i++)
+ {
+   VL53L0X_RangingMeasurementData_t measure;
+    lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+    
+    if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+        temp =measure.RangeMilliMeter;
+    } else {}
+
+   if(temp < minimum)
+   {
+    minimum = temp;
+   }
+
+   delay(10);
+ }
+ analogWrite(vent,0);
+ delay(1000);  
+ int tempm =0;
+  maximum = 0;
+ for(i=0;i <=100;i++)
+ {
+  VL53L0X_RangingMeasurementData_t measure;
+    lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+    
+    if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+        tempm =measure.RangeMilliMeter;
+    } else {}
+  
+  if(tempm > maximum)
+  {
+    maximum = tempm;
+  }
+  
+  delay(10);
+ }
+}
 FloatShieldClass FloatShield;
