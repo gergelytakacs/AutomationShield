@@ -52,6 +52,6 @@ float constrainFloat(float x, float min_x, float max_x);
    
  }; // end of the class
 
-
+extern AutomationShieldClass AutomationShield; // Declare external instance
 
 #endif // End of AutomationShield library.
