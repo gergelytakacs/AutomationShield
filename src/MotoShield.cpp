@@ -2,16 +2,16 @@
 
 
 void MotoClass::begin(void){ // begin function initializes the pins, sets the ISR and sets initial values of some variables 
- pinMode(MOTO_UPIN,OUTPUT);
- pinMode(MOTO_IN1,OUTPUT);
- pinMode(MOTO_IN2,OUTPUT);
- pinMode(MOTO_C2,INPUT_PULLUP);
- pinMode(MOTO_C1,INPUT_PULLUP);
- pinMode(MOTO_RPIN,INPUT);
- pinMode(MOTO_Vout2,INPUT);
- pinMode(MOTO_Vout1,INPUT);
- pinMode(MOTO_U1,INPUT);
- pinMode(MOTO_U2,INPUT); 
+ pinMode(MOTO_UPIN,OUTPUT);  // EN1 - L293D
+ pinMode(MOTO_IN1,OUTPUT);  // IN1 - L293D
+ pinMode(MOTO_IN2,OUTPUT);  // IN2 - L293D
+ pinMode(MOTO_C2,INPUT_PULLUP); // 2nd channel of the encoder
+ pinMode(MOTO_C1,INPUT_PULLUP); // 1st channel of the encoder
+ pinMode(MOTO_RPIN,INPUT); // analog pin pf the potentiometer (reference)
+ pinMode(MOTO_Vout2,INPUT); // output of the second OPAMP (non-inverting), outputs the amplified voltage-drop
+ pinMode(MOTO_Vout1,INPUT); // output of the first OPAMP (subtractor), outputs the voltage-drop through the resistor R
+ pinMode(MOTO_U1,INPUT); // connected to analog pin, measures the voltage of the resistor's one side
+ pinMode(MOTO_U2,INPUT);  // connected to analog pin, measures the voltage of the resistor's second side
 
   attachInterrupt(digitalPinToInterrupt(MOTO_C1), MotoShield.countTicks, FALLING);  // setting the interrupts, it reacts, when the edge is falling
 
