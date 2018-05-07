@@ -31,4 +31,4 @@ void AutomationShieldClass::error(char *str) // Error handler function
 }
 
 
-
+AutomationShieldClass AutomationShield; // Construct instance (define)
