@@ -5,7 +5,7 @@ int dist;
 
 
 void setup() {
- 
+  // FloatShield.debug();     will print out in monitor sensor debug data
   Serial.begin(115200);
   FloatShield.initialize();
   FloatShield.calibrate();

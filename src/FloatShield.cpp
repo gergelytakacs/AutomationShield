@@ -1,18 +1,16 @@
 #include "FloatShield.h"
-Adafruit_VL53L0X lox = Adafruit_VL53L0X();
-void FloatShieldClass::initialize() {
 
-    Adafruit_VL53L0X lox = Adafruit_VL53L0X();
-    while (! Serial) {
-        delay(1);
-    }
-    
+void FloatShieldClass::initialize() {
     Serial.println("Adafruit VL53L0X test");
-    if (!lox.begin()) {
+    if (!lox.begin(i2c_addr, _debug)) {
         Serial.println(F("Failed to boot VL53L0X"));
         while(1);
     }
     Serial.println(F("VL53L0X API Simple Ranging example\n\n"));
+}
+
+void FloatShieldClass::debug() {
+    _debug = true;
 }
 
 int FloatShieldClass::referencePercent() {
@@ -32,7 +30,7 @@ int FloatShieldClass::positionPercent() {
     if (value < minimum) {value = minimum;}
     else if (value > maximum) {value = lastValue;}
     
-    pos = map(value,minimum,maximum,0,100);
+    pos = map(value,minimum,maximum,100,0);
     
     lastValue = value;
     return pos;

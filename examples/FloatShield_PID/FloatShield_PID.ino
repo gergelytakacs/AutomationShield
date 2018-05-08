@@ -43,7 +43,7 @@ void Step (void)
   y = FloatShield.positionPercent();
   r = FloatShield.referencePercent();
 
-  error = y - r;
+  error = r - y;
   u = PIDAbs.compute(error,25,55,0,100);
   FloatShield.ventInPercent(u);
   Serial.print(r);
