@@ -11,8 +11,8 @@ void setup(void) {
 
 	Serial.begin(9600);          
 	HeatShield.begin(); 
-	Timer.interruptInitialize(1000000); //period in us
-	Timer.setInterruptCallback(stepEnable); 
+	Sampling.interruptInitialize(1000000); //period in us
+	Sampling.setInterruptCallback(stepEnable); 
   	PidAbs.setKp(0.5);
   	PidAbs.setTi(0.5);
   	PidAbs.setTd(0.5);
