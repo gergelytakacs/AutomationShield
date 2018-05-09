@@ -10,20 +10,20 @@ bool enable = false;
 void setup(void) {
 
 	Serial.begin(9600);          
-	HeatShield.begin(); 
+  HeatShield.begin(); 
 	Sampling.interruptInitialize(1000000); //period in us
 	Sampling.setInterruptCallback(stepEnable); 
-  	PidAbs.setKp(0.5);
-  	PidAbs.setTi(0.5);
-  	PidAbs.setTd(0.5);
+  PIDAbs.setKp(0.5);
+  PIDAbs.setTi(0.5);
+  PIDAbs.setTd(0.5);
 }
 
 void loop(void) {
 
 	if (enable) {
     
-    		step();
-    		enable=false;
+    step();
+    enable=false;
 	}
 }
 
@@ -38,7 +38,7 @@ void step(){
     r=40.0;
     y=HeatShield.sensorReadTemperature();
     e=r-y;
-    u=PidAbs.compute(e,0.0,100.0,-100.0,100.0);
+    u=PIDAbs.compute(e,0.0,100.0,-100.0,100.0);
     
     Serial.print(y);
     Serial.print(" ");
