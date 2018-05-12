@@ -32,6 +32,9 @@ void MotoClass::motorOFF(){  // switches off the motor
 }
 
 void MotoClass::setMotorSpeed(float value){    // sets the speed of the motor, input value from 0-100
+
+if(value < 30){ value = 30; } // minimal power needed to rotate the shaft
+
     convertedValue = AutomationShield.mapFloat(value,0.00,100.00,0.00,255.00);
     analogWrite(MOTO_UPIN,convertedValue);   
 }
@@ -117,13 +120,36 @@ float MotoClass::readRevolutions(){ // returns the number of revolutions per min
  duration = MotoShield.durationTime();
  
  revolutions = (60000.00) / duration ;
-
+ 
 return revolutions;
 } // end of the readRevolutions() function
 
 
+float MotoClass::readRevolutionsPerc(){ // returns the RPM in percents
+ 
+ Revolutions = MotoShield.readRevolutions();
+ 
+ Compare = MotoShield.compare(Revolutions);
+ 
+ percentage = AutomationShield.mapFloat(Revolutions, 12.00, maxRev, 0.00, 100.00);
+
+return percentage;
+} // end of the readRevolutionsPerc() function
+
+
+ float MotoClass::compare(float value){
+ 
+   if(value > int(maxRev)){
+    maxRev = value;
+    return maxRev; 
+   }
+
+   else{
+    return value;
+   }
+ }
+
+
+
+
 MotoClass MotoShield; // Construct instance (define)
-
-
-
-
