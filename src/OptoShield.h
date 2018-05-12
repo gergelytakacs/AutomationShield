@@ -19,7 +19,9 @@
   float sensorReadVoltage();
   float sensorAuxRead();
   float referenceRead();
- 
+  bool returnIndicator();
+  float returnMinVal();
+  float returnMaxVal();
   
   private:
   float _convertedValue;
@@ -39,4 +41,3 @@
 extern OptoClass OptoShield; // Declare external instance
 
 #endif
-
