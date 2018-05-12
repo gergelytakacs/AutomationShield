@@ -21,6 +21,7 @@
   static unsigned long counter;
 
 
+
 /* 
   Our hall sensor has 7 pole-pairs. I set the trigger mode as FALLING, which means, that the counter's value increases by one every time when the signal drops from high state to low. 
    One rotation of the back shaft takes 7counts. The ratio between the shafts is 380:1 , it means, that 1 rotation of the main shaft takes 380 rotations of the back shaft. During one 
@@ -43,6 +44,8 @@ float readVoltage();  // returns the value of the voltage drop through the R, va
 float readCurrent();  // returns the current draw ot the motor in mA
 float durationTime();  // returns the duration of one revolution in ms
 float readRevolutions();  // returns the number of revolutions per minute according to the time revolution time in ms (good accuracy)
+float readRevolutionsPerc(); // returns the RPM in percents
+float compare(float value);             // compares variables
 
 
 private:
@@ -66,6 +69,11 @@ float duration;
 unsigned long durTime;
 unsigned long prevTime;
 unsigned long previousCount;
+float Revolutions;
+float percentage;
+float maxRev;
+float Compare;
+float value;
 
 
 // Private constants
