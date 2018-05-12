@@ -2,7 +2,7 @@
 
 void OptoClass::calibration(){                           // a function determines the maximal and minimal value of the LDR, which is crutial for accurate measurements
   Serial.println("Calibration is running...");
-  delay(3000);                                      // we start with a 3s delay, which is needed for the value of LDR to get steady
+  delay(3000);                                      // we start with a 5s delay, which is needed for the value of LDR to get steady
   
   _minVal = analogRead(OPTO_YPIN);             // determining the minimal value
 
@@ -14,14 +14,8 @@ void OptoClass::calibration(){                           // a function determine
 
   _indicator = true;
 
-  // summary
-  Serial.println("_______________________________________");
-  Serial.println("__________CALIBRATION RESULTS__________");
-  Serial.print("Minimal value of the LDR is: ");
-  Serial.println(_minVal);
-  Serial.print("Maximal value of the LDR is: ");
-  Serial.println(_maxVal);
-  Serial.println("_______________________________________"); 
+
+  Serial.println("Calibration is done"); 
 } // end of calibration
 
 void OptoClass::begin(void){                  // begin function initializes the pins used by the hardware. Optoshield uses three pins, pin A1 is used by the LDR, 
@@ -44,7 +38,7 @@ float OptoClass::sensorRead(){
    _sensorValue = AutomationShield.mapFloat(_sensorRead, _minVal, _maxVal, 0.00, 100.00); 
    }
    else{
-   _sensorValue = AutomationShield.mapFloat(_sensorRead, 515.00, 1000.00, 0.00, 100.00); // when the calibration was not called we use static values, which were the most common values during the tests
+   _sensorValue = AutomationShield.mapFloat(_sensorRead, 20.00, 800.00, 0.00, 100.00); // when the calibration was not called we use static values, which were the most common values during the tests
    }
   return _sensorValue;
 }
@@ -68,5 +62,19 @@ float OptoClass::referenceRead(){           // referenceRead function returns th
    _referenceValue = AutomationShield.mapFloat(_referenceRead,0.00,1023.00,0.00,100.00);
   return _referenceValue;
 }
+
+bool OptoClass::returnIndicator(){           // returns the value of the _inicator  variable
+  return _indicator;
+}
+
+float OptoClass::returnMinVal(){
+ return _minVal; 
+}
+
+float OptoClass::returnMaxVal(){
+ return _maxVal; 
+}      
+
+
 
 OptoClass OptoShield; // Construct instance (define) 
