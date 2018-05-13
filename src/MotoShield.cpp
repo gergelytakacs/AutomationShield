@@ -100,7 +100,7 @@ float MotoClass::readCurrent(){  // returns the current draw of the motor in mA
 
 
 float MotoClass::durationTime(){         // returns the duration of one revolution in ms
-  rev = 2660;        // counter value of one revolution               
+  rev = 380;        // counter value of one revolution of the back shaft               
   count = counter;   
   cValue = count - previousCount;
   
@@ -113,7 +113,7 @@ float MotoClass::durationTime(){         // returns the duration of one revoluti
   }
     prevTime = revTime;
     
-  return durTime;
+  return durTime * 7; // (7 * 380 = 2660)
 } // end of the durationTime() function
 
 float MotoClass::readRevolutions(){ // returns the number of revolutions per minute
