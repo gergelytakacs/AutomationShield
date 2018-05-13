@@ -16,14 +16,14 @@ float HeatShieldClass::sensorReadTemperature() {
     return (1 / ((1 / referenceTemperature) + (log(getThermistorResist() / resistorResistance) / (float)beta))) - 273.15;    
 }
 
-float HeatShieldClass::getThermistorVolage() {
+float HeatShieldClass::getThermistorVoltage() {
 
       return (float)analogRead(thermPin) / 1023 * powerSupply;
 }
 
 float HeatShieldClass::getThermistorResist() {
 
-      return (getThermistorVolage() / powerSupply)*((float)resistorResistance / (1 - (getThermistorVolage() / powerSupply)));
+      return (getThermistorVoltage() / powerSupply)*((float)resistorResistance / (1 - (getThermistorVoltage() / powerSupply)));
 }
 
 HeatShieldClass HeatShield;

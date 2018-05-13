@@ -20,7 +20,7 @@ class HeatShieldClass{
     const float powerSupply = 5.0;  
     const unsigned long int resistorResistance = 100000; 
 
-    float getThermistorVolage();
+    float getThermistorVoltage();
     float getThermistorResist();  
 };
 
