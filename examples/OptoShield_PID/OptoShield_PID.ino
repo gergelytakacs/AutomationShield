@@ -57,8 +57,8 @@ error = r - y;
 
 OptoShield.actuatorWrite(u);
 
-//Serial.print(r);
-//Serial.print(" ");
+Serial.print(r);
+Serial.print(" ");
 Serial.print(u);
 Serial.print(" ");
 Serial.println(y);
