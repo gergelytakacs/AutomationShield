@@ -8,7 +8,8 @@ class PIDAbsClass:public PIDClass{
   public:
 
     PIDAbsClass();
-    using PIDClass::compute; // Because of overloading
+    using PIDClass::compute;	/* By declaring another function named compute in your child class, you are hiding the base class 
+								method named compute. You can prevent this by including it explicitly into the child class*/							 
     float compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax);
     
   private:

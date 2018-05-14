@@ -1,6 +1,6 @@
 #include "PID.h"
 
-PIDClass::PIDClass(){
+PIDClass::PIDClass(){ // base class constructor without parameters will be called automatically in child constructors 
   Kp=1.0;
   Ki=1.0;
   Kd=1.0;
@@ -59,11 +59,6 @@ float PIDClass::constrainFloat(float x, float min_x, float max_x){
   else if (x>=max_x)
     return max_x;  
   return x;
-}
-
-void PIDClass::loadVariables(float err){
-  
-  Ts=Sampling.getSamplingPeriod();
 }
 
 float PIDClass::compute(float err){    

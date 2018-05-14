@@ -3,14 +3,15 @@
 
 #include "Arduino.h"
 
-typedef void (*p_to_void_func)();
+typedef void (*p_to_void_func)(); /*define a term p_to_void_func for pointer to function, which 
+								  has a return type void and has no input parameters*/
 
 class SamplingClass{
 
   public:
 
-    SamplingClass(); 
-    void interruptInitialize(unsigned long microseconds);
+    SamplingClass();
+    void interruptInitialize(unsigned long microseconds); 
     void setInterruptCallback(p_to_void_func interruptCallback);
     p_to_void_func getInterruptCallback ();
     float getSamplingPeriod();  
@@ -21,7 +22,7 @@ class SamplingClass{
     p_to_void_func interruptCallback;    
     const unsigned long timer1Resolution = 65536; // timer1 is 16bit            
     const unsigned char cpuFrequence = 16; // cpu frequence in microseconds 
-    float samplingPeriod;          
+    float samplingPeriod;        // sampling period in seconds  
     bool setSamplingPeriod(unsigned long microseconds);
 };
 extern SamplingClass Sampling;  

@@ -7,6 +7,7 @@ void SamplingClass::defaultInterrupt()
 SamplingClass::SamplingClass(){
 
   interruptCallback=defaultInterrupt;
+  samplingPeriod = 0.0;
 }
 
 void SamplingClass::interruptInitialize(unsigned long microseconds){
