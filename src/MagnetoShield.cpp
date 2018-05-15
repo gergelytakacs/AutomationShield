@@ -47,13 +47,13 @@ void MagnetoShieldClass::calibration()
 
 int MagnetoShieldClass::getMin()
 {
-	int variable= (int) Max;	//conversion float->int
+	int variable = (int) Min;	//conversion float->int
 	return variable;
 }	
 
 int MagnetoShieldClass::getMax() 
 {
-	int variable = (int) Min;	//conversion float->int
+	int variable = (int) Max;	//conversion float->int
 	return variable;
 }	
 
