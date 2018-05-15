@@ -21,9 +21,9 @@ void setup() {
   PIDAbs.setKi(1.729);
   PIDAbs.setKd(0.1081);
   //Getting constants needed for calculating PID in absolute form
-  Ti = PIDAbs.getTi();
-  Td = PIDAbs.getTd();
-  Kp = PIDAbs.getKp();
+  Ti = PIDAbs.getTi(); // integral time constant
+  Td = PIDAbs.getTd(); // derivative time constant
+  Kp = PIDAbs.getKp(); 
 }
 
 void loop() 
