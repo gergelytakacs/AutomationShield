@@ -13,9 +13,9 @@ void setup(void) {
   HeatShield.begin(); 
   Sampling.interruptInitialize(1000000); //period in us
   Sampling.setInterruptCallback(stepEnable); 
-  PIDAbs.setKp(0.5);
-  PIDAbs.setTi(0.5);
-  PIDAbs.setTd(0.5);
+  PIDAbs.setKp(10.3022952672455);
+  PIDAbs.setTi(300);
+  PIDAbs.setTd(0);
 }
 
 void loop(void) {
