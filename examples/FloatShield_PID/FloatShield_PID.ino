@@ -13,7 +13,7 @@ float error; //error
 void setup() {
   Serial.begin(115200); //start serial communication
   FloatShield.initialize(); //FloatShield initialization
-  FloatShield.calibrate(); //FloatShield calibration to more accurate measurements
+  FloatShield.calibrate(); //FloatShield calibration for more accurate measurements
   Sampling.interruptInitialize(Ts*1000); //Sampling initialization in microseconds
   Sampling.setInterruptCallback(StepEnable); // seting the interrupt functon
   //Setting the PID constants
