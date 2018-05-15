@@ -20,13 +20,10 @@ MotoShield.setMotorSpeed(Setpoint);
 
 void loop() {
 
- 
 senzor = MotoShield.readRevolutions();  // measuring the RPM
 converted = AutomationShield.mapFloat(senzor,minimum,maximum,0.00,100.00); // converting the RPM
    
-  
-
-   Serial.print(Setpoint);
+  Serial.print(Setpoint);
   Serial.print(" ");
   Serial.println(converted); 
 
