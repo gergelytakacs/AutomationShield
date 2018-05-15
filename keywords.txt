@@ -30,6 +30,15 @@ pidInc  KEYWORD2
 constrainFloat  KEYWORD2
 mapFloat  KEYWORD2
 
+initialize  KEYWORD2
+debug KEYWORD2
+referencePercent  KEYWORD2
+positionPercent KEYWORD2
+ventInPercent KEYWORD2
+manualControl KEYWORD2
+positionMillimeter  KEYWORD2
+calibrate KEYWORD2
+
 ######################################
 #Constants (LITERAL1)
 ######################################
