@@ -34,7 +34,7 @@ void PIDAbsClass::setU(float u){
 float PIDAbsClass::compute(float err,float saturationMin,float saturationMax,float antiWindupMin,float antiWindupMax){    
   
   loadVariables(err);
-  eSum=constrainFloat((Kp*Ts/Ti)*eSum,antiWindupMin,antiWindupMax)/(Kp*Ts/Ti);    
+  eSum=constrainFloat(eSum,antiWindupMin,antiWindupMax);    
   setU(constrainFloat(computeU(),saturationMin,saturationMax));
   shiftVariables();
   return getU();
