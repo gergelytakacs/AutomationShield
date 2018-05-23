@@ -148,6 +148,21 @@ return percentage;
     return value;
    }
  }
+ 
+ float MotoClass::readRevolutions2(int Time){ // returns the number of revolutions per minute
+  Count = counter;   
+  noInterrupts();
+  rValue = Count - prevC;
+  h = 1000 / Time;                   // constant  
+ 
+ constant = ((float(h) * 60.00) / 2660.00);
+ 
+ REV = float(rValue) * constant;
+ prevC = Count;
+ interrupts();
+ 
+return REV;
+} // end of the readRevolutions() function
 
 
 
