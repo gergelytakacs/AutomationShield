@@ -46,6 +46,7 @@ float durationTime();  // returns the duration of one revolution in ms
 float readRevolutions();  // returns the number of revolutions per minute according to the time revolution time in ms (good accuracy)
 float readRevolutionsPerc(); // returns the RPM in percents
 float compare(float value);             // compares variables
+float readRevolutions2(int Time);
 
 
 private:
@@ -74,6 +75,16 @@ float percentage;
 float maxRev;
 float Compare;
 float value;
+
+float rValue;
+unsigned long Count;
+unsigned long prevC;
+int h;
+float constant;
+float REV;
+int Time;
+
+
 
 
 // Private constants
