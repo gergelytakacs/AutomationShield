@@ -43,10 +43,8 @@ float referenceRead();  // reads the value of the POT
 float readVoltage();  // returns the value of the voltage drop through the R, value is in Volts
 float readCurrent();  // returns the current draw ot the motor in mA
 float durationTime();  // returns the duration of one revolution in ms
-float readRevolutions();  // returns the number of revolutions per minute according to the time revolution time in ms (good accuracy)
-float readRevolutionsPerc(); // returns the RPM in percents
-float compare(float value);             // compares variables
-float readRevolutions2(int Time);
+float readRevolutions(int Time);  // returns the number of revolutions per minute according to the time revolution time in ms (good accuracy)
+
 
 
 private:
@@ -62,11 +60,9 @@ bool  dir;
 int Direction;
 int cValue;
 int rev;
-float revolutions;
 unsigned long t;
 unsigned long revTime;
 unsigned long count;
-float duration;
 unsigned long durTime;
 unsigned long prevTime;
 unsigned long previousCount;
