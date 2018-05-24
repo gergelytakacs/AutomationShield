@@ -71,7 +71,6 @@ float percentage;
 float maxRev;
 float Compare;
 float value;
-
 float rValue;
 unsigned long Count;
 unsigned long prevC;
