@@ -116,41 +116,8 @@ float MotoClass::durationTime(){         // returns the duration of one revoluti
   return durTime * 7; // (7 * 380 = 2660)
 } // end of the durationTime() function
 
-float MotoClass::readRevolutions(){ // returns the number of revolutions per minute
- duration = MotoShield.durationTime();
- 
- revolutions = (60000.00) / duration ;
- 
-return revolutions;
-} // end of the readRevolutions() function
-
-
-float MotoClass::readRevolutionsPerc(){ // returns the RPM in percents
- 
- Revolutions = MotoShield.readRevolutions();
- 
- Compare = MotoShield.compare(Revolutions);
- 
- percentage = AutomationShield.mapFloat(Revolutions, 12.00, maxRev, 0.00, 100.00);
-
-return percentage;
-} // end of the readRevolutionsPerc() function
-
-
- float MotoClass::compare(float value){
- 
-   if(value > int(maxRev)){
-    maxRev = value;
-    return maxRev; 
-   }
-
-   else{
-    return value;
-   }
- }
- 
- float MotoClass::readRevolutions2(int Time){ // returns the number of revolutions per minute
-  Count = counter;   
+float MotoClass::readRevolutions(int Time){ // returns the number of revolutions per minute
+ Count = counter;   
   noInterrupts();
   rValue = Count - prevC;
   h = 1000 / Time;                   // constant  
@@ -163,8 +130,6 @@ return percentage;
  
 return REV;
 } // end of the readRevolutions() function
-
-
 
 
 MotoClass MotoShield; // Construct instance (define)
