@@ -1,9 +1,17 @@
-/* 
- AutomationShield.cpp
-  Arduino library for teaching control engineering.
-  Authors: Tibor Konkoly, Gabor Penzinger, [...], and Gergely Takacs to be continued
-  2017-2018.
-  Released into the public domain.
+/*
+  AutomationShield API
+
+  This library serves as an API for the AutomationShield 
+  ecosystem of Arduino Shields used for control engineering and
+  mechatronics education.
+
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács, Tibor Konkoly, Gábor Penzinger [...]
+  Last update: 28.09.2018.
 */
 
 #include "AutomationShield.h"
@@ -29,6 +37,5 @@ void AutomationShieldClass::error(char *str) // Error handler function
   digitalWrite(ERRORPIN, HIGH);           // Enable generic error pin, should be 13 w/ the onboard LED
   while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
 }
-
 
 AutomationShieldClass AutomationShield; // Construct instance (define)

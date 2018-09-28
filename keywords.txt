@@ -14,6 +14,9 @@ FloatShield	KEYWORD1
 HeatShield	KEYWORD1
 MotoShield	KEYWORD1
 MagnetoShield	KEYWORD1
+PIDAbs	KEYWORD1
+PIDInc	KEYWORD1
+Sampling	KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
@@ -23,7 +26,7 @@ MagnetoShield	KEYWORD1
 sensorRead	KEYWORD2
 actuatorWrite	KEYWORD2
 referenceRead	KEYWORD2
-
+calibration KEYWORD2
 pid	KEYWORD2 
 pidInc	KEYWORD2
 
@@ -38,6 +41,12 @@ ventInPercent	KEYWORD2
 manualControl	KEYWORD2
 positionMillimeter	KEYWORD2
 calibrate	KEYWORD2
+compute	KEYWORD2
+setKp	KEYWORD2
+setTi	KEYWORD2
+setTd	KEYWORD2
+interruptInitialize	KEYWORD2
+setInterruptCallback KEYWORD2
 
 ######################################
 #Constants (LITERAL1)

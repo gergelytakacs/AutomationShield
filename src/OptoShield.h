@@ -1,27 +1,47 @@
-#ifndef OPTOSHIELD_H_
+/*
+  OptoShield Step Response
+
+  API for the OptoShield hardware.
+  
+  The file is a part of the application programmers interface for
+  the OptoShield didactic tool for control engineering and 
+  mechatronics education.
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács and Tibor Konkoly. 
+  Last update: 28.09.2018.
+*/
+
+#ifndef OPTOSHIELD_H_                // Include guard
 #define OPTOSHIELD_H_
 
-#include "AutomationShield.h"
+#include "AutomationShield.h"        // Include the main library
 
+// Defining pins used by the OptoShield board
+  #define OPTO_RPIN 0   // Potentiometer runner
+  #define OPTO_YPIN 1   // LDR (Actuator)
+  #define OPTO_YAUX 2   // Auxiliary LDR
+  #define OPTO_UPIN 3   // LED
 
-// Defining pins used by the Optoshield board
-  #define OPTO_RPIN 0   // defining the pin of the potentiometer's runner
-  #define OPTO_YPIN 1   // defining the pin of the LDR
-  #define OPTO_YAUX 2   // defining the pin of the auxiliary LDR
-  #define OPTO_UPIN 3   // defining the pin of the Led diodes (pwm)
+  // Other constants
+  #define LDRDELAY 1000 // Calibration delays
   
  class OptoClass{
   public:
-  void  begin(void);
-  void  calibration();
-  void  actuatorWrite(float value);
-  float sensorRead();
-  float sensorReadVoltage();
-  float sensorAuxRead();
-  float referenceRead();
-  bool returnIndicator();
-  float returnMinVal();
-  float returnMaxVal();
+  void  begin(void);				 // Board initialization
+  void  calibration();				 // Board calibration
+  void  actuatorWrite(float value);  // Write actuators
+  float sensorRead();                // Read mean sensor in %
+  float sensorReadVoltage();		 // Read mean sensor in V
+  float sensorAuxRead();			 // Read aux. sensor in V
+  float referenceRead();			 // Read reference pot in %
+  bool returnCalibrated();           // Is calibrated?
+  float returnMinVal();              // Minimum main LDR ADC 
+  float returnMaxVal();				 // Maximum main LDR ADC 
   
   private:
   float _convertedValue;
@@ -35,8 +55,8 @@
   float _sensorValue;
   float _minVal;
   float _maxVal;
-  bool _indicator;
- }; // end of the Opto class
+  bool _wasCalibrated;
+ }; 
 
 extern OptoClass OptoShield; // Declare external instance
 
