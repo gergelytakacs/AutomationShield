@@ -1,0 +1,11 @@
+# ignore all MaATLAB autosaves
+*.asv
+
+# ignore Simulink compiled files
+*slprj*
+*_ert_rtw*
+
+# ignore machine code
+*.hex
+*.elf
+*.eep
