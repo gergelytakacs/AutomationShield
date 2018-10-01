@@ -11,14 +11,14 @@
 %   Created by Gergely Takács. 
 %   Last update: 01.10.2018.
 
-plotOptoShield_Step
+%plotOptoShield_Step
 load resultID
 Ts=0.005
 Y=resultID(:,1);
 U=resultID(:,2);
 
 data = iddata(Y,U,Ts);      
-dataselection = datafull([1:400]);   
+dataselection = data([1:400]);   
 Opt = procestOptions;                 
 model = procest(dataselection,'P1', Opt);
 
@@ -26,7 +26,7 @@ compare(dataselection,model);
 pause
 
 figure(1)
-[Ym, FIT, X0]=compare(datafull,model);
+[Ym, FIT, X0]=compare(data,model);
 Ym=Ym.y(:,1);
 plot([Y U Ym])
 legend('Output','Input','Model')
