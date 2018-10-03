@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="-4 -15 90 90" style="enable-background:new -4 -15 90 90;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st1{stroke:#000000;stroke-miterlimit:10;}
+	.st2{font-family:'ArialMT';}
+	.st3{font-size:20px;}
+</style>
+<g>
+	<g id="XMLID_584_">
+		<polygon id="XMLID_586_" class="st0" points="34.1,17.7 60.2,17.7 47.1,41.4 		"/>
+		<line id="XMLID_585_" class="st0" x1="60.6" y1="42.8" x2="33.6" y2="42.8"/>
+	</g>
+	<polyline id="XMLID_37_" class="st0" points="30.4,-11.4 47.1,-11.4 47.1,17.7 	"/>
+	<polyline id="XMLID_8_" class="st0" points="30.4,72.3 47.1,72.3 47.1,43.3 	"/>
+	<ellipse id="XMLID_214_" class="st1" cx="30.4" cy="-11.4" rx="1.6" ry="1.7"/>
+	<ellipse id="XMLID_215_" class="st1" cx="30.4" cy="72.3" rx="1.6" ry="1.7"/>
+</g>
+<g>
+	<g id="XMLID_522_">
+		<g id="XMLID_33_">
+			<line id="XMLID_36_" class="st0" x1="67.7" y1="21.1" x2="78.5" y2="29.8"/>
+			<g id="XMLID_34_">
+				<polygon id="XMLID_35_" class="st1" points="76.2,30.5 83.3,33.6 78.8,27.3 				"/>
+			</g>
+		</g>
+	</g>
+	<g id="XMLID_516_">
+		<g id="XMLID_30_">
+			<line id="XMLID_93_" class="st0" x1="63.6" y1="27.3" x2="74.4" y2="36"/>
+			<g id="XMLID_31_">
+				<polygon id="XMLID_92_" class="st1" points="72,36.7 79.2,39.8 74.5,33.6 				"/>
+			</g>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1 0 0 1 -1.0001 34.8003)" class="st2 st3">u(k)</text>
+</svg>

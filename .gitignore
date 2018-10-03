@@ -4,8 +4,12 @@
 # ignore Simulink compiled files
 *slprj*
 *_ert_rtw*
+*.slxc
 
 # ignore machine code
 *.hex
 *.elf
 *.eep
+
+# old Simulink files
+*.r2018a

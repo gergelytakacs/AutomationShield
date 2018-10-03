@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="34.1 -27.4 90 90" style="enable-background:new 34.1 -27.4 90 90;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#010101;stroke-miterlimit:10;}
+	.st1{fill:#010101;}
+	.st2{font-family:'ArialMT';}
+	.st3{font-size:20px;}
+</style>
+<polyline id="XMLID_529_" class="st0" points="69.3,55.2 69.3,36.6 64.1,34.6 74.4,30.3 64.1,26 74.4,21.9 64.1,17.6 74.4,13.3 
+	64.1,9.2 74.4,4.9 64.1,0.6 69.3,-1.5 69.3,-20.1 "/>
+<circle id="XMLID_237_" class="st1" cx="69.3" cy="55.2" r="2.5"/>
+<circle id="XMLID_253_" class="st1" cx="69.3" cy="-20.1" r="2.5"/>
+<g>
+	<g>
+		<polyline class="st0" points="112.7,33.3 87,33.3 54.9,4.7 		"/>
+		<g>
+			<polygon class="st1" points="56.6,4.3 51.6,1.8 54.6,6.5 			"/>
+		</g>
+	</g>
+</g>
+<circle id="XMLID_1_" class="st1" cx="112.5" cy="33.2" r="2.5"/>
+<text transform="matrix(1 0 0 1 89.9994 21.8)" class="st2 st3">r(k)</text>
+</svg>

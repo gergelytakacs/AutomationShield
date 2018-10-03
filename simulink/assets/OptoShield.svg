@@ -1,12 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 43.2 25.7" style="enable-background:new 0 0 43.2 25.7;" xml:space="preserve">
+	 viewBox="15 -7 130 75" style="enable-background:new 15 -7 130 75;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
-	.st1{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st0{fill:none;stroke:#010101;stroke-miterlimit:10;}
+	.st1{fill:#010101;}
+	.st2{fill:none;stroke:#010101;stroke-width:0.5;stroke-miterlimit:10;}
+	.st3{fill:none;stroke:#010101;stroke-width:0.5;stroke-miterlimit:10;stroke-dasharray:6.0322,6.0322;}
+	.st4{fill:none;stroke:#010101;stroke-width:0.5;stroke-miterlimit:10;stroke-dasharray:6;}
+	.st5{font-family:'ArialMT';}
+	.st6{font-size:10px;}
 </style>
-<rect id="XMLID_1_" x="3.1" y="6.7" class="st0" width="22.8" height="15.9"/>
-<line id="XMLID_2_" class="st1" x1="10.7" y1="0" x2="12.2" y2="25.7"/>
-<line id="XMLID_3_" class="st1" x1="0" y1="14.9" x2="43.2" y2="10.6"/>
+<polyline id="XMLID_529_" class="st0" points="127.3,48 127.3,38.9 124.8,37.9 129.8,35.8 124.8,33.7 129.8,31.7 124.8,29.6 
+	129.8,27.5 124.8,25.5 129.8,23.4 124.8,21.3 127.3,20.3 127.3,11.2 "/>
+<circle id="XMLID_528_" class="st0" cx="127.3" cy="29.6" r="11.7"/>
+<g id="XMLID_522_">
+	<g id="XMLID_33_">
+		<line id="XMLID_36_" class="st0" x1="102.1" y1="23.5" x2="109.9" y2="29.8"/>
+		<g id="XMLID_34_">
+			<polygon id="XMLID_35_" class="st1" points="108.2,30.3 113.4,32.5 110.1,28 			"/>
+		</g>
+	</g>
+</g>
+<g id="XMLID_516_">
+	<g id="XMLID_30_">
+		<line id="XMLID_93_" class="st0" x1="99.1" y1="28" x2="106.9" y2="34.3"/>
+		<g id="XMLID_31_">
+			<polygon id="XMLID_92_" class="st1" points="105.2,34.8 110.4,37 107,32.5 			"/>
+		</g>
+	</g>
+</g>
+<polyline id="XMLID_515_" class="st0" points="127.3,11.2 127.3,0 140.1,0 "/>
+<polyline id="XMLID_514_" class="st0" points="127.3,48 127.3,60.6 140.1,60.6 "/>
+<g id="XMLID_3_">
+	<g id="XMLID_584_">
+		<polygon id="XMLID_586_" class="st0" points="22.3,21.7 42.3,21.7 32.3,38.8 		"/>
+		<line id="XMLID_585_" class="st0" x1="42.6" y1="39.8" x2="21.9" y2="39.8"/>
+	</g>
+	<polyline id="XMLID_37_" class="st0" points="19.5,0.6 32.3,0.6 32.3,21.7 	"/>
+	<polyline id="XMLID_8_" class="st0" points="19.5,61.2 32.3,61.2 32.3,40.2 	"/>
+	<g id="XMLID_69_">
+		<g id="XMLID_95_">
+			<line id="XMLID_98_" class="st0" x1="48.8" y1="23.5" x2="56.6" y2="29.8"/>
+			<g id="XMLID_96_">
+				<polygon id="XMLID_97_" class="st1" points="54.9,30.3 60.1,32.5 56.7,28 				"/>
+			</g>
+		</g>
+	</g>
+	<g id="XMLID_9_">
+		<g id="XMLID_100_">
+			<line id="XMLID_103_" class="st0" x1="45.8" y1="28" x2="53.6" y2="34.3"/>
+			<g id="XMLID_101_">
+				<polygon id="XMLID_102_" class="st1" points="51.9,34.8 57,37 53.7,32.5 				"/>
+			</g>
+		</g>
+	</g>
+	<circle id="XMLID_214_" class="st1" cx="19.5" cy="0.6" r="1.2"/>
+	<circle id="XMLID_215_" class="st1" cx="19.5" cy="61.2" r="1.2"/>
+</g>
+<circle id="XMLID_237_" class="st1" cx="140.1" cy="60.6" r="1.2"/>
+<circle id="XMLID_253_" class="st1" cx="140.1" cy="0" r="1.2"/>
+<g id="XMLID_19_">
+	<g id="XMLID_106_">
+		<line id="XMLID_109_" class="st2" x1="42.6" y1="29.3" x2="45.6" y2="29.3"/>
+		<line id="XMLID_108_" class="st3" x1="51.6" y1="29.3" x2="108.9" y2="29.3"/>
+		<line id="XMLID_107_" class="st2" x1="112" y1="29.3" x2="115" y2="29.3"/>
+	</g>
+</g>
+<g>
+	<line id="XMLID_17_" class="st2" x1="44.6" y1="20.8" x2="114.4" y2="20.8"/>
+	<polyline id="XMLID_20_" class="st2" points="114.4,29.3 114.4,17.5 44.6,17.5 44.6,29.3 	"/>
+	<line id="XMLID_159_" class="st4" x1="44.6" y1="18.5" x2="45.6" y2="17.7"/>
+	<line id="XMLID_158_" class="st4" x1="45.5" y1="20.8" x2="48.5" y2="17.7"/>
+	<line id="XMLID_157_" class="st4" x1="48.4" y1="20.8" x2="51.5" y2="17.7"/>
+	<line id="XMLID_156_" class="st4" x1="51.4" y1="20.8" x2="54.4" y2="17.7"/>
+	<line id="XMLID_155_" class="st4" x1="54.4" y1="20.8" x2="57.4" y2="17.7"/>
+	<line id="XMLID_154_" class="st4" x1="57.3" y1="20.8" x2="60.4" y2="17.7"/>
+	<line id="XMLID_153_" class="st4" x1="60.3" y1="20.8" x2="63.3" y2="17.7"/>
+	<line id="XMLID_152_" class="st4" x1="63.2" y1="20.8" x2="66.3" y2="17.7"/>
+	<line id="XMLID_151_" class="st4" x1="66.2" y1="20.8" x2="69.2" y2="17.7"/>
+	<line id="XMLID_150_" class="st4" x1="69.1" y1="20.8" x2="72.2" y2="17.7"/>
+	<line id="XMLID_149_" class="st4" x1="72.1" y1="20.8" x2="75.1" y2="17.7"/>
+	<line id="XMLID_148_" class="st4" x1="75" y1="20.8" x2="78.1" y2="17.7"/>
+	<line id="XMLID_147_" class="st4" x1="78" y1="20.8" x2="81" y2="17.7"/>
+	<line id="XMLID_146_" class="st4" x1="80.9" y1="20.8" x2="84" y2="17.7"/>
+	<line id="XMLID_145_" class="st4" x1="83.9" y1="20.8" x2="87" y2="17.7"/>
+	<line id="XMLID_144_" class="st4" x1="86.9" y1="20.8" x2="89.9" y2="17.7"/>
+	<line id="XMLID_143_" class="st4" x1="89.8" y1="20.8" x2="92.9" y2="17.7"/>
+	<line id="XMLID_142_" class="st4" x1="92.8" y1="20.8" x2="95.8" y2="17.7"/>
+	<line id="XMLID_141_" class="st4" x1="95.7" y1="20.8" x2="98.8" y2="17.7"/>
+	<line id="XMLID_140_" class="st4" x1="98.7" y1="20.8" x2="101.7" y2="17.7"/>
+	<line id="XMLID_139_" class="st4" x1="101.6" y1="20.8" x2="104.7" y2="17.7"/>
+	<line id="XMLID_138_" class="st4" x1="104.6" y1="20.8" x2="107.6" y2="17.7"/>
+	<line id="XMLID_137_" class="st4" x1="107.5" y1="20.8" x2="110.6" y2="17.7"/>
+	<line id="XMLID_136_" class="st4" x1="110.5" y1="20.8" x2="113.5" y2="17.7"/>
+	<line id="XMLID_135_" class="st4" x1="113.5" y1="20.8" x2="114.4" y2="19.8"/>
+</g>
+<text id="XMLID_131_" transform="matrix(1 0 0 1 104.7174 62.1152)" class="st5 st6">y(k)</text>
+<text id="XMLID_132_" transform="matrix(1 0 0 1 36.4171 62.1157)" class="st5 st6">u(k)</text>
+<g>
+	<line id="XMLID_40_" class="st2" x1="114.4" y1="37.8" x2="44.6" y2="37.8"/>
+	<polyline id="XMLID_39_" class="st2" points="44.6,29.3 44.6,41 114.4,41 114.4,29.3 	"/>
+	<line id="XMLID_38_" class="st4" x1="114.4" y1="40" x2="113.4" y2="40.9"/>
+	<line id="XMLID_32_" class="st4" x1="113.5" y1="37.8" x2="110.5" y2="40.9"/>
+	<line id="XMLID_29_" class="st4" x1="110.6" y1="37.8" x2="107.5" y2="40.9"/>
+	<line id="XMLID_28_" class="st4" x1="107.6" y1="37.8" x2="104.6" y2="40.9"/>
+	<line id="XMLID_27_" class="st4" x1="104.6" y1="37.8" x2="101.6" y2="40.9"/>
+	<line id="XMLID_26_" class="st4" x1="101.7" y1="37.8" x2="98.6" y2="40.9"/>
+	<line id="XMLID_25_" class="st4" x1="98.7" y1="37.8" x2="95.7" y2="40.9"/>
+	<line id="XMLID_24_" class="st4" x1="95.8" y1="37.8" x2="92.7" y2="40.9"/>
+	<line id="XMLID_23_" class="st4" x1="92.8" y1="37.8" x2="89.8" y2="40.9"/>
+	<line id="XMLID_22_" class="st4" x1="89.9" y1="37.8" x2="86.8" y2="40.9"/>
+	<line id="XMLID_21_" class="st4" x1="86.9" y1="37.8" x2="83.9" y2="40.9"/>
+	<line id="XMLID_18_" class="st4" x1="84" y1="37.8" x2="80.9" y2="40.9"/>
+	<line id="XMLID_16_" class="st4" x1="81" y1="37.8" x2="78" y2="40.9"/>
+	<line id="XMLID_15_" class="st4" x1="78.1" y1="37.8" x2="75" y2="40.9"/>
+	<line id="XMLID_14_" class="st4" x1="75.1" y1="37.8" x2="72" y2="40.9"/>
+	<line id="XMLID_13_" class="st4" x1="72.1" y1="37.8" x2="69.1" y2="40.9"/>
+	<line id="XMLID_12_" class="st4" x1="69.2" y1="37.8" x2="66.1" y2="40.9"/>
+	<line id="XMLID_11_" class="st4" x1="66.2" y1="37.8" x2="63.2" y2="40.9"/>
+	<line id="XMLID_10_" class="st4" x1="63.3" y1="37.8" x2="60.2" y2="40.9"/>
+	<line id="XMLID_7_" class="st4" x1="60.3" y1="37.8" x2="57.3" y2="40.9"/>
+	<line id="XMLID_6_" class="st4" x1="57.4" y1="37.8" x2="54.3" y2="40.9"/>
+	<line id="XMLID_5_" class="st4" x1="54.4" y1="37.8" x2="51.4" y2="40.9"/>
+	<line id="XMLID_4_" class="st4" x1="51.5" y1="37.8" x2="48.4" y2="40.9"/>
+	<line id="XMLID_2_" class="st4" x1="48.5" y1="37.8" x2="45.5" y2="40.9"/>
+	<line id="XMLID_1_" class="st4" x1="45.5" y1="37.8" x2="44.6" y2="38.8"/>
+</g>
 </svg>
