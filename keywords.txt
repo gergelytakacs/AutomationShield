@@ -22,7 +22,8 @@ Sampling	KEYWORD1
 #Methods and Functions (KEYWORD2)
 ######################################
 
-
+getThermistorVoltage	KEYWORD2
+getThermistorResistance	KEYWORD2
 sensorRead	KEYWORD2
 actuatorWrite	KEYWORD2
 referenceRead	KEYWORD2

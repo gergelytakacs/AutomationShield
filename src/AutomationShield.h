@@ -23,6 +23,11 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
+// Common definitions
+#define AREF 5.0; // ADC reference voltage
+#define ARES 5.0/1023.0; // ADC resolution
+#define ABSZERO 273.15 // Absolute zero in Celsius
+
 // Headers for essential functionality
 #include "Sampling.h" 
 #include "PIDAbs.h"
@@ -31,7 +36,7 @@
 
 // Headers for individual shields
 #include "OptoShield.h"
-//#include "HeatShield.h" 
+#include "HeatShield.h" 
 
 // Diagnostics
 #define ECHO_TO_SERIAL      0                // echo data to serial port
@@ -43,9 +48,9 @@
    
   // Methods
  float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
-
  void error(char *str);
-float constrainFloat(float x, float min_x, float max_x); 
+ float constrainFloat(float x, float min_x, float max_x); 
+ byte percToPwm(float perc); 
 
   private:    
    

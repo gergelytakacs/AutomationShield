@@ -28,6 +28,12 @@ float AutomationShieldClass::constrainFloat(float x, float min_x, float max_x){
  return x; // return x
 }
 
+// Turns a floating point input in percent to 8-bit PWM
+byte AutomationShieldClass::percToPwm(float perc){
+	float percFloat = perc*2.55;
+	return byte(percFloat);
+}
+ 
 void AutomationShieldClass::error(char *str) // Error handler function
 {
   #if ECHO_TO_SERIAL                    // If Serial Echo is turned on in the DEFINE (by advanced user)

@@ -1,6 +1,4 @@
 /*
-  OptoShield Step Response
-
   API for the OptoShield hardware.
   
   The file is a part of the application programmers interface for
@@ -22,10 +20,10 @@
 #include "AutomationShield.h"        // Include the main library
 
 // Defining pins used by the OptoShield board
-  #define OPTO_RPIN 0   // Potentiometer runner
-  #define OPTO_YPIN 1   // LDR (Actuator)
+  #define OPTO_RPIN 0   // Potentiometer runner (Reference)
+  #define OPTO_YPIN 1   // LDR (Sensor)
   #define OPTO_YAUX 2   // Auxiliary LDR
-  #define OPTO_UPIN 3   // LED
+  #define OPTO_UPIN 3   // LED (Actuator)
 
   // Other constants
   #define LDRDELAY 1000 // Calibration delays
