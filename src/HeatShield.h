@@ -23,7 +23,7 @@
 
 // Defining pins used by the OptoShield board
 #define HEAT_YPIN 0   // NTC Thermistor (Sensor)
-#define HEAT_UPIN 3   // LED (Actuator)
+#define HEAT_UPIN 3   // Cartridge (Actuator)
 #define REF_TEMP (25.0 + ABSZERO) // Thermistor reference temperature
 #define NTC_RES 100000.0 // Resistance of the thermistor
 #define VD_RES 100000.0 // Resistance of voltage divider arm
