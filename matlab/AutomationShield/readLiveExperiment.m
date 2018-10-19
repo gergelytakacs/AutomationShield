@@ -7,35 +7,31 @@ result=[];
 
 sampleText = fscanf(s);   % Read once
 
+% Temporary saving
+lngth10=round(lngth/10); %10% of length
+k=1;
+
 % Save the first sample
 sampleText = fscanf(s);   % Read until newline character
 sampleCell = textscan(sampleText,'%f%f','Delimiter',', ');
 result(1,:)=sampleCell{1}';
 [r c]=size(result); % Size of the data
-
-figure(1);
-grid on;
-xlabel('Samples');
-ylabel('Amplitude')
-
-Co= [0         0.4470    0.7410;
-     0.8500    0.3250    0.0980;
-     0.9290    0.6940    0.1250;
-     0.4940    0.1840    0.5560;
-     0.4660    0.6740    0.1880;
-     0.3010    0.7450    0.9330;
-     0.6350    0.0780    0.1840];
  
 % The rest of the samples
-for i=2:lngth;            % Do 100 readings
+for i=2:lngth-1;              %Skip last one
     sampleText = fscanf(s);   % Read until newline character
     sampleCell = textscan(sampleText,'%f%f','Delimiter',', ');
-    result(i,:)=sampleCell{1}';
-    for j=1:c
-        line([i-2 i-1],[result(i-1,j) result(i,j)],'Color',Co(j,:))
-        drawnow
+    if length(sampleCell{1}')==c;
+        result(i,:)=sampleCell{1}';
+    end
+    plotLive(result(i,:))
+    if i==k*lngth10; % Save at 10% increments (for long experiments)
+        save resultTemp result;
+        k = k + 1;
     end
 end
+
+delete 'resultTemp.mat' %delete temporary save, let user decide
 
 fclose(s);              % Close port
 
