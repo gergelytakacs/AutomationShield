@@ -61,7 +61,7 @@ nlgr = idnlgrey(FileName, Order, Parameters, InitialStates, Ts, ...
 model = setinit(nlgr, 'Fixed', true);           % Estimate the initial states.
 
 %% Identify model
-opt = nlgreyestOptions('Display', 'on','EstimateCovariance',true,'SearchMethod','gna');
+opt = nlgreyestOptions('Display', 'on','EstimateCovariance',true,'SearchMethod','gna'); %gna - adaptive subspace Gauss-Newton search/auto/gn
 opt.SearchOptions.MaxIterations = 50;           % Maximal number of iterations
 model = nlgreyest(data, nlgr, opt);             % Run identification procedure
 compare(data, model);                           % Compare data with model

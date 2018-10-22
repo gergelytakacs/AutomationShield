@@ -1,5 +1,6 @@
 function installAutomationShield()
     thisdir=pwd;
     addpath(genpath(thisdir));
-    disp('Automation Shield MATLAB API added to MATLAB path.')
+    savepath
+    disp('Automation Shield Simulink API added to MATLAB path.')
 end

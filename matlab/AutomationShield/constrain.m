@@ -1,5 +1,4 @@
-function [dx, y] = HeatShield_ODE(t, x, u, alpha, beta, gamma, delta, varargin)
-%   ODE file representing the dynamics of the HeatShield device.
+%   AutomationShield general saturation
 %
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
@@ -7,9 +6,12 @@ function [dx, y] = HeatShield_ODE(t, x, u, alpha, beta, gamma, delta, varargin)
 %   Attribution-NonCommercial 4.0 International License.
 % 
 %   Created by Gergely Takács. 
+%   Last update: 22.10.2018.
 
-
-y = [x(1)]; % Output
-dx = [-(alpha/beta)*x(1)+(gamma/beta)*u(1)+(alpha/beta)*delta]; % Heat transfer eq
-       
-       
+function u = constrain(u,umin,umax)
+if u>=umax
+    u=umax;
+elseif u<=umin;
+    u=umin;
+end
+end

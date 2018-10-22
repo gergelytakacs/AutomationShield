@@ -26,13 +26,13 @@ HeatShield.begin();                     % Initialize shield
 
 Kp=3.0;                                 % PID Gain
 Ti=30.0;                                % PID Integral time constant
-Td=1;                                   % PID Derivative time constant
+Td=1.0;                                 % PID Derivative time constant
 umax=100;                               % Maximum input
 umin=0;                                 % Minimum input
 
-r=40;                                   % [oC] Closed-loop reference
+r=50;                                   % [oC] Closed-loop reference
 Ts=2;                                   % [s] Sampling period
-runTime=3600;                           % [s] Total runtime
+runTime=1800;                           % [s] Total runtime
 stepEnable = 0;                         % Algorithm step flag
 k=1;                                    % Algorithm step counter
 eSum=0;                                 % Error sum
@@ -42,30 +42,31 @@ y=0;                                    % Output initialize
 tic                                     % Start measuring time
 while(1)                                % Infinite loop
     if (stepEnable)                     % If flag is enabled
-        % PID:
-        e = r-y;                          % [oC] Reference
-        u =(Kp*e)+((Kp*Ts/Ti)*eSum)+((Kp*Td/Ts)*(e-ep)) 
-        ep = e;                           % Data store
-        % Input saturation;
-        if u>=umax
-            u=umax;
-        elseif u<=umin;
-            u=umin;
-        end
-        
-        HeatShield.actuatorWrite(u);    % [%] Power
+        % Read the output
         y = HeatShield.sensorRead();    % [oC] Temperature
         
-        response(k,:)=[r y u];            % Store results
+        % Compute PID
+        e = r-y;                         % [oC] Reference
+        eSum=eSum+e;                     % Integral
+        eSum=constrain((Kp*Ts/Ti)*eSum,umin,umax)/(Kp*Ts/Ti);  % Integral windup clamp
+        u =Kp*(e+(Ts/Ti)*eSum+(Td/Ts)*(e-ep)); % PID 
+        ep = e;                          % Data store
+        u=constrain(u,umin,umax);        % Input saturation
+        
+        % Write to hardware
+        HeatShield.actuatorWrite(u);    % [%] Power
+
+        response(k,:)=[r y u];          % Store results
         plotLive(response(k,:));        % Live plot
       
         k=k+1;                          % Next sample no.
         stepEnable = 0;                 % Disable step.
-    end
+    end                                 % Step end
     if (toc>=Ts*k)                      % If its time
         stepEnable = 1;                 % Enable the step
-    elseif (toc>=runTime)
-            break
+    elseif (toc>=runTime)               % Experiment over
+        HeatShield.actuatorWrite(u);    % Input off
+        break                           % Exit while
     end
 end
 
