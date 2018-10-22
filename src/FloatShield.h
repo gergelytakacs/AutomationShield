@@ -2,11 +2,18 @@
 #define FLOATSHIELD_H_
 
 #include "Arduino.h"
-#include "lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h"
+
+#ifndef ADAFRUIT_VL53L0X_H 				// If library not installed somewhere
+#if __has_include("lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h")  // If library present from GIT
+	#include "lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h" // Include it from there
+#endif
+#endif	
+
 
 #define vent 3
 #define pot A0
 
+#ifdef ADAFRUIT_VL53L0X_H 				// If header present
 
 class FloatShieldClass{
   
@@ -35,4 +42,6 @@ class FloatShieldClass{
     };
 
 extern FloatShieldClass FloatShield;
-#endif
+
+#endif	
+#endif	

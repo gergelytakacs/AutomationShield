@@ -1,5 +1,7 @@
 #include "FloatShield.h"
 
+#ifdef ADAFRUIT_VL53L0X_H // Only implement if there is a library
+
 void FloatShieldClass::initialize() {
     Serial.println("Adafruit VL53L0X test");
     if (!lox.begin(i2c_addr, _debug)) {
@@ -114,3 +116,4 @@ void FloatShieldClass::calibrate(void){
  }
 }
 FloatShieldClass FloatShield;
+#endif
