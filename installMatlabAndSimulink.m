@@ -1,4 +1,4 @@
-%   Installs AutomationShield Simulink API.
+%   Installs AutomationShield MATLAB and Simulink API.
 %  
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
@@ -6,11 +6,11 @@
 %   Attribution-NonCommercial 4.0 International License.
 % 
 %   Created by Gergely Takács. 
-%   Last update: 17.10.2018.
+%   Last update: 22.10.2018.
 
-function installAutomationShield()
+function installForMATLAB()
     thisdir=pwd;
     addpath(genpath(thisdir));
-    savepath
-    disp('Automation Shield Simulink API added to MATLAB path.')
+    installForMATLAB();
+    installForSimulink();
 end
