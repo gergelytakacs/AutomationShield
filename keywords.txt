@@ -7,8 +7,6 @@
 ######################################
 
 AutomationShield	KEYWORD1
-Opto	KEYWORD1
-AutomationShield	KEYWORD1
 OptoShield	KEYWORD1
 FloatShield	KEYWORD1
 HeatShield	KEYWORD1
@@ -42,13 +40,16 @@ ventInPercent	KEYWORD2
 manualControl	KEYWORD2
 positionMillimeter	KEYWORD2
 calibrate	KEYWORD2
+# PID ###########################
 compute	KEYWORD2
 setKp	KEYWORD2
 setTi	KEYWORD2
 setTd	KEYWORD2
+# Sampling ###########################
 interruptInitialize	KEYWORD2
-setInterruptCallback KEYWORD2
-
+setInterruptCallback	KEYWORD2
+getInterruptCallback	KEYWORD2
+getSamplingPeriod	KEYWORD2
 ######################################
 #Constants (LITERAL1)
 ######################################
