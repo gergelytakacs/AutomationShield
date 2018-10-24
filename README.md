@@ -6,7 +6,9 @@ Arduino library for the AutomationShield Arduino expansion boards for control en
 
 ## Installing the library
 
-Download the library from the `master` branch of the [Git repository](https://github.com/gergelytakacs/AutomationShield/archive/master.zip). As the Arduino IDE does not handle hyphens well, rename the .zip file by removing the `-master` part of the filename. Open the Arduino IDE, click on the *Sketch* menu, and find the *Include Library* option. This opens another sub-menu from which you shold select *Add .ZIP Library...* that will open the file browser. Locate the renamed library .zip file and click *Open*.
+### Arduino IDE
+
+Download the library from the `master` branch of the [Git repository](https://github.com/gergelytakacs/AutomationShield/archive/master.zip). Open the Arduino IDE, click on the *Sketch* menu, and find the *Include Library* option. This opens another sub-menu from which you shold select *Add .ZIP Library...* that will open the file browser. Locate the renamed library .zip file and click *Open*.
 
 ## Library usage
 
@@ -14,6 +16,7 @@ The harware library for a particular board is initialized by the board name foll
 ```
 OptoShield.begin();
 ```
+Please consult our [Wiki page](https://github.com/gergelytakacs/AutomationShield/wiki) for details.
 
 ## Examples
 
