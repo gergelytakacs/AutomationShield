@@ -24,8 +24,8 @@
 #endif  
 
 // Common definitions
-#define AREF 5.0; // ADC reference voltage
-#define ARES 5.0/1023.0; // ADC resolution
+#define AREF 5.0 // ADC reference voltage
+#define ARES AREF/1023.0 // ADC resolution
 #define ABSZERO 273.15 // Absolute zero in Celsius
 
 // Headers for essential functionality

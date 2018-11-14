@@ -1,89 +1,143 @@
+/*
+  API for the MagnetoShield didactic hardware.
+  
+  The file is a part of the application programmers interface for
+  the MagnetoShield didactic tool for control engineering and 
+  mechatronics education. The MagnetoShield implements a magnetic
+  levitation experiment on an Arduino shield.
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács and Jakub Mihalík. 
+  Last update: 14.11.2018.
+*/
+
 #include "MagnetoShield.h"
 
-
-void MagnetoShieldClass::begin() 
-	{
-	pinMode(HallSenzor,INPUT);	//sets pin A3 defined in .h file asi INPUT
-	Wire.begin();				//start "Wire" library
-	}
-
-uint8_t MagnetoShieldClass::setVoltageV(float voltage)
-{
-	if(voltage > 5.00){ 				 	//DA convertor is able to create just 0-5 V
-		voltage = 5.00;}
-	else if (voltage < 0.00){
-		voltage = 0.00;}
-	float voltageF = voltage*255.00/5.00;	// conversion % -> float
-	uint8_t voltageB = (uint8_t) voltageF;	// conversion float -> 8-bit number
-	Wire.beginTransmission(PCF8591);	  	// I2C transmission to DA convertor
-	Wire.write(0x40);
-	Wire.write(voltageB);
-	Wire.endTransmission();
-	return voltageB;
+// An initialization method for the MagnetoShield
+void MagnetoShieldClass::begin()
+{	
+	Wire.begin();							// Starts the "Wire" library for I2C
 }
 
+// Write DAC levels (8-bit) to the PCF8591 chip
+void MagnetoShieldClass::dacWrite(byte dacIn)
+{	
+	Wire.beginTransmission(PCF8591);		// I2C addressing, transmission begin
+	Wire.write(0x40);						// Use DAC (0100 0000)
+	Wire.write(dacIn);						// 8-bit value of DAC output
+	Wire.endTransmission();					// I2C transmission end
+}
+
+// Calibrates the output readings and measures the input_iterator
+// saturation for the MagnetoShield
 void MagnetoShieldClass::calibration()
-	{
-	Wire.beginTransmission(PCF8591);	// I2C transmission
-	Wire.write(0x40);
-	Wire.write(0);
-	Wire.endTransmission();
-	delay(1000);						//waiting for conditious
-	Min = analogRead(HallSenzor);		//lowest position of flying from hall senzor
-	
-	Wire.beginTransmission(PCF8591);	// I2C transmission
-	Wire.write(0x40);
-	Wire.write(255);
-	Wire.endTransmission();
-	delay(1000);						//waiting for conditious
-	Max = analogRead(HallSenzor);		//highest position of flying from hall senzor
-	
-	Wire.beginTransmission(PCF8591);	// Sets take-off point on ground. Also posible to start levitation from upper position
-	Wire.write(0x40);
-	Wire.write(0);
-	Wire.endTransmission();
-	delay(1000);
-	}	
-
-int MagnetoShieldClass::getMin()
 {
-	int variable = (int) Min;	//conversion float->int
-	return variable;
+	short meas_t, meas_tt; 				   		// Temporary measurements
+	
+	// Selects maximum ADC value to filter for any noise.
+	// Magnet cannot get physically lower than ground level.
+	MagnetoShield.dacWrite(0);						// No power to magnet
+	delay(500);					   			// Wait for things to settle
+	for (int i=1; i<=100; i++) {	    		// Perform 100 measurements
+		meas_t = analogRead(MAGNETO_YPIN); 		// Measure
+		if (meas_t > minCalibrated){ 			// If higher than already
+			minCalibrated=meas_t; 		  		// Save new minimum
+		}
+	}
+	// Selects maximum ADC value to filter for any noise.
+	// Magnet cannot get physically higher than ceiling
+	MagnetoShield.dacWrite(255);						// Full power to magnet
+	delay(500);					   			// Wait for things to settle	
+	for (int i=1; i<=100; i++) {				// Perform 100 measurements
+		meas_t = analogRead(MAGNETO_YPIN);		// Measure
+		if (meas_t < maxCalibrated){			// If lower than already
+			maxCalibrated=meas_t;				// Save new maximum
+		}	
+	}
+	
+	// Lower DAC until reaches saturation point
+	while (maxCalibrated>=meas_t) {				// While we reach maxCalibrated
+	    dacSaturate--; 		     			    // Lower magnet power
+		MagnetoShield.dacWrite(dacSaturate);    // Set magnet power
+	    delay(500);							    // Wait for things to settle
+		for (int i=1; i<=10; i++) {			    // Perform 10 measurements
+			meas_tt = analogRead(MAGNETO_YPIN);	// Measure
+			if (meas_t < meas_tt){				// If lower than already
+				meas_t=meas_tt;			    	// Save measurement
+			}
+		}
+	}
+	
+	MagnetoShield.dacWrite(0); 					// Fall back to ground
+	delay(500);								// Wait for things to settle
+}	
+	
+// Writes input to actuator in the range of 0-12 V.
+void MagnetoShieldClass::actuatorWrite(float u)
+{ 
+	u=AutomationShield.constrainFloat(u,0.0,VIN);   // Removes out of range input
+	dacWrite((byte)((u/VIN)*255.0)); 						// Assumes 12 V input
+}
+
+// Writes input to actuator as a percentage in the range of 0-100%
+void MagnetoShieldClass::actuatorWritePercents(float u)
+{
+	u=AutomationShield.constrainFloat(u,0.0,100.0);	// Removes out of range input
+	dacWrite(AutomationShield.percToPwm(u)); 	   // Assumes 0-100% input
+}
+
+// Default sensor reading method
+float MagnetoShieldClass::readSensor()
+{	
+	return  readSensorPercents();
+}
+
+// Reads sensor and returns percentage of voltage from Hall sensor
+// effectively giving an indirect percentual distance
+float MagnetoShieldClass::readSensorPercents()
+{	
+	return  (AutomationShield.mapFloat(analogRead(MAGNETO_YPIN),0.00,100.00,minCalibrated,maxCalibrated));
+}
+
+// Converts a 10-bit ADC reading from the A1302 Hall sensor
+// to Gauss. The Hall sensor picks up on the levitating magnet
+float MagnetoShieldClass::adcToGauss(short adc)
+{	
+    float y=(2.5-(float)adc*ARES)*A1302_SENSITIVITY;
+	return  y;
+}
+
+// Reads sensor and returns the Hall sensor reading in Gauss
+float MagnetoShieldClass::readSensorGauss()
+{	
+	return  MagnetoShield.adcToGauss(analogRead(MAGNETO_YPIN));
+}
+
+// float MagnetoShieldClass::readSensorDistance()
+// {	
+	// return  MagnetoShield.adcToGauss(analogRead(MAGNETO_YPIN));
+// }
+
+// Returns the saturation of the magnet (8-bit levels)
+byte MagnetoShieldClass::getSaturation()
+{
+	return dacSaturate;
 }	
 
-int MagnetoShieldClass::getMax() 
+// Returns the lower limit of the Hall sensor reading (10-bit levels)
+int MagnetoShieldClass::getMinCalibrated()
 {
-	int variable = (int) Max;	//conversion float->int
-	return variable;
+	return minCalibrated;;
 }	
 
-float MagnetoShieldClass::readHeight()
+// Returns the upper limit of the Hall sensor reading (10-bit levels)
+int MagnetoShieldClass::getMaxCalibrated() 
 {
-	float Height = analogRead(HallSenzor);	//current position of flying from hall senzor
-	return Height;
-}
-
-float MagnetoShieldClass::setHeight(float set) 
-{
-	setpoint = AutomationShield.mapFloat(set,0.00,100.00,Min,Max); 	//recalculate position of levitation from % to float number in interval <Min;Max>
-	return setpoint;												//variabl for error() function   
-}
-
-void MagnetoShieldClass::setVoltage(float u)
-{
-	uint8_t u8B = (uint8_t) u;			//conversion float->uint8_u
-	Wire.beginTransmission(PCF8591);	// I2C transmission on DAC
-	Wire.write(0x40);
-	Wire.write(u8B);
-	Wire.endTransmission();
-}
-
-float MagnetoShieldClass::error()
-{
-	float position = analogRead(HallSenzor);	//current position of flying from hall senzor
-	float err = setpoint-position;				//setpoint from setHeight() function
-	return err;
-}
-
+	return maxCalibrated;
+}	
 
 MagnetoShieldClass MagnetoShield;	//construct instance (define)

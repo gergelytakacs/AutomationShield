@@ -1,36 +1,51 @@
-#ifndef MagnetoShield_h
-#define MagnetoShield_h
+/*
+  API for the MagnetoShield didactic hardware.
+  
+  The file is a part of the application programmers interface for
+  the MagnetoShield didactic tool for control engineering and 
+  mechatronics education. The MagnetoShield implements a magnetic
+  levitation experiment on an Arduino shield.
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
 
-#include "AutomationShield.h"
+  Created by Gergely Takács and Jakub Mihalík. 
+  Last update: 14.11.2018.
+*/
 
-#include "Wire.h" //needed for DA convertor
+#ifndef MAGNETOSHIELD_H							// Include guard
+#define MAGNETOSHIELD_H
 
-#define PCF8591 (0x90 >> 1)
-#define HallSenzor A3
-
-	 
-
-
-class MagnetoShieldClass
+#include "AutomationShield.h"           		// Includes the core header
+#include "Wire.h" 								// I2C library for the DAC chip
+#define VIN 12.0 							    // Input voltage (Assumed)
+#define PCF8591 (0x90 >> 1)			    		// Address of the DAC chip
+#define MAGNETO_YPIN A3							// Defines the location of the Hall sensor 
+#define A1302_SENSITIVITY	1.3					// [mV/G] Sensitivity of the Hall sensor
+class MagnetoShieldClass						// Class for MagnetoShield API
 {
 public:
-
-	void begin(); 								//inicialization of pins + include "Wire" library
-	uint8_t setVoltageV(float voltagePer);		//sets voltage 0-5 V on DAC and gives back as 8-bit number
-	float readHeight(); 						//current position of flying
-	float setHeight(float set);					//sets desired position of flying in % 0-100 and give back as 10-bit number
-	void calibration();							//finds out lowest and highest possitions of magnet
-	int getMin();								//function witch return 10-bit value of lowest possition of magnet
-	int getMax();								//function witch return 10-bit value of highest possition of magnet
-	float error();								//diference between desired and current position of flying -> for PID
-	void setVoltage(float u);					//sets voltage on DAC as 8-bit number 0=>0 V; 255=>5 V
+	void begin(); 								// Initializes "Wire" library
+	void dacWrite(byte dacIn);			    	// Writes dacIn to DAC chip
+	void calibration();							// Finds out lowest and highest possitions of magnet
+	void actuatorWrite(float u);         		// Sets actuation voltage (not actual Voltage)
+	void actuatorWritePercents(float u);      // Sets output power in percent
+	float readSensor(); 						// Returns current "position" in percent
+	float readSensorPercents(); 						// Returns current "position" in percent
+    float readSensorGauss(); 				    // Returns current Hall sensor reading in Gauss
 	
+	float adcToGauss(short adc);					// Computes Gauss from the ADC of the Hall sensor
+	// Get functions to extract private variables
+	int getMinCalibrated();						// Returns the minimum calibrated value for the magnetic field (10-bit ADC levels).
+	int getMaxCalibrated();						// Returns the maximum calibrated value for the magnetic field (10-bit ADC levels).
+	byte getSaturation();		                // Returns the saturation level of the magnet (8-bit DAC levels).
 	
-private:
-	 							
-	float Min;									//10-bit value of min position of flying
-	float Max;									//10-bit value of max position of flying
-	float setpoint;								//desired value of flying, variable for error function 
+private:							
+	short minCalibrated = 0;					// ADC on Hall for ground
+	short maxCalibrated = 1024;					// ADC on Hall for ceiling
+	byte  dacSaturate = 255;					// Saturation level of the DAC	
 };
 
 extern MagnetoShieldClass MagnetoShield;		//declare external instance
