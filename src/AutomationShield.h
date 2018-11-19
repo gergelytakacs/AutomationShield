@@ -24,9 +24,11 @@
 #endif  
 
 // Common definitions
-#define AREF 5.0 // ADC reference voltage
-#define ARES AREF/1023.0 // ADC resolution
-#define ABSZERO 273.15 // Absolute zero in Celsius
+#define AREF 5.0 // ADC reference voltage for 5 V logic
+#define ARES AREF/1023.0 // ADC resolution for 5 V logic
+#define AREF3V3 3.3 // ADC reference voltage for 3.3 V logic
+#define ARES3V3 AREF3V3/1023.0 // ADC resolution for 3.3 V logic
+#define ABSZERO 273.15 // Absolute zero in Celsius 
 
 // Headers for essential functionality
 #include "Sampling.h" 

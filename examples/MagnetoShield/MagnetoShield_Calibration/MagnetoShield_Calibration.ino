@@ -16,10 +16,11 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Jakub Mihalík. 
-  Last update: 14.11.2018.
+  Last update: 19.11.2018.
 */
-
+#define SHIELDVERSION 2       // 
 #include <MagnetoShield.h>     // Include header for hardware API
+
 
 int Minimum;
 int Maximum;
@@ -48,9 +49,7 @@ void setup() {
   
    Serial.print("Magnet saturation: ");  
    Serial.print(Saturation);
-   Serial.print(" of 8-bit ADC, that is ");  
-   Serial.print((float)Saturation/255.0*12.0);
-   Serial.println(" V"); 
+   Serial.println(" of 8-bit ADC"); 
 }
 
 void loop() {                                  

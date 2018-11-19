@@ -17,54 +17,83 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by Gergely Takács and Jakub Mihalík. 
-  Last update: 14.11.2018.
+  Created by Gergely Takács.
+  Last update: 14.19.2018.
 */
 
 #include <MagnetoShield.h>     // Include header for hardware API
 
-float u;	                    // Input
-float e; 	                    // Error
-float r; 	                    // Setpoint
-float y;                      // Output
-int Minimum;
-int Maximum;
-unsigned long Ts=1000;        // Sampling in microseconds
-bool next=false;              // step() enable toggle flag
+unsigned long Ts = 3000;               // Sampling in microseconds
+unsigned long k = 0;                // Sample index
+bool enable=false;                  // Flag for sampling 
+bool realTimeViolation=false;       // Flag for real-time violations
+
+float r = 0.0;						// Reference
+float R[]={50.0,75.0,25.0,40.0,80.0,0.0};;    // Reference trajectory
+int T = 2500;						// Section length (steps) 1 hrs
+int i = i;							// Section counter
+float y = 0.0;						// Output
+float u = 0.0;						// Input					
+
+//100nf
+//Decent
+//#define KP 0.1       				// PID Kp
+//#define TI 0.5              // PID Ti
+//#define TD 0.02           // PID Td
+
+#define KP 0.1              // PID Kp
+#define TI 0.4                    // PID Ti
+#define TD 0.02                       // PID Td
 
 void setup() {
-   MagnetoShield.begin();
-   MagnetoShield.calibration();
-   r = MagnetoShield.setHeight(50.00); //returns hidden global value inside the function, so for flying without serial comunication, 
-                                              //variable Setpoint not needed, function can be written like void function
-   
+  Serial.begin(250000);               // Initialize serial
+  // Initialize and calibrate board
+  MagnetoShield.begin();               // Define hardware pins
+  
+  // Initialize sampling function
+  Sampling.interruptInitialize(Ts);   // Sampling init.
+  Sampling.setInterruptCallback(stepEnable); // Interrupt fcn.
 
-   Minimum=MagnetoShield.getMin();            //getting borders for flying
-   Maximum=MagnetoShield.getMax();
-   
-   Sampling.interruptInitialize(Ts);          //periaod of sampling
-   Sampling.setInterruptCallback(stepEnable); //what happens when interrupt is called
-
-   PIDAbs.setKp(10);                         //setting PID constants 
-   PIDAbs.setTi(1.5);
-   PIDAbs.setTd(0.02);
-
+ // Set the PID constants
+ PIDAbs.setKp(KP);
+ PIDAbs.setTi(TI);
+ PIDAbs.setTd(TD); 
 }
 
-void loop() {                                 //execute program step() if next=true
-   if(next){  
-   step();
-   next=false;
-   }
+// Main loop launches a single step at each enable time
+void loop() {
+  if (enable) { 							// If ISR enables
+    step();									// Algorithm step
+    enable=false;  							// Then disable
+  }  
 }
 
-void stepEnable(){                            //execute interrupt function -> enable step()
-  next=true;
+void stepEnable(){  						// ISR 
+  if(enable){
+  realTimeViolation=true;
+  Serial.println("Real-time samples violated.");
+  while(1);
+  }
+  enable=true;							    // Change flag
 }
 
-void step(){
-    e = MagnetoShield.error();                           //diference between desired and real position of flying
-    u=PIDAbs.compute(e,155,255,-65000,65000);        //PID regulation - values 155 and 255 depends on used MOSFET and his "permeability"
-                                                             //possibility use 0 and 255 if these numbers are unknown
-    MagnetoShield.setVoltage(u);                         //writes input into the system
+// A signle algoritm step
+
+void step(){ 
+
+if (k % (T*i) == 0){				
+  r = R[i]; 							 // Set reference
+  i++;
+}
+  							  
+y = MagnetoShield.sensorRead();           // Sensor Read 
+u = PIDAbs.compute(r-y,0,12,0,100);   // PID
+MagnetoShield.actuatorWrite(u);            // Actuate
+
+Serial.print(r);						// Print reference
+Serial.print(", ");						 
+Serial.print(y);						// Print output  
+Serial.print(", ");
+Serial.println(u);						// Print input
+k++;									// Increment k
 }
