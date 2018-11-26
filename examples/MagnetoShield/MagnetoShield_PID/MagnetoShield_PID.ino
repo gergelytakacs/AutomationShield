@@ -92,7 +92,7 @@ MagnetoShield.actuatorWrite(u);            // Actuate
 
 Serial.print(r);						// Print reference
 Serial.print(", ");						 
-Serial.print(y);						// Print output  
+Serial.print(MagnetoShield.sensorReadDistance());						// Print output  
 Serial.print(", ");
 Serial.println(u);						// Print input
 k++;									// Increment k

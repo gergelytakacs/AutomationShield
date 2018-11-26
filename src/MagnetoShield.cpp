@@ -17,19 +17,15 @@
 
 #include "MagnetoShield.h"
 
-
 // An initialization method for the MagnetoShield
 void MagnetoShieldClass::begin()
 {	
-	Wire.begin();							// Starts the "Wire" library for I2C
-	
-	#if SHIELDVERSION == R2
+	Wire.begin();	// Starts the "Wire" library for I2C
+	#if SHIELDRELEASE == 1	
+		analogReference(DEFAULT);
+	#elif SHIELDRELEASE == 2
 		analogReference(EXTERNAL);
-		Serial.println("V2");
-	#elif SHIELDVERSION == R1
-		analogReference(INTERNAL);
-		Serial.println("V1");
-	#endif	
+	#endif
 }
 
 // Write DAC levels (8-bit) to the PCF8591 chip
@@ -128,13 +124,20 @@ float MagnetoShieldClass::sensorReadPercents()
 // to Gauss. The Hall sensor picks up on the levitating magnet
 float MagnetoShieldClass::adcToGauss(short adc)
 {	
-
-	#if SHIELDVERSION == 2
-		float y=(2.5-(float)adc*ARES3V3)*A1302_SENSITIVITY;
-	#else
+ 	#if SHIELDRELEASE == 1
 		float y=(2.5-(float)adc*ARES)*A1302_SENSITIVITY;
+	#elif SHIELDRELEASE == 2
+		float y=(2.5-(float)adc*ARES3V3)*A1302_SENSITIVITY;
 	#endif
 	return  y;
+}
+
+// Converts the magnetic flux reading from the A1302 Hall sensor
+// to distance measured from the bottom of the magnet
+float MagnetoShieldClass::gaussToDistance(float g)
+{	
+	float h = (EMAGNET_HEIGHT)-P6*pow(g,P7);
+	return  h;
 }
 
 // Computes DAC levels for equivalent magnet voltage
@@ -150,6 +153,11 @@ float MagnetoShieldClass::sensorReadGauss()
 	return  MagnetoShield.adcToGauss(analogRead(MAGNETO_YPIN));
 }
 
+// Reads sensor and returns the Hall sensor reading in Gauss
+float MagnetoShieldClass::sensorReadDistance()
+{	
+	return  MagnetoShield.gaussToDistance(MagnetoShield.sensorReadGauss());
+}
 
 
 // Approximate distance based on magnetism

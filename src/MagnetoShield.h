@@ -21,34 +21,40 @@
 #include "AutomationShield.h"           		// Includes the core header
 #include "Wire.h" 								// I2C library for the DAC chip
 
-#ifndef SHIELDVERSION							// Default assumed version
- #define SHIELDVERSION 2
+#ifndef SHIELDRELEASE
+	#define SHIELDRELEASE 2   					//  Use number only: e.g. for R2 is 2
 #endif
 
-#define VIN 11.5 							    // [V] Input voltage 
+#define VIN 11.5 							    // [V] Input voltage from source
+#define EMAGNET_HEIGHT 20.0				        // [mm] Location of electromagnet above ground
 #define PCF8591 (0x90 >> 1)			    		// Address of the DAC chip
 #define MAGNETO_YPIN A3							// Defines the location of the Hall sensor 
-#define A1302_SENSITIVITY	1.3					// [mV/G] Sensitivity of the Hall sensor
+#define A1302_SENSITIVITY	769.23	    		// [G/V] = 1.3 mV/G Sensitivity of the A1302 Hall sensor
 #define LOAD_RESISTANCE	196.6					// [Ohm] Load resistance
 #define LOAD_HSAT	204							// [8-bit DAC] Upper saturation of the magnets before dropping
 #define IRF520_LSAT	170							// [8-bit DAC] Lower saturation of the IRF520
 #define IRF520_HSAT	220							// [8-bit DAC] Hight (upper) saturation of the IRF520	
 
-#if (SHIELDVERSION==2)
-	#define A1302_LSAT	29							// [10-bit ADC] Lower saturation of the Hall sensor
-	#define A1302_HSAT 598							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
-#else
+#if SHIELDRELEASE == 1	
 	#define A1302_LSAT	19							// [10-bit ADC] Lower saturation of the Hall sensor
-	#define A1302_HSAT 397							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
-#endif	
-	
+	#define A1302_HSAT 382							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+#elif SHIELDRELEASE == 2
+	#define A1302_LSAT	29							// [10-bit ADC] Lower saturation of the Hall sensor
+	#define A1302_HSAT 577							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+#endif
 
 // Power model of the input-output voltage DAC->Vout
-#define P1 0.01131							    // Power function constant (f(x) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P2 2.554								// Power function constant (f(x) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P3 -447.4							    // Power function constant (f(x) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P4 -0.01247								// Power function constant (f(x) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P5 638.6								// Power function constant (f(x) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+#define P1 0.01131							    // Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+#define P2 2.554								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+#define P3 -447.4							    // Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+#define P4 -0.01247								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+#define P5 638.6								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+
+// Distance model based on magnetic flux density
+// As it is hard to make exact measurements a two-point 
+// calibration of a power function seems to work best
+#define P6 470.6 								//Distance function constant (f(y) = P6*x^P7) for Flux vs. distance from magnet
+#define P7 -0.6719								// Distance function constant (f(y) = P6*x^P7) for Flux vs. distance from magnet
 
 class MagnetoShieldClass						// Class for MagnetoShield API
 {
@@ -63,8 +69,10 @@ public:
 	float sensorRead(); 						// Returns current "position" in percent
 	float sensorReadPercents(); 				// Returns current "position" in percent
     float sensorReadGauss(); 				    // Returns current Hall sensor reading in Gauss
+    float sensorReadDistance(); 			    // Returns current distance reading estimate from the magnet
 	
 	float adcToGauss(short adc);			    // Computes Gauss from the ADC of the Hall sensor
+    float gaussToDistance(float g);			    // Computes distance from magnetic flux
 	// Get functions to extract private variables
 	int getMinCalibrated();						// Returns the minimum calibrated value for the magnetic field (10-bit ADC levels).
 	int getMaxCalibrated();						// Returns the maximum calibrated value for the magnetic field (10-bit ADC levels).

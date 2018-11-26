@@ -18,7 +18,7 @@
   Created by Gergely Takács and Jakub Mihalík. 
   Last update: 19.11.2018.
 */
-#define SHIELDVERSION 2       // 
+#define SHIELDVERSION 2        //  Use number only: e.g. R2 is 2
 #include <MagnetoShield.h>     // Include header for hardware API
 
 
@@ -39,13 +39,18 @@ void setup() {
    Serial.print(Minimum);
    Serial.print(" of 10-bit ADC, that is ");   
    Serial.print(MagnetoShield.adcToGauss(Minimum));
-   Serial.println(" G"); 
+   Serial.print(" G, estimated distance is "); 
+   Serial.print(MagnetoShield.gaussToDistance(MagnetoShield.adcToGauss(Minimum)));
+   Serial.println(" mm");
    
    Serial.print("Hall sensor maximum: ");  
    Serial.print(Maximum);
    Serial.print(" of 10-bit ADC, that is ");  
    Serial.print(MagnetoShield.adcToGauss(Maximum));
-   Serial.println(" G"); 
+   Serial.print(" G"); 
+   Serial.print(" G, estimated distance is "); 
+   Serial.print(MagnetoShield.gaussToDistance(MagnetoShield.adcToGauss(Maximum)));
+   Serial.println(" mm");
   
    Serial.print("Magnet saturation: ");  
    Serial.print(Saturation);
