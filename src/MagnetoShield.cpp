@@ -106,7 +106,7 @@ void MagnetoShieldClass::actuatorWritePercents(float u)
 // Default sensor reading method
 float MagnetoShieldClass::sensorRead()
 {	
-	return  sensorReadPercents();
+	return  sensorReadDistance();
 }
 
 // Reads sensor and returns percentage of voltage from Hall sensor
@@ -159,6 +159,12 @@ float MagnetoShieldClass::sensorReadDistance()
 	return  MagnetoShield.gaussToDistance(MagnetoShield.sensorReadGauss());
 }
 
+// Reads the voltage on the Electromagnet
+float MagnetoShieldClass::auxReadVoltage()
+{	
+	float v =  ((float)analogRead(MAGNETO_VPIN))*ARES3V3*VGAIN;
+	return  v;
+}
 
 // Approximate distance based on magnetism
 // float MagnetoShieldClass::sensorReadDistance()

@@ -43,6 +43,13 @@
 	#define A1302_HSAT 577							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
 #endif
 
+// Functionality specific for R2
+#if SHIELDRELEASE == 2
+	#define MAGNETO_VPIN A1							// Defines the location of input voltage sensing
+	#define MAGNETO_IPIN A2							// Defines the location of input current sensing
+	#define VGAIN 4								// Defines the voltage sensing gain (voltage divider)
+#endif
+
 // Power model of the input-output voltage DAC->Vout
 #define P1 0.01131							    // Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
 #define P2 2.554								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
@@ -77,6 +84,10 @@ public:
 	int getMinCalibrated();						// Returns the minimum calibrated value for the magnetic field (10-bit ADC levels).
 	int getMaxCalibrated();						// Returns the maximum calibrated value for the magnetic field (10-bit ADC levels).
 	byte getSaturation();		                // Returns the saturation level of the magnet (8-bit DAC levels).
+	
+	#if SHIELDRELEASE == 2
+		float auxReadVoltage(); 			    // Returns voltage potential of the electromagnet
+	#endif
 	
 private:							
 	short minCalibrated = 0;					// ADC on Hall for ground
