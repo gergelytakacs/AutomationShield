@@ -12,7 +12,7 @@ g  =  9.80665; % [m/s^2]
 m  =  0.76E-3; % [kg] Magnet mass
 y  = [x(1)];  % Output [m]
 dx = [x(2);   % Nonlinear state-space dynamics
-     g/m-(K/m)*(x(3)^2/x(1)^2);
+     g-(K/m)*(x(3)^2/x(1)^2);
      -(R/L)*x(3)+(1/L)*u(1)]; 
        
        
