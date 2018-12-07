@@ -30,7 +30,7 @@ Ts=0.004                                        % [s] Sampling
 u=resultID(:,1)+resultID(:,2);                  % [V] Input is closed loop + probe signal
 y=resultID(:,3)/1000;                           % [m] Output in meters
 
-fixedInductance=0;                              % Fixed or distance dependent inductance?
+fixedInductance=1;                              % Fixed or distance dependent inductance?
 
 %% System identification data object
 data = iddata(y,u,Ts,'Name','Magnetic Levitation');    % Data file
@@ -50,10 +50,13 @@ R = 198.3;                                      % [Ohm] Solenoid resistance
 L = 0.239;                                      % [H] Solenoid inductance
 u0=mean(u);                                     % [V] Input linearization around setpoint
 y0=mean(y);                                     % [m] Output linearization around setpoint
+
+% Magnetic constant, use it as a "tuning parameter" for 
+% initializing the estimation: it is 1/2L0*x0 actually
 if fixedInductance==1
 K=4.5E-6;                                       % Magnetic constant (rhough estimate)
 elseif  fixedInductance==0
-K=4.5E-6;                                       % Magnetic constant (rhough estimate)
+K=5.35E-6;                                       % Magnetic constant (rhough estimate)
 end
     
 % Initial parameters for linearized model
@@ -70,14 +73,14 @@ A=[0       1    0;
    alpha   0   -beta
    0       0   -R/L];
 
-elseif  fixedInductance==0                     % Magnet inductance L(y) distance dependent
+elseif  fixedInductance==0                       % Magnet inductance L(y) distance dependent
     
-i0=-u0/R;    %<==== This must be improved.
-gamma=2*(K/m)*i0/(L*y0^2);
+i0=u0/R;                                         % Rhough estimate of equilibrium current
+gamma=2*K*i0/(L*y0^2);                           % Constant estimate
 
-A=[0       1        0;
+A=[0       1        0;                           % Dybamic matrix initial guess
    alpha   0       -beta
-   0       gamma   -R/L];     
+   0      -gamma   -R/L];     
 
 end
 
@@ -109,28 +112,27 @@ elseif fixedInductance==0                       % Magnet inductance L(y) distanc
                               -Inf  -Inf -Inf  ];
     sys.Structure.A.Maximum = [ Inf  Inf  Inf;  % Parameter maximum
                                 Inf  Inf  0;
-                                Inf  Inf  0  ];
+                                Inf  0    0  ];
 end
                       
-                    
 sys.Structure.B.Free=  [0;
                         0;
                         1];                   % Free and fixed variables
 sys.Structure.B.Minimum=[-Inf -Inf 0]';       % Parameter minimum
 sys.Structure.B.Maximum=[Inf Inf Inf]';       % Parameter maximum
 sys.Structure.C.Free=  false;                 % No free parameters
-sys.Structure.K.Free=  true;                  % Unknown noise model
+sys.Structure.K.Free=  [1 1 1];               % Unknown noise model
 sys.DisturbanceModel = 'estimate';            % Estimate disturbance model
 sys.InitialState = 'estimate';                % Estimate initial states
 
 %% Set estimation options
-Options = ssestOptions;                              
-%Options.Display = 'on';                              
-Options.Focus = 'simulation';   
-Options.EnforceStability = 0;                        
-Options.InitialState = 'estimate';  
+Options = ssestOptions;                       % State-space estimation options
+Options.Display = 'on';                       % Show progress
+Options.Focus = 'simulation';                 % Identification focus
+Options.EnforceStability = 0;                 % Unstable model
+Options.InitialState = 'estimate';            % Estimate initial condition
 Options.SearchMethod='auto' %gn,gna,lm,grad,lsqnonlin,fmincon
-Options.SearchOptions.MaxIterations=100;
+Options.SearchOptions.MaxIterations=200;
 %Options.SearchOptions.StepTolerance=1E-10;
 %Options.SearchOptions.FunctionTolerance=1E-10;
 model = ssest(dataf,sys,Options)
