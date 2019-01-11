@@ -17,7 +17,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács. 
-  Last update: 26.11.2018.
+  Last update: 11.01.2019.
 */
 #include <MagnetoShield.h>     // Include header for hardware API
 
@@ -28,14 +28,15 @@ short Saturation;
 
 void setup() {
    Serial.begin(2000000);                        // Starts serial communication
+   Serial.print("Calibration in progress...");   // Begin note
    MagnetoShield.begin();                        // Initializes shield
    MagnetoShield.calibration();                  // Calibrates shield
-   
+  
    Minimum=MagnetoShield.getMinCalibrated();     //  Getting borders for flying
    Maximum=MagnetoShield.getMaxCalibrated(); 
    Saturation=MagnetoShield.getSaturation(); 
    
-   Serial.print("Hall sensor minimum: ");  
+
    Serial.print(Minimum);
    Serial.print(" of 10-bit ADC, that is ");   
    Serial.print(MagnetoShield.adcToGauss(Minimum));

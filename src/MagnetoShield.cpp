@@ -159,11 +159,25 @@ float MagnetoShieldClass::sensorReadDistance()
 	return  MagnetoShield.gaussToDistance(MagnetoShield.sensorReadGauss());
 }
 
+
+// Default sensor reading method
+float MagnetoShieldClass::referenceRead()
+{	
+	return  (AutomationShield.mapFloat(analogRead(MAGNETO_RPIN),0.0,1024.0,0.0,100.0));
+}
+
 // Reads the voltage on the Electromagnet
 float MagnetoShieldClass::auxReadVoltage()
 {	
 	float v =  ((float)analogRead(MAGNETO_VPIN))*ARES3V3*VGAIN;
 	return  v;
+}
+
+// Reads the voltage on the Electromagnet
+float MagnetoShieldClass::auxReadCurrent()
+{	
+	float i =  ((float)analogRead(MAGNETO_IPIN))*ARES3V3*IGAIN;
+	return  i;
 }
 
 // Approximate distance based on magnetism

@@ -25,7 +25,7 @@
 	#define SHIELDRELEASE 2   					//  Use number only: e.g. for R2 is 2
 #endif
 
-#define VIN 11.5 							    // [V] Input voltage from source
+#define VIN 11.7 							    // [V] Input voltage from source
 #define EMAGNET_HEIGHT 20.0				        // [mm] Location of electromagnet above ground
 #define PCF8591 (0x90 >> 1)			    		// Address of the DAC chip
 #define MAGNETO_YPIN A3							// Defines the location of the Hall sensor 
@@ -45,9 +45,11 @@
 
 // Functionality specific for R2
 #if SHIELDRELEASE == 2
-	#define MAGNETO_VPIN A1							// Defines the location of input voltage sensing
-	#define MAGNETO_IPIN A2							// Defines the location of input current sensing
-	#define VGAIN 4								// Defines the voltage sensing gain (voltage divider)
+    #define MAGNETO_RPIN A0                        // Defines the location of reference pot
+	#define MAGNETO_VPIN A1						   // Defines the location of input voltage sensing
+	#define MAGNETO_IPIN A2						   // Defines the location of input current sensing
+	#define VGAIN 4								   // Defines the voltage sensing gain (voltage divider)
+    #define IGAIN 33.33333333 					   // Defines the current sensing gain mA/V
 #endif
 
 // Power model of the input-output voltage DAC->Vout
@@ -87,6 +89,8 @@ public:
 	
 	#if SHIELDRELEASE == 2
 		float auxReadVoltage(); 			    // Returns voltage potential of the electromagnet
+	    float auxReadCurrent(); 			    // Returns current through the electromagnet
+		float referenceRead();					// Returns potentiometer value in percents
 	#endif
 	
 private:							
