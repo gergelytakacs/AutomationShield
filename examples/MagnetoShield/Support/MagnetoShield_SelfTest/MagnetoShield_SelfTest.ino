@@ -26,6 +26,7 @@ void wait() {
 
 void setup() {
   Serial.begin(2000000);       // Starts serial communication
+  Serial.printing("Testing MagnetoShield components");
   MagnetoShield.begin();       // Initializes shield
   MagnetoShield.dacWrite(0);   // Turns off magnet
 // Reference potentiometer test ----------------------------
@@ -77,7 +78,7 @@ void setup() {
   wait();
   x = (float)analogRead(MAGNETO_YPIN);
   MagnetoShield.dacWrite(0);
-  if (x >= 600.0 && x <= 640.0) {
+  if (x >= 550 && x <= 650.0) {
     Serial.println(" Ok.");
   }
   else {

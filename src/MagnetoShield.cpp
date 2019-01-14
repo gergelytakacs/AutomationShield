@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Jakub Mihalík. 
-  Last update: 14.11.2018.
+  Last update: 14.01.2019.
 */
 
 #include "MagnetoShield.h"
@@ -45,8 +45,8 @@ void MagnetoShieldClass::calibration()
 	
 	// Selects maximum ADC value to filter for any noise.
 	// Magnet cannot get physically lower than ground level.
-	MagnetoShield.dacWrite(0);						// No power to magnet
-	delay(500);					   			// Wait for things to settle
+	MagnetoShield.dacWrite(0);					// No power to magnet
+	delay(500);					   			    // Wait for things to settle
 	for (int i=1; i<=100; i++) {	    		// Perform 100 measurements
 		meas_t = analogRead(MAGNETO_YPIN); 		// Measure
 		if (meas_t > minCalibrated){ 			// If higher than already
@@ -55,27 +55,19 @@ void MagnetoShieldClass::calibration()
 	}
 	// Selects maximum ADC value to filter for any noise.
 	// Magnet cannot get physically higher than ceiling
-	MagnetoShield.dacWrite(255);						// Full power to magnet
-	delay(500);					   			// Wait for things to settle	
+	MagnetoShield.dacWrite(255);				// Full power to magnet
+	delay(500);					   			    // Wait for things to settle	
 	for (int i=1; i<=100; i++) {				// Perform 100 measurements
 		meas_t = analogRead(MAGNETO_YPIN);		// Measure
 		if (meas_t < maxCalibrated){			// If lower than already
 			maxCalibrated=meas_t;				// Save new maximum
 		}	
-	}
+	}	
 	
-	// Lower DAC until reaches saturation point
-	while (maxCalibrated>=meas_t) {				// While we reach maxCalibrated
-	    magnetSaturate--; 		     			// Lower magnet power
-		MagnetoShield.dacWrite(magnetSaturate); // Set magnet power
-	    delay(500);							    // Wait for things to settle
-		for (int i=1; i<=10; i++) {			    // Perform 10 measurements
-			meas_tt = analogRead(MAGNETO_YPIN);	// Measure
-			if (meas_t < meas_tt){				// If lower than already
-				meas_t=meas_tt;			    	// Save measurement
-			}
-		}
-	}
+	
+	// Recalibrate distance based on these
+	d_p2=log((EMAGNET_HEIGHT-MAGNET_LOW)/(EMAGNET_HEIGHT-MAGNET_HIGH))/log(adcToGauss(minCalibrated)/adcToGauss(maxCalibrated));							// Power
+	d_p1=(EMAGNET_HEIGHT-MAGNET_HIGH)/(pow(adcToGauss(maxCalibrated),d_p2)); //Multiplier
 	
 	calibrated = 1;								// The calibration routine was launched
 	MagnetoShield.dacWrite(0); 					// Fall back to ground
@@ -136,15 +128,20 @@ float MagnetoShieldClass::adcToGauss(short adc)
 // to distance measured from the bottom of the magnet
 float MagnetoShieldClass::gaussToDistance(float g)
 {	
-	float h = (EMAGNET_HEIGHT)-P6*pow(g,P7);
-	return  h;
+
+	if (~calibrated){
+		d_p1=D_P1_DEF;
+		d_p2=D_P2_DEF;		
+	}
+
+	return  d_p1*pow(g,d_p2);
 }
 
 // Computes DAC levels for equivalent magnet voltage
 byte MagnetoShieldClass::voltageToDac(float vOut)
 {
-	 float dacOut = P1*pow(vOut,P2)+P3*pow(vOut,P4)+P5;
-	 return (byte)dacOut;
+	 byte dacOut = (byte)round(P1*pow(vOut,P2)+P3*exp((vOut*P4)));
+	 return dacOut;
 }			
 
 // Reads sensor and returns the Hall sensor reading in Gauss
@@ -179,18 +176,6 @@ float MagnetoShieldClass::auxReadCurrent()
 	float i =  ((float)analogRead(MAGNETO_IPIN))*ARES3V3*IGAIN;
 	return  i;
 }
-
-// Approximate distance based on magnetism
-// float MagnetoShieldClass::sensorReadDistance()
-// {	
-	// return  MagnetoShield.adcToGauss(analogRead(MAGNETO_YPIN));
-// }
-
-// Returns the saturation of the magnet (8-bit levels)
-byte MagnetoShieldClass::getSaturation()
-{
-	return magnetSaturate;
-}	
 
 // Returns the lower limit of the Hall sensor reading (10-bit levels)
 int MagnetoShieldClass::getMinCalibrated()

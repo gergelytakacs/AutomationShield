@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Jakub Mihalík. 
-  Last update: 14.11.2018.
+  Last update: 14.01.2019.
 */
 
 #ifndef MAGNETOSHIELD_H							// Include guard
@@ -25,8 +25,10 @@
 	#define SHIELDRELEASE 2   					//  Use number only: e.g. for R2 is 2
 #endif
 
-#define VIN 11.7 							    // [V] Input voltage from source
+#define VIN 11.58 							    // [V] Input voltage from source
 #define EMAGNET_HEIGHT 20.0				        // [mm] Location of electromagnet above ground
+#define MAGNET_LOW	3.0  					    // [mm] Top of the magnet from ground - distance from Hall element
+#define MAGNET_HIGH 8.0						    // [mm] Top of the magnet from ground - distance from Hall element
 #define PCF8591 (0x90 >> 1)			    		// Address of the DAC chip
 #define MAGNETO_YPIN A3							// Defines the location of the Hall sensor 
 #define A1302_SENSITIVITY	769.23	    		// [G/V] = 1.3 mV/G Sensitivity of the A1302 Hall sensor
@@ -39,8 +41,8 @@
 	#define A1302_LSAT	19							// [10-bit ADC] Lower saturation of the Hall sensor
 	#define A1302_HSAT 382							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
 #elif SHIELDRELEASE == 2
-	#define A1302_LSAT	29							// [10-bit ADC] Lower saturation of the Hall sensor
-	#define A1302_HSAT 577							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+	#define A1302_LSAT	30							// [10-bit ADC] Lower saturation of the Hall sensor
+	#define A1302_HSAT 586							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
 #endif
 
 // Functionality specific for R2
@@ -48,22 +50,22 @@
     #define MAGNETO_RPIN A0                        // Defines the location of reference pot
 	#define MAGNETO_VPIN A1						   // Defines the location of input voltage sensing
 	#define MAGNETO_IPIN A2						   // Defines the location of input current sensing
-	#define VGAIN 4								   // Defines the voltage sensing gain (voltage divider)
+	#define VGAIN 4.0   						   // Defines the voltage sensing gain (voltage divider)
     #define IGAIN 33.33333333 					   // Defines the current sensing gain mA/V
 #endif
 
 // Power model of the input-output voltage DAC->Vout
-#define P1 0.01131							    // Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P2 2.554								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P3 -447.4							    // Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P4 -0.01247								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P5 638.6								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+#define P1 193.7						    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+#define P2 0.02833								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+#define P3 0.9068							    // Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+#define P4 0.1418								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
+
 
 // Distance model based on magnetic flux density
 // As it is hard to make exact measurements a two-point 
 // calibration of a power function seems to work best
-#define P6 470.6 								//Distance function constant (f(y) = P6*x^P7) for Flux vs. distance from magnet
-#define P7 -0.6719								// Distance function constant (f(y) = P6*x^P7) for Flux vs. distance from magnet
+#define D_P1_DEF  81.5						//Default distance function constant (f(y) = D_P1*x^D_P2) for Flux vs. distance from magnet
+#define D_P2_DEF  -0.2547 					    // Default distance function constant (f(y) = D_P1*x^D_P2) for Flux vs. distance from magnet
 
 class MagnetoShieldClass						// Class for MagnetoShield API
 {
@@ -85,7 +87,6 @@ public:
 	// Get functions to extract private variables
 	int getMinCalibrated();						// Returns the minimum calibrated value for the magnetic field (10-bit ADC levels).
 	int getMaxCalibrated();						// Returns the maximum calibrated value for the magnetic field (10-bit ADC levels).
-	byte getSaturation();		                // Returns the saturation level of the magnet (8-bit DAC levels).
 	
 	#if SHIELDRELEASE == 2
 		float auxReadVoltage(); 			    // Returns voltage potential of the electromagnet
@@ -94,9 +95,10 @@ public:
 	#endif
 	
 private:							
+    float d_p1;			     					// Calibrated distance function constant (f(y) = d_p1*x^d_p2) for Flux vs. distance from magnet
+	float d_p2;									// Calibrated distance function constant (f(y) = d_p1*x^d_p2) for Flux vs. distance from magnet
 	short minCalibrated = 0;					// ADC on Hall for ground
 	short maxCalibrated = 1024;					// ADC on Hall for ceiling
-	byte  magnetSaturate = 255;					// Saturation level of the magnet before its dropped	
     byte calibrated = 0;						// If the calibration routine was completed
 };
 

@@ -34,13 +34,12 @@ void setup() {
   
    Minimum=MagnetoShield.getMinCalibrated();     //  Getting borders for flying
    Maximum=MagnetoShield.getMaxCalibrated(); 
-   Saturation=MagnetoShield.getSaturation(); 
    
 
    Serial.print(Minimum);
    Serial.print(" of 10-bit ADC, that is ");   
    Serial.print(MagnetoShield.adcToGauss(Minimum));
-   Serial.print(" G, estimated distance is "); 
+   Serial.print(" G, estimated distance from electromagnet is "); 
    Serial.print(MagnetoShield.gaussToDistance(MagnetoShield.adcToGauss(Minimum)));
    Serial.println(" mm");
    
@@ -48,14 +47,11 @@ void setup() {
    Serial.print(Maximum);
    Serial.print(" of 10-bit ADC, that is ");  
    Serial.print(MagnetoShield.adcToGauss(Maximum));
-   Serial.print(" G"); 
-   Serial.print(" G, estimated distance is "); 
+   Serial.print(" G, estimated distance from electromagnet is "); 
    Serial.print(MagnetoShield.gaussToDistance(MagnetoShield.adcToGauss(Maximum)));
    Serial.println(" mm");
   
-   Serial.print("Magnet saturation: ");  
-   Serial.print(Saturation);
-   Serial.println(" of 8-bit ADC"); 
+
 }
 
 void loop() {                                  

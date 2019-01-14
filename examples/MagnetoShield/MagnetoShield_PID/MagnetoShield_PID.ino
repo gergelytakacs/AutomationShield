@@ -20,24 +20,20 @@
   Created by Gergely Takács.
   Last update: 14.19.2018.
 */
-#define DISTANCE 0             // Percents (0) or distance (1)
 #include <MagnetoShield.h>     // Include header for hardware API
 
+// PID Tuning
+#define KP 2.2            // PID Kp
+#define TI 0.1            // PID Ti
+#define TD 0.04           // PID Td
 
-#if DISTANCE==0
-  #define KP 0.09              // PID Kp
-  #define TI 0.2              // PID Ti
-  #define TD 0.02           // PID Td
-#elif DISTANCE==1
-#endif
-
-unsigned long Ts = 3000;               // Sampling in microseconds
+unsigned long Ts = 4000;            // Sampling in microseconds
 unsigned long k = 0;                // Sample index
 bool enable=false;                  // Flag for sampling 
 bool realTimeViolation=false;       // Flag for real-time violations
 
 float r = 0.0;            // Reference
-float R[]={50.0,75.0,25.0,40.0,80.0,0.0};;    // Reference trajectory
+float R[]={15.0,15.0,15.0,15.0,15.0};    // Reference trajectory
 int T = 1000;           // Section length (steps) 1 hrs
 int i = i;              // Section counter
 float y = 0.0;            // Output
@@ -47,7 +43,8 @@ void setup() {
   Serial.begin(2000000);               // Initialize serial
   // Initialize and calibrate board
   MagnetoShield.begin();               // Define hardware pins
-  
+  //MagnetoShield.calibration();                  // Calibrates shield
+     
   // Initialize sampling function
   Sampling.interruptInitialize(Ts);   // Sampling init.
   Sampling.setInterruptCallback(stepEnable); // Interrupt fcn.
@@ -75,7 +72,7 @@ void stepEnable(){              // ISR
   enable=true;                  // Change flag
 }
 
-// A signle algoritm step
+// A single algoritm step
 
 void step(){ 
 
@@ -83,15 +80,15 @@ if (k % (T*i) == 0){
   r = R[i];                // Set reference
   i++;
 }
-                  
-y = MagnetoShield.sensorReadPercents();           // Sensor Read 
-u = PIDAbs.compute(r-y,0,12,0,100);   // PID
-MagnetoShield.actuatorWrite(u);            // Actuate
 
-Serial.print(r);            // Print reference
+y = MagnetoShield.sensorRead();           // Sensor Read (~mm)
+u = PIDAbs.compute(r-y,0,12,0,20);   // PID
+MagnetoShield.actuatorWrite(u);       // Actuate
+
+Serial.print(r);               // Print reference
 Serial.print(", ");            
-Serial.print(y);            // Print output  
+Serial.print(y);               // Print output  
 Serial.print(", ");
 Serial.println(u);            // Print input
-k++;                  // Increment k
+k++;                          // Increment k
 }
