@@ -13,3 +13,8 @@
 
 # old Simulink files
 *.r2018a
+
+
+# ignore temporary work
+*Working*
+*Temp*

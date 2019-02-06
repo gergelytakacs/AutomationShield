@@ -52,6 +52,7 @@
 	#define MAGNETO_IPIN A2						   // Defines the location of input current sensing
 	#define VGAIN 4.0   						   // Defines the voltage sensing gain (voltage divider)
     #define IGAIN 33.33333333 					   // Defines the current sensing gain mA/V
+	#define IBIAS 3.01 	   					   	   // Current sensing bias mA
 #endif
 
 // Power model of the input-output voltage DAC->Vout

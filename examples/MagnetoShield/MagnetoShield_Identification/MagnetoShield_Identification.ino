@@ -1,16 +1,17 @@
-/*
-  MagnetoShield closed-loop PID response example
 
-  PID feedback control for magnet levitation.
+
+/*
+  MagnetoShield closed-loop identification experiment
+
+  Runs a closed-loop experiment to gather data for system
+  identification.
   
   This example initializes the sampling and PID control 
   subsystems from the AutomationShield library and starts a 
-  predetermined reference trajectory for the heating block
-  temperature. 
-  
-  Upload the code to your board, then open the Serial
-  Plotter function in your Arduino IDE. You may change the
-  reference trajectory in the code.
+  predetermined reference trajectory. Noise is injected to 
+  this input trajectory to create a rich signal. Upload the
+  code to your board, then use a serial terminal software 
+  or Matlab to aquire the dataset for later processing. 
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -18,90 +19,98 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács.
-  Last update: 28.11.2018.
+  Last update: 16.01.2018.
 */
 
-#include <MagnetoShield.h>     // Include header for hardware API
+#include <MagnetoShield.h>                // Include header for hardware API
 
-#define KP 2.2            // PID Kp
-#define TI 0.1            // PID Ti
-#define TD 0.04         // PID Td
 
-//#define KP 2.2            // PID Kp
-//#define TI 0.1            // PID Ti
-//#define TD 0.03         // PID Td
+// Experiment settings
+float R[]={15.0,16.0,15.5,14.5,16.0};    // Reference trajectory (pre-set)
+float wPP=1.5;                           // [V] Peak-to-peak noise level
 
-unsigned long Ts = 4000;               // Sampling in microseconds
-unsigned long k = 0;                // Sample index
-bool enable=false;                  // Flag for sampling 
-bool realTimeViolation=false;       // Flag for real-time violations
+// PID Tuning parameters
+// Less-aggressive tuning introduces less saturation
+#define KP 2.1                            // PID Kp
+#define TI 0.1                            // PID Ti
+#define TD 0.02                           // PID Td
 
-float r = 0.0;            // Reference
-float R[]={15.0,14.5,15.0,15.5,15.0};    // Reference trajectory
-int T = 1000;           // Section length (steps) 
-int i = i;              // Section counter
-float y = 0.0;            // Output
-float u = 0.0;            // Input          
+// Flags and parameters
+unsigned long Ts = 4000;                  // Sampling in microseconds
+unsigned long k = 0;                      // Sample index
+bool enable=false;                        // Flag for sampling 
+bool realTimeViolation=false;             // Flag for real-time violations
+float r = 0.0;                            // Reference
+int T = 1500;                             // Experiment section length (steps) 
+int i = i;                                // Experiment section counter
+float y = 0.0;                            // [mm] Output
+float u = 0.0;                            // [V] Input          
+float I = 0.0;                            // [mA] Current
+float w = 0.0;                            // [V] Noise
+float wBias=wPP/2.0;                      // [V] Noise bias
+int   wP=(int)wPP*100;                    // For (pseudo)-random generator
 
 void setup() {
-  Serial.begin(2000000);               // Initialize serial
+  Serial.begin(2000000);                  // Initialize serial
+  
   // Initialize and calibrate board
-  MagnetoShield.begin();               // Define hardware pins
+  MagnetoShield.begin();                  // Define hardware pins
+  MagnetoShield.calibration();            // Calibrate for distance
   
   // Initialize sampling function
-  Sampling.interruptInitialize(Ts);   // Sampling init.
+  Sampling.interruptInitialize(Ts);       // Sampling init.
   Sampling.setInterruptCallback(stepEnable); // Interrupt fcn.
 
- // Set the PID constants
- PIDAbs.setKp(KP);
- PIDAbs.setTi(TI);
- PIDAbs.setTd(TD); 
+  // Set the PID constants
+  PIDAbs.setKp(KP);                       // Proportional gain
+  PIDAbs.setTi(TI);                       // Integration time constant
+  PIDAbs.setTd(TD);                       // Derivative time constant
+
+  
+  
 }
 
 // Main loop launches a single step at each enable time
 void loop() {
-  if (enable) {               // If ISR enables
-    step();                 // Algorithm step
-    enable=false;               // Then disable
+  if (enable) {                           // If ISR enables
+    step();                               // Algorithm step
+    enable=false;                         // Then disable until next interrupt
   }  
 }
 
-void stepEnable(){              // ISR 
-  if(enable){
-  realTimeViolation=true;
-  Serial.println("Real-time samples violated.");
-  while(1);
-  }
-  enable=true;                  // Change flag
+void stepEnable(){                        // This is the ISR 
+  if(enable){                             // If step still running
+  realTimeViolation=true;                 // RT has been violated
+  while(1);                               // Stop
+  }                                       // Else 
+  enable=true;                            // change flag and run step
 }
 
-// A signle algoritm step
+// A single algoritm step
+void step(){                             
 
-void step(){ 
+// Experiment control
+if (i>sizeof(R)/sizeof(R[0])){            // If finished
+  MagnetoShield.actuatorWrite(0);         // Turn off magnet
+  while(1);                               // and do nothing
+}                                        
+else if (k % (T*i) == 0){                 // else for each section
+  r = R[i];                               // set reference
+  i++;                                    // increment section counter
+}
 
-if (i>sizeof(R)/sizeof(R[0])){
-  MagnetoShield.actuatorWrite(0);
-  while(1);
-}
-else if (k % (T*i) == 0){        
-  r = R[i];                // Set reference
-  i++;
-}
-float w=(float)random(0,10)/10.0;         // [V] Input noise
+w=wBias-(float)random(0,wP)/100.0;        // [V] Input noise
 y = MagnetoShield.sensorRead();           // [mm] Sensor Read 
-u = PIDAbs.compute(y-r,0,12,0,20);        // [V] PID
-MagnetoShield.actuatorWrite(u+w);         // Actuate
+I = MagnetoShield.auxReadCurrent();       // [mA] Current read
+u = PIDAbs.compute(r-y,0,12,0,20)+w;      // [V] PID + noise
+u = AutomationShield.constrainFloat(u,0,12);
+MagnetoShield.actuatorWrite(u);           // Actuate
 
-// For PID tuning
-//Serial.print(r);            // Print reference
-//Serial.print(", ");            
-//Serial.println(y);            // Print output  
-
-// For measurement
-Serial.print(u);            // Print input only
+// For data aquisition
+Serial.print(y);                          // Print input only
 Serial.print(", ");
-Serial.print(w);            // Print noise only
+Serial.print(u);                          // Print output
 Serial.print(", ");
-Serial.println(y);            // Print output
-k++;                  // Increment k
+Serial.println(I);                        // Print output
+k++;                                      // Increment k
 }

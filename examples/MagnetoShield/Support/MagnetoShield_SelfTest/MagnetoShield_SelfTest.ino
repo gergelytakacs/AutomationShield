@@ -26,7 +26,7 @@ void wait() {
 
 void setup() {
   Serial.begin(2000000);       // Starts serial communication
-  Serial.printing("Testing MagnetoShield components");
+  Serial.println("Testing MagnetoShield components");
   MagnetoShield.begin();       // Initializes shield
   MagnetoShield.dacWrite(0);   // Turns off magnet
 // Reference potentiometer test ----------------------------

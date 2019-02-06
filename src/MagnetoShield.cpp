@@ -170,10 +170,11 @@ float MagnetoShieldClass::auxReadVoltage()
 	return  v;
 }
 
+
 // Reads the voltage on the Electromagnet
 float MagnetoShieldClass::auxReadCurrent()
 {	
-	float i =  ((float)analogRead(MAGNETO_IPIN))*ARES3V3*IGAIN;
+	float i =  ((float)analogRead(MAGNETO_IPIN))*ARES3V3*IGAIN-IBIAS;
 	return  i;
 }
 
