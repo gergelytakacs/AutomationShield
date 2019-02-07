@@ -36,16 +36,17 @@ void SamplingClass::interruptInitialize(unsigned long microseconds){
        
     TCCR1B |= (1 << WGM12);                     // CTC mode       
     TIMSK1 |= (1 << OCIE1A);                    // enable timer compare interrupt
+  
+    if(!setSamplingPeriod(microseconds)) 
+    Serial.println("Sampling period is too long.\nMax is 4194303 microseconds.");       
+  
+    interrupts();             // enable all interrupts
+  
   #elif ARDUINO_ARCH_SAMD
       // Not developed yet.
   #else
       #error "Architecture not supported."
-  #endif
-  
-  if(!setSamplingPeriod(microseconds)) 
-    Serial.println("Sampling period is too long.\nMax is 4194303 microseconds.");       
-  
-  interrupts();             // enable all interrupts                
+  #endif                 
 }
 
 bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
