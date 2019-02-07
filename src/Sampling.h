@@ -38,7 +38,8 @@ class SamplingClass{
     static void defaultInterrupt();
     p_to_void_func interruptCallback;    
     #ifdef ARDUINO_ARCH_AVR
-   	 const unsigned long timer1Resolution = 65536; 		// AVR Timer 1 is 16bit            
+	 // Default: Timer1
+   	 const unsigned long timerResolution = 65536; 		// AVR Timer 1 is 16bit            
     	 const unsigned char cpuFrequency = 16; 		// AVR Arduino CPU frequency in microseconds 
     #elif ARDUINO_ARCH_SAMD
   	// Not developed yet.
