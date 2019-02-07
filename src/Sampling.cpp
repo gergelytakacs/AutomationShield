@@ -28,15 +28,20 @@ SamplingClass::SamplingClass(){
 }
 
 void SamplingClass::interruptInitialize(unsigned long microseconds){
-
-  noInterrupts();                             // disable all interrupts
-  TCCR1A = 0;                                 // clear register
-  TCCR1B = 0;                                 // clear register
-  TCNT1  = 0;                                 // clear register
+  #ifdef ARDUINO_ARCH_AVR
+    noInterrupts();                             // disable all interrupts
+    TCCR1A = 0;                                 // clear register
+    TCCR1B = 0;                                 // clear register
+    TCNT1  = 0;                                 // clear register
        
-  TCCR1B |= (1 << WGM12);                     // CTC mode       
-  TIMSK1 |= (1 << OCIE1A);                    // enable timer compare interrupt
-
+    TCCR1B |= (1 << WGM12);                     // CTC mode       
+    TIMSK1 |= (1 << OCIE1A);                    // enable timer compare interrupt
+  #elif ARDUINO_ARCH_SAMD
+      // Not developed yet.
+  #else
+      #error "Architecture not supported."
+  #endif
+  
   if(!setSamplingPeriod(microseconds)) 
     Serial.println("Sampling period is too long.\nMax is 4194303 microseconds.");       
   
@@ -46,7 +51,7 @@ void SamplingClass::interruptInitialize(unsigned long microseconds){
 bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 
   const unsigned long cycles = microseconds * cpuFrequency;
-        
+  #ifdef ARDUINO_ARCH_AVR      
   if (cycles < timerResolution){
     TCCR1B |= (0 << CS12) | (0 << CS11) | (1 << CS10); // no prescaling
     OCR1A = cycles-1;                                  // compare match register
@@ -70,6 +75,12 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
   else{
     return false;
   }
+  #elif ARDUINO_ARCH_SAMD
+      // Not developed yet.
+  #else
+      #error "Architecture not supported."
+  #endif
+  
   samplingPeriod=microseconds/1000000.0;               // in seconds
   return true;               
 }
@@ -88,7 +99,15 @@ p_to_void_func SamplingClass::getInterruptCallback (){
 
 SamplingClass Sampling;
 
+#ifdef ARDUINO_ARCH_AVR
+
 ISR(TIMER1_COMPA_vect)
 {
   (Sampling.getInterruptCallback())();
 }
+    
+#elif ARDUINO_ARCH_SAMD
+      // Not developed yet.
+#else
+  #error "Architecture not supported."
+#endif
