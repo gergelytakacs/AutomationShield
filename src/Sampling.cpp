@@ -45,7 +45,7 @@ void SamplingClass::interruptInitialize(unsigned long microseconds){
 
 bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 
-  const unsigned long cycles = microseconds * cpuFrequence;
+  const unsigned long cycles = microseconds * cpuFrequency;
         
   if (cycles < timer1Resolution){
     TCCR1B |= (0 << CS12) | (0 << CS11) | (1 << CS10); // no prescaling
