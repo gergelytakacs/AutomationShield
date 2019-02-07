@@ -47,23 +47,23 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 
   const unsigned long cycles = microseconds * cpuFrequency;
         
-  if (cycles < timer1Resolution){
+  if (cycles < timerResolution){
     TCCR1B |= (0 << CS12) | (0 << CS11) | (1 << CS10); // no prescaling
     OCR1A = cycles-1;                                  // compare match register
   }
-  else if(cycles < timer1Resolution * 8){
+  else if(cycles < timerResolution * 8){
     TCCR1B |= (0 << CS12) | (1 << CS11) | (0 << CS10); // 8 prescaler 
     OCR1A = (cycles/8)-1;                              // compare match register
   }
-  else if(cycles < timer1Resolution * 64){
+  else if(cycles < timerResolution * 64){
     TCCR1B |= (0 << CS12) | (1 << CS11) | (1 << CS10); // 64 prescaler 
     OCR1A = (cycles/64)-1;                             // compare match register
   }
-  else if(cycles < timer1Resolution * 256){
+  else if(cycles < timerResolution * 256){
     TCCR1B |= (1 << CS12) | (0 << CS11) | (0 << CS10); // 256 prescaler 
     OCR1A = (cycles/256)-1;                            // compare match register
   }
-  else if(cycles < timer1Resolution * 1024){
+  else if(cycles < timerResolution * 1024){
     TCCR1B |= (1 << CS12) | (0 << CS11) | (1 << CS10); // 1024 prescaler 
     OCR1A = (cycles/1024)-1;                           // compare match register
   }
