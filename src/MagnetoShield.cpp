@@ -21,10 +21,12 @@
 void MagnetoShieldClass::begin()
 {	
 	Wire.begin();	// Starts the "Wire" library for I2C
-	#if SHIELDRELEASE == 1	
-		analogReference(DEFAULT);
-	#elif SHIELDRELEASE == 2
-		analogReference(EXTERNAL);
+	#ifdef ARDUINO_ARCH_AVR
+		#if SHIELDRELEASE == 1	
+			analogReference(DEFAULT);
+		#elif SHIELDRELEASE == 2
+			analogReference(EXTERNAL);
+		#endif
 	#endif
 }
 

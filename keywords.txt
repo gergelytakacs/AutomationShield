@@ -46,8 +46,8 @@ setKp	KEYWORD2
 setTi	KEYWORD2
 setTd	KEYWORD2
 # Sampling ###########################
-interruptInitialize	KEYWORD2
-setInterruptCallback	KEYWORD2
+period	KEYWORD2
+interrupt	KEYWORD2
 getInterruptCallback	KEYWORD2
 getSamplingPeriod	KEYWORD2
 ######################################

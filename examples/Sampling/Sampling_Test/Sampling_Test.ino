@@ -1,10 +1,12 @@
 #include "AutomationShield.h"
 
-unsigned long int Ts = 1000000; // Sampling in microseconds
+unsigned long int Ts = 50000; // Sampling in microseconds
 
+#define PIN 13                  // For oscilloscope test
 bool enable=false;
 unsigned long int curTime=0;
 unsigned long int prevTime=0;
+bool state = 0;                 // pin state
 
 void setup() {
   
@@ -16,11 +18,10 @@ void setup() {
 }
 
 void loop() {
-  curTime=millis();
+  curTime=micros();
   if (enable) {
     step();
-    enable=false;
-    
+    enable=false;    
   }  
 }
 
@@ -30,7 +31,15 @@ void stepEnable(){
 
 void step(){
   // Here comes your control application
-  Serial.print((curTime-prevTime));
-  Serial.println(" ms");
-  prevTime=curTime;
+
+  // This is just for testing
+    Serial.print((float)(curTime-prevTime)/1000.0);
+    Serial.println(" ms");
+    prevTime=curTime;
+    if(state == true) {
+      digitalWrite(PIN,HIGH);
+    } else {
+      digitalWrite(PIN,LOW);
+    }
+    state = !state;
 }

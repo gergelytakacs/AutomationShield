@@ -37,11 +37,15 @@ class SamplingClass{
 	
     static void defaultInterrupt();
     p_to_void_func interruptCallback;    
+
     #ifdef ARDUINO_ARCH_AVR
 	 // Default: Timer1
-   	 const unsigned long timerResolution = 65536; 		// AVR Timer 1 is 16bit            
-    	 const unsigned char cpuFrequency = 16; 		// AVR Arduino CPU frequency in microseconds 
+   	const unsigned long timerResolution = 65536; 		// AVR Timer 1 is 16bit            
+	const unsigned char cpuFrequency = 16; 		// CPU frequency in microseconds 
     #elif ARDUINO_ARCH_SAMD
+	// Default TC5
+	const unsigned long timerResolution = 65536; 		// AVR Timer 1 is 16bit  
+	const unsigned char cpuFrequency = VARIANT_MCK/1000000; 		// CPU frequency in microseconds 
   	// Not developed yet.
     #else
    	#error "Architecture not supported."
