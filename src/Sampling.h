@@ -28,8 +28,8 @@ class SamplingClass{
   public:
 
     SamplingClass();
-    void interruptInitialize(unsigned long microseconds); 
-    void setInterruptCallback(p_to_void_func interruptCallback);
+    void period(unsigned long microseconds); 
+    void interrupt(p_to_void_func interruptCallback);
     p_to_void_func getInterruptCallback ();
     float getSamplingPeriod();  
          

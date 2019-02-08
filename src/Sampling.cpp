@@ -27,7 +27,7 @@ SamplingClass::SamplingClass(){
   samplingPeriod = 0.0;
 }
 
-void SamplingClass::interruptInitialize(unsigned long microseconds){
+void SamplingClass::period(unsigned long microseconds){
   #ifdef ARDUINO_ARCH_AVR
     noInterrupts();                             // disable all interrupts
     TCCR1A = 0;                                 // clear register
@@ -90,7 +90,7 @@ float SamplingClass::getSamplingPeriod(){
   return samplingPeriod;
 }
 
-void SamplingClass::setInterruptCallback(p_to_void_func interruptCallback){
+void SamplingClass::interrupt(p_to_void_func interruptCallback){
   this->interruptCallback = interruptCallback;
 }
 

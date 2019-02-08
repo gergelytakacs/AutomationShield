@@ -14,8 +14,8 @@ void setup() {
   Serial.begin(115200); //start serial communication
   FloatShield.initialize(); //FloatShield initialization
   FloatShield.calibrate(); //FloatShield calibration for more accurate measurements
-  Sampling.interruptInitialize(Ts*1000); //Sampling initialization in microseconds
-  Sampling.setInterruptCallback(StepEnable); // seting the interrupt functon
+  Sampling.period(Ts*1000); //Sampling initialization in microseconds
+  Sampling.interrupt(StepEnable); // seting the interrupt functon
   //Setting the PID constants
   PIDAbs.setKp(0.86);
   PIDAbs.setKi(1.729);

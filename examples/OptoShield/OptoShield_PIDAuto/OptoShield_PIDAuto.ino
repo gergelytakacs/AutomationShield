@@ -44,8 +44,8 @@ void setup() {
   OptoShield.calibration();         // Calibration percentages
   
   // Initialize sampling function
-  Sampling.interruptInitialize(Ts * 1000);   // Sampling init.
-  Sampling.setInterruptCallback(stepEnable); // Interrupt fcn.
+  Sampling.period(Ts * 1000);   // Sampling init.
+  Sampling.interrupt(stepEnable); // Interrupt fcn.
 
  // Set the PID constants
  PIDAbs.setKp(KP);

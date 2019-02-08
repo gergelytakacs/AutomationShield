@@ -39,8 +39,8 @@ void setup() {
   delay(3000);						// Wait for settling
   
   // Initialize sampling function
-  Sampling.interruptInitialize(Ts * 1000);   // Sampling init.
-  Sampling.setInterruptCallback(stepEnable); // Interrupt fcn.
+  Sampling.period(Ts * 1000);   // Sampling init.
+  Sampling.interrupt(stepEnable); // Interrupt fcn.
 }
 
 // Main loop launches a single step at each enable time

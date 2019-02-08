@@ -24,8 +24,8 @@ void setup() {
   MotoShield.setMotorSpeed(100); // calibration
   delay(1000);
   
-  Sampling.interruptInitialize(Ts * 1000);  // initialize the sampling function, input is the sampling time in microseconds
-  Sampling.setInterruptCallback(stepEnable); // setting the interrupts, the input is the ISR function
+  Sampling.period(Ts * 1000);  // initialize the sampling function, input is the sampling time in microseconds
+  Sampling.interrupt(stepEnable); // setting the interrupts, the input is the ISR function
 
  // setting the PID constants
  PIDAbs.setKp(0.007);

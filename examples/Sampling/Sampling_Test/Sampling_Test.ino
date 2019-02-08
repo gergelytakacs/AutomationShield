@@ -1,5 +1,7 @@
 #include "AutomationShield.h"
 
+unsigned long int Ts = 1000000; // Sampling in microseconds
+
 bool enable=false;
 unsigned long int curTime=0;
 unsigned long int prevTime=0;
@@ -7,13 +9,13 @@ unsigned long int prevTime=0;
 void setup() {
   
   Serial.begin(9600);
-  Sampling.interruptInitialize(1000000);
-  Sampling.setInterruptCallback(stepEnable);
+  
+  Sampling.period(Ts);
+  Sampling.interrupt(stepEnable);
 
 }
 
 void loop() {
-
   curTime=millis();
   if (enable) {
     step();
@@ -27,7 +29,8 @@ void stepEnable(){
 }
 
 void step(){
-  
-  Serial.println(curTime-prevTime);
+  // Here comes your control application
+  Serial.print((curTime-prevTime));
+  Serial.println(" ms");
   prevTime=curTime;
 }

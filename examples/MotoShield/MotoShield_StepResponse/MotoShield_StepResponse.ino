@@ -20,8 +20,8 @@
    
    Serial.begin(9600);
    
-   Sampling.interruptInitialize(Ts * 1000);
-   Sampling.setInterruptCallback(stepEnable);
+   Sampling.period(Ts * 1000);
+   Sampling.interrupt(stepEnable);
                                    // sampling
    
    MotoShield.begin();             // board initialization   
