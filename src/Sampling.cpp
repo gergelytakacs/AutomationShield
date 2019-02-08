@@ -45,10 +45,8 @@ void SamplingClass::period(unsigned long microseconds){
   #elif ARDUINO_ARCH_SAMD
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
      GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
-
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;        // Set Timer counter Mode to 16 bits
 	 TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
-	 TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV4;      // Prescaler: 4
      
 	 if(!setSamplingPeriod(microseconds)) 
      Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
@@ -64,7 +62,7 @@ void SamplingClass::period(unsigned long microseconds){
 bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 
   const unsigned long cycles = microseconds * cpuFrequency;
-  
+
   #ifdef ARDUINO_ARCH_AVR      
 	  if (cycles < timerResolution){
 		TCCR1B |= (0 << CS12) | (0 << CS11) | (1 << CS10); // no prescaling
@@ -90,11 +88,12 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 		return false;
 	  }
 	  
-  #elif ARDUINO_ARCH_SAMD
-     if (cycles < timerResolution){
+ 
+ #elif ARDUINO_ARCH_SAMD
+    if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;  // no prescaling
       TC5->COUNT16.CC[0].reg = cycles-1;                  // compare match register
-    }
+	 }
     else if(cycles < timerResolution * 2){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV2;  // 2 prescaler
       TC5->COUNT16.CC[0].reg = (cycles/2)-1;              // compare match register
@@ -111,14 +110,11 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV16;  //  16 prescaler
       TC5->COUNT16.CC[0].reg = (cycles/16)-1;              // compare match register
     }
-    
-	// Something is fishy with the 64 prescaler
-	//else if(cycles < timerResolution * 64){
-    //  TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV64;  //  64 prescaler
-    //  TC5->COUNT16.CC[0].reg = (cycles/64)-1;              // compare match register
-    //}
-	
-    else if(cycles < timerResolution * 256){
+    else if(cycles < timerResolution * 64){
+        TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV64;  //  64 prescaler
+        TC5->COUNT16.CC[0].reg = (cycles/64)-1;              // compare match register
+    }
+	else if(cycles < timerResolution * 256){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV256;  //  256 prescaler
       TC5->COUNT16.CC[0].reg = (cycles/256)-1;              // compare match register
     }
@@ -132,6 +128,7 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
   #else
       #error "Architecture not supported."
   #endif
+  
   
   samplingPeriod=microseconds/1000000.0;               // in seconds
   return true;               
@@ -160,10 +157,11 @@ ISR(TIMER1_COMPA_vect)
     
 #elif ARDUINO_ARCH_SAMD
 void TC5_Handler (void) {
-  TC5->COUNT16.INTFLAG.bit.MC0 = 1;    //Clear the interrupt 
-  // Interrupt can fire before step is done
-  (Sampling.getInterruptCallback())();
+ //Interrupt can fire before step is done
+  TC5->COUNT16.INTFLAG.bit.MC0 = 1;    //Clear the interrupt
+ (Sampling.getInterruptCallback())();
 }
 #else
   #error "Architecture not supported."
+
 #endif

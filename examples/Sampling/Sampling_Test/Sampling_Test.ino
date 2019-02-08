@@ -1,20 +1,19 @@
-#include "AutomationShield.h"
+#include "Sampling.h"
 
-unsigned long int Ts = 50000; // Sampling in microseconds
+unsigned long int Ts = 1000; // Sampling in microseconds
 
-#define PIN 13                  // For oscilloscope test
+#define PIN 12                  // For oscilloscope test
 bool enable=false;
 unsigned long int curTime=0;
 unsigned long int prevTime=0;
 bool state = 0;                 // pin state
 
 void setup() {
-  
-  Serial.begin(9600);
+  pinMode(PIN,OUTPUT);
+  Serial.begin(2000000); 
   
   Sampling.period(Ts);
   Sampling.interrupt(stepEnable);
-
 }
 
 void loop() {
