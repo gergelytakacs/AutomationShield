@@ -31,7 +31,7 @@
   
 clc; clear all;                                 % Clears screen and all variables
 close all;                                      % Closes all figures
-load resultID.mat;                              % Loads data file (experiment)
+load resultID_4000_us.mat;                      % Loads data file (experiment)
 Ts=0.004;                                       % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output (position)
 u=result(:,2);                                  % [V] Input and probe signal

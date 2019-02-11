@@ -31,8 +31,8 @@ clc; clear all;                                 % Clears screen and all variable
 fixedInductance=0;                              % Fixed or distance dependent inductance?
 s=-1;                                           % Sensing orientation relative
                                                 % to mathematical model
-load resultID.mat                               % Load data file
-Ts=0.004;                                        % [s] Sampling
+load resultID_4000_us.mat;                      % Load data file
+Ts=0.004;                                       % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output in meters
 u=result(:,2);                                  % [V] Input is closed loop + probe signal
 i=result(:,3)/1000;                             % [A] Current

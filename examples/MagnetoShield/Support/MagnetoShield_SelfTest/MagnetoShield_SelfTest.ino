@@ -64,7 +64,7 @@ void setup() {
   Serial.print("\t");                // print a tab character
   MagnetoShield.dacWrite(0);
   x = (float)analogRead(MAGNETO_YPIN);
-  if (x >= 25.0 && x <= 35.0) {
+  if (x >= 25.0 && x <= 40.0) {
     Serial.println(" Ok.");
   }
   else {
@@ -118,7 +118,7 @@ void setup() {
   wait();
   x = MagnetoShield.auxReadCurrent();
   MagnetoShield.dacWrite(0);
-  if (x >= 50.0 && x <= 60.0) {
+  if (x >= 50.0 && x <= 65.0) {
     Serial.println(" Ok.");
   }
   else {

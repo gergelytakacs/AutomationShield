@@ -20,23 +20,34 @@
 // An initialization method for the MagnetoShield
 void MagnetoShieldClass::begin()
 {	
-	Wire.begin();	// Starts the "Wire" library for I2C
 	#ifdef ARDUINO_ARCH_AVR
+		Wire.begin();	// Starts the "Wire" library for I2C
 		#if SHIELDRELEASE == 1	
 			analogReference(DEFAULT);
 		#elif SHIELDRELEASE == 2
 			analogReference(EXTERNAL);
 		#endif
+	#elif ARDUINO_ARCH_SAM
+		Wire1.begin();
+	#elif ARDUINO_ARCH_SAMD
+		Wire.begin();	// Starts the "Wire" library for I2C
 	#endif
 }
 
 // Write DAC levels (8-bit) to the PCF8591 chip
 void MagnetoShieldClass::dacWrite(byte dacIn)
 {	
-	Wire.beginTransmission(PCF8591);		// I2C addressing, transmission begin
-	Wire.write(0x40);						// Use DAC (0100 0000)
-	Wire.write(dacIn);						// 8-bit value of DAC output
-	Wire.endTransmission();					// I2C transmission end
+    #ifdef ARDUINO_ARCH_SAM 					// For Due
+		Wire1.beginTransmission(PCF8591);		// I2C addressing, transmission begin
+		Wire1.write(0x40);						// Use DAC (0100 0000)
+		Wire1.write(dacIn);						// 8-bit value of DAC output
+		Wire1.endTransmission();					// I2C transmission end
+    #else
+		Wire.beginTransmission(PCF8591);		// I2C addressing, transmission begin
+		Wire.write(0x40);						// Use DAC (0100 0000)
+		Wire.write(dacIn);						// 8-bit value of DAC output
+		Wire.endTransmission();					// I2C transmission end
+	#endif
 }
 
 // Calibrates the output readings and measures the input_iterator
