@@ -2,8 +2,10 @@
   Interrupt-driven sampling for real-time control.
   
   The file implements an interrupt-driven system for deploying
-  digital control systems on AVR and ATSAMD-based Arduino 
-  prototyping boards.
+  digital control systems on AVR, SAMD and SAM-based Arduino 
+  prototyping boards. This module should be compatible with
+  all AVR boards (Uno, Mega 2560 etc.), Arduino Zero and Arduino
+  Due. Take care of timer conflicts when using the Servo library.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -11,8 +13,9 @@
   Attribution-NonCommercial 4.0 International License.
   Created by Gergely Takács and Koplinger 2018-2019
   AVR Timer: 	 Richard Koplinger, 2018
-  SAMD21G Timer: Gergely Takacs, 2019
-  Last update: 07.02.2019.
+  SAMD21G Timer: Gergely Takacs, 2019 (Zero)
+  SAM3X Timer:   Gergely Takacs, 2019 (Due)
+  Last update: 11.02.2019.
 */
 
 #ifndef SAMPLING_H_
@@ -39,16 +42,18 @@ class SamplingClass{
     p_to_void_func interruptCallback;    
 
     #ifdef ARDUINO_ARCH_AVR
-	 // Default: Timer1
-   	const unsigned long timerResolution = 65536; 		// AVR Timer 1 is 16bit            
-	const unsigned char cpuFrequency = 16; 		// CPU frequency in microseconds 
+		// Default: Timer1
+		const unsigned long timerResolution = 65536; 					// AVR Timer 1 is 16bit            
+		const unsigned char cpuFrequency = 16; 							// CPU frequency in micro Hertz
     #elif ARDUINO_ARCH_SAMD
-	// Default TC5
-	const unsigned long timerResolution = 65536; 		// AVR Timer 1 is 16bit  
-	const unsigned char cpuFrequency = VARIANT_MCK/1000000; 		// CPU frequency in microseconds 
-  	// Not developed yet.
+		// Default TC5 (randomly selected, take care of Servo!)
+		const unsigned long timerResolution = 65536;     				// Configured to 16bit  
+		const unsigned char cpuFrequency = VARIANT_MCK/1000000; 		// CPU frequency in micro Hertz (48 for Zero)
+  	#elif ARDUINO_ARCH_SAM
+		// Default TC3 (randomly selected, take care of Servo!)
+		const unsigned char cpuFrequency = VARIANT_MCK/1000000; 		// CPU frequency in micro Hertz (84 for Due)
     #else
-   	#error "Architecture not supported."
+		#error "Architecture not supported."
     #endif
 
     float samplingPeriod;        		 	// Sampling period in seconds  
