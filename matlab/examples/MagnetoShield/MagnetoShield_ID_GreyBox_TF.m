@@ -31,14 +31,12 @@
   
 clc; clear all;                                 % Clears screen and all variables
 close all;                                      % Closes all figures
-load resultID.mat;                              % Loads data file (experiment)
+load ID_PID_4000us.mat                          % Load data file
 Ts=0.004;                                       % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output (position)
 u=result(:,2);                                  % [V] Input and probe signal
 i=result(:,3)/1000;                             % [i] Current
-
-s=-1;                                           % Sensing orientation relative
-                                                %  to mathematical model
+                                                
 data = iddata(y,u,Ts,'Name','Magnetic Levitation');    % Data file
 data.InputName = 'Solenoid Voltage';            % Input name
 data.InputUnit =  'V';                          % Input unit
@@ -48,7 +46,6 @@ data.Tstart = 0;                                % Starting time
 data.TimeUnit = 's';                            % Time unit
 data = data(100:end);                           % Discard the time when magnet is on ground, pick close to linearization point              
 data = detrend(data,1);                         % Remove steady-state component to get delta formulation
-data.OutputData(:,1)=s.*data.OutputData(:,1)    % Correct the sensing direction 
 dataf = fft(data);                              % Frequency domain (tfest() handles unstable models only in f-domain)
 
 %% Parameters
@@ -102,7 +99,7 @@ figure(2)                                       % New figure
 subplot(2,1,1)                                  % Subplot structure
 T=0:0.004:22;                                   % Time vector
 U=u(1:length(T))-u0;                            % True input minus linearization point
-Y = lsim(S,U,T)+y0*1000;                        % Simulated output plus linearization point                            
+Y = y0*1000-lsim(S,U,T);                        % Simulated output plus linearization point                            
 plot(T,y(1:length(T))*1000)                     % Experiment output in mm
 hold on                                         % Hold graph
 plot(T,Y)                                       % Simulated output
