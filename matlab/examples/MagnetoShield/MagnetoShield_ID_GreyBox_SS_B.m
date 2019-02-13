@@ -29,7 +29,6 @@
 clc; clear all;                                 % Clears screen and all variables
 
 fixedInductance=0;                              % Fixed or distance dependent inductance?
-s=-1;                                           % Sensing orientation relative
                                                 % to mathematical model
 load resultID.mat                               % Load data file
 Ts=0.004;                                        % [s] Sampling
@@ -83,7 +82,7 @@ elseif  fixedInductance==0                      % Magnet inductance L(y) distanc
 end
 
 B=[0; 0; epsilon];                              % Input matrix
-C=[s 0 0;                                       % Output matrix
+C=[1 0 0;                                       % Output matrix
    0 0 1];                                      % Distance and current measured
 D=[0; 0];                                       % No feed-through                                            
 K = zeros(3,2);                                 % Disturbance

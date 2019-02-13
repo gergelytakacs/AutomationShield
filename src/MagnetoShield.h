@@ -65,8 +65,8 @@
 // Distance model based on magnetic flux density
 // As it is hard to make exact measurements a two-point 
 // calibration of a power function seems to work best
-#define D_P1_DEF  81.5						//Default distance function constant (f(y) = D_P1*x^D_P2) for Flux vs. distance from magnet
-#define D_P2_DEF  -0.2547 					    // Default distance function constant (f(y) = D_P1*x^D_P2) for Flux vs. distance from magnet
+#define D_P1_DEF  3.233100   					//Default distance function constant (f(y) = D_P1*x^D_P2) for Flux vs. distance from magnet
+#define D_P2_DEF  0.220571 					    // Default distance function constant (f(y) = D_P1*x^D_P2) for Flux vs. distance from magnet
 
 class MagnetoShieldClass						// Class for MagnetoShield API
 {
