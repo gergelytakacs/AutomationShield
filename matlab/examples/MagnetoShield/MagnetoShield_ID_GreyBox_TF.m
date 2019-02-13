@@ -97,7 +97,7 @@ S=feedback(C*P,-1);                             % Closed-loop negative feedback
 % Simulate response
 figure(2)                                       % New figure
 subplot(2,1,1)                                  % Subplot structure
-T=0:0.004:22;                                   % Time vector
+T=0:0.004:29.9;                                   % Time vector
 U=u(1:length(T))-u0;                            % True input minus linearization point
 Y = y0*1000-lsim(S,U,T);                        % Simulated output plus linearization point                            
 plot(T,y(1:length(T))*1000)                     % Experiment output in mm
@@ -107,13 +107,13 @@ legend('Experiment','Simulation')               % Figure legend
 xlabel('Time (s)')                              % X-label
 ylabel('Distance (mm)')                         % Y-label
 grid on                                         % Grid on
-axis([0,22,1,20])                               % Set axis          
+axis([0,30,1,20])                               % Set axis          
 
 subplot(2,1,2)                                  % Subplot structure
-T=0:0.004:22;                                   % Time vector               
+T=0:0.004:29.9;                                   % Time vector               
 plot(T,u(1:length(T)))                          % Experiment input in V
 legend('Experiment')                            % Figure legend     
 xlabel('Time (s)')                              % X-label
 ylabel('Voltage (V)')                           % Y-label
 grid on                                         % Grid on
-axis([0,22,1,12])                               % Set axis       
+axis([0,30,1,12])                               % Set axis       
