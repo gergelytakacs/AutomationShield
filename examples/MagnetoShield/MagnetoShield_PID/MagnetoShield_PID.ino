@@ -10,6 +10,9 @@
   Upload the code to your board, then open the Serial
   Plotter function in your Arduino IDE. 
   
+  Tested with Arduino Uno, Arduino Due.
+  Has not been functional with Arduino Zero.
+  
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
@@ -42,17 +45,23 @@ float y = 0.0;                        // [mm] Output
 float u = 0.0;                        // [V] Input          
 
 #ifdef ARDUINO_ARCH_AVR
-  unsigned long Ts = 3200;                // Sampling in microseconds, as fast as it is possible
+  unsigned long Ts = 3200;                // Sampling in microseconds, lower limit 3.2 ms
   int T = 1500;                           // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAMD
-  unsigned long Ts = 5000;                 // Sampling in microseconds
+  unsigned long Ts = 4200;                 // Sampling in microseconds, lower limit 
   int T = 1500;                            // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAM
-  unsigned long Ts = 1300;                 // Sampling in microseconds
+  unsigned long Ts = 1300;                 // Sampling in microseconds, lower limit 1.3 ms
   int T = 3000;                            // Experiment section length (steps) 
 #endif  
 
 void setup() {
+    
+#if ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD
+    Serial.begin(2000000);                 // Initialize serial, maximum for AVR given by hardware    
+#elif ARDUINO_ARCH_SAM
+    Serial.begin(250000);                  // Initialize serial, maximum for Due (baud mismatch issues)
+#endif 
   
   // Initialize and calibrate board
   MagnetoShield.begin();               // Define hardware pins

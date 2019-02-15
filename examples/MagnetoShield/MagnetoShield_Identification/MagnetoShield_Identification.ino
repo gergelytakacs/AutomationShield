@@ -11,7 +11,8 @@
   code to your board, then use a serial terminal software 
   or Matlab to aquire the dataset for later processing. 
 
-  Tested with the Arduino Uno.
+  Tested with Arduino Uno, Arduino Due.
+  Has not been functional with Arduino Zero.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more

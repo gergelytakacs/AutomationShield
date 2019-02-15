@@ -25,7 +25,16 @@
 	#define SHIELDRELEASE 2   					//  Use number only: e.g. for R2 is 2
 #endif
 
-#define VIN 11.58 							    // [V] Input voltage from source
+
+#ifdef ARDUINO_ARCH_AVR
+  #define VIN 11.6 							    // [V] Input voltage from source
+#elif ARDUINO_ARCH_SAMD
+  #define VIN 12.5 							    // [V] Input voltage from source 
+#elif ARDUINO_ARCH_SAM
+  #define VIN 11.6 							    // [V] Input voltage from source 
+#endif  
+
+
 #define EMAGNET_HEIGHT 20.0				        // [mm] Location of electromagnet above ground
 #define MAGNET_LOW	3.0  					    // [mm] Top of the magnet from ground - distance from Hall element
 #define MAGNET_HIGH 8.0						    // [mm] Top of the magnet from ground - distance from Hall element
@@ -56,11 +65,17 @@
 #endif
 
 // Power model of the input-output voltage DAC->Vout
-#define P1 193.7						    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
-#define P2 0.02833								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P3 0.9068							    // Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-#define P4 0.1418								// Power function constant (f(y) = P1*x^P2+P3*x^P4+P5) for DAC vs. Output voltage
-
+#ifdef ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD
+	#define P1 193.7						        // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P2 0.02833								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P3 0.9068							    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P4 0.1418								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+#elif ARDUINO_ARCH_SAM
+    #define P1 191.2						        // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P2 0.02718								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P3 2.464							    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P4 0.08407								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+#endif
 
 // Distance model based on magnetic flux density
 // As it is hard to make exact measurements a two-point 
