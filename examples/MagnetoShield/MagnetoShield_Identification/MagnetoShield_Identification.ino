@@ -29,7 +29,8 @@ float wPP=1.5;
 
 // PID Tuning parameters
 // Less-aggressive tuning introduces less saturation
-#define KP -2.1                            // PID Kp
+// Negative part of gain built in the error computation
+#define KP  2.1                            // PID Kp
 #define TI  0.1                            // PID Ti
 #define TD  0.02                           // PID Td
 
@@ -113,7 +114,7 @@ else if (k % (T*i) == 0){                 // else for each section
 w=wBias-(float)random(0,wP)/100.0;        // [V] Input noise
 y = MagnetoShield.sensorRead();           // [mm] Sensor Read 
 I = MagnetoShield.auxReadCurrent();       // [mA] Current read
-u = PIDAbs.compute(r-y,0.0,12.0,0.0,5.0)+w;      // [V] PID + noise
+u = PIDAbs.compute(-(r-y),0.0,12.0,0.0,5.0)+w;      // [V] PID + noise
 u = AutomationShield.constrainFloat(u,0,12);
 MagnetoShield.actuatorWrite(u);           // Actuate
 

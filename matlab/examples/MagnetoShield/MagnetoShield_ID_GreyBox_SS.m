@@ -24,7 +24,7 @@
 %   Attribution-NonCommercial 4.0 International License.
 % 
 %   Created by Gergely Takács. 
-%   Last update: 25.01.2018.
+%   Last update: 15.02.2018.
   
 clc; clear all;                                 % Clears screen and all variables
 

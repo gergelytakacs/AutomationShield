@@ -24,11 +24,11 @@
 #define MANUAL 0                      // Reference by pot (1) or automatically (0)?
 
 // PID Tuning
+// Negative part of the gain in the error computation
 #define KP 2.3                        // PID Kp
 #define TI 0.1                        // PID Ti
 #define TD 0.03                       // PID Td
 
-unsigned long Ts = 3000;              // Sampling in microseconds
 #if MANUAL                            // If it is manual reference
   Ts=3250;                             // Slightly slower for manual
 #endif
@@ -36,14 +36,23 @@ unsigned long k = 0;                  // Sample index
 bool enable=false;                    // Flag for sampling 
 bool realTimeViolation=false;         // Flag for real-time violations
 float r = 0.0;                        // Reference
-float R[]={15.0,16.5,15.0,14.0,15.5}; // Reference trajectory (pre-set)
-int T = 1500;                         // Experiment section length (steps)
+float R[]={14.0,13.0,14.0,14.5,13.5}; // Reference trajectory (pre-set)
 int i = i;                            // Experiment section counter
 float y = 0.0;                        // [mm] Output
 float u = 0.0;                        // [V] Input          
 
+#ifdef ARDUINO_ARCH_AVR
+  unsigned long Ts = 3200;                // Sampling in microseconds, as fast as it is possible
+  int T = 1500;                           // Experiment section length (steps) 
+#elif ARDUINO_ARCH_SAMD
+  unsigned long Ts = 5000;                 // Sampling in microseconds
+  int T = 1500;                            // Experiment section length (steps) 
+#elif ARDUINO_ARCH_SAM
+  unsigned long Ts = 1300;                 // Sampling in microseconds
+  int T = 3000;                            // Experiment section length (steps) 
+#endif  
+
 void setup() {
-  Serial.begin(2000000);               // Initialize serial
   
   // Initialize and calibrate board
   MagnetoShield.begin();               // Define hardware pins
@@ -95,7 +104,7 @@ void step(){
 
 // Control algorithm
 y = MagnetoShield.sensorRead();         // [mm] sensor read
-u = PIDAbs.compute(r-y,0,12,0,20);      // Compute constrained absolute-form PID
+u = PIDAbs.compute(-(r-y),0,12,0,20);      // Compute constrained absolute-form PID
 MagnetoShield.actuatorWrite(u);         // [V] actuate
 
 // Print to serial port

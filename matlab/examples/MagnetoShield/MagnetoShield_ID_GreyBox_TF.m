@@ -97,8 +97,8 @@ S=feedback(C*P,-1);                             % Closed-loop negative feedback
 % Simulate response
 figure(2)                                       % New figure
 subplot(2,1,1)                                  % Subplot structure
-T=0:0.004:29.9;                                   % Time vector
-U=u(1:length(T))-u0;                            % True input minus linearization point
+T=0:0.004:29.9;                                 % Time vector
+U=u(1:length(T))-u0;                            % True input minus linearization point is delta input
 Y = y0*1000-lsim(S,U,T);                        % Simulated output plus linearization point                            
 plot(T,y(1:length(T))*1000)                     % Experiment output in mm
 hold on                                         % Hold graph

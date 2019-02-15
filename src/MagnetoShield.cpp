@@ -30,6 +30,8 @@ void MagnetoShieldClass::begin()
 		#endif
 	#elif ARDUINO_ARCH_SAM
 		Wire1.begin();
+	#elif ARDUINO_ARCH_SAMD
+		Wire.begin();
 	#endif
 }
 
@@ -46,6 +48,11 @@ void MagnetoShieldClass::dacWrite(byte dacIn)
 		Wire1.write(0x40);						// Use DAC (0100 0000)
 		Wire1.write(dacIn);						// 8-bit value of DAC output
 		Wire1.endTransmission();					// I2C transmission end 
+	#elif ARDUINO_ARCH_SAMD
+		Wire.beginTransmission(PCF8591);		// I2C addressing, transmission begin
+		Wire.write(0x40);						// Use DAC (0100 0000)
+		Wire.write(dacIn);						// 8-bit value of DAC output
+		Wire.endTransmission();					// I2C transmission end 
 	#endif
 	
 
@@ -119,7 +126,7 @@ float MagnetoShieldClass::sensorRead()
 // effectively giving an indirect percentual distance
 float MagnetoShieldClass::sensorReadPercents()
 {	
-	if (~calibrated){
+	if (!calibrated){
 		minCalibrated=A1302_LSAT;
 		maxCalibrated=A1302_HSAT;		
 	}
@@ -143,7 +150,7 @@ float MagnetoShieldClass::adcToGauss(short adc)
 float MagnetoShieldClass::gaussToDistance(float g)
 {	
 
-	if (~calibrated){
+	if (!calibrated){
 		d_p1=D_P1_DEF;
 		d_p2=D_P2_DEF;		
 	}
