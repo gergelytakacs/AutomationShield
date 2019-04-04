@@ -11,7 +11,7 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács and Koplinger 2018-2019
+  Created by Gergely Takács and Richard Koplinger 2018-2019
   AVR Timer: 	 Richard Koplinger, 2018
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
