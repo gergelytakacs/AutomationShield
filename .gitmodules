@@ -4,3 +4,6 @@
 [submodule "EigenArduino"]
 	path = src/lib/EigenArduino
 	url = https://github.com/vancegroup/EigenArduino.git
+[submodule "src/lib/Adafruit_VL6180X"]
+	path = src/lib/Adafruit_VL6180X
+	url = https://github.com/adafruit/Adafruit_VL6180X
