@@ -22,6 +22,26 @@ void BOBClass::debug() {
     _debug = true;
 }
 
+void BOBClass::calibration()
+{
+	short calmeasure; 				   		// Temporary measurement value
+	int minCalibrated;						// Actual minimum value
+
+	BOBShield.servoWrite(130);					// Tilt beam to the maximum so the ball falls towards the sensor
+	delay(500);					   			    // Wait for things to settle
+	for (int i=1; i<=100; i++) {	    		// Perform 100 measurements
+		calmeasure = BOBShield.sensorRead(); 		// Measure
+		if (calmeasure < minCalibrated){ 		// If lower than already
+			minCalibrated = calmeasure; 		// Save new minimum
+		}
+		delay(10);								// Wait between measurements
+	}
+
+    calibrated = 1;
+
+}
+
+
 //values from potenciometer in %
 float BOBClass::referenceRead(){
    _referenceRead = analogRead(POT_PIN);
@@ -47,44 +67,6 @@ void BOBClass::sensorRead(){
  return pos();
  }
  }
-
-// printing some default errors  from sensor library
- void BOBClass::printerrors(){
- status = sens.readRangeStatus();
-
-
- if (status == VL6180X_ERROR_NONE) {
-   Serial.print("Range: "); Serial.println(range);
- }
-
-if  ((status >= VL6180X_ERROR_SYSERR_1) && (status <= VL6180X_ERROR_SYSERR_5)) {
-  Serial.println("System error");
-}
-else if (status == VL6180X_ERROR_ECEFAIL) {
-  Serial.println("ECE failure");
-}
-else if (status == VL6180X_ERROR_NOCONVERGE) {
-  Serial.println("No convergence");
-}
-else if (status == VL6180X_ERROR_RANGEIGNORE) {
-  Serial.println("Ignoring range");
-}
-else if (status == VL6180X_ERROR_SNR) {
-  Serial.println("Signal/Noise error");
-}
-else if (status == VL6180X_ERROR_RAWUFLOW) {
-  Serial.println("Raw reading underflow");
-}
-else if (status == VL6180X_ERROR_RAWOFLOW) {
-  Serial.println("Raw reading overflow");
-}
-else if (status == VL6180X_ERROR_RANGEUFLOW) {
-  Serial.println("Range reading underflow");
-}
-else if (status == VL6180X_ERROR_RANGEOFLOW) {
-  Serial.println("Range reading overflow");
-}
-}
 
 BOBClass BOBShield;
 
