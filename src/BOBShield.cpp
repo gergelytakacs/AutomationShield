@@ -1,6 +1,6 @@
 #include "BOBShield.h"
 
-#ifdef ADAFRUIT_VL6180X_H
+
 
 /*void BOBClass::begin(long baudRate) {
   Serial.begin(115200);
@@ -87,4 +87,4 @@ else if (status == VL6180X_ERROR_RANGEOFLOW) {
 }
 
 BOBClass BOBShield;
-#endif
+
