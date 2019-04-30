@@ -37,8 +37,8 @@
 
 
 // Headers for individual shields
-#include "OptoShield.h"
-#include "HeatShield.h" 
+//#include "OptoShield.h"
+//#include "HeatShield.h" 
 
 // Diagnostics
 #define ECHO_TO_SERIAL      0                // echo data to serial port
