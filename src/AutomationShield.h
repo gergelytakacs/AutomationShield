@@ -10,7 +10,7 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by Gergely Takács, Tibor Konkoly, Gábor Penzinger [...]
+  Created by Gergely Takács, Tibor Konkoly, Gábor Penzinger
   Last update: 28.09.2018.
 */
 
@@ -35,7 +35,8 @@
 #include "PIDAbs.h"
 //#include "PIDInc.h"
 
-
+// Hardware-specific includes should use AutomationShield.h, not 
+// the other way around.
 // Headers for individual shields
 //#include "OptoShield.h"
 //#include "HeatShield.h" 
