@@ -61,7 +61,7 @@ void BOBClass::sensorReadPerc(){
     else if (range > maxCalibrated) {range = maximum;}
 
 
-  pos = map(value,minimum,maximum,0,100);
+  pos = map(range,minimum,maximum,0,100);
  return pos;
  }
 
@@ -72,7 +72,7 @@ void BOBClass::sensorReadMm(){
     if (range < minCalibrated) {range = minimum;}
     else if (range > maxCalibrated) {range = maximum;}
 
-
+   pos = map(range,minimum,maximum,0,50); //lenght of the tube considered as 50mm (just for testing)
    pos = range;
  return pos;
  }
