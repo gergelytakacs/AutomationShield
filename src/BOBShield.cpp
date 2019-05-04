@@ -47,7 +47,7 @@ float BOBClass::referenceRead(){
 }
 
 //values from potentiometer computed for servo
-float BOBClass::actuatorWrite(float percent);{
+float BOBClass::actuatorWrite(float percent){
  
    Servo.write(AutomationShield.mapFloat(_referenceRead,0.00,1023.00,70.00,130.00));
 
