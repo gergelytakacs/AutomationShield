@@ -1,8 +1,11 @@
 #ifndef BOBSHIELD_H_
 #define BOBSHIELD_H_
 
-#include "AutomationShield.h"
+#include <Arduino.h>
+#include <Servo.h>
 #include "lib/Adafruit_VL6180X/Adafruit_VL6180X.h"
+#include "AutomationShield.h"
+
 
 /* #ifndef ADAFRUIT_VL6180X_H 				// If library not installed somewhere
 #if __has_include("src/lib/Adafruit_VL6180X/Adafruit_VL6180X.h")  // If library present from GIT
