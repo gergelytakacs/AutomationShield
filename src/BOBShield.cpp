@@ -5,6 +5,7 @@
 // declaring PIN and initializing sensor library
 void BOBClass::begin() {
   pinMode(POT_PIN, INPUT);			// set Potentiometer pin
+  myservo.attach(9);				// set Servo pin
 }
 
 
