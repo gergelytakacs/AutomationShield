@@ -62,7 +62,7 @@ void BOBClass::sensorRead(){
 
 
    pos = range;
- return pos();
+ return pos;
  }
  }
 
