@@ -22,7 +22,8 @@ class BOBClass {
     void  begin(void);                      		  //sets up sensor
     void calibration();		                 	  //calibration
     float referenceRead();		          	  // Read reference pot in %
-    float sensorRead();
+    float sensorReadPerc();
+    float sensorReadMm();
     float actuatorWrite();
 
 
