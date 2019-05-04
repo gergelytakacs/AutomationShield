@@ -54,7 +54,18 @@ float BOBClass::actuatorWrite(){
 }
 
 //values from sensor in %
-void BOBClass::sensorRead(){
+void BOBClass::sensorReadPerc(){
+ range = sens.readRange();
+	
+    if (range < minCalibrated) {range = minimum;}
+    else if (range > maxCalibrated) {range = maximum;}
+
+
+  pos = map(value,minimum,maximum,100,0);
+ return pos;
+ }
+
+void BOBClass::sensorReadMm(){
  range = sens.readRange();
 	
     if (range < minCalibrated) {range = minimum;}
@@ -64,7 +75,7 @@ void BOBClass::sensorRead(){
    pos = range;
  return pos;
  }
- }
+
 
 BOBClass BOBShield;
 
