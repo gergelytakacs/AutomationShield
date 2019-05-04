@@ -37,6 +37,7 @@ class BOBClass {
       int pos;
       byte calibrated = 0;
       int minCalibrated;			// Actual minimum value
+      int maxCalibrated; 
       int minimum = 20;                      //TODO: determine what's minimum of the clipping interval
       int maximum = 350;                     //TODO: determine what's maximum of the clipping interval
 
