@@ -65,6 +65,7 @@ void BOBClass::sensorReadPerc(){
  return pos;
  }
 
+//values from sensor in mm
 void BOBClass::sensorReadMm(){
  range = sens.readRange();
 	
