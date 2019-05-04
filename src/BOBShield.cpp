@@ -57,8 +57,8 @@ float BOBClass::actuatorWrite(){
 void BOBClass::sensorRead(){
  range = sens.readRange();
 	
-    if (range < minimum) {range = minimum;}
-    else if (range > maximum) {range = lastValue;}
+    if (range < minCalibrated) {range = minimum;}
+    else if (range > maxCalibrated) {range = lastValue;}
 
 
    pos = map(range,minimum,maximum,100,0);
