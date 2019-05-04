@@ -24,7 +24,7 @@ class BOBClass {
     float referenceRead();		          	  // Read reference pot in %
     float sensorReadPerc();
     float sensorReadMm();
-    float actuatorWrite();
+    float actuatorWrite(float percent);
 
 
   private:
