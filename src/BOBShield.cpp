@@ -13,7 +13,7 @@ void BOBClass::calibration()
 	short calmeasure; 				   		// Temporary measurement value
 
 
-	BOBShield.servoWrite(130);					// Tilt beam to the maximum so the ball falls towards the sensor
+	BOBShield.servoWrite(130);					// Tilt beam to the minimum so the ball falls towards the sensor
 	delay(100);					   		// Wait for things to settle
 	for (int i=1; i<=100; i++) {	    				// Perform 100 measurements
 		calmeasure = BOBShield.sensorRead(); 			// Measure
@@ -28,7 +28,7 @@ void BOBClass::calibration()
 	for (int i=1; i<=100; i++) {	    				// Perform 100 measurements
 		calmeasure = BOBShield.sensorRead(); 			// Measure
 		if (calmeasure > maxCalibrated){ 			// If lower than already
-			maxCalibrated = calmeasure; 			// Save new minimum
+			maxCalibrated = calmeasure; 			// Save new maximum
 		}
 		delay(10);						// Wait between measurements
 	}
