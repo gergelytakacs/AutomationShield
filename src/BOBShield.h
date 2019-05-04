@@ -31,8 +31,6 @@ class BOBClass {
       float _referenceRead;
       float _referenceValue;
       uint8_t range;
-      uint8_t lastrange;
-      uint8_t status;
       float _servoValue;
       int pos;
       byte calibrated = 0;
