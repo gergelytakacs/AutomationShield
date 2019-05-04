@@ -58,10 +58,10 @@ void BOBClass::sensorRead(){
  range = sens.readRange();
 	
     if (range < minCalibrated) {range = minimum;}
-    else if (range > maxCalibrated) {range = lastValue;}
+    else if (range > maxCalibrated) {range = maximum;}
 
 
-   pos = map(range,minimum,maximum,100,0);
+   pos = range;
  return pos();
  }
  }
