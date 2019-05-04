@@ -61,7 +61,7 @@ void BOBClass::sensorReadPerc(){
     else if (range > maxCalibrated) {range = maximum;}
 
 
-  pos = map(value,minimum,maximum,100,0);
+  pos = map(value,minimum,maximum,0,100);
  return pos;
  }
 
