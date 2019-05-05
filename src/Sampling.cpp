@@ -34,18 +34,32 @@ void SamplingClass::period(unsigned long microseconds){
   #ifdef ARDUINO_ARCH_AVR
   	// For AVR-based boards, e.g. Uno  
     noInterrupts();                             // disable all interrupts
-    TCCR1A = 0;                                 // clear register
-    TCCR1B = 0;                                 // clear register
-    TCNT1  = 0;                                 // clear register
+    TCCR2A = 0;                                 // clear register
+    TCCR2B = 0;                                 // clear register
+    TCNT2  = 0;                                 // clear register
        
-    TCCR1B |= (1 << WGM12);                     // CTC mode       
-    TIMSK1 |= (1 << OCIE1A);                    // enable timer compare interrupt
+    TCCR2B |= (1 << WGM22);                     // CTC mode       
+    TIMSK2 |= (1 << OCIE2A);                    // enable timer compare interrupt
   
     if(!setSamplingPeriod(microseconds)) 
     Serial.println("Sampling period is too long.\nMax is 4194303 microseconds.");       
   
     interrupts();             // enable all interrupts
+   
+   #elif ARDUINO_AVR_MEGA2560 //defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644__) || defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__)
+ 	 // For AVR-based board - Mega, run on timmer 5
+    noInterrupts();                             // disable all interrupts
+    TCCR5A = 0;                                 // clear register
+    TCCR5B = 0;                                 // clear register
+    TCNT5  = 0;                                 // clear register
+       
+    TCCR5B |= (1 << WGM52);                     // CTC mode       
+    TIMSK5 |= (1 << OCIE5A);                    // enable timer compare interrupt
   
+    if(!setSamplingPeriod(microseconds)) 
+    Serial.println("Sampling period is too long.\nMax is 4194303 microseconds.");  
+#warning "running on timmer 5"
+	
   #elif ARDUINO_ARCH_SAMD
   // For SAMD21G boards, e.g. Zero
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
@@ -81,32 +95,57 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 
   const unsigned long cycles = microseconds * cpuFrequency;
 
-  #ifdef ARDUINO_ARCH_AVR    
+  #ifdef ARDUINO_AVR_UNO    
 	  // For AVR-based boards, e.g. Uno  
 	  if (cycles < timerResolution){
-		TCCR1B |= (0 << CS12) | (0 << CS11) | (1 << CS10); // no prescaling
-		OCR1A = cycles-1;                                  // compare match register
+		TCCR2B |= (0 << CS22) | (0 << CS21) | (1 << CS20); // no prescaling
+		OCR2A = cycles-1;                                  // compare match register
 	  }
 	  else if(cycles < timerResolution * 8){
-		TCCR1B |= (0 << CS12) | (1 << CS11) | (0 << CS10); // 8 prescaler 
-		OCR1A = (cycles/8)-1;                              // compare match register
+		TCCR2B |= (0 << CS22) | (1 << CS21) | (0 << CS20); // 8 prescaler 
+		OCR2A = (cycles/8)-1;                              // compare match register
 	  }
 	  else if(cycles < timerResolution * 64){
-		TCCR1B |= (0 << CS12) | (1 << CS11) | (1 << CS10); // 64 prescaler 
-		OCR1A = (cycles/64)-1;                             // compare match register
+		TCCR2B |= (0 << CS22) | (1 << CS21) | (1 << CS20); // 64 prescaler 
+		OCR2A = (cycles/64)-1;                             // compare match register
 	  }
 	  else if(cycles < timerResolution * 256){
-		TCCR1B |= (1 << CS12) | (0 << CS11) | (0 << CS10); // 256 prescaler 
-		OCR1A = (cycles/256)-1;                            // compare match register
+		TCCR2B |= (1 << CS22) | (0 << CS21) | (0 << CS20); // 256 prescaler 
+		OCR2A = (cycles/256)-1;                            // compare match register
 	  }
 	  else if(cycles < timerResolution * 1024){
-		TCCR1B |= (1 << CS12) | (0 << CS11) | (1 << CS10); // 1024 prescaler 
-		OCR1A = (cycles/1024)-1;                           // compare match register
+		TCCR2B |= (1 << CS22) | (0 << CS21) | (1 << CS20); // 1024 prescaler 
+		OCR2A = (cycles/1024)-1;                           // compare match register
 	  }
 	  else{
 		return false;
-	  }	  
- 
+	  }	
+	    #elif ARDUINO_AVR_MEGA2560 // defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644__) || defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__)
+  // For AVR-based board - Mega, run on timmer 5
+  	  if (cycles < timerResolution){
+		TCCR15B |= (0 << CS52) | (0 << CS51) | (1 << CS50); // no prescaling
+		OCR5A = cycles-1;                                  // compare match register
+	  }
+	  else if(cycles < timerResolution * 8){
+		TCCR5B |= (0 << CS52) | (1 << CS51) | (0 << CS50); // 8 prescaler 
+		OCR5A = (cycles/8)-1;                              // compare match register
+	  }
+	  else if(cycles < timerResolution * 64){
+		TCCR5B |= (0 << CS52) | (1 << CS51) | (1 << CS50); // 64 prescaler 
+		OCR5A = (cycles/64)-1;                             // compare match register
+	  }
+	  else if(cycles < timerResolution * 256){
+		TCCR5B |= (1 << CS52) | (0 << CS51) | (0 << CS50); // 256 prescaler 
+		OCR5A = (cycles/256)-1;                            // compare match register
+	  }
+	  else if(cycles < timerResolution * 1024){
+		TCCR15B |= (1 << CS52) | (0 << CS51) | (1 << CS50); // 1024 prescaler 
+		OCR5A = (cycles/1024)-1;                           // compare match register
+	  }
+	  else{
+		return false;
+	  }
+	
  #elif ARDUINO_ARCH_SAMD								  // For SAMD21G boards, e.g. Zero
     if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;  // no prescaling
