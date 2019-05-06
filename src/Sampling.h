@@ -3,19 +3,19 @@
   
   The file implements an interrupt-driven system for deploying
   digital control systems on AVR, SAMD and SAM-based Arduino 
-  prototyping boards. This module should be compatible with
-  all AVR boards (Uno, Mega 2560 etc.), Arduino Zero and Arduino
-  Due. Take care of timer conflicts when using the Servo library.
+  prototyping boards with the R3 pinout. This module should be 
+  compatible with the Uno, Mega 2560, Arduino Zero and Arduino
+  Due. There should be no timer conflicts when using the Servo library.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
   Created by Gergely Takács and Koplinger 2018-2019
-  AVR Timer: 	 Richard Koplinger, 2018
+  AVR Timer: 	   Gergely Takacs, Richard Koplinger, Matus Biro, Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 11.02.2019.
+  Last update: 6.5.2019.
 */
 
 #ifndef SAMPLING_H_
@@ -35,28 +35,48 @@ class SamplingClass{
     void interrupt(p_to_void_func interruptCallback);
     p_to_void_func getInterruptCallback ();
     float getSamplingPeriod();  
-         
+    unsigned long int getSamplingMicroseconds(); 
+        
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))
+      bool fireFlag = 0;                                     // Repeat launches of ISR
+      unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
+      unsigned short int fireResolution;
+    #endif
+       
   private:
 	
     static void defaultInterrupt();
     p_to_void_func interruptCallback;    
 
-    #ifdef ARDUINO_ARCH_AVR
-		// Default: Timer1
-		const unsigned long timerResolution = 65536; 					// AVR Timer 1 is 16bit            
-		const unsigned char cpuFrequency = 16; 							// CPU frequency in micro Hertz
+    #ifdef ARDUINO_AVR_UNO 	
+		  // Default: Timer2
+		  const unsigned long timerResolution = 256; 						 // AVR Timer 2 is 8bit            
+		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz
+      #define CYCLES_100MS   16000000                        // CPU cycles @ 16 MHz for 100 ms
+      #define CYCLES_1S     160000000                        // CPU cycles @ 16 MHz for 1 s
+      #define COMPARE_100US       200                        // Compare @ 16 MHz, prescaler 8, for 100 us
+      #define COMPARE_1MS         250                        // Compare @ 16 MHz, prescaler 64, for 1 ms
+      #define COMPARE_10MS        156                        // Compare @ 16 MHz, prescaler 1024, for 10 ms
+      
+    #elif ARDUINO_AVR_MEGA2560
+      // Default: Timer5
+	    const unsigned long timerResolution = 65536; 					 // AVR Timer 5 is 16bit            
+		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz*/
+      #define COMPARE_10MS        20000                      // Compare @ 16 MHz, prescaler 8, for 10 ms
+      
     #elif ARDUINO_ARCH_SAMD
-		// Default TC5 (randomly selected, take care of Servo!)
-		const unsigned long timerResolution = 65536;     				// Configured to 16bit  
-		const unsigned char cpuFrequency = VARIANT_MCK/1000000; 		// CPU frequency in micro Hertz (48 for Zero)
-  	#elif ARDUINO_ARCH_SAM
-		// Default TC3 (randomly selected, take care of Servo!)
-		const unsigned char cpuFrequency = VARIANT_MCK/1000000; 		// CPU frequency in micro Hertz (84 for Due)
+		  // Default TC5 (randomly selected, take care of Servo!)
+		  const unsigned long timerResolution = 65536;     				// Configured to 16bit  
+		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
+    #elif ARDUINO_ARCH_SAM
+		  // Default TC3 (randomly selected, take care of Servo!)
+		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
     #else
-		#error "Architecture not supported."
+		  #error "Architecture not supported."
     #endif
 
-    float samplingPeriod;        		 	// Sampling period in seconds  
+    float samplingPeriod; // Sampling period in seconds  
+    unsigned long int samplingMicroseconds; // Sampling period in microseconds 
     bool setSamplingPeriod(unsigned long microseconds);
 };
 extern SamplingClass Sampling;  
