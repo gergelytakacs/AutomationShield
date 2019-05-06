@@ -42,13 +42,7 @@ void SamplingClass::period(unsigned long microseconds){
     	TCCR2A |= (1 << WGM21);                     // CTC mode       
     	TIMSK2 |= (1 << OCIE2A);                    // enable timer compare interrupt    
 
-     	if(!setSamplingPeriod(microseconds)){ 
-      #ifdef ECHO_TO_SERIAL
-    	  Serial.println("Sampling period is too long.\nMax is 16384 microseconds.");
-      #endif
-    	}
-
-	   	interrupts();             		   // enable all interrupts
+	   	interrupts();             		              // enable all interrupts
 	
 	#elif ARDUINO_AVR_MEGA2560 
  	 // for Arduino Mega2560 use Timer5
@@ -141,15 +135,26 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 		  OCR2A = (cycles/1024)-1;                           // compare match register
 	  }
     // Use 0.1 ms precision up to 100 ms
-    else if(cycles < CYCLES_100MS){                      // max. 100 ms, error 0.5 us
+    else if(cycles < CYCLES_100MS){                      // max. 100 ms, error 0.1 ms
       TCCR2B |= (0 << CS22) | (1 << CS21) | (0 << CS20); // 8 prescaler 
       OCR2A = (COMPARE_100US)-1;                         // compare match register
       fireFlag = 1;                                      // repeat firing
-      fireResolution=100;                                // resolution in ms
+      fireResolution = 100;                              // resolution in us
     }
-	  else{
-		  return false;
-	  }	
+    // Use 1 ms precision up to 1 s
+    else if(cycles < CYCLES_1S){                         // max. 1 s, error 1 ms
+      TCCR2B |= (1 << CS22) | (0 << CS21) | (0 << CS20); // 64 prescaler 
+      OCR2A = (COMPARE_1MS)-1;                           // compare match register
+      fireFlag = 1;                                      // repeat firing
+      fireResolution = 1000;                             // resolution in us
+    }    
+    // Use ~10 ms precision over 1 s
+	  else if(cycles >= CYCLES_1S){
+      TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 1024 prescaler 
+      OCR2A = (COMPARE_10MS)-1;                          // compare match register
+      fireFlag = 1;                                      // repeat firing
+      fireResolution = 10000;                            // resolution in us
+		}	
     
  #elif ARDUINO_AVR_MEGA2560 
 	  // For AVR-based board - Mega, run on timer 5
@@ -234,6 +239,11 @@ unsigned long int SamplingClass::getSamplingMicroseconds(){
   return samplingMicroseconds;
 }
 
+//unsigned short int SamplingClass::getFireResolution(){
+//  return fireResolution;
+//}
+
+
 
 void SamplingClass::interrupt(p_to_void_func interruptCallback){
   this->interruptCallback = interruptCallback;
@@ -249,16 +259,18 @@ SamplingClass Sampling;
 
 ISR(TIMER2_COMPA_vect)
 {
-//  if (!Sampling.fireFlag){
-    (Sampling.getInterruptCallback())();
-//  }
-//  else if (!Sampling.fireFlag){
-//     Sampling.fireCount++;
-//     if (Sampling.fireCount>=Sampling.getSamplingMicroseconds()/Sampling.fireResolution){
-//      (Sampling.getInterruptCallback())();
-//     }      
-//  }
-}
+ if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
+  (Sampling.getInterruptCallback())();      // Start the interrupt callback
+ }                                          
+ else if(Sampling.fireFlag){                // else, if it is over the resolution of the counter
+   Sampling.fireCount++;                    // start counting
+   if (Sampling.fireCount>=Sampling.getSamplingMicroseconds()/Sampling.fireResolution){ // If done with counting
+      Sampling.fireCount=0;                 // make the counter zero again
+      (Sampling.getInterruptCallback())();  // and start the interrupt callback
+  } 
+ }
+ }
+
 
 #elif ARDUINO_AVR_MEGA2560
 

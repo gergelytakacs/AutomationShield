@@ -52,10 +52,12 @@ class SamplingClass{
 		  // Default: Timer2
 		  const unsigned long timerResolution = 256; 						 // AVR Timer 2 is 8bit            
 		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz
-      #define CYCLES_100MS  6250                             // CPU cycles @ 16 MHz for 100 ms
-      #define CYCLES_1000MS 62500                            // CPU cycles @ 16 MHz for 1 s
-      #define COMPARE_100US 50                               // Compare @ 16 MHz, prescaler 8, for 100 us
-    
+      #define CYCLES_100MS   16000000                        // CPU cycles @ 16 MHz for 100 ms
+      #define CYCLES_1S     160000000                        // CPU cycles @ 16 MHz for 1 s
+      #define COMPARE_100US       200                        // Compare @ 16 MHz, prescaler 8, for 100 us
+      #define COMPARE_1MS         250                        // Compare @ 16 MHz, prescaler 64, for 1 ms
+      #define COMPARE_10MS        156                        // Compare @ 16 MHz, prescaler 1024, for 10 ms
+      
     #elif ARDUINO_AVR_MEGA2560
       // Default: Timer5
 	    const unsigned long timerResolution = 65536; 					 // AVR Timer 5 is 16bit            
