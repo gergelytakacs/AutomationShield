@@ -12,10 +12,10 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
   Created by Gergely Takács and Richard Koplinger 2018-2019
-  AVR Timer: 	 Richard Koplinger, 2018
+  AVR Timer:     Gergely Takacs, Richard Koplinger, Matus Biro, Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 11.02.2019.
+  Last update: 6.5.2019.
 */
 
 #include "Sampling.h"
@@ -74,7 +74,7 @@ void SamplingClass::period(unsigned long microseconds){
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
      GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;        // Set Timer counter Mode to 16 bits
-	 TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
+	   TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
       
       setSamplingPeriod(microseconds);
       #ifdef ECHO_TO_SERIAL
@@ -112,61 +112,62 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 
   #ifdef ARDUINO_AVR_UNO    
 	  // For AVR-based boards, e.g. Uno  
-	  if (cycles < timerResolution){		                 // max. 16 us, error 62.5 ns 
-		TCCR2B |= (0 << CS22) | (0 << CS21) | (1 << CS20); // no prescaling
-		OCR2A = cycles-1;                                  // compare match register
+	  if (cycles < timerResolution){		                   // max. 16 us, error 62.5 ns 
+		  TCCR2B |= (0 << CS22) | (0 << CS21) | (1 << CS20); // no prescaling
+		  OCR2A = cycles-1;                                  // compare match register
 	  }
-	  else if(cycles < timerResolution * 8){		   	     // max. 128 us, error 0.5 us
-		TCCR2B |= (0 << CS22) | (1 << CS21) | (0 << CS20); // 8 prescaler 
-		OCR2A = (cycles/8)-1;                              // compare match register
+	  else if(cycles < timerResolution * 8){		   	       // max. 128 us, error 0.5 us
+		  TCCR2B |= (0 << CS22) | (1 << CS21) | (0 << CS20); // 8 prescaler 
+		  OCR2A = (cycles/8)-1;                              // compare match register
 	  }
-	  else if(cycles < timerResolution * 32){            // max. 512 us, error, 2 us
-		TCCR2B |= (0 << CS22) | (1 << CS21) | (1 << CS20); // 32 prescaler 
-		OCR2A = (cycles/32)-1;                             // compare match register
+	  else if(cycles < timerResolution * 32){              // max. 512 us, error, 2 us
+		  TCCR2B |= (0 << CS22) | (1 << CS21) | (1 << CS20); // 32 prescaler 
+		  OCR2A = (cycles/32)-1;                             // compare match register
 	  }
-    else if(cycles < timerResolution * 64){            // max. 1024 us, error, 4 us
-    TCCR2B |= (1 << CS22) | (0 << CS21) | (0 << CS20); // 64 prescaler 
-    OCR2A = (cycles/64)-1;                             // compare match register
+    else if(cycles < timerResolution * 64){              // max. 1024 us, error, 4 us
+      TCCR2B |= (1 << CS22) | (0 << CS21) | (0 << CS20); // 64 prescaler 
+      OCR2A = (cycles/64)-1;                             // compare match register
     }
-    else if(cycles < timerResolution * 128){           // max. 2048 us, error, 8 us
-    TCCR2B |= (1 << CS22) | (0 << CS21) | (1 << CS20); // 128 prescaler 
-    OCR2A = (cycles/128)-1;                            // compare match register
+    else if(cycles < timerResolution * 128){             // max. 2048 us, error, 8 us
+      TCCR2B |= (1 << CS22) | (0 << CS21) | (1 << CS20); // 128 prescaler 
+      OCR2A = (cycles/128)-1;                            // compare match register
     }
-	  else if(cycles < timerResolution * 256){           // max. 4096 us, 16 us 
-		TCCR2B |= (1 << CS22) | (1 << CS21) | (0 << CS20); // 256 prescaler 
-		OCR2A = (cycles/256)-1;                            // compare match register
+	  else if(cycles < timerResolution * 256){             // max. 4096 us, 16 us 
+		  TCCR2B |= (1 << CS22) | (1 << CS21) | (0 << CS20); // 256 prescaler 
+		  OCR2A = (cycles/256)-1;                            // compare match register
 	  }
-	  else if(cycles < timerResolution * 1024){	         // max. 16384 us, 64 us 
-		TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 1024 prescaler 
-		OCR2A = (cycles/1024)-1;                           // compare match register
+	  else if(cycles < timerResolution * 1024){	           // max. 16384 us, 64 us 
+		  TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 1024 prescaler 
+		  OCR2A = (cycles/1024)-1;                           // compare match register
 	  }
 	  else{
-		return false;
+		  return false;
 	  }	
+    
  #elif ARDUINO_AVR_MEGA2560 
 	  // For AVR-based board - Mega, run on timer 5
-  	  if (cycles < timerResolution){
-		TCCR15B |= (0 << CS52) | (0 << CS51) | (1 << CS50); // no prescaling
-		OCR5A = cycles-1;                                  // compare match register
+  	if (cycles < timerResolution){                        // max. 4096 us, 62.5 ns 
+		  TCCR5B |= (0 << CS52) | (0 << CS51) | (1 << CS50); // no prescaling
+		  OCR5A = cycles-1;                                   // compare match register
 	  }
-	  else if(cycles < timerResolution * 8){
-		TCCR5B |= (0 << CS52) | (1 << CS51) | (0 << CS50); // 8 prescaler 
-		OCR5A = (cycles/8)-1;                              // compare match register
+	  else if(cycles < timerResolution * 8){                // max. 32768 us, 0.5 us 
+		  TCCR5B |= (0 << CS52) | (1 << CS51) | (0 << CS50);  // 8 prescaler 
+		  OCR5A = (cycles/8)-1;                               // compare match register
 	  }
-	  else if(cycles < timerResolution * 64){
-		TCCR5B |= (0 << CS52) | (1 << CS51) | (1 << CS50); // 64 prescaler 
-		OCR5A = (cycles/64)-1;                             // compare match register
+	  else if(cycles < timerResolution * 64){               // max. 262.144 ms, 4 us 
+		  TCCR5B |= (0 << CS52) | (1 << CS51) | (1 << CS50);  // 64 prescaler 
+		  OCR5A = (cycles/64)-1;                              // compare match register
 	  }
-	  else if(cycles < timerResolution * 256){
-		TCCR5B |= (1 << CS52) | (0 << CS51) | (0 << CS50); // 256 prescaler 
-		OCR5A = (cycles/256)-1;                            // compare match register
+	  else if(cycles < timerResolution * 256){              // max. 1.048576 s, 16 us 
+		  TCCR5B |= (1 << CS52) | (0 << CS51) | (0 << CS50);  // 256 prescaler 
+		  OCR5A = (cycles/256)-1;                             // compare match register
 	  }
-	  else if(cycles < timerResolution * 1024){
-		TCCR15B |= (1 << CS52) | (0 << CS51) | (1 << CS50); // 1024 prescaler 
-		OCR5A = (cycles/1024)-1;                           // compare match register
+	  else if(cycles < timerResolution * 1024){             // max. 4.194304 s, 64 us 
+		  TCCR5B |= (1 << CS52) | (0 << CS51) | (1 << CS50); // 1024 prescaler 
+		  OCR5A = (cycles/1024)-1;                            // compare match register
 	  }
 	  else{
-		return false;
+		  return false;
 	  }
 	
  #elif ARDUINO_ARCH_SAMD								  // For SAMD21G boards, e.g. Zero
