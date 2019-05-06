@@ -41,14 +41,9 @@ class SamplingClass{
     static void defaultInterrupt();
     p_to_void_func interruptCallback;    
 
-    /*#ifdef ARDUINO_ARCH_AVR
-		// Default: Timer1
-		const unsigned long timerResolution = 65536; 					// AVR Timer 1 is 16bit            
-		const unsigned char cpuFrequency = 16; 						// CPU frequency in micro Hertz*/
-	
-    #ifdef ARDUINO_AVR_UNO 	//#if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__) || defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)	
-		   // Default: Timer2
-		const unsigned long timerResolution = 256; 					// AVR Timer 2 is 8bit            
+    #ifdef ARDUINO_AVR_UNO 	
+		// Default: Timer2
+		const unsigned long timerResolution = 256; 						// AVR Timer 2 is 8bit            
 		const unsigned char cpuFrequency = 16; 							// CPU frequency in micro Hertz	
     #elif ARDUINO_AVR_MEGA2560
         // Default: Timer5

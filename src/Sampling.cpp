@@ -32,7 +32,7 @@ SamplingClass::SamplingClass(){
 
 void SamplingClass::period(unsigned long microseconds){
   #ifdef ARDUINO_AVR_UNO
- 	 // for Arduino Mega2560 use Timer2 to stay compatible with the Servo library  
+ 	 // for Arduino Uno use Timer2 to stay compatible with the Servo library  
     	noInterrupts();                             // disable all interrupts
 	
     	TCCR2A = 0;                                 // clear register
@@ -40,42 +40,48 @@ void SamplingClass::period(unsigned long microseconds){
     	TCNT2  = 0;                                 // clear register
        
     	TCCR2B |= (1 << WGM22);                     // CTC mode       
-    	TIMSK2 |= (1 << OCIE2A);                    // enable timer compare interrupt
+    	TIMSK2 |= (1 << OCIE2A);                    // enable timer compare interrupt    
+
+    	if(!setSamplingPeriod(microseconds)){ 
+      #ifdef ECHO_TO_SERIAL
+    	  Serial.println("Sampling period is too long.\nMax is 16384 microseconds.");
+      #endif
+    	}
+
+	   	interrupts();             		   // enable all interrupts
 	
-   	interrupts();             		   // enable all interrupts
-		  
-   	#ifdef ECHO_TO_SERIAL
-    		if(!setSamplingPeriod(microseconds)) 
-    		Serial.println("Sampling period is too long.\nMax is 16384 microseconds.");  
-   	#endif
-   
-   #elif ARDUINO_AVR_MEGA2560 
+	#elif ARDUINO_AVR_MEGA2560 
  	 // for Arduino Mega2560 use Timer5
+
     	noInterrupts();                             // disable all interrupts
-   	TCCR5A = 0;                                 // clear register
+		  TCCR5A = 0;                                 // clear register
     	TCCR5B = 0;                                 // clear register
     	TCNT5  = 0;                                 // clear register
        
     	TCCR5B |= (1 << WGM52);                     // CTC mode       
     	TIMSK5 |= (1 << OCIE5A);                    // enable timer compare interrupt
-	
-	 interrupts();             		   // enable all interrupts
-    
+
+    setSamplingPeriod(microseconds);
    	#ifdef ECHO_TO_SERIAL
-    		if(!setSamplingPeriod(microseconds)) 
+		if(!setSamplingPeriod(microseconds)) 
    		Serial.println("Sampling period is too long.\nMax is 4194303 microseconds.");  
    	#endif
-	
+			
+		interrupts();             		   // enable all interrupts
+    	
   #elif ARDUINO_ARCH_SAMD
   // For SAMD21G boards, e.g. Zero
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
      GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;        // Set Timer counter Mode to 16 bits
 	 TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
+      
+      setSamplingPeriod(microseconds);
       #ifdef ECHO_TO_SERIAL
      	if(!setSamplingPeriod(microseconds)) 
-     	Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
-     #endif
+     	  Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
+      #endif
+      
 	 NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
      TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
@@ -84,9 +90,10 @@ void SamplingClass::period(unsigned long microseconds){
   // TC3 = TC Group 1, channel 0
      pmc_set_writeprotect(false);                            // Power management controller (PMC) disables the write protection of the timer and counter registers
      pmc_enable_periph_clk((uint32_t)TC3_IRQn);              // Power management controller (PMC) enables peripheral clock for TC3
-    
+
+     setSamplingPeriod(microseconds);
      #ifdef ECHO_TO_SERIAL
-	 if(!setSamplingPeriod(microseconds)) 
+	   if(!setSamplingPeriod(microseconds)) 
          Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
      #endif
 	
@@ -105,30 +112,38 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 
   #ifdef ARDUINO_AVR_UNO    
 	  // For AVR-based boards, e.g. Uno  
-	  if (cycles < timerResolution){		           // max. 16 us, error 62.5 ns 
+	  if (cycles < timerResolution){		                 // max. 16 us, error 62.5 ns 
 		TCCR2B |= (0 << CS22) | (0 << CS21) | (1 << CS20); // no prescaling
 		OCR2A = cycles-1;                                  // compare match register
 	  }
-	  else if(cycles < timerResolution * 8){		   // max. 128 us, error 0.5 us
+	  else if(cycles < timerResolution * 8){		   	     // max. 128 us, error 0.5 us
 		TCCR2B |= (0 << CS22) | (1 << CS21) | (0 << CS20); // 8 prescaler 
 		OCR2A = (cycles/8)-1;                              // compare match register
 	  }
-	  else if(cycles < timerResolution * 64){                  // max. 1024 us, error, 4 us
-		TCCR2B |= (0 << CS22) | (1 << CS21) | (1 << CS20); // 64 prescaler 
-		OCR2A = (cycles/64)-1;                             // compare match register
+	  else if(cycles < timerResolution * 32){            // max. 512 us, error, 2 us
+		TCCR2B |= (0 << CS22) | (1 << CS21) | (1 << CS20); // 32 prescaler 
+		OCR2A = (cycles/32)-1;                             // compare match register
 	  }
-	  else if(cycles < timerResolution * 256){                 // max. 4096 us, 16 us 
-		TCCR2B |= (1 << CS22) | (0 << CS21) | (0 << CS20); // 256 prescaler 
+    else if(cycles < timerResolution * 64){            // max. 1024 us, error, 4 us
+    TCCR2B |= (1 << CS22) | (0 << CS21) | (0 << CS20); // 64 prescaler 
+    OCR2A = (cycles/64)-1;                             // compare match register
+    }
+    else if(cycles < timerResolution * 128){           // max. 2048 us, error, 8 us
+    TCCR2B |= (1 << CS22) | (0 << CS21) | (1 << CS20); // 128 prescaler 
+    OCR2A = (cycles/128)-1;                            // compare match register
+    }
+	  else if(cycles < timerResolution * 256){           // max. 4096 us, 16 us 
+		TCCR2B |= (1 << CS22) | (1 << CS21) | (0 << CS20); // 256 prescaler 
 		OCR2A = (cycles/256)-1;                            // compare match register
 	  }
-	  else if(cycles < timerResolution * 1024){	            // max. 16384 us, 64 us 
-		TCCR2B |= (1 << CS22) | (0 << CS21) | (1 << CS20); // 1024 prescaler 
+	  else if(cycles < timerResolution * 1024){	         // max. 16384 us, 64 us 
+		TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 1024 prescaler 
 		OCR2A = (cycles/1024)-1;                           // compare match register
 	  }
 	  else{
 		return false;
 	  }	
-	    #elif ARDUINO_AVR_MEGA2560 
+ #elif ARDUINO_AVR_MEGA2560 
 	  // For AVR-based board - Mega, run on timer 5
   	  if (cycles < timerResolution){
 		TCCR15B |= (0 << CS52) | (0 << CS51) | (1 << CS50); // no prescaling
@@ -190,13 +205,13 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 	else{
 		return false;
 	}
-#elif ARDUINO_ARCH_SAM 										// For SAM boards, e.g. DUE
+ #elif ARDUINO_ARCH_SAM 										// For SAM boards, e.g. DUE
     TC_Configure(TC1, 0, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);        
     TC_SetRC(TC1, 0, (uint32_t)(cycles/2)-1);          // Prescaler 2       	
 	
-#else
+ #else
       #error "Architecture not supported."
-#endif 
+ #endif 
   
   samplingPeriod=microseconds/1000000.0;               // in seconds
   return true;               
@@ -216,12 +231,20 @@ p_to_void_func SamplingClass::getInterruptCallback (){
 
 SamplingClass Sampling;
 
-#ifdef ARDUINO_ARCH_AVR
+#ifdef ARDUINO_AVR_UNO
 
-ISR(TIMER1_COMPA_vect)
+ISR(TIMER2_COMPA_vect)
 {
   (Sampling.getInterruptCallback())();
 }
+
+#elif ARDUINO_AVR_MEGA2560
+
+ISR(TIMER5_COMPA_vect)
+{
+  (Sampling.getInterruptCallback())();
+}
+    
     
 #elif ARDUINO_ARCH_SAMD
 
