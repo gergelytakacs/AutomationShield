@@ -39,10 +39,10 @@ void SamplingClass::period(unsigned long microseconds){
     	TCCR2B = 0;                                 // clear register
     	TCNT2  = 0;                                 // clear register
        
-    	TCCR2B |= (1 << WGM22);                     // CTC mode       
+    	TCCR2A |= (1 << WGM21);                     // CTC mode       
     	TIMSK2 |= (1 << OCIE2A);                    // enable timer compare interrupt    
 
-    	if(!setSamplingPeriod(microseconds)){ 
+     	if(!setSamplingPeriod(microseconds)){ 
       #ifdef ECHO_TO_SERIAL
     	  Serial.println("Sampling period is too long.\nMax is 16384 microseconds.");
       #endif
@@ -111,7 +111,7 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
   const unsigned long cycles = microseconds * cpuFrequency;
 
   #ifdef ARDUINO_AVR_UNO    
-	  // For AVR-based boards, e.g. Uno  
+	  // For AVR-based boards, e.g. Uno   
 	  if (cycles < timerResolution){		                   // max. 16 us, error 62.5 ns 
 		  TCCR2B |= (0 << CS22) | (0 << CS21) | (1 << CS20); // no prescaling
 		  OCR2A = cycles-1;                                  // compare match register
@@ -140,6 +140,13 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 		  TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 1024 prescaler 
 		  OCR2A = (cycles/1024)-1;                           // compare match register
 	  }
+    // Use 0.1 ms precision up to 100 ms
+    else if(cycles < CYCLES_100MS){                      // max. 100 ms, error 0.5 us
+      TCCR2B |= (0 << CS22) | (1 << CS21) | (0 << CS20); // 8 prescaler 
+      OCR2A = (COMPARE_100US)-1;                         // compare match register
+      fireFlag = 1;                                      // repeat firing
+      fireResolution=100;                                // resolution in ms
+    }
 	  else{
 		  return false;
 	  }	
@@ -215,12 +222,18 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
  #endif 
   
   samplingPeriod=microseconds/1000000.0;               // in seconds
+  samplingMicroseconds=microseconds;                    //in microseconds
   return true;               
 }
 
 float SamplingClass::getSamplingPeriod(){
   return samplingPeriod;
 }
+
+unsigned long int SamplingClass::getSamplingMicroseconds(){
+  return samplingMicroseconds;
+}
+
 
 void SamplingClass::interrupt(p_to_void_func interruptCallback){
   this->interruptCallback = interruptCallback;
@@ -236,7 +249,15 @@ SamplingClass Sampling;
 
 ISR(TIMER2_COMPA_vect)
 {
-  (Sampling.getInterruptCallback())();
+//  if (!Sampling.fireFlag){
+    (Sampling.getInterruptCallback())();
+//  }
+//  else if (!Sampling.fireFlag){
+//     Sampling.fireCount++;
+//     if (Sampling.fireCount>=Sampling.getSamplingMicroseconds()/Sampling.fireResolution){
+//      (Sampling.getInterruptCallback())();
+//     }      
+//  }
 }
 
 #elif ARDUINO_AVR_MEGA2560

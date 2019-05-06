@@ -35,7 +35,14 @@ class SamplingClass{
     void interrupt(p_to_void_func interruptCallback);
     p_to_void_func getInterruptCallback ();
     float getSamplingPeriod();  
-         
+    unsigned long int getSamplingMicroseconds(); 
+        
+    #ifdef ARDUINO_AVR_UNO 
+      bool fireFlag = 0;                                     // Repeat launches of ISR
+      unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
+      unsigned short int fireResolution;
+    #endif
+       
   private:
 	
     static void defaultInterrupt();
@@ -44,11 +51,16 @@ class SamplingClass{
     #ifdef ARDUINO_AVR_UNO 	
 		  // Default: Timer2
 		  const unsigned long timerResolution = 256; 						 // AVR Timer 2 is 8bit            
-		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz	
+		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz
+      #define CYCLES_100MS  6250                             // CPU cycles @ 16 MHz for 100 ms
+      #define CYCLES_1000MS 62500                            // CPU cycles @ 16 MHz for 1 s
+      #define COMPARE_100US 50                               // Compare @ 16 MHz, prescaler 8, for 100 us
+    
     #elif ARDUINO_AVR_MEGA2560
       // Default: Timer5
 	    const unsigned long timerResolution = 65536; 					 // AVR Timer 5 is 16bit            
 		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz*/
+      
     #elif ARDUINO_ARCH_SAMD
 		  // Default TC5 (randomly selected, take care of Servo!)
 		  const unsigned long timerResolution = 65536;     				// Configured to 16bit  
@@ -60,7 +72,8 @@ class SamplingClass{
 		  #error "Architecture not supported."
     #endif
 
-    float samplingPeriod;        		 	                        // Sampling period in seconds  
+    float samplingPeriod; // Sampling period in seconds  
+    unsigned long int samplingMicroseconds; // Sampling period in microseconds 
     bool setSamplingPeriod(unsigned long microseconds);
 };
 extern SamplingClass Sampling;  
