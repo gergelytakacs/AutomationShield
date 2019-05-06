@@ -3,9 +3,9 @@
   
   The file implements an interrupt-driven system for deploying
   digital control systems on AVR, SAMD and SAM-based Arduino 
-  prototyping boards. This module should be compatible with
-  all AVR boards (Uno, Mega 2560 etc.), Arduino Zero and Arduino
-  Due. Take care of timer conflicts when using the Servo library.
+  prototyping boards with the R3 pinout. This module should be 
+  compatible with the Uno, Mega 2560, Arduino Zero and Arduino
+  Due. There should be no timer conflicts when using the Servo library.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -33,34 +33,32 @@ SamplingClass::SamplingClass(){
 void SamplingClass::period(unsigned long microseconds){
   #ifdef ARDUINO_AVR_UNO
  	 // for Arduino Uno use Timer2 to stay compatible with the Servo library  
-    	noInterrupts();                             // disable all interrupts
+    noInterrupts();                             // disable all interrupts
 	
-    	TCCR2A = 0;                                 // clear register
-    	TCCR2B = 0;                                 // clear register
-    	TCNT2  = 0;                                 // clear register
-       
-    	TCCR2A |= (1 << WGM21);                     // CTC mode       
-    	TIMSK2 |= (1 << OCIE2A);                    // enable timer compare interrupt    
-
-	   	interrupts();             		              // enable all interrupts
+    TCCR2A = 0;                                 // clear register
+    TCCR2B = 0;                                 // clear register
+    TCNT2  = 0;                                 // clear register
+      
+    TCCR2A |= (1 << WGM21);                     // CTC mode       
+    TIMSK2 |= (1 << OCIE2A);                    // enable timer compare interrupt    
+     
+    setSamplingPeriod(microseconds);            // Set prescalers
+	  
+	  interrupts();             		              // enable all interrupts
 	
 	#elif ARDUINO_AVR_MEGA2560 
  	 // for Arduino Mega2560 use Timer5
 
-    	noInterrupts();                             // disable all interrupts
-		  TCCR5A = 0;                                 // clear register
-    	TCCR5B = 0;                                 // clear register
-    	TCNT5  = 0;                                 // clear register
+    noInterrupts();                             // disable all interrupts
+		TCCR5A = 0;                                 // clear register
+    TCCR5B = 0;                                 // clear register
+    TCNT5  = 0;                                 // clear register
        
-    	TCCR5B |= (1 << WGM52);                     // CTC mode       
-    	TIMSK5 |= (1 << OCIE5A);                    // enable timer compare interrupt
+    TCCR5B |= (1 << WGM52);                     // CTC mode       
+    TIMSK5 |= (1 << OCIE5A);                    // enable timer compare interrupt
 
     setSamplingPeriod(microseconds);
-   	#ifdef ECHO_TO_SERIAL
-		if(!setSamplingPeriod(microseconds)) 
-   		Serial.println("Sampling period is too long.\nMax is 4194303 microseconds.");  
-   	#endif
-			
+   		
 		interrupts();             		   // enable all interrupts
     	
   #elif ARDUINO_ARCH_SAMD
@@ -178,9 +176,14 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
 		  TCCR5B |= (1 << CS52) | (0 << CS51) | (1 << CS50); // 1024 prescaler 
 		  OCR5A = (cycles/1024)-1;                            // compare match register
 	  }
-	  else{
-		  return false;
+    
+	  else if(cycles >= timerResolution * 1024){
+      TCCR5B |= (0 << CS52) | (1 << CS51) | (0 << CS50);  // 8 prescaler 
+      OCR5A = (COMPARE_10MS)-1;                           // compare match register to 10 ms
+      fireFlag = 1;                                       // repeat firing
+      fireResolution = 10000;                             // resolution in us
 	  }
+   
 	
  #elif ARDUINO_ARCH_SAMD								  // For SAMD21G boards, e.g. Zero
     if (cycles < timerResolution){
@@ -215,9 +218,10 @@ bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024;  //  1024 prescaler
       TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/1024)-1;              // compare match register
     }
-	else{
+	else {
 		return false;
 	}
+ 
  #elif ARDUINO_ARCH_SAM 										// For SAM boards, e.g. DUE
     TC_Configure(TC1, 0, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);        
     TC_SetRC(TC1, 0, (uint32_t)(cycles/2)-1);          // Prescaler 2       	
@@ -257,7 +261,23 @@ SamplingClass Sampling;
 
 #ifdef ARDUINO_AVR_UNO
 
-ISR(TIMER2_COMPA_vect)
+ISR(TIMER2_COMPA_vect){
+ if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
+  (Sampling.getInterruptCallback())();      // Start the interrupt callback
+ }                                          
+ else if(Sampling.fireFlag){                // else, if it is over the resolution of the counter
+   Sampling.fireCount++;                    // start counting
+   if (Sampling.fireCount>=Sampling.getSamplingMicroseconds()/Sampling.fireResolution){ // If done with counting
+      Sampling.fireCount=0;                 // make the counter zero again
+      (Sampling.getInterruptCallback())();  // and start the interrupt callback
+  } 
+ }
+}
+
+
+#elif ARDUINO_AVR_MEGA2560
+
+ISR(TIMER5_COMPA_vect)
 {
  if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
   (Sampling.getInterruptCallback())();      // Start the interrupt callback
@@ -269,16 +289,7 @@ ISR(TIMER2_COMPA_vect)
       (Sampling.getInterruptCallback())();  // and start the interrupt callback
   } 
  }
- }
-
-
-#elif ARDUINO_AVR_MEGA2560
-
-ISR(TIMER5_COMPA_vect)
-{
-  (Sampling.getInterruptCallback())();
 }
-    
     
 #elif ARDUINO_ARCH_SAMD
 

@@ -3,9 +3,9 @@
   
   The file implements an interrupt-driven system for deploying
   digital control systems on AVR, SAMD and SAM-based Arduino 
-  prototyping boards. This module should be compatible with
-  all AVR boards (Uno, Mega 2560 etc.), Arduino Zero and Arduino
-  Due. Take care of timer conflicts when using the Servo library.
+  prototyping boards with the R3 pinout. This module should be 
+  compatible with the Uno, Mega 2560, Arduino Zero and Arduino
+  Due. There should be no timer conflicts when using the Servo library.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -37,7 +37,7 @@ class SamplingClass{
     float getSamplingPeriod();  
     unsigned long int getSamplingMicroseconds(); 
         
-    #ifdef ARDUINO_AVR_UNO 
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))
       bool fireFlag = 0;                                     // Repeat launches of ISR
       unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
       unsigned short int fireResolution;
@@ -62,6 +62,7 @@ class SamplingClass{
       // Default: Timer5
 	    const unsigned long timerResolution = 65536; 					 // AVR Timer 5 is 16bit            
 		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz*/
+      #define COMPARE_10MS        20000                      // Compare @ 16 MHz, prescaler 8, for 10 ms
       
     #elif ARDUINO_ARCH_SAMD
 		  // Default TC5 (randomly selected, take care of Servo!)
