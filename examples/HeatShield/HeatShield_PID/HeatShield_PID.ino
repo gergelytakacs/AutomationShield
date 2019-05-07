@@ -21,7 +21,7 @@
   Last update: 12.10.2018.
 */
 
-#include <AutomationShield.h> 		// Include the library
+#include <HeatShield.h> 		// Include the library
 
 unsigned long Ts = 2000;            // Sampling in milliseconds
 unsigned long k = 0;                // Sample index
