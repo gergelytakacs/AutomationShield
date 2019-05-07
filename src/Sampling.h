@@ -11,7 +11,7 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács and Koplinger 2018-2019
+  Created by Gergely Takács and Richard Koplinger 2018-2019
   AVR Timer: 	   Gergely Takacs, Richard Koplinger, Matus Biro, Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
@@ -36,11 +36,19 @@ class SamplingClass{
     p_to_void_func getInterruptCallback ();
     float getSamplingPeriod();  
     unsigned long int getSamplingMicroseconds(); 
-        
+
+    /*
+    In case the required period is larger than what the given
+    timer resolution can handle with the highes prescaler (fireFlag=1),
+    the ISR will "fire" without launching the algorithm step until
+    (fireCount) the desired sampling is reached, then the conter is
+    reset. The "firing" of the ISR is a portion of the full sampling
+    by "fireResolution" microseconds.
+    */    
     #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))
       bool fireFlag = 0;                                     // Repeat launches of ISR
       unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
-      unsigned short int fireResolution;
+      unsigned short int fireResolution;                     // Resolution of the timer over the maximum
     #endif
        
   private:
@@ -79,5 +87,7 @@ class SamplingClass{
     unsigned long int samplingMicroseconds; // Sampling period in microseconds 
     bool setSamplingPeriod(unsigned long microseconds);
 };
+
 extern SamplingClass Sampling;  
+
 #endif
