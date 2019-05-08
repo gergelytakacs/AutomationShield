@@ -12,6 +12,8 @@ If you are not familiar with Git, please download the latest release of the libr
 ### I use Git
 For those who wish to use Git, this repository contains submodules, therefore you should use `git clone --recursive git://github.com/gergelytakacs/AutomationShield.git` to get these as well. In case you have already cloned the repository, the submodule directories in `src/lib/` may be empty. In this case, you have to initialize it by calling `submodule update --init --recursive`.
 
+## Interfaces
+
 ### Arduino IDE
 
 Open the Arduino IDE, click on the *Sketch* menu, and find the *Include Library* option. This opens another sub-menu from which you shold select *Add .ZIP Library...* that will open the file browser. Locate the renamed library .zip file and click *Open*.
