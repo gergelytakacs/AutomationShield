@@ -45,9 +45,14 @@ float BOBClass::referenceRead(){
 }
 
 //values from potentiometer computed for servo
-void BOBClass::actuatorWrite(float percent){
-
-   myservo.write(percent);
+void BOBClass::actuatorWrite(float degree){
+if (degree<70.00) {
+  degree=70.00;
+}
+else if (degree<130.00) {
+  degree=130.00;
+}
+   myservo.write(degree);
 
 }
 
