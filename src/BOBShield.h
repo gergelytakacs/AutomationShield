@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <Servo.h>
-Servo myservo;
+extern Servo myservo;
 #include "lib/Adafruit_VL6180X/Adafruit_VL6180X.h"
 #include "AutomationShield.h"
 
@@ -14,8 +14,10 @@ Servo myservo;
 #endif
 #endif*/
 
-#define POT_PIN 0
-
+#define BOB_RPIN 0
+#define BOB_UPIN 9
+#define MAX_CALIBRATED_DEFAULT 10           //TODO 
+#define MIN_CALIBRATED_DEFAULT 100          //TODO
 
 class BOBClass {
   public:
@@ -24,8 +26,8 @@ class BOBClass {
     void calibration();		                 	  //calibration
     float referenceRead();		          	  // Read reference pot in %
     float sensorReadPerc();
-    float sensorReadMm();
-    float actuatorWrite(float percent);
+    float sensorRead();
+    void actuatorWrite(float degree);
 
 
   private:
@@ -37,9 +39,9 @@ class BOBClass {
       int pos;
       byte calibrated = 0;
       int minCalibrated;			// Actual minimum value
-      int maxCalibrated; 
-      int minimum = 20;                      //TODO: determine what's minimum of the clipping interval
-      int maximum = 350;                     //TODO: determine what's maximum of the clipping interval
+      int maxCalibrated;
+      int minimum ;
+      int maximum ;
 
   };
 extern BOBClass BOBShield;
