@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <Servo.h>
-Servo myservo;
+extern Servo myservo;
 #include "lib/Adafruit_VL6180X/Adafruit_VL6180X.h"
 #include "AutomationShield.h"
 
