@@ -1,5 +1,5 @@
 #include "BOBShield.h"
-
+Servo myservo;
 
 
 // declaring PIN and initializing sensor library
