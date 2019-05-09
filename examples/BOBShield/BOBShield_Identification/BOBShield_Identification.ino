@@ -18,23 +18,24 @@
   Last update: 10.10.2018.
 */
 
-#include <HeatShield.h> 		// Include the library
+#include <BOBShield.h> 		// Include the library
 
-unsigned long Ts = 2000;            // Sampling in milliseconds
+unsigned long Ts = 2000;            // Sampling in milliseconds TODO
 unsigned long k = 0;                // Sample index
 bool enable=false;                  // Flag for sampling 
 
 float y = 0.0;						// Output
 float u = 0.0;						// Input (open-loop)
-float U[]={25.0,85.0,50.0,15.0,100.0,0.0};  // Input trajectory
-int T = 1350;						// Section length (45 min)
+float U[]={25.0,85.0,50.0,15.0,100.0,0.0};  // Input trajectory in degree   TODO
+int T = 1350;						// Section length (45 min)  TODO
 int i = 0;							// Section counter
 
 void setup() {
-  Serial.begin(9600);               // Initialize serial
+  Serial.begin(115200);               // Initialize serial
   
   // Initialize and calibrate board
-  HeatShield.begin();               // Define hardware pins
+  BOBShield.begin();               // Define hardware pins
+  BOBShield.calibration();         // run calibration
   
   // Initialize sampling function
   Sampling.period(Ts * 1000);   // Sampling init.
@@ -61,8 +62,8 @@ if (k % (T*i) == 0){
   i++;
 }
   							  
-y = HeatShield.sensorRead();           // Read sensor 
-HeatShield.actuatorWrite(u);           // Actuate
+y = BOBShield.sensorRead();           // Read sensor 
+BOBShield.actuatorWrite(u);           // Actuate
 	 
 Serial.print(y);						// Print output  
 Serial.print(", ");
