@@ -1,21 +1,20 @@
 /*
-  API for the HeatShield hardware.
+  API for the TugShield hardware.
   
   The file is a part of the application programming interface for
-  the HeatShield didactic tool for control engineering and 
+  the TugShield didactic tool for control engineering and 
   mechatronics education.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács and Richard Köplinger. 
-  Last update: 6.5.2019.
+  Created by Gergely Takács and Eva Vargová. 
+  Last update: 13.5.2019.
 */
 
 #include "TugShield.h"
-#include "AutomationShield.h"
-#include "Servo.h"
+
 // Initializes hardware pins
 void TugShieldClass::begin(){  
       pinMode(TUG_YPIN, INPUT);  		// Flexi pin
@@ -25,43 +24,51 @@ void TugShieldClass::begin(){
 }
 
 // Calibration
-void TugShieldClass::calibration()
-{  # if ECHO_TO_SERIAL                        
-	Serial.println("Calibration is running...");
+void TugShieldClass::calibration()				
+{  # if ECHO_TO_SERIAL                        	
+	Serial.println("Calibration is running...");	// Calibration is in progress
   # endif
-  servo.write(0);
-  delay(1000);
-  for (int ii=0; ii <= 10; ii++)
+  servo.write(0);									// Write 0 to servo 
+  delay(delay_value);								
+  for (int ii=0; ii <= 10; ii++)					
   {
-    _sensorRead=analogRead(0);
-    if(_sensorRead<k_min)
+    _sensorRead=analogRead(0);						// Read value from flexi
+    if(_sensorRead<k_min)							
     {
-      k_min=_sensorRead;
+      k_min=_sensorRead;							// Checking the lowest value
     }
-    delay(100);
+    delay(delay_value);
   }
-  servo.write(180);
-  delay(1000);
-  for (ii=0; ii <= 10; ii++)
+  servo.write(180);									// Write 180 to servo 
+  delay(delay_value);								
+  for (ii=0; ii <= 10; ii++)						
   {
-    _sensorRead=analogRead(0);
-    if(_sensorRead>k_max)
+    _sensorRead=analogRead(0);						// Read value from flexi
+    if(_sensorRead>k_max)							//
     {
-      k_max=_sensorRead;
+      k_max=_sensorRead;							// Checking the highest value
     }
-   delay(100);
+   delay(delay_value);
   }
+  _wasCalibrated = true; 							
 	# if ECHO_TO_SERIAL
-	Serial.println("Calibration is done");		
+	Serial.println("Calibration is done");			// Calibration is completed	
   # endif
 }
-void TugShieldClass::actuatorWrite(bbb){  
-      analogWrite(HEAT_UPIN,bbb); // Write to actuator
+void TugShieldClass::actuatorWrite(write_to_servo){  
+    servo.write(write_to_servo);  		 			// Write to actuator
 }
 
 float TugShieldClass::sensorRead(){
-   _sensorRead = analogRead(TUG_YPIN);
+    _sensorRead = analogRead(TUG_YPIN);				// Read value from flexi
+   
+   if(_wasCalibrated){                  			// Was calibration done?
    _sensorValue = AutomationShield.mapFloat(_sensorRead, k_min, k_max, 0.00, 100.00); 
-   return _sensorValue;
+   }
+   else{ // Use default typical values
+   _sensorValue = AutomationShield.mapFloat(_sensorRead, 20.00, 800.00, 0.00, 100.00);
+   }
+	return _sensorValue;
+   
 }
 TugShieldClass TugShield;
