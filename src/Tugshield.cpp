@@ -17,10 +17,11 @@
 
 // Initializes hardware pins
 void TugShieldClass::begin(){  
-      pinMode(TUG_YPIN, INPUT);  		// Flexi pin
-      pinMode(TUG_UPIN, OUTPUT); 		// Servo pin
+      pinMode(TUG_YPIN, INPUT);  		// Flexi pin 
+	  pinMode(TUG_UPIN, OUTPUT); 		// Servo pin 
+	  pinMode(POT_YPIN, INPUT); 		// Potenciometer pin
 	  servo.attach(TUG_UPIN);			// Set pin for servo
-	  servo.write(0);					// Set zero position 
+	  servo.write(servo_min);					// Set zero position 
 }
 
 // Calibration
@@ -28,7 +29,7 @@ void TugShieldClass::calibration()
 {  # if ECHO_TO_SERIAL                        	
 	Serial.println("Calibration is running...");	// Calibration is in progress
   # endif
-  servo.write(0);									// Write 0 to servo 
+  servo.write(servo_min);									// Write 0 to servo 
   delay(delay_value);								
   for (int ii=0; ii <= 10; ii++)					
   {
@@ -39,7 +40,7 @@ void TugShieldClass::calibration()
     }
     delay(delay_value);
   }
-  servo.write(180);									// Write 180 to servo 
+  servo.write(servo_max);									// Write 180 to servo 
   delay(delay_value);								
   for (ii=0; ii <= 10; ii++)						
   {

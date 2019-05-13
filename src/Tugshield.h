@@ -27,7 +27,8 @@
 #define K_MIN 800;				// Initial value for variable k_min
 #define K_MAX 0;				// Initial value for variable k_max
 #define delay_value 100;		// Initial value for variable delay_value
-
+#define servo_max 180;
+#define servo_min 0;
 
 class TugShieldClass{			// Class for the TugShield device
   
@@ -38,8 +39,8 @@ class TugShieldClass{			// Class for the TugShield device
 	void sensorRead();			// Read value from flexi metod
   private:   
 	float 	_sensorValue;		// Initializing the variable _sensorValue
-	int 	_sensorRead;		// Initializing the variable _sensorRead
-	int 	write_to_servo;		// Initializing the variable write_to_servo
+	float 	_sensorRead;		// Initializing the variable _sensorRead
+	float 	write_to_servo;		// Initializing the variable write_to_servo
 	bool	_wasCalibrated; 	// Initializing the variable _wasCalibrated
 };
 
