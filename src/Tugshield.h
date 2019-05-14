@@ -19,6 +19,7 @@
 #include "Arduino.h"			// Required Arduino API in libraries
 #include "AutomationShield.h"
 #include "Servo.h"
+#include "Sampling.h"
 
 
 // Defining pins used by the Tugshield 
