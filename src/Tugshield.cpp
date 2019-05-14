@@ -17,11 +17,9 @@
 
 // Initializes hardware pins
 void TugShieldClass::begin(){  
-      pinMode(TUG_YPIN, INPUT);  		// Flexi pin 
-	  pinMode(TUG_UPIN, OUTPUT); 		// Servo pin 
-	  pinMode(POT_YPIN, INPUT); 		// Potenciometer pin
+      pinMode(TUG_UPIN, OUTPUT); 		// Servo pin 
 	  servo.attach(TUG_UPIN);			// Set pin for servo
-	  servo.write(servo_min);					// Set zero position 
+	  servo.write(SERVO_MIN);					// Set zero position 
 }
 
 // Calibration
@@ -29,45 +27,45 @@ void TugShieldClass::calibration()
 {  # if ECHO_TO_SERIAL                        	
 	Serial.println("Calibration is running...");	// Calibration is in progress
   # endif
-  servo.write(servo_min);									// Write 0 to servo 
-  delay(delay_value);								
+  servo.write(SERVO_MIN);									// Write 0 to servo 
+  delay(DELAY_VALUE);								
   for (int ii=0; ii <= 10; ii++)					
   {
-    _sensorRead=analogRead(0);						// Read value from flexi
-    if(_sensorRead<k_min)							
+    _sensorRead=analogRead(TUG_YPIN);						// Read value from flexi
+    if(_sensorRead<K_MIN)							
     {
-      k_min=_sensorRead;							// Checking the lowest value
+      K_MIN=_sensorRead;							// Checking the lowest value
     }
-    delay(delay_value);
+    delay(DELAY_VALUE);
   }
-  servo.write(servo_max);									// Write 180 to servo 
-  delay(delay_value);								
+  servo.write(SERVO_MAX);									// Write 180 to servo 
+  delay(DELAY_VALUE);								
   for (ii=0; ii <= 10; ii++)						
   {
-    _sensorRead=analogRead(0);						// Read value from flexi
-    if(_sensorRead>k_max)							//
+    _sensorRead=analogRead(TUG_YPIN);						// Read value from flexi
+    if(_sensorRead>K_MAX)							//
     {
-      k_max=_sensorRead;							// Checking the highest value
+      K_MAX=_sensorRead;							// Checking the highest value
     }
-   delay(delay_value);
+   delay(DELAY_VALUE);
   }
   _wasCalibrated = true; 							
 	# if ECHO_TO_SERIAL
 	Serial.println("Calibration is done");			// Calibration is completed	
   # endif
 }
-void TugShieldClass::actuatorWrite(write_to_servo){  
-    servo.write(write_to_servo);  		 			// Write to actuator
+void TugShieldClass::actuatorWrite(float servo_angle){  
+    servo.write(servo_angle);  		 			// Write to actuator
 }
 
 float TugShieldClass::sensorRead(){
     _sensorRead = analogRead(TUG_YPIN);				// Read value from flexi
    
    if(_wasCalibrated){                  			// Was calibration done?
-   _sensorValue = AutomationShield.mapFloat(_sensorRead, k_min, k_max, 0.00, 100.00); 
+   float _sensorValue = AutomationShield.mapFloat(float _sensorRead, k_min, k_max, 0.00, 100.00); 
    }
    else{ // Use default typical values
-   _sensorValue = AutomationShield.mapFloat(_sensorRead, 20.00, 800.00, 0.00, 100.00);
+   float _sensorValue = AutomationShield.mapFloat(float _sensorRead, 20.00, 800.00, 0.00, 100.00);
    }
 	return _sensorValue;
    

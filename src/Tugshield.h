@@ -24,11 +24,11 @@
 // Defining pins used by the Tugshield 
 #define TUG_YPIN 0  			// Flexi sensor
 #define TUG_UPIN 10 			// Servo motor
-#define K_MIN 800;				// Initial value for variable k_min
+#define K_MIN 800;				// Initial value for variable K_MIN
 #define K_MAX 0;				// Initial value for variable k_max
-#define delay_value 100;		// Initial value for variable delay_value
-#define servo_max 180;
-#define servo_min 0;
+#define DELAY_VALUE 100;		// Initial value for variable delay_value
+#define SERVO_MAX 180;
+#define SERVO_MIN 0;
 
 class TugShieldClass{			// Class for the TugShield device
   
@@ -38,10 +38,7 @@ class TugShieldClass{			// Class for the TugShield device
 	void actuatorWrite();		// Write value to servo metod
 	void sensorRead();			// Read value from flexi metod
   private:   
-	float 	_sensorValue;		// Initializing the variable _sensorValue
-	float 	_sensorRead;		// Initializing the variable _sensorRead
-	float 	write_to_servo;		// Initializing the variable write_to_servo
-	bool	_wasCalibrated; 	// Initializing the variable _wasCalibrated
+	bool  _wasCalibrated; 	// Initializing the variable _wasCalibrated
 };
 
 extern TugShieldClass TugShield;
