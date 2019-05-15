@@ -1,4 +1,4 @@
-/*
+﻿/*
   API for the TugShield hardware.
   
   The file is a part of the application programming interface for
@@ -30,6 +30,8 @@
 #define DELAY_VALUE 100;		// Initial value for variable delay_value
 #define SERVO_MAX 180;
 #define SERVO_MIN 0;
+#define DEFAULT_MIN;
+#define DEFAULT_MAX;
 
 class TugShieldClass{			// Class for the TugShield device
   
@@ -40,6 +42,10 @@ class TugShieldClass{			// Class for the TugShield device
 	void sensorRead();			// Read value from flexi metod
   private:   
 	bool  _wasCalibrated; 	// Initializing the variable _wasCalibrated
+	int   _sensorRead ;
+	int   k_maximal;
+	int   k_minimal;
+	
 };
 
 extern TugShieldClass TugShield;

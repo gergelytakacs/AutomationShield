@@ -1,4 +1,4 @@
-/*
+﻿/*
   API for the TugShield hardware.
   
   The file is a part of the application programming interface for
@@ -24,7 +24,8 @@ void TugShieldClass::begin(){
 
 // Calibration
 void TugShieldClass::calibration()				
-{  # if ECHO_TO_SERIAL                        	
+{  
+# if ECHO_TO_SERIAL                        	
 	Serial.println("Calibration is running...");	// Calibration is in progress
   # endif
   servo.write(SERVO_MIN);									// Write 0 to servo 
@@ -32,41 +33,66 @@ void TugShieldClass::calibration()
   for (int ii=0; ii <= 10; ii++)					
   {
     _sensorRead=analogRead(TUG_YPIN);						// Read value from flexi
-    if(_sensorRead<K_MIN)							
-    {
-      K_MIN=_sensorRead;							// Checking the lowest value
-    }
-    delay(DELAY_VALUE);
+	if (ii == 00)
+	{
+		if(_sensorRead<K_MIN)							
+		{
+		k_minimal=_sensorRead;							// Checking the lowest value
+		}
+		delay(DELAY_VALUE);
+	}
+	else
+	{
+		if(_sensorRead<k_minimal)							
+		{
+		k_minimal=_sensorRead;							// Checking the lowest value
+		}
+		delay(DELAY_VALUE);
+	}
   }
+  
   servo.write(SERVO_MAX);									// Write 180 to servo 
   delay(DELAY_VALUE);								
-  for (ii=0; ii <= 10; ii++)						
+  for (int ii=0; ii <= 10; ii++)					
   {
     _sensorRead=analogRead(TUG_YPIN);						// Read value from flexi
-    if(_sensorRead>K_MAX)							//
-    {
-      K_MAX=_sensorRead;							// Checking the highest value
-    }
-   delay(DELAY_VALUE);
+	if (ii == 00)
+	{
+		if(_sensorRead<K_MAX)							
+		{
+		k_maximal=_sensorRead;							// Checking the lowest value
+		}
+		delay(DELAY_VALUE);
+	}
+	else
+	{
+		if(_sensorRead<k_maximal)							
+		{
+		k_maximal=_sensorRead;							// Checking the lowest value
+		}
+		delay(DELAY_VALUE);
+	}
   }
   _wasCalibrated = true; 							
 	# if ECHO_TO_SERIAL
 	Serial.println("Calibration is done");			// Calibration is completed	
   # endif
 }
-void TugShieldClass::actuatorWrite(float servo_angle){  
-    servo.write(servo_angle);  		 			// Write to actuator
+void TugShieldClass::actuatorWrite(int servo_angle){  
+     servo.write(servo_angle);  		 			// Write to actuator
 }
 
 float TugShieldClass::sensorRead(){
-    _sensorRead = analogRead(TUG_YPIN);				// Read value from flexi
+      _sensorRead = analogRead(TUG_YPIN);				// Read value from flexi
    
-   if(_wasCalibrated){                  			// Was calibration done?
-   float _sensorValue = AutomationShield.mapFloat(float _sensorRead, k_min, k_max, 0.00, 100.00); 
-   }
-   else{ // Use default typical values
-   float _sensorValue = AutomationShield.mapFloat(float _sensorRead, 20.00, 800.00, 0.00, 100.00);
-   }
+    if(_wasCalibrated)
+	{                  			// Was calibration done?
+     (float) _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, k_minimal, k_maximal, 0.00, 100.00); 
+    }
+    else				// Use default typical values
+	{ 
+     (float) _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, DEFAULT_MIN, DEFAULT_MAX, 0.00, 100.00);
+    }
 	return _sensorValue;
    
 }
