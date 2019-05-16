@@ -87,11 +87,11 @@ float TugShieldClass::sensorRead(){
    
     if(_wasCalibrated)
 	{                  			// Was calibration done?
-     (float) _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, k_minimal, k_maximal, 0.00, 100.00); 
+     float _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, k_minimal, k_maximal, 0.00, 100.00); 
     }
     else				// Use default typical values
 	{ 
-     (float) _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, DEFAULT_MIN, DEFAULT_MAX, 0.00, 100.00);
+     float _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, DEFAULT_MIN, DEFAULT_MAX, 0.00, 100.00);
     }
 	return _sensorValue;
    
