@@ -21,29 +21,30 @@
   Last update: 12.10.2018.
 */
 
-#include <BOBShield.h> 		// Include the library
+#include <BOBShield.h>     // Include the library
 
-unsigned long Ts = 2000;            // Sampling in milliseconds
+unsigned long Ts = 10;            // Sampling in milliseconds
 unsigned long k = 0;                // Sample index
 bool enable=false;                  // Flag for sampling 
 
-float r = 0.0;						// Reference
-float R[]={40.0,75.0,35.0,70.0,50.0,0.0};    // Reference trajectory in mm
-int T = 1800;						// Section length (steps) 1 hrs
-int i = i;							// Section counter
-float y = 0.0;						// Output
-float u = 0.0;						// Input					
+float r = 0.0;            // Reference
+float R[]={30.0,50.0,8.0,65.0,15.0,40.0};;    // Reference trajectory
+int T = 1000;           // Section length
+int i = i;              // Section counter
+float y = 0.0;            // Output
+float u = 0.0;            // Input          
 
-#define KP 3.0       						// PID Kp
-#define TI 30.0                    // PID Ti
-#define TD 1                    // PID Td
+#define KP 2                  // PID Kp
+#define TI 100000                  // PID Ti
+#define TD 0.001                    // PID Td
 
 void setup() {
   Serial.begin(115200);               // Initialize serial
   
   // Initialize and calibrate board
   BOBShield.begin();               // Define hardware pins
-
+  BOBShield.initialize();
+  BOBShield.calibration();
   
   // Initialize sampling function
   Sampling.period(Ts * 1000);   // Sampling init.
@@ -57,34 +58,34 @@ void setup() {
 
 // Main loop launches a single step at each enable time
 void loop() {
-  if (enable) { 							// If ISR enables
-    step();									// Algorithm step
-    enable=false;  							// Then disable
+  if (enable) {               // If ISR enables
+    step();                 // Algorithm step
+    enable=false;               // Then disable
   }  
 }
 
-void stepEnable(){  						// ISR 
-  enable=true;							    // Change flag
+void stepEnable(){              // ISR 
+  enable=true;                  // Change flag
 }
 
 // A signle algoritm step
 
 void step(){ 
 
-if (k % (T*i) == 0){				
-  r = R[i]; 							 // Set reference
+if (k % (T*i) == 0){        
+  r = R[i];                // Set reference
   i++;
 }
-  							  
+                  
 y = BOBShield.sensorRead();           // Read sensor 
-u = PIDAbs.compute(r-y,0,100,0,100);   // PID
+u = PIDAbs.compute(r-y,-30,30,-10,10);   // PID
 BOBShield.actuatorWrite(u);           // Actuate
 
-Serial.print(r);						// Print reference
-Serial.print(", ");						 
-Serial.print(y);						// Print output  
+Serial.print(r);            // Print reference
+Serial.print(", ");            
+Serial.print(y);            // Print output  
 Serial.print(", ");
-Serial.println(u);						// Print input
-k++;									// Increment k
+Serial.println(u);            // Print input
+k++;                  // Increment k
 
 }
