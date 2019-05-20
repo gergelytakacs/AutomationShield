@@ -17,6 +17,11 @@ script:
   - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_Random/HeatShield_Random.ino
   - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_Thermistor/HeatShield_Thermistor.ino
   - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_StepResponse/_StepResponse.ino
+# OptoShield
+  - arduino --verify --board arduino:avr:uno $PWD/examples/OptoShield/OptoShield_PIDAuto/OptoShield_PIDAuto.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/OptoShield/OptoShield_PIDManual/OptoShield_PIDManual.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/OptoShield/OptoShield_StepResponse/OptoShield_StepResponse.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/OptoShield/OptoShield_Identification/OptoShield_Identification.ino
 notifications:
   email:
     on_success: change
