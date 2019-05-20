@@ -33,16 +33,8 @@
 
 // Headers for essential functionality
 #include "Sampling.h" 
-
-// I don't think it is necessary to include these here
-//#include "PIDAbs.h"
-//#include "PIDInc.h"
-
-// Hardware-specific includes should use AutomationShield.h, not 
-// the other way around.
-// Headers for individual shields
-//#include "OptoShield.h"
-//#include "HeatShield.h" 
+#include "PIDAbs.h"
+#include "PIDInc.h"
 
 // Diagnostics
 #define ECHO_TO_SERIAL      0                // echo data to serial port
