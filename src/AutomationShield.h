@@ -10,7 +10,7 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by Gergely Takács, Tibor Konkoly, Gábor Penzinger [...]
+  Created by Gergely Takács, Tibor Konkoly, Gábor Penzinger
   Last update: 28.09.2018.
 */
 
@@ -23,6 +23,7 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
+// THESE ARE NOT VISIBLE OUTSIDE THE SCOPE OF THE FILE, DO WE NEED THEM?
 // Common definitions
 #define AREF 5.0 // ADC reference voltage for 5 V logic
 #define ARES AREF/1023.0 // ADC resolution for 5 V logic
@@ -32,13 +33,16 @@
 
 // Headers for essential functionality
 #include "Sampling.h" 
-#include "PIDAbs.h"
+
+// I don't think it is necessary to include these here
+//#include "PIDAbs.h"
 //#include "PIDInc.h"
 
-
+// Hardware-specific includes should use AutomationShield.h, not 
+// the other way around.
 // Headers for individual shields
-#include "OptoShield.h"
-#include "HeatShield.h" 
+//#include "OptoShield.h"
+//#include "HeatShield.h" 
 
 // Diagnostics
 #define ECHO_TO_SERIAL      0                // echo data to serial port
