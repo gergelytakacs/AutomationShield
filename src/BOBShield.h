@@ -1,6 +1,7 @@
 #ifndef BOBSHIELD_H_
 #define BOBSHIELD_H_
 
+#include <Wire.h>
 #include <Arduino.h>
 #include <Servo.h>
 extern Servo myservo;
@@ -16,18 +17,22 @@ extern Servo myservo;
 
 #define BOB_RPIN 0
 #define BOB_UPIN 9
-#define MAX_CALIBRATED_DEFAULT 10           //TODO 
-#define MIN_CALIBRATED_DEFAULT 100          //TODO
+
+
 
 class BOBClass {
   public:
-    Adafruit_VL6180X sens = Adafruit_VL6180X();   	  //symbolic name for sensor library
+    Adafruit_VL6180X sens =  Adafruit_VL6180X();   	  //symbolic name for sensor library
+    void initialize();                  // sets up the sensor - required to run in setup!
     void  begin(void);                      		  //sets up sensor
     void calibration();		                 	  //calibration
     float referenceRead();		          	  // Read reference pot in %
     float sensorReadPerc();
     float sensorRead();
-    void actuatorWrite(float degree);
+    float sensorReadCal();
+    int degree;
+    void actuatorWrite(int deg);
+    
 
 
   private:
@@ -36,10 +41,11 @@ class BOBClass {
       float _referenceValue;
       uint8_t range;
       float _servoValue;
-      int pos;
+      int pos,posCal, position, posperc;
+      int maxRange, minRange, ballPos;
       byte calibrated = 0;
-      int minCalibrated;			// Actual minimum value
-      int maxCalibrated;
+      int minCalibrated = 1488;			// Actual minimum value
+      int maxCalibrated = 14; 			// Actual maximum value
       int minimum ;
       int maximum ;
 
@@ -47,3 +53,4 @@ class BOBClass {
 extern BOBClass BOBShield;
 
 #endif
+

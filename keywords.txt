@@ -12,10 +12,12 @@ OptoShield	KEYWORD1
 FloatShield	KEYWORD1
 HeatShield	KEYWORD1
 MotoShield	KEYWORD1
-MagnetoShield KEYWORD1
-PIDAbs  KEYWORD1
-PIDInc  KEYWORD1
-Sampling  KEYWORD1
+TugShield	KEYWORD1
+BOBShield	KEYWORD1
+MagnetoShield	KEYWORD1
+PIDAbs	KEYWORD1
+PIDInc	KEYWORD1
+Sampling	KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
