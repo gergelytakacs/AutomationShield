@@ -1,4 +1,4 @@
-# AutomationShield Library [![Build Status](https://travis-ci.org/gergelytakacs/AutomationShield.svg?branch=master)](https://travis-ci.org/gergelytakacs/AutomationShield)
+# AutomationShield Library [![Build Status](https://travis-ci.org/gergelytakacs/AutomationShield.svg?branch=master)](https://travis-ci.org/gergelytakacs/AutomationShield) [![Coverage Status](https://coveralls.io/repos/github/gergelytakacs/AutomationShield/badge.svg?branch=master)](https://coveralls.io/github/gergelytakacs/AutomationShield?branch=master)
 
 ## About AutomationShield
 
