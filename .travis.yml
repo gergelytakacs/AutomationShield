@@ -11,7 +11,7 @@ install:
   - ln -s $PWD /usr/local/share/arduino/libraries/AutomationShield
   # No library dependencies at this point
 script:
-  - arduino --verify --board arduino:avr:uno $PWDA/examples/HeatShield/HeatShield_PID/HeatShield_PID.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_PID/HeatShield_PID.ino
 notifications:
   email:
     on_success: change
