@@ -1,4 +1,4 @@
-language: c # Specify language, built in Arduino IDE anyways
+language: c                                                           # Specify language, built in Arduino IDE anyways
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
   - sleep 3
@@ -11,7 +11,12 @@ install:
   - ln -s $PWD /usr/local/share/arduino/libraries/AutomationShield
   # No library dependencies at this point
 script:
+# HeatShield
   - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_PID/HeatShield_PID.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_Identification/HeatShield_Identification.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_Random/HeatShield_Random.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_Thermistor/HeatShield_Thermistor.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_StepResponse/_StepResponse.ino
 notifications:
   email:
     on_success: change
