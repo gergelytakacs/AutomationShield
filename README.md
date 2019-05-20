@@ -1,4 +1,4 @@
-# AutomationShield Library and Examples
+# AutomationShield Library [![Build Status](https://travis-ci.org/gergelytakacs/AutomationShield.svg?branch=master)](https://travis-ci.org/gergelytakacs/AutomationShield)
 
 ## About AutomationShield
 
