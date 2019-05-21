@@ -8,6 +8,8 @@ before_install:                                                         # Tasks 
   - tar xf arduino-1.8.9-linux64.tar.xz                                 # Uncompress Arduino IDE
   - sudo mv arduino-1.8.9 /usr/local/share/arduino                      # Move Arduino ide to the correct directory
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino  
+  - arduino --install-boards arduino:sam                                # Install board support for SAM (Due)
+  - arduino --install-boards arduino:samd                               # Install board support for SAMD (Zero)
 install:                                                                # Actual installation of the AutomationShield repo
   - ln -s $PWD /usr/local/share/arduino/libraries/AutomationShield      # Install repository as a library
                                                                         # No library dependencies at this point
