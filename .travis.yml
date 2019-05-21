@@ -52,17 +52,20 @@ script:
 
 ### MotoShield ###
 #Uno#
-#  - arduino --verify --board arduino:avr:uno $PWD/examples/MotoShield/MotoShield_PID/MotoShield_PID.ino
-#  - arduino --verify --board arduino:avr:uno $PWD/examples/MotoShield/MotoShield_StepResponse/MotoShield_StepResponse.ino
+   - arduino --verify --board arduino:avr:uno $PWD/examples/MotoShield/MotoShield_PID/MotoShield_PID.ino
+   - arduino --verify --board arduino:avr:uno $PWD/examples/MotoShield/MotoShield_StepResponse/MotoShield_StepResponse.ino
 
 ### FloatShield ###
 #Uno#
-#- arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield/_PID/FloatShield/_PID.ino
-#- arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield//FloatShield/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
+#- arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
+#- arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
 
 ### TugShield ###
 ### BOBShield ###
-### Sampling ###
+
+### Sampling ### 
+#Uno#
+ - arduino --verify --board arduino:avr:uno $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 
 notifications:
   email:
