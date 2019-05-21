@@ -1,4 +1,4 @@
-﻿/*
+/*
   API for the TugShield hardware.
   
   The file is a part of the application programming interface for
@@ -14,86 +14,86 @@
 */
 
 #include "TugShield.h"
-
-// Initializes hardware pins
-void TugShieldClass::begin(){  
-      pinMode(TUG_UPIN, OUTPUT); 		// Servo pin 
-	  servo.attach(TUG_UPIN);			// Set pin for servo
-	  servo.write(SERVO_MIN);					// Set zero position 
+Servo servo;
+// Inicializovanie hardvéru
+void TugShieldClass::begin()
+{  												
+    servo.attach(TUG_UPIN);						// Nastavenie pinu serva
+	servo.write(SERVO_MAX);						// Nastavenie pozície serva na nulu
+    analogReference(EXTERNAL);					// Nastavenie externej analógovej refercie
 }
 
-// Calibration
+// Kalibrácia
 void TugShieldClass::calibration()				
-{  
-# if ECHO_TO_SERIAL                        	
-	Serial.println("Calibration is running...");	// Calibration is in progress
-  # endif
-  servo.write(SERVO_MIN);									// Write 0 to servo 
+{ 
+  Serial.println("Prebieha kalibrácia");		// Kalibrácia prebieha
+  servo.write(SERVO_MAX);						// Nastavenie serva na pozíciu nula
   delay(DELAY_VALUE);								
-  for (int ii=0; ii <= 10; ii++)					
+  for (int ii=0; ii <= 10; ii++)				// Cyklus opakovaný 11 x	
   {
-    _sensorRead=analogRead(TUG_YPIN);						// Read value from flexi
-	if (ii == 00)
+    _sensorRead=analogRead(TUG_YPIN);			// Načítanie hodnoty z flexi snímača
+	if (ii == 00)								// Prvé opakovanie
 	{
-		if(_sensorRead<K_MIN)							
+		if(_sensorRead>K_MAX)					// Porovnanie hodnoty z nastavenou hodnotou		
 		{
-		k_minimal=_sensorRead;							// Checking the lowest value
+		k_maximal=_sensorRead;					// Priradenie hodnoty
 		}
 		delay(DELAY_VALUE);
 	}
 	else
 	{
-		if(_sensorRead<k_minimal)							
+		if(_sensorRead>k_maximal)				// Porovnanie hodnoty z nameranou hodnotou			
 		{
-		k_minimal=_sensorRead;							// Checking the lowest value
+		k_maximal=_sensorRead;					// Priradenie hodnoty
 		}
 		delay(DELAY_VALUE);
 	}
   }
   
-  servo.write(SERVO_MAX);									// Write 180 to servo 
+  servo.write(SERVO_MIN);						// Nastavenie serva na pozíciu 180 stupňov
   delay(DELAY_VALUE);								
-  for (int ii=0; ii <= 10; ii++)					
+  for (int ii=0; ii <= 10; ii++)				// Cyklus opakovaný 11 x	
   {
-    _sensorRead=analogRead(TUG_YPIN);						// Read value from flexi
-	if (ii == 00)
+    _sensorRead=analogRead(TUG_YPIN);			// Načítanie hodnoty z flexi snímača
+	if (ii == 00)								// Prvé opakovanie
 	{
-		if(_sensorRead<K_MAX)							
-		{
-		k_maximal=_sensorRead;							// Checking the lowest value
+		if(_sensorRead<K_MIN)					// Porovnanie hodnoty z nastavenou hodnotou			
+		{			
+		k_minimal=_sensorRead;					// Priradenie hodnoty
 		}
 		delay(DELAY_VALUE);
 	}
 	else
 	{
-		if(_sensorRead<k_maximal)							
+		if(_sensorRead<k_minimal)				// Porovnanie hodnoty z nameranou hodnotou				
 		{
-		k_maximal=_sensorRead;							// Checking the lowest value
+		k_minimal=_sensorRead;					// Priradenie hodnoty
 		}
 		delay(DELAY_VALUE);
 	}
   }
   _wasCalibrated = true; 							
-	# if ECHO_TO_SERIAL
-	Serial.println("Calibration is done");			// Calibration is completed	
-  # endif
-}
-void TugShieldClass::actuatorWrite(int servo_angle){  
-     servo.write(servo_angle);  		 			// Write to actuator
+	Serial.println("Kalibrácia bola úspešne dokončená");		// Kalibrácia bola vykonaná
 }
 
-float TugShieldClass::sensorRead(){
-      _sensorRead = analogRead(TUG_YPIN);				// Read value from flexi
-   
-    if(_wasCalibrated)
-	{                  			// Was calibration done?
-     float _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, k_minimal, k_maximal, 0.00, 100.00); 
+void TugShieldClass::actuatorWrite(int servo_angle){  
+    int servo_rightangle = 180 - servo_angle;				// Prepočítanie na skutočné hodnoty
+     servo.write(servo_rightangle);  		 				// Nastavenie hodnoty na servo
+}
+
+float TugShieldClass::sensorRead()
+{
+    _sensorRead = analogRead(TUG_YPIN);					// Načítanie hodnoty z flexi senzora
+    float _sensorValue;
+    if(_wasCalibrated == true)
+	{                  										// V prípade, že bola kalibrácia urobená
+      _sensorValue = AutomationShield.mapFloat((float)_sensorRead,(float)k_minimal,(float)k_maximal, 0.00, 100.00); 
     }
-    else				// Use default typical values
+    else													// V prípade ak nebola kalibrácia urobená
 	{ 
-     float _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, DEFAULT_MIN, DEFAULT_MAX, 0.00, 100.00);
+      _sensorValue = AutomationShield.mapFloat( (float)_sensorRead, DEFAULT_MIN, DEFAULT_MAX, 0.00, 100.00);
     }
-	return _sensorValue;
-   
+    float _sensor_rightValue = 100 - _sensorValue;			
+	return _sensor_rightValue;
 }
 TugShieldClass TugShield;
