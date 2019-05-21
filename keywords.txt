@@ -1,6 +1,7 @@
 ######################################
 #Syntax Coloring Map For ArduinoShield
 ######################################
+# USE A SINGLE TAB CHARACTER ONLY!!!!!
 
 ######################################
 #Datatypes (KEYWORD1) ...
@@ -11,6 +12,8 @@ OptoShield	KEYWORD1
 FloatShield	KEYWORD1
 HeatShield	KEYWORD1
 MotoShield	KEYWORD1
+TugShield	KEYWORD1
+BOBShield	KEYWORD1
 MagnetoShield	KEYWORD1
 PIDAbs	KEYWORD1
 PIDInc	KEYWORD1
@@ -20,18 +23,21 @@ Sampling	KEYWORD1
 #Methods and Functions (KEYWORD2)
 ######################################
 
-getThermistorVoltage	KEYWORD2
-getThermistorResistance	KEYWORD2
+
+# Generic ###########################
+begin	KEYWORD2
 sensorRead	KEYWORD2
 actuatorWrite	KEYWORD2
 referenceRead	KEYWORD2
 calibration KEYWORD2
-pid	KEYWORD2 
-pidInc	KEYWORD2
 
 constrainFloat	KEYWORD2
 mapFloat	KEYWORD2
 
+
+
+getThermistorVoltage	KEYWORD2
+getThermistorResistance	KEYWORD2
 initialize	KEYWORD2
 debug	KEYWORD2
 referencePercent	KEYWORD2
@@ -40,11 +46,15 @@ ventInPercent	KEYWORD2
 manualControl	KEYWORD2
 positionMillimeter	KEYWORD2
 calibrate	KEYWORD2
+
 # PID ###########################
 compute	KEYWORD2
 setKp	KEYWORD2
 setTi	KEYWORD2
 setTd	KEYWORD2
+pid	KEYWORD2 
+pidInc	KEYWORD2
+
 # Sampling ###########################
 period	KEYWORD2
 interrupt	KEYWORD2

@@ -2,38 +2,60 @@
 Servo myservo;
 
 
+
 // declaring PIN and initializing sensor library
 void BOBClass::begin() {
   pinMode(BOB_RPIN, INPUT);			// set Potentiometer pin
   myservo.attach(BOB_UPIN);				// set Servo pin
 }
 
+// Check if Adafruit VL6180 sensor is available
+void BOBClass::initialize() {
+      Serial.println("Adafruit VL6180x test!");
+  if (! sens.begin()) {
+    Serial.println("Failed to find sensor");
+    while (1);
+  }
+  Serial.println("Sensor found!");
+}
 
 void BOBClass::calibration()
 {
 	short calmeasure; 				   		// Temporary measurement value
+  Serial.println("Begining calibratione ");
 
-
-	BOBShield.actuatorWrite(130);					// Tilt beam to the minimum so the ball falls towards the sensor
-	delay(100);					   		// Wait for things to settle
+	BOBShield.actuatorWrite(-30);					// Tilt beam to the minimum so the ball falls towards the sensor
+	delay(1000);					   		// Wait for things to settle
 	for (int i=1; i<=100; i++) {	    				// Perform 100 measurements
-		calmeasure = BOBShield.sensorRead(); 			// Measure
+		calmeasure = BOBShield.sensorReadCal(); 			// Measure
 		if (calmeasure < minCalibrated){ 			// If lower than already
 			minCalibrated = calmeasure; 			// Save new minimum
 		}
+		delay(10);                                  // Measure for one second
 	}
 
-	BOBShield.actuatorWrite(70);					// Tilt beam to the maximum so the ball falls towards the sensor
-	delay(100);					   		// Wait for things to settle
+	BOBShield.actuatorWrite(30);					// Tilt beam to the maximum so the ball falls towards the sensor
+	delay(1000);					   		// Wait for things to settle
 	for (int i=1; i<=100; i++) {	    				// Perform 100 measurements
-		calmeasure = BOBShield.sensorRead(); 			// Measure
+		calmeasure = BOBShield.sensorReadCal(); 			// Measure
 		if (calmeasure > maxCalibrated){ 			// If lower than already
 			maxCalibrated = calmeasure; 			// Save new maximum
 		}
+		delay(10);                                  // Measure for one second
 	}
-
-    calibrated = 1;
-
+	
+	BOBShield.actuatorWrite(0);
+	
+//	maxRange = maxCalibrated + 4;					// Middle of the ball minimum
+//	minRange = minCalibrated + 4;					// Middle of the ball maximum
+	 
+  Serial.print("Measured maximum is: ");
+    Serial.print(maxCalibrated);
+     Serial.println(" mm");
+  Serial.print("Measured minimum is: ");
+    Serial.print(minCalibrated);
+     Serial.println(" mm");
+      calibrated = 1;
 }
 
 
@@ -45,31 +67,42 @@ float BOBClass::referenceRead(){
 }
 
 //values from potentiometer computed for servo
-void BOBClass::actuatorWrite(float degree){
-if (degree<70.00) {
-  degree=70.00;
+void BOBClass::actuatorWrite(int deg){
+
+if (deg<-30) {
+  deg=-30;
 }
-else if (degree<130.00) {
-  degree=130.00;
+else if (deg>30) {
+  deg=30;
 }
-   myservo.write(degree);
+
+degree = map(deg,-30,30,70,130);
+
+if (degree<70) {
+  degree=70;
+}
+else if (degree>130) {
+  degree=130;
+}
+
+	myservo.write(degree);
 
 }
 
 //values from sensor in %
 float BOBClass::sensorReadPerc(){
- range = sens.readRange();
+ range = sens.readRange();                          //tuta toto chyba nejde
 
     if (range < minCalibrated) {range = minimum;}
     else if (range > maxCalibrated) {range = maximum;}
 
 
-  pos = map(range,minimum,maximum,0,100);
- return pos;
+  posperc = map(range,minimum,maximum,0,100);
+ return posperc;
  }
 
 //values from sensor in mm
-float BOBClass::sensorRead(){
+/*float BOBClass::sensorRead(){
  range = sens.readRange()-minCalibrated;
  if (!calibrated) {
    minCalibrated = MIN_CALIBRATED_DEFAULT;
@@ -83,6 +116,19 @@ float BOBClass::sensorRead(){
    pos = range;
  return pos;
  }
+*/
 
+float BOBClass::sensorRead(){
+ pos = sens.readRange();
+ position = pos - minCalibrated;
+ 
+ ballPos = position + 4;					// middle of the ball position
+ 
+ return ballPos;
+}
+float BOBClass::sensorReadCal(){
+ posCal = sens.readRange();
+ return posCal;
+}
 
 BOBClass BOBShield;

@@ -1,6 +1,6 @@
 // PID example fot rhe MotoShield
 
-#include "AutomationShield.h"
+#include "MotoShield.h"
 
 unsigned long Ts = 10; // sampling time in milliseconds
 
@@ -54,7 +54,7 @@ void step(){ // we have to put our code here
   
 
 r = MotoShield.referenceRead();  // reading the reference value of the potentiometer
-variable = MotoShield.readRevolutions(50);    // reading RPM of the motor
+float variable = MotoShield.readRevolutions(50);    // reading RPM of the motor
 
 y = AutomationShield.mapFloat(variable,0.00,25.00,0.00,100.00); //converting the RPM of the motor into %
 

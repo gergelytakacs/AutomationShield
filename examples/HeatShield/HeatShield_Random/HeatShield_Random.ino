@@ -18,7 +18,7 @@
   Last update: 10.10.2018.
 */
 
-#include <AutomationShield.h> 		// Include the library
+#include <HeatShield.h> 	    // Include the library
 
 long noise;                         // Noise component in input
 unsigned long Ts = 2000;            // Sampling in milliseconds

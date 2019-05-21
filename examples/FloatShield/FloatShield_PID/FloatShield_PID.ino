@@ -1,5 +1,3 @@
-
-#include <AutomationShield.h>
 #include <FloatShield.h>
 
 int dist;
@@ -54,4 +52,3 @@ void Step (void)
   Serial.print(", ");
   Serial.println(y);
 }
-
