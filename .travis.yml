@@ -71,6 +71,8 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 #Zero#
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
+#Due#
+# - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 
 notifications:
   email:
