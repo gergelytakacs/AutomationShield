@@ -1,4 +1,3 @@
-#include <AutomationShield.h>
 #include <FloatShield.h>
 
 int dist;
@@ -10,12 +9,13 @@ void setup() {
   FloatShield.initialize(); //FloatShield initialization
   FloatShield.calibrate(); //FloatShield calibration for more accurate measurements
 
-    if (! lox.initialize()) {
-    Serial.println("Failed to find sensor");
-    while (1);
-  }
-  Serial.println("Sensor found!");
-}
+//    if (! lox.initialize()) {
+//    Serial.println("Failed to find sensor");
+//    while (1);
+//  }
+//  Serial.println("Sensor found!");
+//}
+
 }
 
 void loop() {

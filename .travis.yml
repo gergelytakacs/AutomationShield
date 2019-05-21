@@ -57,11 +57,14 @@ script:
 
 ### FloatShield ###
 #Uno#
-#- arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
-#- arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
+   - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
+   - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
 
 ### TugShield ###
+#Uno#
+
 ### BOBShield ###
+#Uno#
 
 ### Sampling ### 
 #Uno#
