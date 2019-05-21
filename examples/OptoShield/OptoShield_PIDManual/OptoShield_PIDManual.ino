@@ -19,7 +19,7 @@
   Last update: 28.09.2018.
 */
 
-#include <AutomationShield.h> 		// Include the library
+#include <OptoShield.h> 		// Include the library
 
 unsigned long Ts = 10;               // Sampling in milliseconds
 bool enable=false;                  // Flag for sampling 

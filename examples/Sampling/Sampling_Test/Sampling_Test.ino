@@ -23,7 +23,7 @@
   Last update: 7.5.2019.
 */
 
-#include "Sampling.h"             // Include header for the Sampling module
+#include <Sampling.h>             // Include header for the Sampling module
 #define SERIAL_OUT                // Output on Serial, comment for oscilloscope only
 #define PIN 12                    // For oscilloscope test
 

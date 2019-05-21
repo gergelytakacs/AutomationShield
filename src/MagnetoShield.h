@@ -65,7 +65,12 @@
 #endif
 
 // Power model of the input-output voltage DAC->Vout
-#ifdef ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD
+#ifdef ARDUINO_ARCH_AVR
+	#define P1 193.7						        // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P2 0.02833								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P3 0.9068							    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+	#define P4 0.1418								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
+#elif ARDUINO_ARCH_SAMD
 	#define P1 193.7						        // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
 	#define P2 0.02833								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
 	#define P3 0.9068							    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
