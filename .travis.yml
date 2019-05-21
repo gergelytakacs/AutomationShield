@@ -29,6 +29,15 @@ script:
   - arduino --verify --board arduino:avr:uno $PWD/examples/OptoShield/OptoShield_PIDManual/OptoShield_PIDManual.ino
   - arduino --verify --board arduino:avr:uno $PWD/examples/OptoShield/OptoShield_StepResponse/OptoShield_StepResponse.ino
   - arduino --verify --board arduino:avr:uno $PWD/examples/OptoShield/OptoShield_Identification/OptoShield_Identification.ino
+  
+### MagnetoShield ###
+
+#Uno#
+  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_Identification/MagnetoShield_Identification.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
+  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
 
 notifications:
   email:
