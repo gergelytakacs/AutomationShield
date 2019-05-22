@@ -27,9 +27,7 @@ typedef void (*p_to_void_func)(); /*define a term p_to_void_func for pointer to 
 								  has a return type void and has no input parameters*/
 
 class SamplingClass{
-
   public:
-
     SamplingClass();
     void period(unsigned long microseconds); 
     void interrupt(p_to_void_func interruptCallback);
@@ -52,7 +50,6 @@ class SamplingClass{
     #endif
        
   private:
-	
     static void defaultInterrupt();
     p_to_void_func interruptCallback;    
 

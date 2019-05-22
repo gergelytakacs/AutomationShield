@@ -32,11 +32,8 @@ class BOBClass {
     float sensorReadCal();
     int degree;
     void actuatorWrite(int deg);
-    
-
-
+	
   private:
-
       float _referenceRead;
       float _referenceValue;
       uint8_t range;
@@ -48,7 +45,6 @@ class BOBClass {
       int maxCalibrated = 14; 			// Actual maximum value
       int minimum ;
       int maximum ;
-
   };
 extern BOBClass BOBShield;
 

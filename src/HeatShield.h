@@ -32,18 +32,13 @@
 
 
 class HeatShieldClass{			// Class for the HeatShield device
-  
-  public:
+ public:
     void begin();
     float sensorRead();
     void actuatorWrite(float percent);
 	float getThermistorVoltage();
     float getThermistorResistance();  
-    
-  private:   
-
 };
 
 extern HeatShieldClass HeatShield;
-
 #endif

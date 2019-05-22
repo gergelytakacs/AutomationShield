@@ -29,63 +29,56 @@
    */
 
    class MotoClass{
-
 public:
-// Methods
-static void begin(void);   // it has to be static because of the attachInterrupt() - initializes the pins, sets the ISR and also the initial valus of teh counter variable
-static void countTicks();   // ISR - Interrupt Service Routine
-void motorON();    // switches on the motor at maximum speed (recommended)
-void motorOFF();   // switches off the motor
-void setMotorSpeed(float value);   // sets the speed of the motor, input value 0-100 (%)
-void setDirection(bool dir);   // sets the direction, input values: true - counter clockwise, false - clockwise
-void revDirection();   // reverses the pre-set direction
-float referenceRead();  // reads the value of the POT
-float readVoltage();  // returns the value of the voltage drop through the R, value is in Volts
-float readCurrent();  // returns the current draw ot the motor in mA
-float durationTime();  // returns the duration of one revolution in ms
-float readRevolutions(int Time);  // returns the number of revolutions per minute according to the time revolution time in ms (good accuracy)
-
-
+	// Methods
+	static void begin(void);   // it has to be static because of the attachInterrupt() - initializes the pins, sets the ISR and also the initial valus of teh counter variable
+	static void countTicks();   // ISR - Interrupt Service Routine
+	void motorON();    // switches on the motor at maximum speed (recommended)
+	void motorOFF();   // switches off the motor
+	void setMotorSpeed(float value);   // sets the speed of the motor, input value 0-100 (%)
+	void setDirection(bool dir);   // sets the direction, input values: true - counter clockwise, false - clockwise
+	void revDirection();   // reverses the pre-set direction
+	float referenceRead();  // reads the value of the POT
+	float readVoltage();  // returns the value of the voltage drop through the R, value is in Volts
+	float readCurrent();  // returns the current draw ot the motor in mA
+	float durationTime();  // returns the duration of one revolution in ms
+	float readRevolutions(int Time);  // returns the number of revolutions per minute according to the time revolution time in ms (good accuracy)
 
 private:
-float convertedValue;
-float _referenceRead;
-float referenceValue;
-float ADC1;
-float ADC2;
-float ADCU;
-float V;
-float I;
-bool  dir;
-int Direction;
-int cValue;
-int rev;
-unsigned long t;
-unsigned long revTime;
-unsigned long count;
-unsigned long durTime;
-unsigned long prevTime;
-unsigned long previousCount;
-float Revolutions;
-float percentage;
-float maxRev;
-float Compare;
-float value;
-float rValue;
-unsigned long Count;
-unsigned long prevC;
-int h;
-float constant;
-float REV;
-int Time;
+	float convertedValue;
+	float _referenceRead;
+	float referenceValue;
+	float ADC1;
+	float ADC2;
+	float ADCU;
+	float V;
+	float I;
+	bool  dir;
+	int Direction;
+	int cValue;
+	int rev;
+	unsigned long t;
+	unsigned long revTime;
+	unsigned long count;
+	unsigned long durTime;
+	unsigned long prevTime;
+	unsigned long previousCount;
+	float Revolutions;
+	float percentage;
+	float maxRev;
+	float Compare;
+	float value;
+	float rValue;
+	unsigned long Count;
+	unsigned long prevC;
+	int h;
+	float constant;
+	float REV;
+	int Time;
 
-
-
-
-// Private constants
- float k;
- int   R;
-  
+	// Private constants
+	 float k;
+	 int   R;
 }; // end of the MotoClass
 
 extern MotoClass MotoShield; // declare external instance

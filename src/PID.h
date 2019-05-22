@@ -9,9 +9,8 @@
 class PIDClass{
   
   public:
-
     PIDClass();
-     
+	
     float compute(float err); // compute action without restrictions
     float compute(float err,float saturationMin,float saturationMax); //compute an action within the given boundaries
 
@@ -28,7 +27,6 @@ class PIDClass{
     float getTd();
   
   protected:
-
     virtual void loadVariables(float err)=0;   
     virtual void shiftVariables()=0;
 

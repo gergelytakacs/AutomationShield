@@ -25,7 +25,6 @@ void SamplingClass::defaultInterrupt()
 }
 
 SamplingClass::SamplingClass(){
-
   interruptCallback=defaultInterrupt;
   samplingPeriod = 0.0;
 }
@@ -99,7 +98,6 @@ void SamplingClass::period(unsigned long microseconds){
 }
 
 bool SamplingClass::setSamplingPeriod(unsigned long microseconds){
-
   const unsigned long cycles = microseconds * cpuFrequency;
 
   #ifdef ARDUINO_AVR_UNO    
