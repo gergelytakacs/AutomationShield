@@ -20,7 +20,9 @@
 #include "AutomationShield.h"
 #include "Servo.h"
 #include "Sampling.h"
-
+#include "PID.h"
+#include "PIDAbs.h"
+#include "PIDInc.h"
 
 // Defining pins used by the Tugshield 
 #define TUG_YPIN 0  			// Flexi sensor
@@ -38,13 +40,13 @@ class TugShieldClass 						// Class for the TugShield device
   public:
     void begin();							// Begin metod
     void calibration();						// Calibration metod
-	void actuatorWrite(int servo_angle);	// Write value to servo metod
-	float sensorRead();						// Read value from flexi metod
+	  void actuatorWrite(int servo_angle);	// Write value to servo metod
+	  float sensorRead();						// Read value from flexi metod
   private:   
-	bool  _wasCalibrated; 					// Initializing the variable _wasCalibrated
-	int   _sensorRead ;
-	int   k_maximal;
-	int   k_minimal;
+	  bool  _wasCalibrated; 					// Initializing the variable _wasCalibrated
+	  int   _sensorRead ;
+	  int   k_maximal;
+	  int   k_minimal;
 };
 
 extern TugShieldClass TugShield;

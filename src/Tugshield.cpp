@@ -19,7 +19,7 @@ Servo servo;
 void TugShieldClass::begin()
 {  												
     servo.attach(TUG_UPIN);						// Nastavenie pinu serva
-	servo.write(SERVO_MAX);						// Nastavenie pozície serva na nulu
+	  servo.write(SERVO_MAX);						// Nastavenie pozície serva na nulu
     analogReference(EXTERNAL);					// Nastavenie externej analógovej refercie
 }
 

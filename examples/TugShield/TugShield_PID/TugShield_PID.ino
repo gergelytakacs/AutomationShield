@@ -19,21 +19,22 @@
   Last update: 13.5.2019.
 */
 
-#include <TugShield.h>     // Include the library
+#include "TugShield.h"     // Include the library
 
-unsigned long Ts = 100;            // Sampling in milliseconds
+unsigned long Ts = 10;            // Sampling in milliseconds
 unsigned long k = 0;                // Sample index
 bool enable=false;                  // Flag for sampling 
 
 float r = 0.0;            // Reference
-float R[]={180.0,0.0,45.0,180.0,0.0,90.0};;    // Reference trajectory
-int T = 1800;           // Section length (steps) 1 hrs
+float u_0 ;  
+float R[]={0.0,90.0,45.0,100.0,180.0,0.0};;    // Reference trajectory
+int T = 100;           // Section length (steps) 1 hrs
 int i = i;              // Section counter
 float y = 0.0;            // Output
-float u = 0.0;            // Input          
+int u ;            // Input          
 
 #define KP 3.0                  // PID Kp
-#define TI 30.0                    // PID Ti
+#define TI 30.0                 // PID Ti
 #define TD 1                    // PID Td
 
 void setup() {
@@ -41,7 +42,7 @@ void setup() {
   
   // Initialize and calibrate board
   TugShield.begin();               // Define hardware pins
-
+  TugShield.calibration();
   
   // Initialize sampling function
   Sampling.period(Ts * 1000);   // Sampling init.
@@ -74,9 +75,11 @@ if (k % (T*i) == 0){
   i++;
 }
                   
-y = TugShield.sensorRead();           // Read sensor 
-u = PIDAbs.compute(r-y,0,100,0,100);   // PID
+
+u_0 = PIDAbs.compute(r-y,0,100,0,100);   // PID
+u = (int)u_0;
 TugShield.actuatorWrite(u);           // Actuate
+y = TugShield.sensorRead();           // Read sensor 
 
 Serial.print(r);            // Print reference
 Serial.print(", ");            
