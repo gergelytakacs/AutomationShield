@@ -16,26 +16,23 @@
   Last update: 13.5.2019.
 */
 
-#include <TugShield.h>             // Include the library
+#include "TugShield.h"             // Include the library
 
-unsigned long Ts = 500;            // Sampling in milliseconds
+unsigned long Ts = 10;             // Sampling in milliseconds
 unsigned long k = 0;               // Sample index
 bool enable=false;                 // Flag for sampling 
 
 float y = 0.0;                    // Output
 int u = 0;                        // Input (open-loop)
-int U[]={180,45,180,0,90,0};      // Input trajectory
-int T = 1350;                     // Section length (45 min)
+int U[]={0,90,45,100,180,0};      // Input trajectory
+int T = 100;                      // Section length 
 int i = 0;                        // Section counter
 
 void setup() {
   Serial.begin(9600);               // Initialize serial
-  
-  // Initialize and calibrate board
   TugShield.begin();               // Define hardware pins
-  
-  // Initialize sampling function
-  Sampling.period(Ts * 100);   // Sampling init.
+  TugShield.calibration();
+  Sampling.period(Ts * 1000);   // Sampling init.
   Sampling.interrupt(stepEnable); // Interrupt fcn.
 }
 
@@ -58,9 +55,10 @@ if (k % (T*i) == 0){
   u = U[i];                // Set reference
   i++;
 }
-                  
+
+TugShield.actuatorWrite(u);           // Actuate                  
 y = TugShield.sensorRead();           // Read sensor 
-TugShield.actuatorWrite(u);           // Actuate
+
    
 Serial.print(y);            // Print output  
 Serial.print(", ");
