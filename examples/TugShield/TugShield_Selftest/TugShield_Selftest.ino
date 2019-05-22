@@ -24,32 +24,37 @@ int i = 0;                        // Section counter
 void setup() 
 {
   Serial.begin(9600);               // Initialize serial
-  TugShield.calibration();         // Initialize and calibrate board
   TugShield.begin();               // Define hardware pins
-  Serial.print("Testing flexi sensor...0 degree ");
+  TugShield.calibration();         // Initialize and calibrate board
+  delay(100);
+  Serial.println("Testing flexi sensor...0 degree ");
   TugShield.actuatorWrite(0);
-  delay(100);
+  delay(500);
   y = TugShield.sensorRead();
-  if (y >= 0.0 && y <= 5.0)
+  if (y >= 0.0 && y <= 15.0)
   {
     Serial.println(" Ok.");
+    Serial.println(y);
   }
   else 
   {
     Serial.println(" Fail.");
+    Serial.println(y);
   }
-
-  Serial.print("Testing flexi sensor...180 degree ");
+  delay(1000);
+  Serial.println("Testing flexi sensor...180 degree ");
   TugShield.actuatorWrite(180);
-  delay(100);
+  delay(500);
   y = TugShield.sensorRead();
-  if (y >= 95.0 && y <= 100.0) 
+  if (y >= 85.0 && y <= 100.0) 
   {
     Serial.println(" Ok.");
+    Serial.println(y);
   }
   else 
   {
     Serial.println(" Fail.");
+    Serial.println(y);
   }
 }
 
