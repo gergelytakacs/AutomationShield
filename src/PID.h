@@ -6,8 +6,7 @@
 // Parent class for PIDAbsClass and PIDIncClass
 // This class is abstract. Abstract class cannot be instantiated, because include abstract methods without an implementation
 
-class PIDClass{
-  
+class PIDClass{  
   public:
     PIDClass();
 	

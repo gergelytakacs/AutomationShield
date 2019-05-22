@@ -68,7 +68,6 @@ float BOBClass::referenceRead(){
 
 //values from potentiometer computed for servo
 void BOBClass::actuatorWrite(int deg){
-
 if (deg<-30) {
   deg=-30;
 }
@@ -86,7 +85,6 @@ else if (degree>130) {
 }
 
 	myservo.write(degree);
-
 }
 
 //values from sensor in %
