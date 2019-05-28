@@ -15,7 +15,7 @@
   AVR Timer:     Gergely Takacs, Richard Koplinger, Matus Biro, Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 6.5.2019.
+  Last update: 28.5.2019.
 */
 
 #include "SamplingCore.h"
@@ -277,7 +277,7 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds){
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
      GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;        // Set Timer counter Mode to 16 bits
-	   TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
+	 TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
       
       setSamplingPeriod(microseconds);
       #ifdef ECHO_TO_SERIAL
@@ -424,7 +424,8 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV256;  //  256 prescaler
       TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/256)-1;              // compare match register
     }
-    else if(cycles < timerResolution * 1024){
+	// Does not work!
+	else if(cycles < timerResolution * 1024){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024;  //  1024 prescaler
       TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/1024)-1;              // compare match register
     }

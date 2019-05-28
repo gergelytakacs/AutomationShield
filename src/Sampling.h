@@ -1,3 +1,23 @@
+/*
+  Interrupt-driven sampling for real-time control.
+  
+  The file implements an interrupt-driven system for deploying
+  digital control systems on AVR, SAMD and SAM-based Arduino 
+  prototyping boards with the R3 pinout. This module should be 
+  compatible with the Uno, Mega 2560, Arduino Zero and Arduino
+  Due. There should be no timer conflicts when using the Servo library.
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+  Created by Gergely Takács and Richard Koplinger 2018-2019
+  AVR Timer:     Gergely Takacs, Richard Koplinger, Matus Biro, Lukas Vadovic 2018-2019
+  SAMD21G Timer: Gergely Takacs, 2019 (Zero)
+  SAM3X Timer:   Gergely Takacs, 2019 (Due)
+  Last update: 28.5.2019.
+*/
+
 SamplingNoServo::SamplingClass Sampling;
 
 #ifdef ARDUINO_AVR_UNO
@@ -32,7 +52,7 @@ ISR(TIMER5_COMPA_vect)
     
 #elif ARDUINO_ARCH_SAMD
 void TC5_Handler (void) {
- Interrupt can fire before step is done
+ //Interrupt can fire before step is done
   TC5->COUNT16.INTFLAG.bit.MC0 = 1;    //Clear the interrupt
  (Sampling.getInterruptCallback())();
 }
