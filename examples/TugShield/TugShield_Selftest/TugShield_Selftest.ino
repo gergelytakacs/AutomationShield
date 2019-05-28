@@ -27,33 +27,33 @@ void setup()
   TugShield.begin();               // Define hardware pins
   TugShield.calibration();         // Initialize and calibrate board
   delay(100);
-  Serial.println("Testing flexi sensor...0 degree ");
+  Serial.println("Testovanie flexi snímača...poloha serva: 0 ");
   TugShield.actuatorWrite(0);
   delay(500);
   y = TugShield.sensorRead();
   if (y >= 0.0 && y <= 15.0)
   {
-    Serial.println(" Ok.");
+    Serial.println(" V poriadku.");
     Serial.println(y);
   }
   else 
   {
-    Serial.println(" Fail.");
+    Serial.println(" Nevyhovuje.");
     Serial.println(y);
   }
   delay(1000);
-  Serial.println("Testing flexi sensor...180 degree ");
+  Serial.println("Testovanie flexi snímača...poloha serva: 180");
   TugShield.actuatorWrite(180);
   delay(500);
   y = TugShield.sensorRead();
   if (y >= 85.0 && y <= 100.0) 
   {
-    Serial.println(" Ok.");
+    Serial.println(" V poriadku.");
     Serial.println(y);
   }
   else 
   {
-    Serial.println(" Fail.");
+    Serial.println(" Nevyhovuje.");
     Serial.println(y);
   }
 }

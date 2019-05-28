@@ -21,24 +21,26 @@
 
 #include "TugShield.h"     // Include the library
 
-unsigned long Ts = 10;            // Sampling in milliseconds
+unsigned long Ts = 5;            // Sampling in milliseconds
 unsigned long k = 0;                // Sample index
 bool enable=false;                  // Flag for sampling 
-
 float r = 0.0;            // Reference
-float u_0 ;  
-float R[]={0.0,90.0,45.0,100.0,180.0,0.0};;    // Reference trajectory
-int T = 100;           // Section length (steps) 1 hrs
+float R[]={20.0,30.0,25.0,30.0,15.0,25.0};    // Reference trajectory
+int T = 200;           // 
 int i = i;              // Section counter
 float y = 0.0;            // Output
-int u ;            // Input          
+float u ;            // Input          
 
-#define KP 3.0                  // PID Kp
-#define TI 30.0                 // PID Ti
-#define TD 1                    // PID Td
+#define KP 0.5              // PID Kp
+#define TI 0.1               // PID Ti
+#define TD 0.0               // PID Td
+//
+//#define KP 0.5              // PID Kp
+//#define TI 0.1               // PID Ti
+//#define TD 0.0                   // PID Td
 
 void setup() {
-  Serial.begin(9600);               // Initialize serial
+  Serial.begin(250000);               // Initialize serial
   
   // Initialize and calibrate board
   TugShield.begin();               // Define hardware pins
@@ -71,14 +73,13 @@ void stepEnable(){              // ISR
 void step(){ 
 
 if (k % (T*i) == 0){        
-  r = R[i];                // Set reference
+  r = R[i]+40;                // Set reference
   i++;
 }
                   
 
-u_0 = PIDAbs.compute(r-y,0,100,0,100);   // PID
-u = (int)u_0;
-TugShield.actuatorWrite(u);           // Actuate
+u = PIDAbs.compute(r-y,0,180,0,100);   // PID
+TugShield.actuatorWrite((int)u);           // Actuate
 y = TugShield.sensorRead();           // Read sensor 
 
 Serial.print(r);            // Print reference

@@ -61,7 +61,7 @@ y = TugShield.sensorRead();           // Read sensor
 
    
 Serial.print(y);            // Print output  
-Serial.print(", ");
+Serial.print(" ");
 Serial.println(u);            // Print input
 k++;                  // Increment k
 }
