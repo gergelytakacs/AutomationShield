@@ -9,7 +9,6 @@ PIDAbsClass::PIDAbsClass(){
 
 
 void PIDAbsClass::loadVariables(float err){
-  Ts = Sampling.getSamplingPeriod();
   e[1]=err;
   eSum+=e[1];
 }

@@ -1,4 +1,5 @@
 #include <FloatShield.h>
+#include <Sampling.h>            // Include sampling
 
 int dist;
 unsigned long int Ts = 100; //sampling time in ms

@@ -1,4 +1,5 @@
 #include <BOBShield.h>     // Include the library
+#include <Sampling.h>            // Include sampling
 
 unsigned long Ts = 2000;            // Sampling in milliseconds
 unsigned long k = 0;                // Sample index

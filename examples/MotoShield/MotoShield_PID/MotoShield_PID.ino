@@ -1,6 +1,7 @@
 // PID example fot rhe MotoShield
 
 #include "MotoShield.h"
+#include <Sampling.h>            // Include sampling
 
 unsigned long Ts = 10; // sampling time in milliseconds
 
@@ -31,7 +32,7 @@ void setup() {
  PIDAbs.setKp(0.007);
  PIDAbs.setTi(0.015);
  PIDAbs.setTd(0.0002);
-
+ PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
 }// end of the setup
 
 void loop() {

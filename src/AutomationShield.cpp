@@ -34,14 +34,14 @@ byte AutomationShieldClass::percToPwm(float perc){
 	return byte(percFloat);
 }
  
-void AutomationShieldClass::error(char *str) // Error handler function
-{
-  #if ECHO_TO_SERIAL                    // If Serial Echo is turned on in the DEFINE (by advanced user)
-  Serial.print("Error: ");
-  Serial.println(str);
-  #endif
-  digitalWrite(ERRORPIN, HIGH);           // Enable generic error pin, should be 13 w/ the onboard LED
-  while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
-}
+// void AutomationShieldClass::error(char *str) // Error handler function
+// {
+  // #if ECHO_TO_SERIAL                    // If Serial Echo is turned on in the DEFINE (by advanced user)
+  // Serial.print("Error: ");
+  // Serial.println(str);
+  // #endif
+  // digitalWrite(ERRORPIN, HIGH);           // Enable generic error pin, should be 13 w/ the onboard LED
+  // while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
+// }
 
 AutomationShieldClass AutomationShield; // Construct instance (define)

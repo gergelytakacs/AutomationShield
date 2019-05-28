@@ -9,7 +9,6 @@ PIDIncClass::PIDIncClass(){
 }
 
 void PIDIncClass::loadVariables(float err){
-  Ts = Sampling.getSamplingPeriod();
   e[2]=err;
 }
 

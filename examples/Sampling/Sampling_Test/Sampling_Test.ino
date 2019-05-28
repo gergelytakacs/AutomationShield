@@ -23,12 +23,16 @@
   Last update: 7.5.2019.
 */
 
-#include <Sampling.h>             // Include header for the Sampling module
-#define SERIAL_OUT                // Output on Serial, comment for oscilloscope only
-#define PIN 12                    // For oscilloscope test
+#include <SamplingCore.h>
+#include <Sampling.h>
 
-unsigned long int Ts = 10000;     // Sampling in microseconds
-bool enable=false;                // Wheter the step should be launched
+
+
+#define SERIAL_OUT                 // Output on Serial, comment for oscilloscope only
+#define PIN 12                     // For oscilloscope test
+
+unsigned long int Ts = 600000;     // Sampling in microseconds
+bool enable=false;                 // Wheter the step should be launched
 
 // Just for measuring the timing
 unsigned long int curTime=0;      // Current time
@@ -39,11 +43,19 @@ void setup() {
   pinMode(PIN,OUTPUT);            // Set the pin for digital output (e.g. an oscilloscope)
 
   #ifdef SERIAL_OUT               // If serial output is required
-    Serial.begin(2000000);        // Maximal speed on AVR
-    Serial.println("Sampling test begin:");
+  Serial.begin(2000000);        // Maximal speed on AVR
+  Serial.println("Sampling test begin:");
   #endif
   Sampling.period(Ts);            // Set period in microseconds
   Sampling.interrupt(stepEnable); // The interrupt will launch this function
+
+  #ifdef SERIAL_OUT               // If serial output is required
+  Serial.print("Period set to: ");
+  Serial.print(Sampling.samplingPeriod);
+  Serial.println(" s");
+  Serial.println("---Actual samples---");
+  #endif
+
 }
 
 void loop() {                     // Infinite loop

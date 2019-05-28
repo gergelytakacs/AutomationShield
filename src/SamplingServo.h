@@ -1,8 +1,8 @@
-SamplingNoServo::SamplingClass Sampling;
+SamplingServo::SamplingClass Sampling;
 
 #ifdef ARDUINO_AVR_UNO
-ISR(TIMER1_COMPA_vect)
-{
+
+ISR(TIMER2_COMPA_vect){
  if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
   (Sampling.getInterruptCallback())();      // Start the interrupt callback
  }                                          
@@ -46,3 +46,5 @@ void TC3_Handler(void){
 #else
   #error "Architecture not supported."
 #endif
+
+

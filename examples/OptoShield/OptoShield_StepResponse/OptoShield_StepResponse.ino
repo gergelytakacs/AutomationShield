@@ -18,6 +18,7 @@
 */
 
 #include <OptoShield.h>              // Include library
+#include <Sampling.h>                // Include sampling
 
 float u = 50.0;                      // Open-loop input
 

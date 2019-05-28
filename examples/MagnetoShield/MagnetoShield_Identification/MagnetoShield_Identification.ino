@@ -24,6 +24,7 @@
 */
 
 #include <MagnetoShield.h>                // Include header for hardware API
+#include <Sampling.h>            // Include sampling
 
 float R[]={14.0,13.0,14.0,14.5,13.5,13.0};    // Reference trajectory (pre-set)
 float wPP=1.5;
