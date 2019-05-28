@@ -1,18 +1,26 @@
 /*
-  Interrupt-driven sampling for real-time control.
+  ISR for Interrupt-driven sampling for real-time control.
+  Not to be used with the Servo library!
   
-  The file implements an interrupt-driven system for deploying
-  digital control systems on AVR, SAMD and SAM-based Arduino 
-  prototyping boards with the R3 pinout. This module should be 
-  compatible with the Uno, Mega 2560, Arduino Zero and Arduino
-  Due. There should be no timer conflicts when using the Servo library.
+  The file implements the two classes necessary for configuring
+  an interrupt-driven system for deploying digital control systems
+  on AVR, SAMD and SAM-based Arduino prototyping boards with the 
+  R3 pinout. The module should be compatible with the Uno, Mega 
+  2560, Arduino Zero and Arduino Due. There should be no timer 
+  conflicts when using the Servo library.
+  
+  A "Sampling" object is created first from the namespace referring
+  to the case that does not assume the use of the Servo library. 
+  ISR are implemented based on various architectures. The 
+  implementation of the classes setting up the timers of the 
+  hardware are located elsewhere.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
-  Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács and Richard Koplinger 2018-2019
-  AVR Timer:     Gergely Takacs, Richard Koplinger, Matus Biro, Lukas Vadovic 2018-2019
+
+  AVR Timer: 	 Gergely Takacs, Richard Koplinger, Matus Biro,
+                 Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
   Last update: 28.5.2019.

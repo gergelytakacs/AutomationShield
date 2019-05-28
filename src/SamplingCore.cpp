@@ -1,18 +1,27 @@
 /*
-  Interrupt-driven sampling for real-time control.
+  Class implementation for Interrupt-driven sampling for real-time control.
   
-  The file implements an interrupt-driven system for deploying
-  digital control systems on AVR, SAMD and SAM-based Arduino 
-  prototyping boards with the R3 pinout. This module should be 
-  compatible with the Uno, Mega 2560, Arduino Zero and Arduino
-  Due. There should be no timer conflicts when using the Servo library.
+  The file implements the two classes necessary for configuring
+  an interrupt-driven system for deploying digital control systems
+  on AVR, SAMD and SAM-based Arduino prototyping boards with the 
+  R3 pinout. The module should be compatible with the Uno, Mega 
+  2560, Arduino Zero and Arduino Due. There should be no timer 
+  conflicts when using the Servo library.
+  
+  This file contains the implementation of two classes 
+  having an identical name (SamplingClass), that are separated
+  into two namespaces. The actual interrupt service routines are
+  located in a pair of outside headers. A "Sampling" object is 
+  created by calling the correct header file depending whether
+  your system uses the Servo library or not, first by invoking 
+  the correct namespace, then implementing the interrupt routine.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
-  Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács and Richard Koplinger 2018-2019
-  AVR Timer:     Gergely Takacs, Richard Koplinger, Matus Biro, Lukas Vadovic 2018-2019
+
+  AVR Timer: 	 Gergely Takacs, Richard Koplinger, Matus Biro,
+                 Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
   Last update: 28.5.2019.
@@ -78,8 +87,7 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds){
      TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
   #elif ARDUINO_ARCH_SAM
-  // Use TC3 - randomly selected, what will it do with servo?
-  // TC3 = TC Group 1, channel 0
+     // Due has three 3-channel general-purpose 32-bit timers = 9 timers. TC4 and TC5 should be free, use TC5 like for Mega.
      pmc_set_writeprotect(false);                            // Power management controller (PMC) disables the write protection of the timer and counter registers
      pmc_enable_periph_clk((uint32_t)TC3_IRQn);              // Power management controller (PMC) enables peripheral clock for TC3
 
