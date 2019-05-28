@@ -23,15 +23,14 @@
   Last update: 7.5.2019.
 */
 
-#include <SamplingCore.h>
-#include <Sampling.h>
+#include <SamplingCore.h>           // Core classes for sampling, included in AutomationShield.h
+#include <Sampling.h>               // Use for normal cases w/o Servo
+#include <SamplingServo.h>          // Use w Servo motors
 
+//#define SERIAL_OUT                // Output on Serial, comment for oscilloscope only
+#define PIN 12                      // For oscilloscope test
 
-
-#define SERIAL_OUT                 // Output on Serial, comment for oscilloscope only
-#define PIN 12                     // For oscilloscope test
-
-unsigned long int Ts = 600000;     // Sampling in microseconds
+unsigned long int Ts = 500000;     // Sampling in microseconds
 bool enable=false;                 // Wheter the step should be launched
 
 // Just for measuring the timing
