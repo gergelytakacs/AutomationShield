@@ -66,11 +66,10 @@ void TC5_Handler (void) {
 }
 
 #elif ARDUINO_ARCH_SAM
-void TC3_Handler(void){
-  TC_GetStatus(TC1, 0);
+void TC1_Handler(void){
+  TC_GetStatus(TC0, 1);
  (Sampling.getInterruptCallback())();
 }
-
 #else
   #error "Architecture not supported."
 #endif

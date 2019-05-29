@@ -87,20 +87,20 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds){
      TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
   #elif ARDUINO_ARCH_SAM
-     // Due has three 3-channel general-purpose 32-bit timers = 9 timers. TC4 and TC5 should be free, use TC5 like for Mega.
+     // TC5 is free when no Servo is used, use TC5 like for Mega
      pmc_set_writeprotect(false);                            // Power management controller (PMC) disables the write protection of the timer and counter registers
-     pmc_enable_periph_clk((uint32_t)TC3_IRQn);              // Power management controller (PMC) enables peripheral clock for TC3
+     pmc_enable_periph_clk((uint32_t)TC5_IRQn);              // Power management controller (PMC) enables peripheral clock for TC5
 
-     setSamplingPeriod(microseconds);
+     setSamplingPeriod(microseconds);					     // Set sampling time and prescalers
      #ifdef ECHO_TO_SERIAL
 	   if(!setSamplingPeriod(microseconds)) 
          Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
      #endif
 	
-     TC_Start(TC1, 0);                                 //  Start clock, for the TC1 block, channel 0 = TC3 
-     TC1->TC_CHANNEL[0].TC_IER=TC_IER_CPCS;            //  enable interrupt for the TC1 block, channel 0 = TC3 
-     TC1->TC_CHANNEL[0].TC_IDR=~TC_IER_CPCS;           //  remove disable interrupt for the TC1 block, channel 0 = TC3 
-     NVIC_EnableIRQ(TC3_IRQn);                         //  ISR for the interrupt 
+     TC_Start(TC1, 2);                                 //  Start clock, for the TC1 block, channel 2 = TC5 
+     TC1->TC_CHANNEL[2].TC_IER=TC_IER_CPCS;            //  enable interrupt for the TC1 block, channel 2 = TC5 
+     TC1->TC_CHANNEL[2].TC_IDR=~TC_IER_CPCS;           //  remove disable interrupt for the TC1 block, channel 2 = TC5 
+     NVIC_EnableIRQ(TC5_IRQn);                         //  ISR for the interrupt 
   #else
       #error "Architecture not supported."
   #endif                 
@@ -170,45 +170,45 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
 	
  #elif ARDUINO_ARCH_SAMD								  // For SAMD21G boards, e.g. Zero
     if (cycles < timerResolution){
-      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;  // no prescaling
-      TC5->COUNT16.CC[0].reg = (uint32_t)cycles-1;                  // compare match register
+      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;    // no prescaling
+      TC5->COUNT16.CC[0].reg = (uint32_t)cycles-1;          // compare match register
 	 }
     else if(cycles < timerResolution * 2){
-      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV2;  // 2 prescaler
-      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/2)-1;              // compare match register
+      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV2;    // 2 prescaler
+      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/2)-1;      // compare match register
     }
     else if(cycles < timerResolution * 4){
-      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV4;  // 4 prescaler
-      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/4)-1;              // compare match register
+      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV4;    // 4 prescaler
+      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/4)-1;      // compare match register
     }
     else if(cycles < timerResolution * 8){
-      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV8;  //  8 prescaler
-      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/8)-1;              // compare match register
+      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV8;    //  8 prescaler
+      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/8)-1;      // compare match register
     }
     else if(cycles < timerResolution * 16){
-      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV16;  //  16 prescaler
-      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/16)-1;              // compare match register
+      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV16;   //  16 prescaler
+      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/16)-1;     // compare match register
     }
     else if(cycles < timerResolution * 64){
-        TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV64;  //  64 prescaler
-        TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/64)-1;              // compare match register
+        TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV64; //  64 prescaler
+        TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/64)-1;   // compare match register
     }
 	else if(cycles < timerResolution * 256){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV256;  //  256 prescaler
-      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/256)-1;              // compare match register
+      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/256)-1;    // compare match register
     }
     else if(cycles < timerResolution * 1024){
-      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024;  //  1024 prescaler
-      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/1024)-1;              // compare match register
+      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024; //  1024 prescaler
+      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/1024)-1;   // compare match register
     }
 	else {
 		return false;
 	}
  
  #elif ARDUINO_ARCH_SAM 										// For SAM boards, e.g. DUE
-    TC_Configure(TC1, 0, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);        
-    TC_SetRC(TC1, 0, (uint32_t)(cycles/2)-1);          // Prescaler 2       	
-	
+	// 32 bit timer w/ prescaler 2 = 143 minutes max period
+    TC_Configure(TC1, 2, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);        
+    TC_SetRC(TC1, 2, (uint32_t)(cycles/2)-1);                   // Prescaler 2      	
  #else
       #error "Architecture not supported."
  #endif 
@@ -297,21 +297,20 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds){
      TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
   #elif ARDUINO_ARCH_SAM
-  // Use TC3 - randomly selected, what will it do with servo?
-  // TC3 = TC Group 1, channel 0
+     // Due has three 3-channel general-purpose 32-bit timers = 9 timers. TC1 serves PWM 60,61, these will be disabled
      pmc_set_writeprotect(false);                            // Power management controller (PMC) disables the write protection of the timer and counter registers
-     pmc_enable_periph_clk((uint32_t)TC3_IRQn);              // Power management controller (PMC) enables peripheral clock for TC3
+     pmc_enable_periph_clk((uint32_t)TC1_IRQn);              // Power management controller (PMC) enables peripheral clock for TC1
 
-     setSamplingPeriod(microseconds);
+     setSamplingPeriod(microseconds);					     // Set sampling time and prescalers
      #ifdef ECHO_TO_SERIAL
 	   if(!setSamplingPeriod(microseconds)) 
          Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
      #endif
 	
-     TC_Start(TC1, 0);                                 //  Start clock, for the TC1 block, channel 0 = TC3 
-     TC1->TC_CHANNEL[0].TC_IER=TC_IER_CPCS;            //  enable interrupt for the TC1 block, channel 0 = TC3 
-     TC1->TC_CHANNEL[0].TC_IDR=~TC_IER_CPCS;           //  remove disable interrupt for the TC1 block, channel 0 = TC3 
-     NVIC_EnableIRQ(TC3_IRQn);                         //  ISR for the interrupt 
+     TC_Start(TC0, 1);                                 //  Start clock, for the TC0 block, channel 1 = TC1 
+     TC0->TC_CHANNEL[1].TC_IER=TC_IER_CPCS;            //  enable interrupt for the TC0 block, channel 1 = TC1
+     TC0->TC_CHANNEL[1].TC_IDR=~TC_IER_CPCS;           //  remove disable interrupt for the TC0 block, channel 1 = TC1 
+     NVIC_EnableIRQ(TC1_IRQn);                         //  ISR for the interrupt 
   #else
       #error "Architecture not supported."
   #endif                 
@@ -442,9 +441,9 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
 	}
  
  #elif ARDUINO_ARCH_SAM 										// For SAM boards, e.g. DUE
-    TC_Configure(TC1, 0, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);        
-    TC_SetRC(TC1, 0, (uint32_t)(cycles/2)-1);          // Prescaler 2       	
-	
+	// 32 bit timer w/ prescaler 2 = 143 minutes max period
+    TC_Configure(TC0, 1, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);        
+    TC_SetRC(TC0, 1, (uint32_t)(cycles/2)-1);                   // Prescaler 2        		
  #else
       #error "Architecture not supported."
  #endif 

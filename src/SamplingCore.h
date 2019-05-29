@@ -68,26 +68,26 @@ class SamplingClass{
 	  // Default: Timer1
 	  const unsigned long timerResolution = 65536; 		 // AVR Timer 5 is 16bit            
 	  const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz*/
-          // For Timer 2
-		  #define CYCLES_100MS   16000000                    // CPU cycles @ 16 MHz for 100 ms
-          #define CYCLES_1S     160000000                    // CPU cycles @ 16 MHz for 1 s
-          #define COMPARE_100US       200                    // Compare @ 16 MHz, prescaler 8, for 100 us
-          #define COMPARE_1MS         250                    // Compare @ 16 MHz, prescaler 64, for 1 ms
-          #define COMPARE_10MS        156                    // Compare @ 16 MHz, prescaler 1024, for 10 ms
-          // For Timer 2
-          #define COMPARE_10MS_16B    20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
+      // For Timer 2 (Servo)
+	  #define CYCLES_100MS   16000000                    // CPU cycles @ 16 MHz for 100 ms
+      #define CYCLES_1S     160000000                    // CPU cycles @ 16 MHz for 1 s
+      #define COMPARE_100US       200                    // Compare @ 16 MHz, prescaler 8, for 100 us
+      #define COMPARE_1MS         250                    // Compare @ 16 MHz, prescaler 64, for 1 ms
+      #define COMPARE_10MS        156                    // Compare @ 16 MHz, prescaler 1024, for 10 ms
+      // For Timer 1 (No servo)
+      #define COMPARE_10MS_16B    20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
     #elif ARDUINO_AVR_MEGA2560
-      // Default: Timer5
-	      const unsigned long timerResolution = 65536; 		 // AVR Timer 5 is 16bit            
-     	  const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz*/
-		  #define COMPARE_10MS        20000                      // Compare @ 16 MHz, prescaler 8, for 10 ms
+      // Default: Timer5 in both cases (No servo and servo)
+	  const unsigned long timerResolution = 65536; 		 // AVR Timer 5 is 16bit            
+      const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz*/
+	  #define COMPARE_10MS        20000                      // Compare @ 16 MHz, prescaler 8, for 10 ms
     #elif ARDUINO_ARCH_SAMD
-		  // Default TC5 (randomly selected, take care of Servo!)
-		  const unsigned long timerResolution = 65536;     				// Configured to 16bit  
-		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
+	  // Default: Timer5 in both cases (No servo and servo)
+	  const unsigned long timerResolution = 65536;     			// Configured to 16bit  
+	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
     #elif ARDUINO_ARCH_SAM
-		  // Default TC3 (randomly selected, take care of Servo!)
-		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
+      // Default: Timer5 in both cases (No servo and servo)
+	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
     #else
 		  #error "Architecture not supported."
     #endif
