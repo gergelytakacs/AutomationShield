@@ -49,4 +49,3 @@ class BOBClass {
 extern BOBClass BOBShield;
 
 #endif
-

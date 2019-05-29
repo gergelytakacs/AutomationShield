@@ -1,17 +1,15 @@
 #ifndef PID_H_
 #define PID_H_
 
-#include "Sampling.h"
+#include "SamplingCore.h"
 
 // Parent class for PIDAbsClass and PIDIncClass
 // This class is abstract. Abstract class cannot be instantiated, because include abstract methods without an implementation
 
-class PIDClass{
-  
+class PIDClass{  
   public:
-
     PIDClass();
-     
+	
     float compute(float err); // compute action without restrictions
     float compute(float err,float saturationMin,float saturationMax); //compute an action within the given boundaries
 
@@ -20,15 +18,16 @@ class PIDClass{
     void setKd(float Kd);
     void setTi(float Ti);
     void setTd(float Td);
+	void setTs(float Ts);
 
     float getKp();
     float getKi();
     float getKd();
     float getTi();
     float getTd();
-  
+    float getTs();
+	
   protected:
-
     virtual void loadVariables(float err)=0;   
     virtual void shiftVariables()=0;
 
@@ -43,7 +42,6 @@ class PIDClass{
     float Kd;
     float Ti;
     float Td;
-
     float Ts;        
 };
 #endif

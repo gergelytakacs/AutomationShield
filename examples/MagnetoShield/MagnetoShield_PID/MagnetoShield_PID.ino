@@ -22,6 +22,7 @@
   Last update: 16.01.2019
 */
 #include <MagnetoShield.h>            // Include header for hardware API
+#include <Sampling.h>            // Include sampling
 
 // Manual or automatic reference?
 #define MANUAL 0                      // Reference by pot (1) or automatically (0)?
@@ -72,9 +73,10 @@ void setup() {
   Sampling.interrupt(stepEnable); // Interrupt fcn.
 
  // Set the PID constants
- PIDAbs.setKp(KP);                     // Proportional gain
- PIDAbs.setTi(TI);                     // Integral time constant
- PIDAbs.setTd(TD);                     // Derivative time constant
+ PIDAbs.setKp(KP); // Proportional
+ PIDAbs.setTi(TI); // Integral
+ PIDAbs.setTd(TD); // Derivative
+ PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
 }
 
 // Main loop launches a single step at each enable time

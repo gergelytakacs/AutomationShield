@@ -1,6 +1,6 @@
 /*
   ISR for Interrupt-driven sampling for real-time control.
-  Not to be used with the Servo library!
+  Used together with the Servo library to avoid conflicts.
   
   The file implements the two classes necessary for configuring
   an interrupt-driven system for deploying digital control systems
@@ -10,10 +10,10 @@
   conflicts when using the Servo library.
   
   A "Sampling" object is created first from the namespace referring
-  to the case that does not assume the use of the Servo library. 
-  ISR are implemented based on various architectures. The 
-  implementation of the classes setting up the timers of the 
-  hardware are located elsewhere.
+  to the case that assumes the use of the Servo library. ISR are
+  implemented based on various architectures. The implementation 
+  of the classes setting up the timers of the hardware are located
+  elsewhere.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -26,11 +26,11 @@
   Last update: 28.5.2019.
 */
 
-SamplingNoServo::SamplingClass Sampling;
+SamplingServo::SamplingClass Sampling;
 
 #ifdef ARDUINO_AVR_UNO
-ISR(TIMER1_COMPA_vect)
-{
+
+ISR(TIMER2_COMPA_vect){
  if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
   (Sampling.getInterruptCallback())();      // Start the interrupt callback
  }                                          
@@ -60,29 +60,18 @@ ISR(TIMER5_COMPA_vect)
     
 #elif ARDUINO_ARCH_SAMD
 void TC5_Handler (void) {
- if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
-  //Interrupt can fire before step is done
+// Interrupt can fire before step is done
   TC5->COUNT16.INTFLAG.bit.MC0 = 1;    //Clear the interrupt
-  (Sampling.getInterruptCallback())();
- }                                          
- else if(Sampling.fireFlag){                // else, if it is over the resolution of the counter
-   Sampling.fireCount++;                    // start counting
-   if (Sampling.fireCount>=2000000){ // If done with counting
-   //if (Sampling.fireCount>=Sampling.getSamplingMicroseconds()/Sampling.fireResolution){ // If done with counting
-   Sampling.fireCount=0;                 // make the counter zero again
-   //Interrupt can fire before step is done!
-   TC5->COUNT16.INTFLAG.bit.MC0 = 1;    //Clear the interrupt
-   (Sampling.getInterruptCallback())();
-  } 
- }
-}
-
-#elif ARDUINO_ARCH_SAM
-void TC5_Handler(void){
-  TC_GetStatus(TC1, 2);
  (Sampling.getInterruptCallback())();
 }
 
+#elif ARDUINO_ARCH_SAM
+void TC1_Handler(void){
+  TC_GetStatus(TC0, 1);
+ (Sampling.getInterruptCallback())();
+}
 #else
   #error "Architecture not supported."
 #endif
+
+

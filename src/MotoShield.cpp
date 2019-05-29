@@ -32,7 +32,6 @@ void MotoClass::motorOFF(){  // switches off the motor
 }
 
 void MotoClass::setMotorSpeed(float value){    // sets the speed of the motor, input value from 0-100
-
 if(value < 30){ value = 30; } // minimal power needed to rotate the shaft
 
     convertedValue = AutomationShield.mapFloat(value,0.00,100.00,0.00,255.00);
