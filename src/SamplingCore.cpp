@@ -168,39 +168,55 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
 	  }
    
 	
- #elif ARDUINO_ARCH_SAMD								  // For SAMD21G boards, e.g. Zero
+ #elif ARDUINO_ARCH_SAMD								    // For SAMD21G boards, e.g. Zero
+    // Up to 1.3653 ms with 20.8 ns resolution
     if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;    // no prescaling
       TC5->COUNT16.CC[0].reg = (uint32_t)cycles-1;          // compare match register
 	 }
+	// Up to 2.7307 ms with 41.67 ns resolution
     else if(cycles < timerResolution * 2){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV2;    // 2 prescaler
       TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/2)-1;      // compare match register
     }
+	// Up to 5.4613 ms with 83.3 ns resolution
     else if(cycles < timerResolution * 4){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV4;    // 4 prescaler
       TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/4)-1;      // compare match register
     }
+    // Up to 10.9227 ms with 166.67 ns resolution
     else if(cycles < timerResolution * 8){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV8;    //  8 prescaler
       TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/8)-1;      // compare match register
     }
+	// Up to 21.8453 ms with 333.33 ns resolution
     else if(cycles < timerResolution * 16){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV16;   //  16 prescaler
       TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/16)-1;     // compare match register
     }
+	// Up to  87.3813 ms with 1.33 us resolution
     else if(cycles < timerResolution * 64){
         TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV64; //  64 prescaler
         TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/64)-1;   // compare match register
     }
+	// Up to 349.5253 ms with 5.33 us resolution
 	else if(cycles < timerResolution * 256){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV256;  //  256 prescaler
       TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/256)-1;    // compare match register
     }
+	// Up to 1.3981 s with 21.3333 us resolution
     else if(cycles < timerResolution * 1024){
-      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024; //  1024 prescaler
-      TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/1024)-1;   // compare match register
+        TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024; //  1024 prescaler
+        TC5->COUNT16.CC[0].reg = (uint32_t)(cycles/1024)-1;   // compare match register
     }
+	// Over 1.3981 s with 10 ms resolution
+	else if(cycles >= timerResolution * 1024){
+      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV8;    //  256 prescaler
+      TC5->COUNT16.CC[0].reg = (uint32_t)(COMPARE_10MS)-1;  // compare match register
+	  fireFlag = 1;                                         // repeat firing
+      fireResolution = 10000;                               // resolution in us
+    }
+	
 	else {
 		return false;
 	}

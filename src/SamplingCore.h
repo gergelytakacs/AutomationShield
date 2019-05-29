@@ -54,7 +54,7 @@ class SamplingClass{
     reset. The "firing" of the ISR is a portion of the full sampling
     by "fireResolution" microseconds.
     */    
-    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ARCH_SAMD))
       bool fireFlag = 0;                                     // Repeat launches of ISR
       unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
       unsigned short int fireResolution;                     // Resolution of the timer over the maximum
@@ -85,6 +85,7 @@ class SamplingClass{
 	  // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned long timerResolution = 65536;     			// Configured to 16bit  
 	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
+	  #define COMPARE_10MS        60000                      // Compare @ 48 MHz, prescaler 8, for 10 ms
     #elif ARDUINO_ARCH_SAM
       // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
@@ -118,7 +119,7 @@ class SamplingClass{
     reset. The "firing" of the ISR is a portion of the full sampling
     by "fireResolution" microseconds.
     */    
-    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ARCH_SAMD))
       bool fireFlag = 0;                                     // Repeat launches of ISR
       unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
       unsigned short int fireResolution;                     // Resolution of the timer over the maximum

@@ -60,9 +60,21 @@ ISR(TIMER5_COMPA_vect)
     
 #elif ARDUINO_ARCH_SAMD
 void TC5_Handler (void) {
- //Interrupt can fire before step is done
+ if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
+  //Interrupt can fire before step is done
   TC5->COUNT16.INTFLAG.bit.MC0 = 1;    //Clear the interrupt
- (Sampling.getInterruptCallback())();
+  (Sampling.getInterruptCallback())();
+ }                                          
+ else if(Sampling.fireFlag){                // else, if it is over the resolution of the counter
+   Sampling.fireCount++;                    // start counting
+   if (Sampling.fireCount>=2000000){ // If done with counting
+   //if (Sampling.fireCount>=Sampling.getSamplingMicroseconds()/Sampling.fireResolution){ // If done with counting
+   Sampling.fireCount=0;                 // make the counter zero again
+   //Interrupt can fire before step is done!
+   TC5->COUNT16.INTFLAG.bit.MC0 = 1;    //Clear the interrupt
+   (Sampling.getInterruptCallback())();
+  } 
+ }
 }
 
 #elif ARDUINO_ARCH_SAM
