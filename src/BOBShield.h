@@ -17,7 +17,7 @@ extern Servo myservo;
 
 #define BOB_RPIN 0
 #define BOB_UPIN 9
-
+#define MIN_CALIBRATED_DEFAULT 3
 
 
 class BOBClass {
@@ -29,14 +29,10 @@ class BOBClass {
     float referenceRead();		          	  // Read reference pot in %
     float sensorReadPerc();
     float sensorRead();
-    float sensorReadCal();
     int degree;
-    void actuatorWrite(int deg);
-    
-
-
+    void actuatorWrite(float fdeg);
+	
   private:
-
       float _referenceRead;
       float _referenceValue;
       uint8_t range;
@@ -48,7 +44,7 @@ class BOBClass {
       int maxCalibrated = 14; 			// Actual maximum value
       int minimum ;
       int maximum ;
-
+      int deg;
   };
 extern BOBClass BOBShield;
 
