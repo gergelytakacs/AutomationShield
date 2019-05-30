@@ -31,7 +31,7 @@ begin	KEYWORD2
 sensorRead	KEYWORD2
 actuatorWrite	KEYWORD2
 referenceRead	KEYWORD2
-calibration KEYWORD2
+calibration	KEYWORD2
 
 constrainFloat	KEYWORD2
 mapFloat	KEYWORD2
