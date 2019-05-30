@@ -18,6 +18,8 @@ MagnetoShield	KEYWORD1
 PIDAbs	KEYWORD1
 PIDInc	KEYWORD1
 Sampling	KEYWORD1
+SamplingCore	KEYWORD1
+SamplingServo	KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)

@@ -19,6 +19,7 @@
 */
 
 #include <OptoShield.h> 		// Include the library
+#include <Sampling.h>            // Include sampling
 
 unsigned long Ts = 5;              // Sampling in milliseconds
 unsigned long k = 0;                // Sample index

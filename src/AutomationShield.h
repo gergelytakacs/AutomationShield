@@ -23,6 +23,10 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
+#include <SamplingCore.h>
+#include <PIDAbs.h>
+
+
 // THESE ARE NOT VISIBLE OUTSIDE THE SCOPE OF THE FILE, DO WE NEED THEM?
 // Common definitions
 #define AREF 5.0 // ADC reference voltage for 5 V logic
@@ -30,11 +34,6 @@
 #define AREF3V3 3.3 // ADC reference voltage for 3.3 V logic
 #define ARES3V3 AREF3V3/1023.0 // ADC resolution for 3.3 V logic
 #define ABSZERO 273.15 // Absolute zero in Celsius 
-
-// Headers for essential functionality
-#include "Sampling.h" 
-#include "PIDAbs.h"
-#include "PIDInc.h"
 
 // Diagnostics
 #define ECHO_TO_SERIAL      0                // echo data to serial port

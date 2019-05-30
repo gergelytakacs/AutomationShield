@@ -20,14 +20,16 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
   Created by Gergely Takács
-  Last update: 7.5.2019.
+  Last update: 28.5.2019.
 */
+#include <SamplingCore.h>         // Core classes for sampling, included in AutomationShield.h
+//#include <Sampling.h>           // Use for normal cases w/o Servo
+#include <SamplingServo.h>        // Use w Servo motors
 
-#include <Sampling.h>             // Include header for the Sampling module
 #define SERIAL_OUT                // Output on Serial, comment for oscilloscope only
 #define PIN 12                    // For oscilloscope test
 
-unsigned long int Ts = 10000;     // Sampling in microseconds
+unsigned long int Ts = 2000000;   // Sampling in microseconds
 bool enable=false;                // Wheter the step should be launched
 
 // Just for measuring the timing
@@ -39,11 +41,21 @@ void setup() {
   pinMode(PIN,OUTPUT);            // Set the pin for digital output (e.g. an oscilloscope)
 
   #ifdef SERIAL_OUT               // If serial output is required
-    Serial.begin(2000000);        // Maximal speed on AVR
-    Serial.println("Sampling test begin:");
+  Serial.begin(2000000);          // Maximal speed on AVR
+  Serial.println("Sampling test begin:");
   #endif
   Sampling.period(Ts);            // Set period in microseconds
   Sampling.interrupt(stepEnable); // The interrupt will launch this function
+
+  #ifdef SERIAL_OUT               // If serial output is required
+  Serial.print("Period set to: ");
+  Serial.print(Sampling.samplingPeriod);
+  Serial.print(" s, ");
+  Serial.print(Sampling.getSamplingMicroseconds());
+  Serial.println(" microseconds");
+  Serial.println("---Actual samples---");
+  #endif
+
 }
 
 void loop() {                     // Infinite loop

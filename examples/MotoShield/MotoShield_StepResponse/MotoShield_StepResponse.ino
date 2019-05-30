@@ -1,4 +1,5 @@
 #include "MotoShield.h"
+#include <Sampling.h>            // Include sampling
    
    float Setpoint = 100.00;        // reference
    

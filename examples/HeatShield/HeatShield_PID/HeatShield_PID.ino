@@ -22,6 +22,7 @@
 */
 
 #include <HeatShield.h> 		// Include the library
+#include <Sampling.h>            // Include sampling
 
 unsigned long Ts = 2000;            // Sampling in milliseconds
 unsigned long k = 0;                // Sample index
@@ -50,9 +51,10 @@ void setup() {
   Sampling.interrupt(stepEnable); // Interrupt fcn.
 
  // Set the PID constants
- PIDAbs.setKp(KP);
- PIDAbs.setTi(TI);
- PIDAbs.setTd(TD); 
+ PIDAbs.setKp(KP); // Proportional
+ PIDAbs.setTi(TI); // Integral
+ PIDAbs.setTd(TD); // Derivative
+ PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
 }
 
 // Main loop launches a single step at each enable time
