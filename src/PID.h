@@ -1,7 +1,7 @@
 #ifndef PID_H_
 #define PID_H_
 
-#include "SamplingCore.h"
+#include "sampling\SamplingCore.h"
 
 // Parent class for PIDAbsClass and PIDIncClass
 // This class is abstract. Abstract class cannot be instantiated, because include abstract methods without an implementation

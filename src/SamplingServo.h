@@ -23,58 +23,20 @@
                  Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 28.5.2019.
+  Last update: 31.5.2019.
 */
 
 SamplingServo::SamplingClass Sampling;
 
 #ifdef ARDUINO_AVR_UNO
-
-ISR(TIMER2_COMPA_vect){
- if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
-  (Sampling.getInterruptCallback())();      // Start the interrupt callback
- }                                          
- else if(Sampling.fireFlag){                // else, if it is over the resolution of the counter
-   Sampling.fireCount++;                    // start counting
-   if (Sampling.fireCount>=Sampling.getSamplingMicroseconds()/Sampling.fireResolution){ // If done with counting
-      Sampling.fireCount=0;                 // make the counter zero again
-      (Sampling.getInterruptCallback())();  // and start the interrupt callback
-  } 
- }
-}
+ 	#define UNO_ISR_VECT TIMER2_COMPA_vect
+	#include <sampling/SamplingUNO_ISR.h>
 
 #elif ARDUINO_AVR_MEGA2560
-ISR(TIMER5_COMPA_vect)
-{
- if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
-  (Sampling.getInterruptCallback())();      // Start the interrupt callback
- }                                          
- else if(Sampling.fireFlag){                // else, if it is over the resolution of the counter
-   Sampling.fireCount++;                    // start counting
-   if (Sampling.fireCount>=Sampling.getSamplingMicroseconds()/Sampling.fireResolution){ // If done with counting
-      Sampling.fireCount=0;                 // make the counter zero again
-      (Sampling.getInterruptCallback())();  // and start the interrupt callback
-  } 
- }
-}
+	#include <sampling/SamplingMEGA_ISR.h>
     
 #elif ARDUINO_ARCH_SAMD
-void TC5_Handler (void) {
- if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
-   //Interrupt can fire before step is done!!!
-   TC5->COUNT16.INTFLAG.bit.MC0 = 1;    	// Clear the interrupt
-   (Sampling.getInterruptCallback())();	    // Launch interrupt handler
- }                                          
- else if(Sampling.fireFlag){                // Else, if periodis over the resolution of the counter
-    //Interrupt can fire before step is done!!!
-   Sampling.fireCount++;                    // Start counting
-   if (Sampling.fireCount==Sampling.getSamplingMicroseconds()/Sampling.fireResolution){ // If done with counting
-	Sampling.fireCount=0;                   // Make the counter zero again 
-	(Sampling.getInterruptCallback())();    // Launch interrupt handler
-   } 
-   TC5->COUNT16.INTFLAG.bit.MC0 = 1;        //Clear the interrupt 
- }
-}
+	#include <sampling/SamplingSAMD_ISR.h>
 
 #elif ARDUINO_ARCH_SAM
 void TC1_Handler(void){
