@@ -1,5 +1,5 @@
 #include <BOBShield.h>
-
+#include <SamplingServo.h>
 
 void setup() {
   Serial.begin(115200);

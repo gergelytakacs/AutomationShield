@@ -38,11 +38,11 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
 #Due#
-#  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
-#  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_Identification/MagnetoShield_Identification.ino
-#  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
-#  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
-#  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_Identification/MagnetoShield_Identification.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
 #Zero#
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_Identification/MagnetoShield_Identification.ino
@@ -65,6 +65,19 @@ script:
 
 ### BOBShield ###
 #Uno#
+ - arduino --verify --board arduino:avr:uno $PWD/examples/BOBShield/BOBShield_PID/BOBShield_PID.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/BOBShield/BOBShield_Identification/BOBShield_Identification.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/BOBShield/BOBShield_SelfTest/BOBShield_SelfTest.ino
+ 
+#Zero#
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/BOBShield/BOBShield_PID/BOBShield_PID.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/BOBShield/BOBShield_Identification/BOBShield_Identification.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/BOBShield/BOBShield_SelfTest/BOBShield_SelfTest.ino
+ 
+#Due#
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/BOBShield/BOBShield_PID/BOBShield_PID.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/BOBShield/BOBShield_Identification/BOBShield_Identification.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/BOBShield/BOBShield_SelfTest/BOBShield_SelfTest.ino
 
 ### Sampling ###
 #Uno#
@@ -72,7 +85,7 @@ script:
 #Zero#
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 #Due#
-# - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 
 notifications:
   email:
