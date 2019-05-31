@@ -24,7 +24,7 @@
                  Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 31.5.2019.
+  Last update: 28.5.2019.
 */
 
 #include "SamplingCore.h"
@@ -70,7 +70,7 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds){
 	interrupts();             		             // enable all interrupts
 
     	
-  #elif ARDUINO_SAMD_ZERO
+  #elif ARDUINO_ARCH_SAMD
   // For SAMD21G boards, e.g. Zero
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
      GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
@@ -86,7 +86,7 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds){
 	 NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
      TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
-  #elif ARDUINO_SAM_DUE
+  #elif ARDUINO_ARCH_SAM
      // TC5 is free when no Servo is used, use TC5 like for Mega
      pmc_set_writeprotect(false);                            // Power management controller (PMC) disables the write protection of the timer and counter registers
      pmc_enable_periph_clk((uint32_t)TC5_IRQn);              // Power management controller (PMC) enables peripheral clock for TC5
@@ -168,7 +168,7 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
 	  }
    
 	
- #elif ARDUINO_SAMD_ZERO								    // For SAMD21G boards, e.g. Zero
+ #elif ARDUINO_ARCH_SAMD								    // For SAMD21G boards, e.g. Zero
     // Up to 1.3653 ms with 20.8 ns resolution
     if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;    // no prescaling
@@ -221,7 +221,7 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
 		return false;
 	}
  
- #elif ARDUINO_SAM_DUE 										// For SAM boards, e.g. DUE
+ #elif ARDUINO_ARCH_SAM 										// For SAM boards, e.g. DUE
 	// 32 bit timer w/ prescaler 2 = 143 minutes max period
     TC_Configure(TC1, 2, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);        
     TC_SetRC(TC1, 2, (uint32_t)(cycles/2)-1);                   // Prescaler 2      	
@@ -296,7 +296,7 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds){
    		
 	interrupts();             		             // enable all interrupts
     	
-  #elif ARDUINO_SAMD_ZERO
+  #elif ARDUINO_ARCH_SAMD
   // For SAMD21G boards, e.g. Zero
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
      GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
@@ -312,7 +312,7 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds){
 	 NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
      TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
      TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
-  #elif ARDUINO_SAM_DUE
+  #elif ARDUINO_ARCH_SAM
      // Due has three 3-channel general-purpose 32-bit timers = 9 timers. TC1 serves PWM 60,61, these will be disabled
      pmc_set_writeprotect(false);                            // Power management controller (PMC) disables the write protection of the timer and counter registers
      pmc_enable_periph_clk((uint32_t)TC1_IRQn);              // Power management controller (PMC) enables peripheral clock for TC1
@@ -418,7 +418,7 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
 	  }
    
 	
-#elif ARDUINO_SAMD_ZERO								    // For SAMD21G boards, e.g. Zero
+#elif ARDUINO_ARCH_SAMD								    // For SAMD21G boards, e.g. Zero
     // Up to 1.3653 ms with 20.8 ns resolution
     if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;    // no prescaling
@@ -471,7 +471,7 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
 		return false;
 	}
  
- #elif ARDUINO_SAM_DUE 										// For SAM boards, e.g. DUE
+ #elif ARDUINO_ARCH_SAM 										// For SAM boards, e.g. DUE
 	// 32 bit timer w/ prescaler 2 = 143 minutes max period
     TC_Configure(TC0, 1, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);        
     TC_SetRC(TC0, 1, (uint32_t)(cycles/2)-1);                   // Prescaler 2        		
