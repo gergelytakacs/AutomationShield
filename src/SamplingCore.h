@@ -80,12 +80,12 @@ class SamplingClass{
       // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned long timerResolution = 65536; 		 // AVR Timer 5 is 16bit            
       const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz*/
-	  #define COMPARE_10MS        20000                      // Compare @ 16 MHz, prescaler 8, for 10 ms
+	  #define COMPARE_10MS        20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
     #elif ARDUINO_ARCH_SAMD
 	  // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned long timerResolution = 65536;     			// Configured to 16bit  
 	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
-	  #define COMPARE_10MS        60000                      // Compare @ 48 MHz, prescaler 8, for 10 ms
+	  #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
     #elif ARDUINO_ARCH_SAM
       // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
@@ -140,11 +140,10 @@ class SamplingClass{
     	  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz*/
      
     #elif ARDUINO_ARCH_SAMD
-		  // Default TC5 (randomly selected, take care of Servo!)
+		  // Default TC5 
 		  const unsigned long timerResolution = 65536;     				// Configured to 16bit  
 		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
     #elif ARDUINO_ARCH_SAM
-		  // Default TC3 (randomly selected, take care of Servo!)
 		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
     #else
 		  #error "Architecture not supported."
