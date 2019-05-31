@@ -23,7 +23,7 @@
                  Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 28.5.2019.
+  Last update: 31.5.2019.
 */
 
 SamplingServo::SamplingClass Sampling;
@@ -58,7 +58,7 @@ ISR(TIMER5_COMPA_vect)
  }
 }
     
-#elif ARDUINO_ARCH_SAMD
+#elif ARDUINO_SAMD_ZERO
 void TC5_Handler (void) {
  if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
    //Interrupt can fire before step is done!!!
@@ -76,7 +76,7 @@ void TC5_Handler (void) {
  }
 }
 
-#elif ARDUINO_ARCH_SAM
+#elif ARDUINO_SAM_DUE
 void TC1_Handler(void){
   TC_GetStatus(TC0, 1);
  (Sampling.getInterruptCallback())();

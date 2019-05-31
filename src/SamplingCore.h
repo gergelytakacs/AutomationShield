@@ -24,7 +24,7 @@
                  Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 28.5.2019.
+  Last update: 31.5.2019.
 */
 
 #ifndef SAMPLING_H_
@@ -54,7 +54,7 @@ class SamplingClass{
     reset. The "firing" of the ISR is a portion of the full sampling
     by "fireResolution" microseconds.
     */    
-    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ARCH_SAMD))
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAMD_ZERO))
       bool fireFlag = 0;                                     // Repeat launches of ISR
       unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
       unsigned short int fireResolution;                     // Resolution of the timer over the maximum
@@ -81,12 +81,13 @@ class SamplingClass{
 	  const unsigned long timerResolution = 65536; 		 // AVR Timer 5 is 16bit            
       const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz*/
 	  #define COMPARE_10MS        20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
-    #elif ARDUINO_ARCH_SAMD
+    #elif ARDUINO_SAMD_ZERO
 	  // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned long timerResolution = 65536;     			// Configured to 16bit  
 	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
 	  #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
-    #elif ARDUINO_ARCH_SAM
+	  //#elif ADAFRUIT_METRO_M4_EXPRESS
+    #elif ARDUINO_SAM_DUE
       // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
     #else
@@ -119,7 +120,7 @@ class SamplingClass{
     reset. The "firing" of the ISR is a portion of the full sampling
     by "fireResolution" microseconds.
     */    
-    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ARCH_SAMD))
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAMD_ZERO))
       bool fireFlag = 0;                                     // Repeat launches of ISR
       unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
       unsigned short int fireResolution;                     // Resolution of the timer over the maximum
@@ -139,11 +140,11 @@ class SamplingClass{
 	      const unsigned long timerResolution = 65536; 					 // AVR Timer 5 is 16bit            
     	  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz*/
      
-    #elif ARDUINO_ARCH_SAMD
+    #elif ARDUINO_SAMD_ZERO
 		  // Default TC5 
 		  const unsigned long timerResolution = 65536;     				// Configured to 16bit  
 		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
-    #elif ARDUINO_ARCH_SAM
+    #elif ARDUINO_SAM_DUE
 		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
     #else
 		  #error "Architecture not supported."
