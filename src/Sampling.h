@@ -30,13 +30,13 @@ SamplingNoServo::SamplingClass Sampling;
 
 #ifdef ARDUINO_AVR_UNO
 	#define UNO_ISR_VECT TIMER1_COMPA_vect
-	#include <sampling\SamplingUNO_ISR.h>
+	#include "sampling/SamplingUNO_ISR.h"
 
 #elif ARDUINO_AVR_MEGA2560
-	#include <sampling\SamplingMEGA_ISR.h>
+	#include "sampling/SamplingMEGA_ISR.h"
     
 #elif ARDUINO_ARCH_SAMD
-	#include <sampling\SamplingSAMD_ISR.h>
+	#include "sampling/SamplingSAMD_ISR.h"
 
 #elif ARDUINO_ARCH_SAM
 void TC5_Handler(void){
