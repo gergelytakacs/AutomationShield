@@ -23,7 +23,7 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
-#include <sampling/SamplingCore.h>
+#include <sampling\SamplingCore.h>
 #include <PIDAbs.h>
 
 
