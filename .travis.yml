@@ -68,12 +68,10 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/BOBShield/BOBShield_PID/BOBShield_PID.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/BOBShield/BOBShield_Identification/BOBShield_Identification.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/BOBShield/BOBShield_SelfTest/BOBShield_SelfTest.ino
- 
 #Zero#
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/BOBShield/BOBShield_PID/BOBShield_PID.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/BOBShield/BOBShield_Identification/BOBShield_Identification.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/BOBShield/BOBShield_SelfTest/BOBShield_SelfTest.ino
- 
 #Due#
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/BOBShield/BOBShield_PID/BOBShield_PID.ino
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/BOBShield/BOBShield_Identification/BOBShield_Identification.ino
