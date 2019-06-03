@@ -1,15 +1,53 @@
 language: c                                                             # Specify language, built in Arduino IDE anyways
+cache:																	# Specify cache
+  directories:															# Add directories to cache
+    - ~/arduino_ide
+    - ~/.arduino15/packages/											# Packages (e.g. boards) to chace
 before_install:                                                         # Tasks to perform before installing
                                                                         # Create virtual screen for Arduino IDE, since CLI needs it
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
   - sleep 3                                                             # Wait for 3 seconds
   - export DISPLAY=:1.0
-  - wget http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz       # Download Arduino IDE
+  
+
+  RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m';		    # Custom colors
+  
+  
+echo -e "\n########################################################################";
+echo -e "${YELLOW}INSTALLING ARDUINO IDE"
+echo "########################################################################";
+
+echo -n "ARDUINO IDE CACHE STATUS: "   								    # Checking for cached version
+if [ ! -f $HOME/arduino_ide/arduino ]; then                             # Is it cached?
+echo -n "DOWNLOADING: "
+  - wget --quiet http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz       # Download Arduino IDE
+if [ $? -ne 0 ]; then echo -e """$RED""\xe2\x9c\x96"; else echo -e """$GREEN""\xe2\x9c\x93"; fi
+echo -n "UNPACKING ARDUINO IDE: "  
   - tar xf arduino-1.8.9-linux64.tar.xz                                 # Uncompress Arduino IDE
+if [ $? -ne 0 ]; then echo -e """$RED""\xe2\x9c\x96"; else echo -e """$GREEN""\xe2\x9c\x93"; fi 
   - sudo mv arduino-1.8.9 /usr/local/share/arduino                      # Move Arduino ide to the correct directory
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
-  - arduino --install-boards arduino:sam                                # Install board support for SAM (Due)
-  - arduino --install-boards arduino:samd                               # Install board support for SAMD (Zero)
+  
+echo -e "\n########################################################################";
+echo -e "${YELLOW}INSTALLING BOARDS"
+echo "########################################################################";
+
+echo -n "ADD PACKAGE INDEX: "
+DEPENDENCY_OUTPUT=$(arduino --pref "boardsmanager.additional.urls=https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" --save-prefs 2>&1)
+if [ $? -ne 0 ]; then echo -e """$RED""\xe2\x9c\x96"; else echo -e """$GREEN""\xe2\x9c\x93"; fi
+
+echo -n "ZERO: "
+DEPENDENCY_OUTPUT=$(arduino --install-boards arduino:samd 2>&1)			# Install board support for SAMD (Zero)
+if [ $? -ne 0 ]; then echo -e "\xe2\x9c\x96 OR CACHED"; else echo -e """$GREEN""\xe2\x9c\x93"; fi
+  
+echo -n "DUE: "
+DEPENDENCY_OUTPUT=$(arduino --install-boards arduino:sam 2>&1)			# Install board support for SAM (Due)
+if [ $? -ne 0 ]; then echo -e "\xe2\x9c\x96 OR CACHED"; else echo -e """$GREEN""\xe2\x9c\x93"; fi
+
+echo -n "ADAFRUIT SAMD: "
+DEPENDENCY_OUTPUT=$(arduino --install-boards adafruit:samd 2>&1)
+if [ $? -ne 0 ]; then echo -e "\xe2\x9c\x96 OR CACHED"; else echo -e """$GREEN""\xe2\x9c\x93"; fi
+
 install:                                                                # Actual installation of the AutomationShield repo
   - ln -s $PWD /usr/local/share/arduino/libraries/AutomationShield      # Install repository as a library
                                                                         # No library dependencies at this point
