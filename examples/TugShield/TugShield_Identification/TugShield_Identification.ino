@@ -12,11 +12,12 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács. 
-  Last update: 13.5.2019.
+  Created by Eva Vargova and Gergely Takacs. 
+  Last update: 6.5.2019.
 */
 
-#include "TugShield.h"             // Include the library
+#include <TugShield.h>             // Include the library
+#include <SamplingServo.h>         // Include sampling subsystem
 
 unsigned long Ts = 10;             // Sampling in milliseconds
 unsigned long k = 0;               // Sample index
