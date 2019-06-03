@@ -6,7 +6,7 @@
 
 Arduino, MATLAB and Simulink IDE for the AutomationShield expansion boards for control engineering education. You can read more about the AutomationShield project in our [Wiki page](https://github.com/gergelytakacs/AutomationShield/wiki).
 
-## Downloading and Installing the Library
+## Downloading and Installing the AutomationShield Library
 
 ### I don't know Git
 If you are not familiar with Git, please download the latest release of the library from the [Releases](https://github.com/gergelytakacs/AutomationShield/releases) section, as the production code download does not include certain dependencies. Search for the `AutomationShield_vX.Y.tar` file in the Assets, where `vX.Y` is the major and minor version number of the release. Do not use the Source Code files in the Assets, since these lack the dependent code as well.
