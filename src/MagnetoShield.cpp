@@ -18,9 +18,7 @@
 #include "MagnetoShield.h"
 
 // An initialization method for the MagnetoShield
-void MagnetoShieldClass::begin()
-{	
-    
+void MagnetoShieldClass::begin(){	    
 	#ifdef ARDUINO_ARCH_AVR
 		Wire.begin();	// Starts the "Wire" library for I2C
 		#if SHIELDRELEASE == 1	
@@ -36,8 +34,7 @@ void MagnetoShieldClass::begin()
 }
 
 // Write DAC levels (8-bit) to the PCF8591 chip
-void MagnetoShieldClass::dacWrite(byte dacIn)
-{	
+void MagnetoShieldClass::dacWrite(byte dacIn){	
 	#ifdef ARDUINO_ARCH_AVR
 		Wire.beginTransmission(PCF8591);		// I2C addressing, transmission begin
 		Wire.write(0x40);						// Use DAC (0100 0000)
@@ -54,14 +51,11 @@ void MagnetoShieldClass::dacWrite(byte dacIn)
 		Wire.write(dacIn);						// 8-bit value of DAC output
 		Wire.endTransmission();					// I2C transmission end 
 	#endif
-	
-
 }
 
 // Calibrates the output readings and measures the input_iterator
 // saturation for the MagnetoShield
-void MagnetoShieldClass::calibration()
-{
+void MagnetoShieldClass::calibration(){
 	short meas_t, meas_tt; 				   		// Temporary measurements
 	
 	// Selects maximum ADC value to filter for any noise.
@@ -96,36 +90,31 @@ void MagnetoShieldClass::calibration()
 }	
 		
 // Writes input to actuator as desired voltage on magnet
-void MagnetoShieldClass::actuatorWriteVoltage(float u)
-{
+void MagnetoShieldClass::actuatorWriteVoltage(float u){
     byte dacIn = voltageToDac(u);								// Re-computes DAC levels according to Voltage
     dacIn = constrain(dacIn,IRF520_LSAT,IRF520_HSAT); 			// Constrains to IRF520 saturation
 	dacWrite(dacIn);  	   									  // Writes to DAC
 }		
 		
 // Default actuator write function (just a call)
-void MagnetoShieldClass::actuatorWrite(float u)
-{ 
+void MagnetoShieldClass::actuatorWrite(float u){ 
 	actuatorWriteVoltage(u); 			// Calls preferred routine			
 }
 
 // Writes input to actuator as a percentage in the range of 0-100%
-void MagnetoShieldClass::actuatorWritePercents(float u)
-{
+void MagnetoShieldClass::actuatorWritePercents(float u){
     u = AutomationShield.mapFloat(u,0.0,VIN,0.0,100.0); 
 	actuatorWriteVoltage(u); 		// Writes as Voltage
 }
 
 // Default sensor reading method
-float MagnetoShieldClass::sensorRead()
-{	
+float MagnetoShieldClass::sensorRead(){	
 	return  sensorReadDistance();
 }
 
 // Reads sensor and returns percentage of voltage from Hall sensor
 // effectively giving an indirect percentual distance
-float MagnetoShieldClass::sensorReadPercents()
-{	
+float MagnetoShieldClass::sensorReadPercents(){	
 	if (!calibrated){
 		minCalibrated=A1302_LSAT;
 		maxCalibrated=A1302_HSAT;		
@@ -135,8 +124,7 @@ float MagnetoShieldClass::sensorReadPercents()
 
 // Converts a 10-bit ADC reading from the A1302 Hall sensor
 // to Gauss. The Hall sensor picks up on the levitating magnet
-float MagnetoShieldClass::adcToGauss(short adc)
-{	
+float MagnetoShieldClass::adcToGauss(short adc){	
  	#if SHIELDRELEASE == 1
 		float y=(2.5-(float)adc*ARES)*A1302_SENSITIVITY;
 	#elif SHIELDRELEASE == 2
@@ -147,67 +135,56 @@ float MagnetoShieldClass::adcToGauss(short adc)
 
 // Converts the magnetic flux reading from the A1302 Hall sensor
 // to distance measured from the bottom of the magnet
-float MagnetoShieldClass::gaussToDistance(float g)
-{	
-
+float MagnetoShieldClass::gaussToDistance(float g){	
 	if (!calibrated){
 		d_p1=D_P1_DEF;
 		d_p2=D_P2_DEF;		
 	}
-
 	return  d_p1*pow(g,d_p2);
 }
 
 // Computes DAC levels for equivalent magnet voltage
-byte MagnetoShieldClass::voltageToDac(float vOut)
-{
+byte MagnetoShieldClass::voltageToDac(float vOut){
 	 byte dacOut = (byte)round(P1*pow(vOut,P2)+P3*exp((vOut*P4)));
 	 return dacOut;
 }			
 
 // Reads sensor and returns the Hall sensor reading in Gauss
-float MagnetoShieldClass::sensorReadGauss()
-{	
+float MagnetoShieldClass::sensorReadGauss(){	
 	return  MagnetoShield.adcToGauss(analogRead(MAGNETO_YPIN));
 }
 
 // Reads sensor and returns the Hall sensor reading in Gauss
-float MagnetoShieldClass::sensorReadDistance()
-{	
+float MagnetoShieldClass::sensorReadDistance(){	
 	return  MagnetoShield.gaussToDistance(MagnetoShield.sensorReadGauss());
 }
 
 
 // Default sensor reading method
-float MagnetoShieldClass::referenceRead()
-{	
+float MagnetoShieldClass::referenceRead(){	
 	return  (AutomationShield.mapFloat(analogRead(MAGNETO_RPIN),0.0,1024.0,0.0,100.0));
 }
 
 // Reads the voltage on the Electromagnet
-float MagnetoShieldClass::auxReadVoltage()
-{	
+float MagnetoShieldClass::auxReadVoltage(){	
 	float v =  ((float)analogRead(MAGNETO_VPIN))*ARES3V3*VGAIN;
 	return  v;
 }
 
 
 // Reads the voltage on the Electromagnet
-float MagnetoShieldClass::auxReadCurrent()
-{	
+float MagnetoShieldClass::auxReadCurrent(){	
 	float i =  ((float)analogRead(MAGNETO_IPIN))*ARES3V3*IGAIN-IBIAS;
 	return  i;
 }
 
 // Returns the lower limit of the Hall sensor reading (10-bit levels)
-int MagnetoShieldClass::getMinCalibrated()
-{
+int MagnetoShieldClass::getMinCalibrated(){
 	return minCalibrated;;
 }	
 
 // Returns the upper limit of the Hall sensor reading (10-bit levels)
-int MagnetoShieldClass::getMaxCalibrated() 
-{
+int MagnetoShieldClass::getMaxCalibrated(){
 	return maxCalibrated;
 }	
 

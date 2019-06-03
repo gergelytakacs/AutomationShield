@@ -17,8 +17,7 @@
 #ifdef ADAFRUIT_VL53L0X_H 				// If header present
 
 class FloatShieldClass{
-  
-    public:
+  public:
     Adafruit_VL53L0X lox = Adafruit_VL53L0X();
     void initialize();                  // sets up the sensor - required to run in setup!
     void debug();                       // prints out sensor debug data in monitor - must be called before initialize
@@ -28,8 +27,7 @@ class FloatShieldClass{
     float manualControl();              // returns potenciometer value in percent
     int  positionMillimeter();          // returns position value in millimeters
     void calibrate();                   // calibration
-    private:
-    
+  private:
     uint8_t i2c_addr = 0x29;
     boolean _debug = false;
     int lastValue;
@@ -40,7 +38,7 @@ class FloatShieldClass{
     int pos;
     int minimum = 20;
     int maximum = 350; 
-    };
+ };
 
 extern FloatShieldClass FloatShield;
 

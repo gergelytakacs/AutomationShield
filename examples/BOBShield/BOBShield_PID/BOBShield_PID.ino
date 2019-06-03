@@ -21,7 +21,8 @@
   Last update: 12.10.2018.
 */
 
-#include <BOBShield.h>     // Include the library
+#include <BOBShield.h>
+#include <SamplingServo.h>
 
 unsigned long Ts = 10;            // Sampling in milliseconds
 unsigned long k = 0;                // Sample index

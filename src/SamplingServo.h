@@ -1,6 +1,6 @@
 /*
   ISR for Interrupt-driven sampling for real-time control.
-  Not to be used with the Servo library!
+  Used together with the Servo library to avoid conflicts.
   
   The file implements the two classes necessary for configuring
   an interrupt-driven system for deploying digital control systems
@@ -10,10 +10,10 @@
   There should be no timer conflicts when using the Servo library.
     
   A "Sampling" object is created first from the namespace referring
-  to the case that does not assume the use of the Servo library. 
-  ISR are implemented based on various architectures. The 
-  implementation of the classes setting up the timers of the 
-  hardware are located elsewhere.
+  to the case that assumes the use of the Servo library. ISR are
+  implemented based on various architectures. The implementation 
+  of the classes setting up the timers of the hardware are located
+  elsewhere.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -27,10 +27,10 @@
   Last update: 3.6.2019.
 */
 
-SamplingNoServo::SamplingClass Sampling;
+SamplingServo::SamplingClass Sampling;
 
 #ifdef ARDUINO_AVR_UNO
-	#define UNO_ISR_VECT TIMER1_COMPA_vect
+ 	#define UNO_ISR_VECT TIMER2_COMPA_vect
 	#include "sampling/SamplingUNO_ISR.h"
 
 #elif ARDUINO_AVR_MEGA2560
@@ -40,11 +40,12 @@ SamplingNoServo::SamplingClass Sampling;
 	#include "sampling/SamplingSAMD_ISR.h"
 
 #elif ARDUINO_ARCH_SAM
-void TC5_Handler(void){
-  TC_GetStatus(TC1, 2);
+void TC1_Handler(void){
+  TC_GetStatus(TC0, 1);
  (Sampling.getInterruptCallback())();
 }
-
 #else
   #error "Architecture not supported."
 #endif
+
+

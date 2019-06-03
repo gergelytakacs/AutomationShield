@@ -18,6 +18,8 @@ MagnetoShield	KEYWORD1
 PIDAbs	KEYWORD1
 PIDInc	KEYWORD1
 Sampling	KEYWORD1
+SamplingCore	KEYWORD1
+SamplingServo	KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
@@ -29,7 +31,7 @@ begin	KEYWORD2
 sensorRead	KEYWORD2
 actuatorWrite	KEYWORD2
 referenceRead	KEYWORD2
-calibration KEYWORD2
+calibration	KEYWORD2
 
 constrainFloat	KEYWORD2
 mapFloat	KEYWORD2

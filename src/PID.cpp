@@ -33,6 +33,10 @@ void PIDClass::setTd(float Td){
   Kd=Kp*Td;
 }
 
+void PIDClass::setTs(float Ts){
+  this->Ts=Ts;
+}
+
 float PIDClass::getKp(){
   return Kp;
 }
@@ -52,6 +56,11 @@ float PIDClass::getTi(){
 float PIDClass::getTd(){
   return Td;
 }
+
+float PIDClass::getTs(){
+  return Td;
+}
+
 
 float PIDClass::constrainFloat(float x, float min_x, float max_x){
   if (x<=min_x)

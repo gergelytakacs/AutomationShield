@@ -20,20 +20,22 @@
 */
 
 #include <OptoShield.h> 		// Include the library
+#include <Sampling.h>            // Include sampling
 
-unsigned long Ts = 10;               // Sampling in milliseconds
+unsigned long Ts = 5;               // Sampling in milliseconds
 bool enable=false;                  // Flag for sampling 
 
 float r = 0.0;						// Reference
 float y = 0.0;						// Output
 float u = 0.0;						// Input					
 
-#define KP 0.1						// PID Kp
-#define TI 0.015                    // PID Ti
-#define TD 0.000001                // PID Td
+#define KP 0.06                // PID Kp
+#define TI 0.01               // PID Ti
+#define TD 0.00001           // PID Td
+
 
 void setup() {
-  Serial.begin(9600);               // Initialize serial
+  Serial.begin(250000);               // Initialize serial
   
   // Initialize and calibrate board
   OptoShield.begin();               // Define hardware pins
@@ -44,9 +46,10 @@ void setup() {
   Sampling.interrupt(stepEnable); // Interrupt fcn.
 
  // Set the PID constants
- PIDAbs.setKp(KP);
- PIDAbs.setTi(TI);
- PIDAbs.setTd(TD); 
+ PIDAbs.setKp(KP); // Proportional
+ PIDAbs.setTi(TI); // Integral
+ PIDAbs.setTd(TD); // Derivative
+ PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
 }
 
 // Main loop launches a single step at each enable time

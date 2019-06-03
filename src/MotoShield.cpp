@@ -32,7 +32,6 @@ void MotoClass::motorOFF(){  // switches off the motor
 }
 
 void MotoClass::setMotorSpeed(float value){    // sets the speed of the motor, input value from 0-100
-
 if(value < 30){ value = 30; } // minimal power needed to rotate the shaft
 
     convertedValue = AutomationShield.mapFloat(value,0.00,100.00,0.00,255.00);
@@ -71,15 +70,15 @@ float MotoClass::referenceRead(){           // referenceRead function returns th
 }
 
 float MotoClass::readVoltage(){ // reads and returns the voltage drop through the resistor R
-  ADC1 = analogRead(MOTO_U1);
-  ADC2 = analogRead(MOTO_U2);
+  ADCR1 = analogRead(MOTO_U1);
+  ADCR2 = analogRead(MOTO_U2);
 
-  if(ADC1 > ADC2){
-  ADCU = ADC1 - ADC2;
+  if(ADCR1 > ADCR2){
+  ADCU = ADCR1 - ADCR2;
   }
 
-  if(ADC2 > ADC1){
-    ADCU = ADC2 - ADC1;
+  if(ADCR2 > ADCR1){
+    ADCU = ADCR2 - ADCR1;
   }
 
   k = (5.00 / 1023.00); // constant for converting analog values to Voltage

@@ -19,6 +19,7 @@
 */
 
 #include <HeatShield.h> 	    // Include the library
+#include <Sampling.h>            // Include sampling
 
 long noise;                         // Noise component in input
 unsigned long Ts = 2000;            // Sampling in milliseconds
