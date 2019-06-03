@@ -9,21 +9,11 @@ before_install:                                                         # Tasks 
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
   - sleep 3                                                             # Wait for 3 seconds
   - export DISPLAY=:1.0
-  
-  - RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; 		    # Defines colors
-  
-  - echo -e "\n########################################################################";
-  - echo -e "${YELLOW}INSTALLING ARDUINO IDE"
-  - echo "########################################################################";
-  
+
   - wget http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz       # Download Arduino IDE
   - tar xf arduino-1.8.9-linux64.tar.xz                                 # Uncompress Arduino IDE
   - sudo mv arduino-1.8.9 /usr/local/share/arduino                      # Move Arduino ide to the correct directory
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
-    
-  - echo -e "\n########################################################################";
-  - echo -e "${YELLOW}INSTALLING BOARD PACKAGES"
-  - echo "########################################################################";
   
   - arduino --pref "boardsmanager.additional.urls=https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" --save-prefs
   - arduino --install-boards arduino:samd                               # Install board support for SAMD21 (Zero)
@@ -103,7 +93,9 @@ script:
 #Zero#
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 #Due#
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
+#Metro#
+  - arduino --verify --board adafruit:samd:adafruit_metro_m4:speed=120 $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 
 notifications:
   email:
