@@ -48,8 +48,8 @@ private:
 	float convertedValue;
 	float _referenceRead;
 	float referenceValue;
-	float ADC1;
-	float ADC2;
+	float ADCR1;
+	float ADCR2;
 	float ADCU;
 	float V;
 	float I;
