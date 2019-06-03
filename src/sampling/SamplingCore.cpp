@@ -1,20 +1,21 @@
 /*
-  Class implementation for Interrupt-driven sampling for real-time control.
+  Class declaration for Interrupt-driven sampling for real-time control.
   
-  The file implements the two classes necessary for configuring
+  The file forward declares the classes necessary for configuring
   an interrupt-driven system for deploying digital control systems
   on AVR, SAMD and SAM-based Arduino prototyping boards with the 
   R3 pinout. The module should be compatible with the Uno, Mega 
-  2560, Arduino Zero and Arduino Due. There should be no timer 
-  conflicts when using the Servo library.
+  2560, Arduino Zero, Adafruit Metro M4 Express and Arduino Due. 
+  There should be no timer conflicts when using the Servo library.
   
-  This file contains the implementation of two classes 
+  This file contains the forward declarations of two classes 
   having an identical name (SamplingClass), that are separated
   into two namespaces. The actual interrupt service routines are
-  located in a pair of outside headers. A "Sampling" object is 
-  created by calling the correct header file depending whether
-  your system uses the Servo library or not, first by invoking 
-  the correct namespace, then implementing the interrupt routine.
+  located in a pair of outside headers in the root source directory.
+  A "Sampling" object is reated by calling the correct header file 
+  depending whether  your system uses the Servo library or not, 
+  first by invoking the correct namespace, then implementing the
+  interrupt routine.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -23,8 +24,9 @@
   AVR Timer: 	 Gergely Takacs, Richard Koplinger, Matus Biro,
                  Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
+  SAM51 Timer: 	 Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 28.5.2019.
+  Last update: 3.6.2019.
 */
 
 #include "SamplingCore.h"

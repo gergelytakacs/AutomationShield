@@ -6,9 +6,9 @@
   an interrupt-driven system for deploying digital control systems
   on AVR, SAMD and SAM-based Arduino prototyping boards with the 
   R3 pinout. The module should be compatible with the Uno, Mega 
-  2560, Arduino Zero and Arduino Due. There should be no timer 
-  conflicts when using the Servo library.
-  
+  2560, Arduino Zero, Adafruit Metro M4 Express and Arduino Due. 
+  There should be no timer conflicts when using the Servo library.
+    
   A "Sampling" object is created first from the namespace referring
   to the case that does not assume the use of the Servo library. 
   ISR are implemented based on various architectures. The 
@@ -22,8 +22,9 @@
   AVR Timer: 	 Gergely Takacs, Richard Koplinger, Matus Biro,
                  Lukas Vadovic 2018-2019
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
+  SAM51 Timer: 	 Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 31.5.2019.
+  Last update: 3.6.2019.
 */
 
 SamplingNoServo::SamplingClass Sampling;
