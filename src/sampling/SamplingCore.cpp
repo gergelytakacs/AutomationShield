@@ -71,21 +71,38 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds){
 
     	
   #elif ARDUINO_SAMD_ZERO
-  // For SAMD21G boards, e.g. Zero
+  // For Arduino Zero
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
-     GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
-     TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;        // Set Timer counter Mode to 16 bits
-	   TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
+    GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
+    TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;        // Set Timer counter Mode to 16 bits
+	TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
       
-      setSamplingPeriod(microseconds);
-      #ifdef ECHO_TO_SERIAL
+    setSamplingPeriod(microseconds);
+    #ifdef ECHO_TO_SERIAL
+         if(!setSamplingPeriod(microseconds)) 
+     	 Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
+    #endif
+      
+    NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
+    TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
+    TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
+	 
+  #elif ADAFRUIT_METRO_M4_EXPRESS
+    // For Adafruit M4 Express 
+    GCLK->PCHCTRL[TC5_GCLK_ID].reg = GCLK_PCHCTRL_GEN_GCLK1_Val | (1 << GCLK_PCHCTRL_CHEN_Pos);
+    TC5->COUNT16.CTRLA.bit.ENABLE = 0;
+    TC5->COUNT16.WAVE.bit.WAVEGEN = TC_WAVE_WAVEGEN_MFRQ; // Match mode, counter resets at match
+  
+    setSamplingPeriod(microseconds);
+    #ifdef ECHO_TO_SERIAL
      	if(!setSamplingPeriod(microseconds)) 
-     	  Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
-      #endif
-      
-	 NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
-     TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
-     TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
+     	Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
+    #endif
+
+    NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
+    TC5->COUNT16.INTENSET.bit.MC0 = 1;     				    // Enable the compare interrupt
+    TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
+	  
   #elif ARDUINO_ARCH_SAM
      // TC5 is free when no Servo is used, use TC5 like for Mega
      pmc_set_writeprotect(false);                            // Power management controller (PMC) disables the write protection of the timer and counter registers
@@ -168,7 +185,7 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
 	  }
    
 	
- #elif ARDUINO_SAMD_ZERO								    // For SAMD21G boards, e.g. Zero
+    #elif (defined(ARDUINO_SAMD_ZERO) || defined (ADAFRUIT_METRO_M4_EXPRESS))    // For SAMD21G boards, e.g. Zero
     // Up to 1.3653 ms with 20.8 ns resolution
     if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;    // no prescaling
@@ -297,21 +314,38 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds){
 	interrupts();             		             // enable all interrupts
     	
   #elif ARDUINO_SAMD_ZERO
-  // For SAMD21G boards, e.g. Zero
+  // For Arduino Zero
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
-     GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
-     TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;        // Set Timer counter Mode to 16 bits
-	 TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
+    GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
+    TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;        // Set Timer counter Mode to 16 bits
+	TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;        // Set TC5 mode as match frequency
       
-      setSamplingPeriod(microseconds);
-      #ifdef ECHO_TO_SERIAL
+    setSamplingPeriod(microseconds);
+    #ifdef ECHO_TO_SERIAL
+         if(!setSamplingPeriod(microseconds)) 
+     	 Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
+    #endif
+      
+    NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
+    TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
+    TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
+	 
+  #elif ADAFRUIT_METRO_M4_EXPRESS
+    // For Adafruit M4 Express 
+    GCLK->PCHCTRL[TC5_GCLK_ID].reg = GCLK_PCHCTRL_GEN_GCLK1_Val | (1 << GCLK_PCHCTRL_CHEN_Pos);
+    TC5->COUNT16.CTRLA.bit.ENABLE = 0;
+    TC5->COUNT16.WAVE.bit.WAVEGEN = TC_WAVE_WAVEGEN_MFRQ; // Match mode, counter resets at match
+  
+    setSamplingPeriod(microseconds);
+    #ifdef ECHO_TO_SERIAL
      	if(!setSamplingPeriod(microseconds)) 
-     	  Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
-      #endif
-      
-	 NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
-     TC5->COUNT16.INTENSET.bit.MC0 = 1;                      // Enable the TC5 interrupt request
-     TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
+     	Serial.println("Sampling period is too long.\nMax is xxxx microseconds.");
+    #endif
+
+    NVIC_EnableIRQ(TC5_IRQn);                               // Enable interrupt for TC5
+    TC5->COUNT16.INTENSET.bit.MC0 = 1;     				    // Enable the compare interrupt
+    TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE;              // Enable timer
+	 
   #elif ARDUINO_ARCH_SAM
      // Due has three 3-channel general-purpose 32-bit timers = 9 timers. TC1 serves PWM 60,61, these will be disabled
      pmc_set_writeprotect(false);                            // Power management controller (PMC) disables the write protection of the timer and counter registers
@@ -418,7 +452,7 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
 	  }
    
 	
-#elif ARDUINO_SAMD_ZERO								    // For SAMD21G boards, e.g. Zero
+#elif (defined(ARDUINO_SAMD_ZERO) || defined (ADAFRUIT_METRO_M4_EXPRESS))   // For SAMD21G boards, e.g. Zero
     // Up to 1.3653 ms with 20.8 ns resolution
     if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;    // no prescaling
