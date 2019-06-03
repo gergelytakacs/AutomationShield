@@ -20,7 +20,7 @@ before_install:                                                         # Tasks 
   - arduino --install-boards arduino:sam                                # Install board support for SAM (Due)
   - arduino --install-boards adafruit:samd                              # Install board support for SAMD51 (Metro M4)
   - else
-  - echo CACHED
+  - echo "CACHED"
   - fi																	# end IF
 install:                                                                # Actual installation of the AutomationShield repo
   - ln -s $PWD /usr/local/share/arduino/libraries/AutomationShield      # Install repository as a library
