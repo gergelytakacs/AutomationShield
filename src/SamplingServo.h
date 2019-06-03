@@ -35,7 +35,7 @@ SamplingServo::SamplingClass Sampling;
 #elif ARDUINO_AVR_MEGA2560
 	#include "sampling/SamplingMEGA_ISR.h"
     
-#elif ARDUINO_ARCH_SAMD
+#elif ARDUINO_SAMD_ZERO
 	#include "sampling/SamplingSAMD_ISR.h"
 
 #elif ARDUINO_ARCH_SAM

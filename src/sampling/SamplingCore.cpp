@@ -70,7 +70,7 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds){
 	interrupts();             		             // enable all interrupts
 
     	
-  #elif ARDUINO_ARCH_SAMD
+  #elif ARDUINO_SAMD_ZERO
   // For SAMD21G boards, e.g. Zero
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
      GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
@@ -168,7 +168,7 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
 	  }
    
 	
- #elif ARDUINO_ARCH_SAMD								    // For SAMD21G boards, e.g. Zero
+ #elif ARDUINO_SAMD_ZERO								    // For SAMD21G boards, e.g. Zero
     // Up to 1.3653 ms with 20.8 ns resolution
     if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;    // no prescaling
@@ -296,7 +296,7 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds){
    		
 	interrupts();             		             // enable all interrupts
     	
-  #elif ARDUINO_ARCH_SAMD
+  #elif ARDUINO_SAMD_ZERO
   // For SAMD21G boards, e.g. Zero
   // Enable GCLK for TCC2 and TC5 (timer counter input clock)
      GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
@@ -418,7 +418,7 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
 	  }
    
 	
-#elif ARDUINO_ARCH_SAMD								    // For SAMD21G boards, e.g. Zero
+#elif ARDUINO_SAMD_ZERO								    // For SAMD21G boards, e.g. Zero
     // Up to 1.3653 ms with 20.8 ns resolution
     if (cycles < timerResolution){
       TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1;    // no prescaling

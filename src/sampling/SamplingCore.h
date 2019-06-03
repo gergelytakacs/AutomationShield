@@ -54,7 +54,7 @@ class SamplingClass{
     reset. The "firing" of the ISR is a portion of the full sampling
     by "fireResolution" microseconds.
     */    
-    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ARCH_SAMD))
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAMD_ZERO))
       bool fireFlag = 0;                                     // Repeat launches of ISR
       unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
       unsigned short int fireResolution;                     // Resolution of the timer over the maximum
@@ -81,7 +81,7 @@ class SamplingClass{
 	  const unsigned long timerResolution = 65536; 		 // AVR Timer 5 is 16bit            
       const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz*/
 	  #define COMPARE_10MS        20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
-    #elif ARDUINO_ARCH_SAMD
+    #elif ARDUINO_SAMD_ZERO
 	  // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned long timerResolution = 65536;     			// Configured to 16bit  
 	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
@@ -119,7 +119,7 @@ class SamplingClass{
     reset. The "firing" of the ISR is a portion of the full sampling
     by "fireResolution" microseconds.
     */    
-    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_ARCH_SAMD))
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAMD_ZERO))
       bool fireFlag = 0;                                     // Repeat launches of ISR
       unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
       unsigned short int fireResolution;                     // Resolution of the timer over the maximum
@@ -139,7 +139,7 @@ class SamplingClass{
 	      const unsigned long timerResolution = 65536; 					 // AVR Timer 5 is 16bit            
     	  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz*/
      
-    #elif ARDUINO_ARCH_SAMD
+    #elif ARDUINO_SAMD_ZERO
 		  // Default TC5 
 		  const unsigned long timerResolution = 65536;     				// Configured to 16bit  
 		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
