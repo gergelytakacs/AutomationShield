@@ -11,7 +11,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács, Tibor Konkoly, Gábor Penzinger
-  Last update: 28.09.2018.
+  Last update: 31.09.2018.
 */
 
 #ifndef AUTOMATIONSHIELD_H_  // Include guard - prevents multiple header inclusions
@@ -23,7 +23,7 @@
  #include "WProgram.h" // For old Arduino IDE
 #endif  
 
-#include <SamplingCore.h>
+#include "sampling/SamplingCore.h"
 #include <PIDAbs.h>
 
 

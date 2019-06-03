@@ -70,15 +70,15 @@ float MotoClass::referenceRead(){           // referenceRead function returns th
 }
 
 float MotoClass::readVoltage(){ // reads and returns the voltage drop through the resistor R
-  ADC1 = analogRead(MOTO_U1);
-  ADC2 = analogRead(MOTO_U2);
+  ADCR1 = analogRead(MOTO_U1);
+  ADCR2 = analogRead(MOTO_U2);
 
-  if(ADC1 > ADC2){
-  ADCU = ADC1 - ADC2;
+  if(ADCR1 > ADCR2){
+  ADCU = ADCR1 - ADCR2;
   }
 
-  if(ADC2 > ADC1){
-    ADCU = ADC2 - ADC1;
+  if(ADCR2 > ADCR1){
+    ADCU = ADCR2 - ADCR1;
   }
 
   k = (5.00 / 1023.00); // constant for converting analog values to Voltage

@@ -22,7 +22,7 @@
   Created by Gergely Takács
   Last update: 28.5.2019.
 */
-#include <SamplingCore.h>         // Core classes for sampling, included in AutomationShield.h
+#include <AutomationShield.h>     // Core sampling class, included in AutomationShield.h
 //#include <Sampling.h>           // Use for normal cases w/o Servo
 #include <SamplingServo.h>        // Use w Servo motors
 
