@@ -79,13 +79,13 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/TugShield/TugShield_Identification/TugShield_Identification.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/TugShield/TugShield_SelfTest/TugShield_SelfTest.ino
 #Zero#
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/TugShield/TugShield_PID/TugShield_PID.ino
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/TugShield/TugShield_Identification/TugShield_Identification.ino
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/TugShield/TugShield_SelfTest/TugShield_SelfTest.ino
+# - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/TugShield/TugShield_PID/TugShield_PID.ino
+# - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/TugShield/TugShield_Identification/TugShield_Identification.ino
+# - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/TugShield/TugShield_SelfTest/TugShield_SelfTest.ino
 #Due#
- - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/TugShield/TugShield_PID/TugShield_PID.ino
- - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/TugShield/TugShield_Identification/TugShield_Identification.ino
- - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/TugShield/TugShield_SelfTest/TugShield_SelfTest.ino
+# - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/TugShield/TugShield_PID/TugShield_PID.ino
+# - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/TugShield/TugShield_Identification/TugShield_Identification.ino
+# - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/TugShield/TugShield_SelfTest/TugShield_SelfTest.ino
  
 ### BOBShield ###
 #Uno#
