@@ -22,10 +22,8 @@ before_install:                                                         # Tasks 
         arduino --install-boards arduino:samd
         arduino --install-boards arduino:sam	
         arduino --install-boards adafruit:samd
-        exit 0
       else
         echo -n "USING CACHED VERSION"
-        exit 0
       fi
 
 
