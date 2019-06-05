@@ -12,7 +12,7 @@ before_install:                                                         # Tasks 
   - export DISPLAY=:1.0
 
   - |-
-      if [[ ! -f $HOME/arduino_ide/arduino ]]; then
+      if [[ ! -f $HOME/travis/arduino_ide ]]; then
         echo -n "DOWNLOADING";
         wget http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz;
         tar xf arduino-1.8.9-linux64.tar.xz
