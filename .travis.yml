@@ -1,9 +1,9 @@
 language: c                                                             # Specify language, built in Arduino IDE anyways
-sudo: false
-#cache:
-#  directories:
-#    - ~/arduino_ide
-#    - ~/.arduino15/packages/
+
+cache:
+ directories:
+   - ~/arduino_ide
+   - ~/.arduino15/packages/
 
 before_install:                                                         # Tasks to perform before installing
                                                                         # Create virtual screen for Arduino IDE, since CLI needs it
