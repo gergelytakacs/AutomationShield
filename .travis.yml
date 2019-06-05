@@ -8,7 +8,7 @@ cache:
 before_install:                                                         # Tasks to perform before installing
                                                                         # Create virtual screen for Arduino IDE, since CLI needs it
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :-ac -screen 0 1280x1024x16"
-  - sleep 3                                                             # Wait for 3 seconds
+  - sleep 3                                                             # Wait 3 seconds
   - export DISPLAY=:1.0
 
   - |-
