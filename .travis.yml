@@ -1,30 +1,20 @@
 language: c                                                             # Specify language, built in Arduino IDE anyways
 
-cache:
- directories:
-   - ~/arduino_ide
-   - ~/.arduino15/packages/
-
 before_install:                                                         # Tasks to perform before installing
                                                                         # Create virtual screen for Arduino IDE, since CLI needs it
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :-ac -screen 0 1280x1024x16"
-  - sleep 3                                                             # Wait 3 seconds
+  - sleep 3                                                             # Wait for 3 seconds
   - export DISPLAY=:1.0
 
-  - |-
-      if [ ! -d "/usr/local/share/arduino" ]; then
-        echo -n "DOWNLOADING";
-        wget http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz;
-        tar xf arduino-1.8.9-linux64.tar.xz;
-        sudo mv arduino-1.8.9 /usr/local/share/arduino;
-        sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino;
-        arduino --pref "boardsmanager.additional.urls=https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" --save-prefs;
-        arduino --install-boards arduino:samd;
-        arduino --install-boards arduino:sam;	
-        arduino --install-boards adafruit:samd;
-      else
-        echo -n "USING CACHED VERSION"
-      fi
+  - wget http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz       # Download Arduino IDE
+  - tar xf arduino-1.8.9-linux64.tar.xz                                 # Uncompress Arduino IDE
+  - sudo mv arduino-1.8.9 /usr/local/share/arduino                      # Move Arduino ide to the correct directory
+  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  
+  - arduino --pref "boardsmanager.additional.urls=https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" --save-prefs
+  - arduino --install-boards arduino:samd                               # Install board support for SAMD21 (Zero)
+  - arduino --install-boards arduino:sam                                # Install board support for SAM (Due)
+  - arduino --install-boards adafruit:samd                              # Install board support for SAMD51 (Metro M4)
 
 
 install:                                                                # Actual installation of the AutomationShield repo
