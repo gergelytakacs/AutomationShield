@@ -1,28 +1,19 @@
-#include <FloatShield.h>
+#include <FloatShield.h>           // Including the FloatShield library
 
-int dist;
-
-
-void setup() {
-  // FloatShield.debug();     will print out in monitor sensor debug data
-  Serial.begin(115200);  //start serial communication
-  FloatShield.initialize(); //FloatShield initialization
-  FloatShield.calibrate(); //FloatShield calibration for more accurate measurements
-
-//    if (! lox.initialize()) {
-//    Serial.println("Failed to find sensor");
-//    while (1);
-//  }
-//  Serial.println("Sensor found!");
-//}
-
+void setup() {                     // Setup - runs only once
+    Serial.begin(9600);            // Begin serial comunication
+    FloatShield.begin();           // Initialise FloatShield
+    FloatShield.calibrate();       // Calibrate FloatShield
 }
 
-void loop() {
-  FloatShield.manualControl(); //Calling this function will switch floatshield into manual
-                               //control mode. By adjusting the potentiometer ventilator power
-                               //will adjust accordingly.
-  dist = FloatShield.positionMillimeter(); // read sensor 
-  Serial.print("Distance (mm): ");
-  Serial.println(dist);
+void loop() {                                                       // Loop - runs indefinitely
+    float potentiometerReference = FloatShield.referenceRead();     // Save current percentual position of potentiometer runner to "potentiometerReference" variable
+    float ballPositionInTube = FloatShield.sensorRead();            // Save current percentual position of ball to "ballPositionInTube" variable
+    FloatShield.actuatorWrite(potentiometerReference);              // Set the power output of the fan based on the current potentiometer position
+    Serial.print("Power output: ");
+    Serial.print(potentiometerReference);                           // Write out to the Serial Monitor current potentiometer percentual position
+    Serial.print(", ");
+    Serial.print("Ball altitude: ");
+    Serial.println(ballPositionInTube);                             // Write out to the Serial Monitor current percentual position of the ball
+    delay(100);                                                     // Wait 100 miliseconds
 }
