@@ -1,55 +1,54 @@
-#include <FloatShield.h>
-#include <Sampling.h>            // Include sampling
+#include <FloatShield.h>              // Include main library  
+#include <Sampling.h>                 // Include sampling library
 
-int dist;
-unsigned long int Ts = 100; //sampling time in ms
-bool enable = false; //flag 
-int y;  //output
-float u; //input
-int r; //reference
-float Ti,Td,Kp; // PID constants
-float error; //error
+unsigned long Ts = 5000;              // Sampling period in microseconds
+bool nextStep = false;                // Flag for step function
+
+float r = 0.0;            // Reference
+float y = 0.0;            // Output
+float u = 0.0;            // Input
+
+#define KP 0.01                // PID Kp
+#define TI 0.001               // PID Ti
+#define TD 0.00001             // PID Td
+
+
 void setup() {
-  Serial.begin(115200); //start serial communication
-  FloatShield.initialize(); //FloatShield initialization
-  FloatShield.calibrate(); //FloatShield calibration for more accurate measurements
-  Sampling.period(Ts*1000); //Sampling initialization in microseconds
-  Sampling.interrupt(StepEnable); // seting the interrupt functon
-  //Setting the PID constants
-  PIDAbs.setKp(0.86);
-  PIDAbs.setKi(1.729);
-  PIDAbs.setKd(0.1081);
-  //Getting constants needed for calculating PID in absolute form
-  Ti = PIDAbs.getTi(); // integral time constant
-  Td = PIDAbs.getTd(); // derivative time constant
-  Kp = PIDAbs.getKp(); 
+    Serial.begin(250000);              // Begin serial communication
+
+    FloatShield.begin();               // Initialize FloatShield board
+    FloatShield.calibrate();           // Calibrate FloatShield board
+
+    Sampling.period(Ts);               // Set sampling period
+    Sampling.interrupt(stepEnable);    // Set interrupt function
+
+    PIDAbs.setKp(KP);                      // Set Proportional constant
+    PIDAbs.setTi(TI);                      // Set Integral constant
+    PIDAbs.setTd(TD);                      // Set Derivative constant
+    PIDAbs.setTs(Sampling.samplingPeriod); // Sampling for PID
 }
 
-void loop() 
-{
-  if(enable)
-  {
-    Step();
-    enable = false; //enable flag becomes false after the execution of the Step() function
-  }
+
+void loop() {
+    if (nextStep) {                 // If ISR enables step flag
+        step();                     // Run step function
+        nextStep = false;           // Disable step flag
+    }
 }
 
-void StepEnable(void) // interrupt function
-{
-  enable = true; // when the interrupt function is called, the enable is true
+void stepEnable() {               // ISR
+    nextStep = true;              // Enable step flag
 }
 
-void Step (void)
-{
-  y = FloatShield.positionPercent(); //reading the  sensor value
-  r = FloatShield.referencePercent(); //reading the reference value
+void step() {                             // Define step function
+    r = FloatShield.referenceRead();      // Read reference
+    y = FloatShield.sensorRead();         // Read sensor
+    u = PIDAbs.compute(r-y,0,100,0,100);  // PID
+    FloatShield.actuatorWrite(u);         // Actuate
 
-  error = r - y; 
-  u = PIDAbs.compute(error,25,55,0,100); // absolute PID function with anti-wind up and saturation
-  FloatShield.ventInPercent(u);
-  Serial.print(r);
-  Serial.print(", ");
-  Serial.print(u);
-  Serial.print(", ");
-  Serial.println(y);
+    Serial.print(r);           // Print reference
+    Serial.print(", ");
+    Serial.print(y);           // Print output
+    Serial.print(", ");
+    Serial.println(u);         // Print input
 }
