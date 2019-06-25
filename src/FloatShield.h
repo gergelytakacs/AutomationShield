@@ -1,17 +1,34 @@
+/*
+  API for the FloatShield didactic hardware.
+  
+  The file is a part of the application programmers interface for
+  the FloatShield didactic tool for control engineering and 
+  mechatronics education. The FloatShield implements an air-flow
+  levitation experiment on an Arduino shield.
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács and Peter Chmurčiak. 
+  Last update: 25.06.2019.
+*/
+
 #ifndef FLOATSHIELD_H_             // Include guard
 #define FLOATSHIELD_H_
 
 #include "AutomationShield.h"      // Include the main library
 
 #ifndef ADAFRUIT_VL53L0X_H                                          // If library for Adafruit distance sensor is not already included
-#if __has_include("lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h")  // If said library is present in main library file
-#include "lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h"          // Include it from there
+#if __has_include("lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h")    // If said library is present in main library file
+#include "lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h"              // Include it from there
 #endif
 #endif
 
 // Defining pins used by the FloatShield board
-#define FAN 3                     // Fan (Actuator)
-#define POTENTIOMETER A0          // Potentiometer runner (Reference)
+#define FLOAT_UPIN 3              // Fan (Actuator)
+#define FLOAT_RPIN A0             // Potentiometer runner (Reference)
 
 #ifdef ADAFRUIT_VL53L0X_H         // If library for Adafruit distance sensor was sucessfully included
 

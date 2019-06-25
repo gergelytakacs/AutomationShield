@@ -1,25 +1,39 @@
+/*
+  API for the FloatShield didactic hardware.
+
+  The file is a part of the application programmers interface for
+  the FloatShield didactic tool for control engineering and
+  mechatronics education. The FloatShield implements an air-flow
+  levitation experiment on an Arduino shield.
+
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács and Peter Chmurčiak.
+  Last update: 25.06.2019.
+*/
+
 #include "FloatShield.h"         // Include header file
 
 #ifdef ADAFRUIT_VL53L0X_H        // If library for adafruit distance sensor was sucessfully included
 
 void FloatClass::begin(void) {                              // Board initialisation
-    Serial.print(F("FloatShield initialisation..."));
+    AutomationShield.serialPrint("FloatShield initialisation...");
     if (!distanceSensor.begin()) {                          // Setting up I2C distance sensor
-        Serial.println(F(" failed!"));
-        while(true);
+        AutomationShield.error("FloatShield failed to initialise!");
     }
-    pinMode(FAN, OUTPUT);                                   // Defining pin modes of pins used for fan and potentiometer
-    pinMode(POTENTIOMETER, INPUT);
     _minDistance = 48.0;                                    // Initializing min,max variables by approximate values so the functions can be used even without calibration but with lower precision
     _maxDistance = 368.0;
     _range = _maxDistance - _minDistance;
     _minPower = 40.0;
     _wasCalibrated = false;
-    Serial.println(F(" successful."));
+    AutomationShield.serialPrint(" successful.\n");
 }
 
 void FloatClass::calibrate(void) {                         // Board calibration
-    Serial.print(F("Calibration..."));
+    AutomationShield.serialPrint("Calibration...");
     // Getting the minimal and maximal values measured by sensor
     float sum = 0.0;
     actuatorWrite(100.0);                                  // Sets fan speed to maximum
@@ -65,17 +79,17 @@ void FloatClass::calibrate(void) {                         // Board calibration
         }
     }
     _wasCalibrated = true;                                      // Sets the status of calibration to true
-    Serial.println(F(" sucessful."));
+    AutomationShield.serialPrint(" sucessful.\n");
 }
 
 void FloatClass::actuatorWrite(float aPercent) {                                         // Write actuator
     float mappedValue = AutomationShield.mapFloat(aPercent, 0.0, 100.0, 0.0, 255.0);     // Takes the float type percentual value 0.0-100.0 and remapps it to range 0.0-255.0
     mappedValue = AutomationShield.constrainFloat(mappedValue, 0.0, 255.0);              // Constrains the remapped value to fit the range 0.0-255.0 - safety precaution
-    analogWrite(FAN, (int)mappedValue);                                                  // Sets the fan speed using the constrained value
+    analogWrite(FLOAT_UPIN, (int)mappedValue);                                                  // Sets the fan speed using the constrained value
 }
 
 float FloatClass::referenceRead(void) {                                                        // Reference read
-    _referenceValue = (float)analogRead(POTENTIOMETER);                                        // Reads the actual analog value of potentiometer runner
+    _referenceValue = (float)analogRead(FLOAT_RPIN);                                        // Reads the actual analog value of potentiometer runner
     _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
     return _referencePercent;                                                                  // Returns the percentual position of potentiometer runner
 }
