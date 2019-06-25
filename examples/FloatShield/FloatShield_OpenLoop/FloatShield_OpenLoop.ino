@@ -1,19 +1,55 @@
-#include <FloatShield.h>           // Including the FloatShield library
+/*
+  FloatShield Open Loop
 
-void setup() {                     // Setup - runs only once
-    Serial.begin(9600);            // Begin serial comunication
-    FloatShield.begin();           // Initialise FloatShield
-    FloatShield.calibrate();       // Calibrate FloatShield
+  Performs continuous sensor readings with manual fan speed control.
+
+  The example initializes the FloatShield and performs
+  calibration. Then it reads the current position
+  of the potentiometer and sets the fan speed accordingly.
+  The current position of the potentiometer and current
+  position of the ball is periodically (with specified
+  sampling period) sent out through the serial communication,
+  and can be displayed using Serial Plotter tool of Arduino IDE.
+
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács and Peter Chmurčiak.
+  Last update: 25.06.2019.
+*/
+
+#include <FloatShield.h>              // Including the FloatShield library
+#include <Sampling.h>                 // Include sampling library
+
+unsigned long Ts = 30000;             // Sampling period in microseconds
+bool nextStep = false;                // Flag for step function
+
+void setup() {                        // Setup - runs only once
+    Serial.begin(250000);             // Begin serial comunication
+    FloatShield.begin();              // Initialise FloatShield
+    FloatShield.calibrate();          // Calibrate FloatShield
+    Sampling.period(Ts);              // Set sampling period
+    Sampling.interrupt(stepEnable);   // Set interrupt function
 }
 
-void loop() {                                                       // Loop - runs indefinitely
+void loop() {                    // Loop - runs indefinitely
+    if (nextStep) {              // If ISR enables step flag
+        step();                  // Run step function
+        nextStep = false;        // Disable step flag
+    }
+}
+
+void stepEnable() {              // ISR
+    nextStep = true;             // Enable step flag
+}
+
+void step() {                                                       // Define step function
     float potentiometerReference = FloatShield.referenceRead();     // Save current percentual position of potentiometer runner to "potentiometerReference" variable
     float ballPositionInTube = FloatShield.sensorRead();            // Save current percentual position of ball to "ballPositionInTube" variable
     FloatShield.actuatorWrite(potentiometerReference);              // Set the power output of the fan based on the current potentiometer position
-    Serial.print("Power output: ");
-    Serial.print(potentiometerReference);                           // Write out to the Serial Monitor current potentiometer percentual position
-    Serial.print(", ");
-    Serial.print("Ball altitude: ");
-    Serial.println(ballPositionInTube);                             // Write out to the Serial Monitor current percentual position of the ball
-    delay(100);                                                     // Wait 100 miliseconds
+    Serial.print(potentiometerReference);                           // Write out to the Serial Plotter current potentiometer percentual position
+    Serial.print(" ");                                              // Write out whitespace character to differentiate data for Serial Plotter
+    Serial.println(ballPositionInTube);                             // Write out to the Serial Plotter current percentual position of the ball
 }
