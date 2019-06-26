@@ -44,6 +44,7 @@
   public:    
     float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
     void error(char *str);
+    void serialPrint(char *str);
     float constrainFloat(float x, float min_x, float max_x); 
     byte percToPwm(float perc); 
 }; // end of the class
