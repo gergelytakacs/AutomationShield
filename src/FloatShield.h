@@ -40,6 +40,7 @@ public:
     void actuatorWrite(float);                                   // Write actuator - function takes input 0.0-100.0 and sets fan speed accordingly
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
     float sensorRead(void);                                      // Sensor read - returns the altitude of the ball in tube in percentual range 0.0(ball is on the fan)-100.0(ball is on the tube ceiling)
+    float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in milimetres
     float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in milimetres
     bool returnCalibrated(void);                                 // Returns calibration status, true if sensor was calibrated
     float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
@@ -55,8 +56,9 @@ private:
     bool _wasCalibrated;                 // Variable for storing calibration status
     float _referenceValue;               // Variable for storing potentiometer runner position as analog value 0.0-1023.0
     float _referencePercent;             // Variable for storing potentiometer runner position as percentual range 0.0-100.0
-    float _sensorValue;                  // Variable for storing measured distance by sensor in milimetres
+    float _sensorValue;                  // Variable for storing measured distance by sensor in milimetres                  
     float _sensorPercent;                // Variable for percentual altitude of the ball in the tube 0.0-100.0
+    float _ballAltitude;                 // Variable for altitude of the ball in tube in milimetres
 };
 
 extern FloatClass FloatShield;           // Creation of external FloatClass object

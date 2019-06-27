@@ -89,7 +89,7 @@ void FloatClass::actuatorWrite(float aPercent) {                                
 }
 
 float FloatClass::referenceRead(void) {                                                        // Reference read
-    _referenceValue = (float)analogRead(FLOAT_RPIN);                                        // Reads the actual analog value of potentiometer runner
+    _referenceValue = (float)analogRead(FLOAT_RPIN);                                           // Reads the actual analog value of potentiometer runner
     _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
     return _referencePercent;                                                                  // Returns the percentual position of potentiometer runner
 }
@@ -99,6 +99,12 @@ float FloatClass::sensorRead(void) {                                            
     _sensorPercent = AutomationShield.mapFloat(readDistance, _maxDistance, _minDistance, 0.0, 100.0);        // Remapps the distance based on minimal and maximal distances from calibration to the percentual altitude of the ball
     _sensorPercent = AutomationShield.constrainFloat(_sensorPercent, 0.0, 100.0);                            // Constrains the percentual altitude - safety precaution
     return _sensorPercent;                                                                                   // Returns the percentual altitude of the ball in the tube
+}
+
+float FloatClass::sensorReadAltitude(void) {                  // Sensor read altitude
+    _ballAltitude = sensorReadDistance();                     // Reads the current distance of the ball from sensor
+    _ballAltitude = _maxDistance - _ballAltitude;             // Inverts the reading so the bottom position is 0
+    return _ballAltitude;                                     // Returns the current altitude of the ball in milimetres
 }
 
 float FloatClass::sensorReadDistance(void) {                // Sensor read distance
