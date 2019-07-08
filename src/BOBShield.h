@@ -9,7 +9,7 @@
 
 #define BOB_RPIN 0
 #define BOB_UPIN 9
-#define MIN_CALIBRATED_DEFAULT 3
+#define MIN_CALIBRATED_DEFAULT 7
 
 
 class BOBClass {
@@ -28,15 +28,15 @@ class BOBClass {
       float _referenceRead;
       float _referenceValue;
       uint8_t range;
-      float _servoValue;
-      int pos,posCal, position, posperc;
-      int maxRange, minRange, ballPos;
+      float _servoValue,pos,posCal, position,ballPos;
+      int  posperc;
+      float maxRange, minRange;
       byte calibrated = 0;
-      int minCalibrated = 1488;			                // Actual minimum value
-      int maxCalibrated = 14; 		                	// Actual maximum value
-      int minimum ;
-      int maximum ;
-      int deg;
+      float minCalibrated = 500;			                // Actual minimum value
+      float maxCalibrated = 10; 		                	// Actual maximum value
+      float minimum ;
+      float maximum ;
+      float deg;
   };
 #endif
 
@@ -77,6 +77,7 @@ void BOBClass::calibration()
 		if (calmeasure < minCalibrated){ 			// If lower than already
 			minCalibrated = calmeasure; 			// Save new minimum
 		}
+			Serial.println(minCalibrated);
 		delay(10);                                  // Measure for one second
 	}
 
@@ -87,6 +88,7 @@ void BOBClass::calibration()
 		if (calmeasure > maxCalibrated){ 			// If lower than already
 			maxCalibrated = calmeasure; 			// Save new maximum
 		}
+	
 		delay(10);                                  // Measure for one second
 	}
 	
@@ -121,12 +123,12 @@ else if (deg>30) {
   deg=30;
 }
 
-degree = map(deg,-30,30,70,130);                   // maping inputs defined by user in degrees (-30 / 30) into values understandeable for servo (70 / 130)
+degree = map(deg,30,-30,65,125);                   // maping inputs defined by user in degrees (-30 / 30) into values understandeable for servo (70 / 130)
 
 	myservo.write(degree);                         // write values for servo
 }
 
-//values from sensor in %
+//values from sensor in % - for possible future use
 float BOBClass::sensorReadPerc(){
  range = sens.readRange();                          
 
@@ -138,18 +140,22 @@ float BOBClass::sensorReadPerc(){
  return posperc;               //returns the ball distance in 0 - 100 %
  }
 
-
-float BOBClass::sensorRead(){                       // returns the corected value of sensor
-	#if calibrated == 1                            // if calibration function was already processed (calibrated flag ==1)
+// returns the corected value of sensor
+float BOBClass::sensorRead(){                       
+	if (calibrated == 1)   {                         // if calibration function was already processed (calibrated flag ==1)
  pos = sens.readRange();
  ballPos  = pos - minCalibrated;                   //set actual position to position - calibrated minimum
-
-   #elif   calibrated ==0                         // if calibration function was not processed (calibrated flag ==0)
+}
+   else if   (calibrated ==0) {                        // if calibration function was not processed (calibrated flag ==0)
   pos = sens.readRange();     
  ballPos  = pos - MIN_CALIBRATED_DEFAULT;         //set actual position to position - predefined value
-
- #endif
+}  
+  # if ECHO_TO_SERIAL 
+Serial.print("pos :"); Serial.print(pos);Serial.print(" ");
+ Serial.print("ballPos :"); Serial.print(ballPos);Serial.print(" ");
   return ballPos;
+    # endif  
+
 }
 
 
