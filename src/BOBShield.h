@@ -2,7 +2,6 @@
 #define BOBSHIELD_H_
 
 #include <Wire.h>
-#include <Arduino.h>
 #include <Servo.h>
 #include "lib/Adafruit_VL6180X/Adafruit_VL6180X.h"
 #include "AutomationShield.h"

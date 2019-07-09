@@ -16,7 +16,6 @@
 #ifndef TUGSHIELD_H_			// Include guard
 #define TUGSHIELD_H_			
 
-#include "Arduino.h"			// Required Arduino API in libraries
 #include "AutomationShield.h"
 #include "Servo.h"
 

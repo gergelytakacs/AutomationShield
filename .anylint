@@ -1,1 +1,1 @@
-ignore ["AutomationShield.cpp"]
+ignore ["AutomationShield.h"]
