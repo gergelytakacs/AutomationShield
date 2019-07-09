@@ -1,1 +1,3 @@
-ignore ["AutomationShield.h"]
+{
+    "ignore": ["Arduino.h"]
+}
