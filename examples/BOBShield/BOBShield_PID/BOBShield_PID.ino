@@ -35,9 +35,9 @@ int i = i;              // Section counter
 float y = 0.0;            // Output
 float u = 0.0;            // Input          
 
-#define KP 2                  // PID Kp
-#define TI 100000                  // PID Ti
-#define TD 0.001                    // PID Td
+#define KP 0.45                 // PID Kp
+#define TI 1000                  // PID Ti
+#define TD 0.3                   // PID Td
 
 void setup() {
   Serial.begin(115200);               // Initialize serial
