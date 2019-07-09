@@ -1,3 +1,6 @@
 [submodule "src/lib/Adafruit_VL6180X"]
 	path = src/lib/Adafruit_VL6180X
 	url = https://github.com/adafruit/Adafruit_VL6180X
+[submodule "src/lib/vl53l0x-arduino"]
+	path = src/lib/vl53l0x-arduino
+	url = https://github.com/PeterChmurciak/vl53l0x-arduino
