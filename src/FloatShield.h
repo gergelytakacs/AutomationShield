@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak. 
-  Last update: 25.06.2019.
+  Last update: 9.7.2019.
 */
 
 #ifndef FLOATSHIELD_H_             // Include guard
@@ -20,9 +20,11 @@
 
 #include "AutomationShield.h"      // Include the main library
 
-#ifndef ADAFRUIT_VL53L0X_H                                          // If library for Adafruit distance sensor is not already included
-#if __has_include("lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h")    // If said library is present in main library file
-#include "lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h"              // Include it from there
+#include <Wire.h>                  // Include the I2C protocol library
+ 
+#ifndef VL53L0X_h                                           // If library for distance sensor is not already included
+#if __has_include("lib/vl53l0x-arduino/VL53L0X.h")          // If said library is present in main library file
+#include "lib/vl53l0x-arduino/VL53L0X.h"                    // Include it from there
 #endif
 #endif
 
@@ -30,11 +32,11 @@
 #define FLOAT_UPIN 3              // Fan (Actuator)
 #define FLOAT_RPIN A0             // Potentiometer runner (Reference)
 
-#ifdef ADAFRUIT_VL53L0X_H         // If library for Adafruit distance sensor was sucessfully included
+#ifdef VL53L0X_h                  // If library for distance sensor was sucessfully included
 
 class FloatClass {                                               // Class for FloatShield device
 public:
-    Adafruit_VL53L0X distanceSensor = Adafruit_VL53L0X();        // Create object for adafruit distance sensor
+    VL53L0X distanceSensor;                                      // Create object for distance sensor
     void begin(void);                                            // Board initialisation - initialisation of distance sensor, pin modes and variables
     void calibrate(void);                                        // Board calibration - finding out the minimal and maximal values measured by distance sensor
     void actuatorWrite(float);                                   // Write actuator - function takes input 0.0-100.0 and sets fan speed accordingly
@@ -45,11 +47,9 @@ public:
     bool returnCalibrated(void);                                 // Returns calibration status, true if sensor was calibrated
     float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
     float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
-    float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
-    float returnMinPower(void);                                  // Returns percentual value of minimal input to the actuator (fan) for the ball to be able to almost levitate
+    float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres    
 
-private:
-    float _minPower;                     // Variable for storing minimal power input to the fan for the ball to be at at the verge of levitation
+private:    
     float _minDistance;                  // Variable for storing minimal distance measured by sensor in milimetres
     float _maxDistance;                  // Variable for storing maximal distance measured by sensor in milimetres
     float _range;                        // Variable for storing range of measured distances by sensor in milimetres
