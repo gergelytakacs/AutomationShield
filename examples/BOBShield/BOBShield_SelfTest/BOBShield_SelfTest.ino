@@ -1,5 +1,26 @@
-#include <BOBShield.h>
-#include <SamplingServo.h>
+/*
+  BoBShield calibration experiment
+
+  This example initializes the PID control
+  subsystems from the AutomationShield library, wich
+  is included in BOBShield library and starts a
+  predetermined reference trajectory for the heating block
+  temperature.
+
+  Upload the code to your board, then open the Serial
+  Plotter function in your Arduino IDE. You may change the
+  reference trajectory in the code.
+
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács.
+  Last update: 19.11.2018.
+*/
+#include <BOBShield.h>                // Includes all the neccesary libraries nad hardware components
+#include <SamplingServo.h>            // Include special Sampling running on timmer 2
 
   void wait() {
   delay(5000);
@@ -30,7 +51,7 @@ void setup() {
   BOBShield.actuatorWrite(-30);         // Tilt beam to the minimum so the ball falls towards the sensor
   wait();                // Wait for things to settle
   int y = vl.readRange();
-  if (y >= 70 && y <= 80) {
+  if (y >= 80 && y <= 100) {
     Serial.println(" Ok.");
   }
   else {
@@ -44,7 +65,7 @@ void setup() {
   BOBShield.actuatorWrite(30);         // Tilt beam to the minimum so the ball falls towards the sensor
   wait();                // Wait for things to settle
   int a = vl.readRange();
-  if (a >= 0 && a <= 10) {
+  if (a >= -5 && a <= 10) {
     Serial.println(" Ok.");
   }
   else {
