@@ -17,6 +17,7 @@
 #ifndef HEATSHIELD_H_			// Include guard
 #define HEATSHIELD_H_			
 
+#include "Arduino.h"			// Required Arduino API in libraries
 #include "AutomationShield.h"           // Required for sampling, PID, internal functions etc.
 
 

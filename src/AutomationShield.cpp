@@ -15,6 +15,7 @@
 */
 
 #include "AutomationShield.h"
+#include "Arduino.h"
 
 float AutomationShieldClass::mapFloat(float x, float in_min, float in_max, float out_min, float out_max) // same as Arudino map() but with floating point numbers
 {

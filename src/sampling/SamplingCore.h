@@ -32,6 +32,8 @@
 #ifndef SAMPLING_H_
 #define SAMPLING_H_
 
+#include "Arduino.h"
+
 typedef void (*p_to_void_func)(); /*define a term p_to_void_func for pointer to function, which 
 								  has a return type void and has no input parameters*/
 namespace SamplingNoServo{
