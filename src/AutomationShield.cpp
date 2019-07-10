@@ -34,7 +34,7 @@ byte AutomationShieldClass::percToPwm(float perc){
 	return byte(percFloat);
 }
  
- void AutomationShieldClass::error(char *str) // Error handler function
+ void AutomationShieldClass::error(const char *str) // Error handler function
  {
  #if ECHO_TO_SERIAL                      // If Serial Echo is turned on in the DEFINE (by advanced user)
  Serial.print("\nError: ");
@@ -44,7 +44,7 @@ byte AutomationShieldClass::percToPwm(float perc){
  while (1);                              // Stop all activity in busy cycle, so user definitely knows what's wrong.
  }
 
- void AutomationShieldClass::serialPrint(char *str){   // Function for printing messages to serial monitor if its enabled
+ void AutomationShieldClass::serialPrint(const char *str){   // Function for printing messages to serial monitor if its enabled
  #if ECHO_TO_SERIAL                                    // If Serial Echo is turned on in the DEFINE (by advanced user)
  Serial.print(str);                                    // Print message to serial monitor
  #endif 
