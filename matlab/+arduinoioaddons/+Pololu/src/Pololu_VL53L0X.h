@@ -24,7 +24,6 @@
 
 // Sensor class definition, inheriting LibraryBase class properties
 class Pololu_VL53L0X : public LibraryBase {
-
 public:
     // Sensor object pointer
     VL53L0X *distanceSensor; 
@@ -71,8 +70,7 @@ public:
             delete distanceSensor;
             sendResponseMsg(cmdID, 0, 0);
             break;
-        }     
-        
+        }        
         }    // end of switch statement 
     }        // end of commandHandler method definition
 };           // end of class definition

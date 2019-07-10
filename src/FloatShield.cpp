@@ -91,8 +91,7 @@ float FloatClass::sensorReadAltitude(void) {                  // Sensor read alt
     return _ballAltitude;                                     // Returns the current altitude of the ball in milimetres
 }
 
-float FloatClass::sensorReadDistance(void) {                // Sensor read distance
-                          
+float FloatClass::sensorReadDistance(void) {                // Sensor read distance                          
     _sensorValue = (float)distanceSensor.readRangeContinuousMillimeters();      // Reads the distance between sensor and the ball in milimetres    
     return _sensorValue;                                                        // Returns the measured distance
 }
