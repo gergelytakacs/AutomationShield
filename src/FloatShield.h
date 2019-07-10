@@ -1,46 +1,65 @@
-#ifndef FLOATSHIELD_H_
+/*
+  API for the FloatShield didactic hardware.
+  
+  The file is a part of the application programmers interface for
+  the FloatShield didactic tool for control engineering and 
+  mechatronics education. The FloatShield implements an air-flow
+  levitation experiment on an Arduino shield.
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács and Peter Chmurčiak. 
+  Last update: 25.06.2019.
+*/
+
+#ifndef FLOATSHIELD_H_             // Include guard
 #define FLOATSHIELD_H_
 
-#include "Arduino.h"
-#include "AutomationShield.h"
+#include "AutomationShield.h"      // Include the main library
 
-#ifndef ADAFRUIT_VL53L0X_H 				// If library not installed somewhere
-#if __has_include("lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h")  // If library present from GIT
-	#include "lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h" // Include it from there
+#ifndef ADAFRUIT_VL53L0X_H                                          // If library for Adafruit distance sensor is not already included
+#if __has_include("lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h")    // If said library is present in main library file
+#include "lib/Adafruit_VL53L0X/src/Adafruit_VL53L0X.h"              // Include it from there
 #endif
-#endif	
+#endif
 
+// Defining pins used by the FloatShield board
+#define FLOAT_UPIN 3              // Fan (Actuator)
+#define FLOAT_RPIN A0             // Potentiometer runner (Reference)
 
-#define vent 3
-#define pot A0
+#ifdef ADAFRUIT_VL53L0X_H         // If library for Adafruit distance sensor was sucessfully included
 
-#ifdef ADAFRUIT_VL53L0X_H 				// If header present
+class FloatClass {                                               // Class for FloatShield device
+public:
+    Adafruit_VL53L0X distanceSensor = Adafruit_VL53L0X();        // Create object for adafruit distance sensor
+    void begin(void);                                            // Board initialisation - initialisation of distance sensor, pin modes and variables
+    void calibrate(void);                                        // Board calibration - finding out the minimal and maximal values measured by distance sensor
+    void actuatorWrite(float);                                   // Write actuator - function takes input 0.0-100.0 and sets fan speed accordingly
+    float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
+    float sensorRead(void);                                      // Sensor read - returns the altitude of the ball in tube in percentual range 0.0(ball is on the fan)-100.0(ball is on the tube ceiling)
+    float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in milimetres
+    bool returnCalibrated(void);                                 // Returns calibration status, true if sensor was calibrated
+    float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
+    float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
+    float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
+    float returnMinPower(void);                                  // Returns percentual value of minimal input to the actuator (fan) for the ball to be able to almost levitate
 
-class FloatShieldClass{
-  public:
-    Adafruit_VL53L0X lox = Adafruit_VL53L0X();
-    void initialize();                  // sets up the sensor - required to run in setup!
-    void debug();                       // prints out sensor debug data in monitor - must be called before initialize
-    int referencePercent();             // returns potenciometer value in percent
-    int positionPercent();              // returns position value in percent
-    void ventInPercent(int value);      // sets ventilator output to value in percent
-    float manualControl();              // returns potenciometer value in percent
-    int  positionMillimeter();          // returns position value in millimeters
-    void calibrate();                   // calibration
-  private:
-    uint8_t i2c_addr = 0x29;
-    boolean _debug = false;
-    int lastValue;
-    int value;
-    int ref;
-    int u;
-    int in;
-    int pos;
-    int minimum = 20;
-    int maximum = 350; 
- };
+private:
+    float _minPower;                     // Variable for storing minimal power input to the fan for the ball to be at at the verge of levitation
+    float _minDistance;                  // Variable for storing minimal distance measured by sensor in milimetres
+    float _maxDistance;                  // Variable for storing maximal distance measured by sensor in milimetres
+    float _range;                        // Variable for storing range of measured distances by sensor in milimetres
+    bool _wasCalibrated;                 // Variable for storing calibration status
+    float _referenceValue;               // Variable for storing potentiometer runner position as analog value 0.0-1023.0
+    float _referencePercent;             // Variable for storing potentiometer runner position as percentual range 0.0-100.0
+    float _sensorValue;                  // Variable for storing measured distance by sensor in milimetres
+    float _sensorPercent;                // Variable for percentual altitude of the ball in the tube 0.0-100.0
+};
 
-extern FloatShieldClass FloatShield;
+extern FloatClass FloatShield;           // Creation of external FloatClass object
 
-#endif	
-#endif	
+#endif
+#endif
