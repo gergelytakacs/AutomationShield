@@ -1,9 +1,4 @@
 language: c                                                             # Specify language, built in Arduino IDE anyways
-sudo: false
-#cache:
-#  directories:
-#    - ~/arduino_ide
-#    - ~/.arduino15/packages/
 
 before_install:                                                         # Tasks to perform before installing
                                                                         # Create virtual screen for Arduino IDE, since CLI needs it
@@ -11,17 +6,23 @@ before_install:                                                         # Tasks 
   - sleep 3                                                             # Wait for 3 seconds
   - export DISPLAY=:1.0
 
-# - if [ ! -f $HOME/arduino_ide/arduino ]; then echo -n "DOWNLOADING"; else echo -n "USING CACHED VERSION"; fi
   - wget http://downloads.arduino.cc/arduino-1.8.9-linux64.tar.xz       # Download Arduino IDE
   - tar xf arduino-1.8.9-linux64.tar.xz                                 # Uncompress Arduino IDE
   - sudo mv arduino-1.8.9 /usr/local/share/arduino                      # Move Arduino ide to the correct directory
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
   
+  # Arduino IDE adds a lot of noise caused by network traffic, trying to firewall it off
+  - sudo iptables -P INPUT DROP
+  - sudo iptables -P FORWARD DROP
+  - sudo iptables -P OUTPUT ACCEPT
+  - sudo iptables -A INPUT -i lo -j ACCEPT
+  - sudo iptables -A OUTPUT -o lo -j ACCEPT
+  - sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+  
   - arduino --pref "boardsmanager.additional.urls=https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" --save-prefs
   - arduino --install-boards arduino:samd                               # Install board support for SAMD21 (Zero)
   - arduino --install-boards arduino:sam                                # Install board support for SAM (Due)
   - arduino --install-boards adafruit:samd                              # Install board support for SAMD51 (Metro M4)
-
 
 install:                                                                # Actual installation of the AutomationShield repo
   - ln -s $PWD /usr/local/share/arduino/libraries/AutomationShield      # Install repository as a library
