@@ -37,10 +37,8 @@ script:
 
 ###### MATLAB ######
 
- - cd $PWD/matlab/builds
-
 #Constrain#
- - octave-cli testBuildsForCI.m
+ - octave-cli $PWD/matlab/builds/testBuildsForCI.m
 
 ###### Arduino IDE ######
 
