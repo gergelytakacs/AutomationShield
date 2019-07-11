@@ -121,7 +121,11 @@ script:
  - arduino --verify --board adafruit:samd:adafruit_metro_m4:speed=120 $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
  
 ###### MATLAB ######
- - octave-cli simpleTest.m
+
+ - cd $PWD/matlab/
+
+#Constrain#
+ - octave-cli constrain(1,0.5,10)
 
 notifications:
   email:
