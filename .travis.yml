@@ -37,9 +37,11 @@ script:
 
 ###### MATLAB ######
 
-#Constrain#
+#Setting paths#
  - octave-cli --eval "addpath('$PWD/matlab')"
- - octave-cli --eval "constrain(2,-1,1)"
+ 
+#Functions#
+ - octave-cli --eval "constrain(2,-1,1)" # Constrain
 
 ###### Arduino IDE ######
 
