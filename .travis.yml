@@ -1,4 +1,10 @@
 language: c                                                             # Specify language, built in Arduino IDE anyways
+group: travis_latest
+
+addons:
+  apt:
+    packages:
+    - octave
 
 before_install:                                                         # Tasks to perform before installing
                                                                         # Create virtual screen for Arduino IDE, since CLI needs it
@@ -28,6 +34,8 @@ install:                                                                # Actual
   - ln -s $PWD /usr/local/share/arduino/libraries/AutomationShield      # Install repository as a library
                                                                         # No library dependencies at this point
 script:
+
+###### Arduino IDE ######
 
 ### HeatShield ###
 #Uno#
@@ -111,6 +119,9 @@ script:
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 #Metro#
  - arduino --verify --board adafruit:samd:adafruit_metro_m4:speed=120 $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
+ 
+###### MATLAB ######
+ - octave-cli simpleTest.m
 
 notifications:
   email:
