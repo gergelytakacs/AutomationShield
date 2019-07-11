@@ -35,14 +35,15 @@ install:                                                                # Actual
                                                                         # No library dependencies at this point
 																		
 before_script:
-- octave-cli --eval "addpath('matlab');savepath"      #Adding and saving the subdirectory to Octave path
+- octave-cli --eval "addpath('matlab');savepath"                        #Adding and saving the subdirectory to Octave path
 
 script:
 
 ###### MATLAB ######
 
 #Functions#
- - octave-cli --eval "constrain(2,-1,1)" # Constrain
+ - octave-cli --eval "constrain(2,-1,1)"                                # Constrain
+ - octave-cli --eval "map(0.5,0,1,0,100)"                               # Map
 
 ###### Arduino IDE ######
 
