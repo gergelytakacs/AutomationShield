@@ -37,6 +37,7 @@ script:
 
 ###### MATLAB ######
 
+ - cd $PWD/matlab/builds/
 #Constrain#
  - octave-cli $PWD/matlab/builds/testBuildsForCI.m
 
