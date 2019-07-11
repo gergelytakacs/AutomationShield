@@ -33,13 +33,14 @@ before_install:                                                         # Tasks 
 install:                                                                # Actual installation of the AutomationShield repo
   - ln -s $PWD /usr/local/share/arduino/libraries/AutomationShield      # Install repository as a library
                                                                         # No library dependencies at this point
+																		
+before_script:
+- octave-cli --eval "addpath('matlab');savepath"      #Adding and saving the subdirectory to Octave path
+
 script:
 
 ###### MATLAB ######
 
-#Setting paths#
- - octave-cli --eval "addpath('$PWD/matlab')"
- 
 #Functions#
  - octave-cli --eval "constrain(2,-1,1)" # Constrain
 
