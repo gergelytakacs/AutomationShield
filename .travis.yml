@@ -35,6 +35,13 @@ install:                                                                # Actual
                                                                         # No library dependencies at this point
 script:
 
+###### MATLAB ######
+
+ - cd $PWD/matlab/builds
+
+#Constrain#
+ - octave-cli testBuildsForCI.m
+
 ###### Arduino IDE ######
 
 ### HeatShield ###
@@ -119,13 +126,6 @@ script:
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
 #Metro#
  - arduino --verify --board adafruit:samd:adafruit_metro_m4:speed=120 $PWD/examples/Sampling/Sampling_Test/Sampling_Test.ino
- 
-###### MATLAB ######
-
- - cd $PWD/matlab/
-
-#Constrain#
- - octave-cli constrain(1,0.5,10)
 
 notifications:
   email:
