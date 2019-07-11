@@ -14,7 +14,7 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Peter Chmurciak.
-%   Last update: 10.7.2019.
+%   Last update: 11.7.2019.
 
 clc; clear; close all;            % Clears command window, variables and opened figures
 
@@ -26,9 +26,9 @@ PID = PID;                        % Create PID object from PID class
 Ts = 0.025;                       % Sampling period in seconds
 k = 1;                            % Algorithm step counter
 nextStep = 0;                     % Algorithm step flag
-realTimeViolation = 0;            % Real-time violation flag
+samplingViolation = 0;            % Sampling violation flag
 
-R = [70, 25, 5, 60, 30, 70, 50, 75, 80, 45];  % Reference trajectory
+R = [65, 50, 30, 45, 65, 70, 60, 40, 20, 35]; % Reference trajectory
 T = 1000;                                     % Section length
 i = 0;                                        % Section counter
 
@@ -42,7 +42,7 @@ while (1)                                     % Lift the ball off the ground
     y = FloatShield.sensorRead();             % Read ball position
     u = PID.compute(r-y, 30, 100, 30, 100);   % Compute PID response
     FloatShield.actuatorWrite(u);             % Actuate
-    if (y >= r / 2)                           % If the ball is getting close to reference
+    if (y >= r * 2/3)                         % If the ball is getting close to reference
         break                                 % Continue program
     end
     pause(0.05)                               % Wait 50 miliseconds before repeating
@@ -69,8 +69,8 @@ while (1)                                    % Infinite loop
     
     if (toc >= Ts * k)                            % If its time for next sample
         if (toc >= Ts * (k + 1))                  % Check if steps overlap
-            disp('Real-time sampling violation.')
-            realTimeViolation = 1
+            disp('Sampling violation has occured.')
+            samplingViolation = 1
             FloatShield.actuatorWrite(0)             
             break                                 % Stop program if they do overlap
         end

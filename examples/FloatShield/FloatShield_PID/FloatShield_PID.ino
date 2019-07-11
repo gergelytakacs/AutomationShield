@@ -16,7 +16,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 10.7.2019.
+  Last update: 11.7.2019.
 */
 
 #include <FloatShield.h>              // Include main library  
@@ -30,11 +30,11 @@ bool nextStep = false;                // Flag for step function
 bool realTimeViolation = false;       // Flag for real-time sampling violation
 
 float r = 0.0;                                                    // Reference (Wanted ball altitude)
-float R[]= {70.0,25.0,5.0,60.0,30.0,70.0,50.0,75.0,80.0,45.0};    // Reference trajectory
+float R[]= {65.0,50.0,30.0,45.0,65.0,70.0,60.0,40.0,20.0,35.0};   // Reference trajectory
 float y = 0.0;                                                    // Output (Current ball altitude)
 float u = 0.0;                                                    // Input (Fan power)
 
-int T = 800;              // Section length
+int T = 1000;             // Section length
 int i = 0;                // Section counter
 
 #define KP 0.25           // PID Kp constant
@@ -63,7 +63,7 @@ void setup() {                         // Setup - runs only once
         y = FloatShield.sensorRead();           // Read sensor
         u = PIDAbs.compute(r-y,30,100,30,100);  // PID
         FloatShield.actuatorWrite(u);           // Actuate
-        if(y >= r/2) {                          // If the ball is getting close to reference
+        if(y >= r*2/3) {                          // If the ball is getting close to reference
             break;                              // Continue program
         }
         delay(50);                              // Wait 50 miliseconds before repeating
