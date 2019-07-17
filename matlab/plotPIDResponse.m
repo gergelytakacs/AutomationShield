@@ -1,6 +1,9 @@
 %   AutomationShield function for plotting system PID response.
 %
-%   Works with data saved in .mat file in format of matrix with three columns - [r y u].
+%   Works with data saved in .mat file in format of matrix with three
+%   columns - [r, y, u] - [reference, output, input] in this order.
+%   Alternatively can be used with .txt file where data are stored in
+%   the same three column format.
 %
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
@@ -8,18 +11,18 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Peter Chmurciak.
-%   Last update: 11.7.2019.
+%   Last update: 17.7.2019.
 
 function plotPIDResponse(aFile, aFig)            % Function definition
-data = load(aFile);                              % Loads data to variable
+data = load(aFile);                              % Loads data to a variable
 [fPath, fName, fExt] = fileparts(aFile);         % Analyzes file properties
-switch lower(fExt)                               % Decides based on file type             
+switch lower(fExt)                               % Decides based on file type
     case '.mat'                                  % If its .mat file
-        matObj = matfile(aFile);
-        details = whos(matObj);
-        r = data.(details.name)(:, 1);           % Separates each column
-        y = data.(details.name)(:, 2);
-        u = data.(details.name)(:, 3);
+        fileObject = matfile(aFile);
+        fileDetails = whos(fileObject);
+        r = data.(fileDetails.name)(:, 1);       % Separates each column
+        y = data.(fileDetails.name)(:, 2);
+        u = data.(fileDetails.name)(:, 3);
     case '.txt'                                  % If its .txt file
         r = data(:, 1);                          % Separates each column
         y = data(:, 2);
