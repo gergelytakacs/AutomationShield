@@ -24,8 +24,8 @@ classdef FloatShield < handle             % FloatShield class definition
     properties(Access = private)          % Private class variables
         FLOAT_UPIN = 'D3';                % Fan (Actuator) pin
         FLOAT_RPIN = 'A0';                % Potentiometer (Reference) pin
-        minDistance = 52;                 % Minimal distance measured by sensor - approximate value
-        maxDistance = 371;                % Maximal distance measured by sensor - approximate value
+        minDistance = 17;                 % Minimal distance measured by sensor - approximate value
+        maxDistance = 341;                % Maximal distance measured by sensor - approximate value
     end
 
     methods(Access = public)                                                            % Public class functions

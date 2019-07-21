@@ -27,8 +27,8 @@ void FloatClass::begin(void) {                                        // Board i
     }
     distanceSensor.setMeasurementTimingBudget(20000);                 // Setting high-speed mode for laser sensor
     distanceSensor.startContinuous();                                 // Setting continuous mode for laser sensor
-    _minDistance = 52.0;                                              // Initializing min,max variables by approximate values so the functions can be used even without calibration but with lower precision
-    _maxDistance = 371.0;
+    _minDistance = 17.0;                                              // Initializing min,max variables by approximate values so the functions can be used even without calibration but with lower precision
+    _maxDistance = 341.0;
     _range = _maxDistance - _minDistance;    
     _wasCalibrated = false;
     AutomationShield.serialPrint(" successful.\n");
