@@ -3,7 +3,7 @@
 %   Works with data saved in .mat file in format of matrix with three
 %   columns - [r, y, u] - [reference, output, input] in this order.
 %   Alternatively can be used with .txt file where data are stored in
-%   the same three column format.
+%   the same three column format, or directly on matrix variable.
 %
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
@@ -11,9 +11,10 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Peter Chmurciak.
-%   Last update: 17.7.2019.
+%   Last update: 22.7.2019.
 
 function plotPIDResponse(aFile, aFig)            % Function definition
+if isa(aFile,'char')                             % If input is filename
 data = load(aFile);                              % Loads data to a variable
 [fPath, fName, fExt] = fileparts(aFile);         % Analyzes file properties
 switch lower(fExt)                               % Decides based on file type
@@ -29,6 +30,12 @@ switch lower(fExt)                               % Decides based on file type
         u = data(:, 3);
     otherwise                                    % If its not .mat or .txt file
         error('Unexpected file extension: %s', fExt);
+end
+elseif isa(aFile,'double')                       % If input is variable
+        data = aFile;                            % Loads data to a variable
+        r = data(:, 1);                          % Separates each column
+        y = data(:, 2);
+        u = data(:, 3);
 end
 k = 1:length(r);                                 % Vector of sample indexes
 
