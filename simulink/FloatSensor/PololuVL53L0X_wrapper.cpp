@@ -32,7 +32,7 @@ extern "C" void PololuVL53L0X_Start_wrapper(void) {
     Wire.begin();
     sensor = new VL53L0X();
     sensor->init();
-    sensor->setMeasurementTimingBudget(200000);
+    sensor->setMeasurementTimingBudget(20000);
     sensor->startContinuous();
 #endif
 }
