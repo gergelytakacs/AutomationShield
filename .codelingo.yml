@@ -1,0 +1,4 @@
+# codelingo.yaml file
+
+tenets:
+ - import: codelingo/code-review-comments/camel-case-constants
