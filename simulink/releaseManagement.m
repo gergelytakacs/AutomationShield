@@ -33,7 +33,9 @@ disp('=======================')
 disp('')
 
 if all(strcmp(versions(:),versions{1}))
-    disp('All library modules and examples are in the same version.')
+    disp('All library modules and examples are saved in the same Simulink version.')
+else
+    disp('Warning! Not all modules and examples are saved in the same Simulink version!')
 end
 
 
