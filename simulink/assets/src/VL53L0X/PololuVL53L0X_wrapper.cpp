@@ -19,8 +19,8 @@
 #endif
 
 #ifndef MATLAB_MEX_FILE
-#include "utility\twi.c"
-#include "Wire.cpp"
+#include "..\twi.c"
+#include "..\Wire.cpp"
 #include "VL53L0X.cpp"
 VL53L0X *sensor;
 #endif

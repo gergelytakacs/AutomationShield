@@ -4,7 +4,7 @@
 // VL53L0X datasheet.
 
 #include "VL53L0X.h"
-#include "Wire.h"
+#include "..\Wire.h"
 
 // Defines /////////////////////////////////////////////////////////////////////
 
