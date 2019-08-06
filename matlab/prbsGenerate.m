@@ -18,12 +18,29 @@
 %   Last update on:  6.8.2019.
 
 function prbsGenerate(varName,N,minu,maxu,B);
-band = [0, B];                % Frequency content
-levels = [minu maxu];         % Signal levels
-prbs = idinput(N,'prbs',band,levels); 
 
-plot(prbs)                    % Plot signal
-xlabel('Samples (-)')
-ylabel('Amplitude (-)')
-title('PRBS Signal')
-vectorToC(prbs,varName,'int'); % Store to C
+switch nargin                                % Handling argument numbers
+        case 2                               % If binary levels not defined,
+            minu=-1;                         % use -1,+1
+            maxu=1;                          % and
+            B=1;                             % assume unit band.
+        case 4                               % If band not defined
+            B=1;                             % assume unit band.
+        case 5
+                                             % default case.
+        otherwise
+            error('Check your arguments: variable name, length, upper limit, lower limit and unit band portion.')
+end
+    
+band = [0, B];                               % Frequency content
+levels = [minu maxu];                        % Signal levels
+warning('off', 'Ident:dataprocess:idinput7') % Do not warn that only a portion is used
+prbs = idinput(N,'prbs',band,levels);        % Generate PRBS
+
+stairs(prbs)                                 % Plot signal
+axis([0,N,1.1*minu,1.1*maxu])
+xlabel('Samples (-)')                        % X-label                   
+ylabel('Amplitude (-)')                      % Y-label
+title('PRBS Signal')                         % Title
+
+vectorToC(prbs,varName,'int');               % Store to C
