@@ -16,6 +16,6 @@
 N=7200;                      % Length (samples)
 minu=-1;                     % Minimum input
 maxu=1;                      % Maximum input
-B=1/25;                      % Upper passband (Unit sample / slow-down)
+B=1/10;                      % Upper passband (Unit sample / slow-down)
 
 prbsGenerate('U',N,minu,maxu,B)  % Generate header "PRBS.h".
