@@ -88,6 +88,7 @@ float FloatClass::sensorRead(void) {                                            
 float FloatClass::sensorReadAltitude(void) {                  // Sensor read altitude
     _ballAltitude = sensorReadDistance();                     // Reads the current distance of the ball from sensor
     _ballAltitude = _maxDistance - _ballAltitude;             // Inverts the reading so the bottom position is 0
+    _ballAltitude = constrain(_ballAltitude, 0, _maxDistance);// Prevents the reading to go under 0
     return _ballAltitude;                                     // Returns the current altitude of the ball in milimetres
 }
 
