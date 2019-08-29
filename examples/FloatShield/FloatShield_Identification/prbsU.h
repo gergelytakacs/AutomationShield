@@ -3,12 +3,12 @@
 // Visit www.automationshield.com for more information.
 // ========================================================
 
-#ifndef U_H
-#define U_H
+#ifndef prbsU_H
+#define prbsU_H
 
 #include <avr/pgmspace.h>
-#define U_length 7200
-const PROGMEM int U[U_length]={-1,
+#define prbsU_length 7200
+const PROGMEM int prbsU[prbsU_length]={-1,
  -1,
  -1,
  -1,
