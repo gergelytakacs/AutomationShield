@@ -77,7 +77,7 @@ stairs(aprbs)                                 % Plot signal
 axis([0, N, minu - 0.1 * range, maxu + 0.1 * range])
 xlabel('Samples (-)')                         % X-label
 ylabel('Amplitude (-)')                       % Y-label
-title('PRBS Signal')                          % Title
+title('APRBS Signal')                         % Title
 
 vectorToC(aprbs, varName, 'float');           % Store to C
 end

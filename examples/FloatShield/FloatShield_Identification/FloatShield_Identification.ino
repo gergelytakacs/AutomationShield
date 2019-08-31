@@ -41,8 +41,8 @@ float y = 0.0;                        // Output (Current ball altitude)
 float u = 0.0;                        // Input (Fan power)
 
 float stabilisedPower;                // Variable for storing stabilised value of power [%]
-float stabilisationAltitude = 150;     // Altitude where the ball should be stabilised (range 0-320mm)
-float powerSpan = 2.5;                // Span +/- from stabilised value of power [%]
+float stabilisationAltitude = 60;     // Altitude where the ball should be stabilised (range 0-320mm)
+float powerSpan = 1.5;                // Span +/- from stabilised value of power [%]
 
 void setup() {                         // Setup - runs only once
     Serial.begin(250000);              // Begin serial communication
@@ -63,7 +63,7 @@ void setup() {                         // Setup - runs only once
         y = FloatShield.sensorReadAltitude();                                // Read sensor altitude
         u = PIDAbs.compute(stabilisationAltitude-y,30,100,30,100);           // PID
         FloatShield.actuatorWrite(u);                                        // Actuate
-        if(y >= stabilisationAltitude-5 && y <= stabilisationAltitude+5) {   // If the ball is near the wanted altitude
+        if(y >= stabilisationAltitude-2.5 && y <= stabilisationAltitude+2.5) {   // If the ball is near the wanted altitude
             stabilisationCounter++;                                          // Increment counter
             if (stabilisationCounter==100) {                                 // If the ball has been moving around wanted position for a while
                 stabilisedPower=u;                                           // Save value of input (u) at stabilised position
