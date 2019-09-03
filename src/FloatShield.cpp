@@ -27,8 +27,8 @@ void FloatClass::begin(void) {                                        // Board i
     }
     distanceSensor.setMeasurementTimingBudget(20000);                 // Setting high-speed mode for laser sensor
     distanceSensor.startContinuous();                                 // Setting continuous mode for laser sensor
-    _minDistance = 52.0;                                              // Initializing min,max variables by approximate values so the functions can be used even without calibration but with lower precision
-    _maxDistance = 371.0;
+    _minDistance = 17.0;                                              // Initializing min,max variables by approximate values so the functions can be used even without calibration but with lower precision
+    _maxDistance = 341.0;
     _range = _maxDistance - _minDistance;    
     _wasCalibrated = false;
     AutomationShield.serialPrint(" successful.\n");
@@ -88,6 +88,7 @@ float FloatClass::sensorRead(void) {                                            
 float FloatClass::sensorReadAltitude(void) {                  // Sensor read altitude
     _ballAltitude = sensorReadDistance();                     // Reads the current distance of the ball from sensor
     _ballAltitude = _maxDistance - _ballAltitude;             // Inverts the reading so the bottom position is 0
+    _ballAltitude = constrain(_ballAltitude, 0, _maxDistance);// Prevents the reading to go under 0
     return _ballAltitude;                                     // Returns the current altitude of the ball in milimetres
 }
 

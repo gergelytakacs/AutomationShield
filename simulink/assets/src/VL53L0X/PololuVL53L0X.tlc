@@ -1,0 +1,42 @@
+%%    Simulink implementation of Pololu arduino library for
+%%    VL53L0X Time-of-Flight distance sensor.
+%%
+%%    This code is part of the AutomationShield hardware and software
+%%    ecosystem. Visit http://www.automationshield.com for more
+%%    details. This code is licensed under a Creative Commons
+%%    Attribution-NonCommercial 4.0 International License.
+
+%%    Created by Peter Chmurciak using S-Function Builder.
+%%    Last update: 23.7.2019.
+
+%implements  PololuVL53L0X "C"
+
+%function BlockTypeSetup(block, system) Output
+  %openfile externs
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
+    extern void PololuVL53L0X_Start_wrapper(void);
+    extern void PololuVL53L0X_Outputs_wrapper(real_T *distance);
+    extern void PololuVL53L0X_Terminate_wrapper(void);
+    #ifdef __cplusplus
+    }
+    #endif
+  %closefile externs
+  %<LibCacheExtern(externs)>  
+%endfunction
+
+%function Start(block, system) Output
+   /* %<Type> Block: %<Name> */
+  PololuVL53L0X_Start_wrapper();
+%endfunction
+
+%function Outputs(block, system) Output  
+  %assign py0 = LibBlockOutputSignalAddr(0, "", "", 0)
+  PololuVL53L0X_Outputs_wrapper(%<py0>);  
+%endfunction
+
+%function Terminate(block, system) Output
+   /* %<Type> Block: %<Name> */
+  PololuVL53L0X_Terminate_wrapper();
+%endfunction

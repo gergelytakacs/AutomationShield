@@ -4,10 +4,10 @@ function blkStruct = slblocks
 		% and be cached in the browser repository
 
 		Browser.Library = 'AutomationShield';
-		% 'mylib' is the name of the library
+		% 'AutomationShield' is the name of the library
 
 		Browser.Name = 'AutomationShield';
-		% 'My Library' is the library name that appears 
-             % in the Library Browser
+		% 'AutomationShield' is the library name that appears 
+        % in the Library Browser
 
 		blkStruct.Browser = Browser; 
