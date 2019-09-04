@@ -57,12 +57,10 @@ for i = 1:length(prbs) - 1
             aprbs(i+1) = prbs(i+1) + r;
         end
     else
-        if seed < 2^31                        % Prevent seed overflow
-            seedIncrement = 10;
-        else
-            seedIncrement = -10;
+        if seed > 2^31                        % Prevent seed overflow
+            seed = randomSeed;        
         end
-        seed = seed + seedIncrement;          % When level is changed,
+        seed = seed + 10;                     % When level is changed,
         rng(seed);                            % increment seed value
         r = range * rand;
         if prbs(i+1) == maxu                  % If level is high
