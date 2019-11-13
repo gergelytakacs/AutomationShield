@@ -12,15 +12,31 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 9.7.2019.
+  Last update: 13.11.2019.
 */
 
 #include "FloatShield.h"         // Include header file
 
 #ifdef VL53L0X_h                 // If library for distance sensor was sucessfully included
 
+#if SHIELDRELEASE == 2
+ISR (TIMER2_COMPA_vect) {                  // Interrupt routine on compare match with register A on Timer2
+    FloatShield.hundredthsOfMillisecond++; // Increment custom time unit
+}
+
+void hallPeriodCounter(void) {                                    // Interrupt routine on external interrupt pin 1
+    FloatShield.hallPeriod = FloatShield.hundredthsOfMillisecond; // Save the period of hall signal in custom time units into variable
+    FloatShield.hundredthsOfMillisecond = 0;                      // Reset custom time unit counter
+}
+#endif
+
 void FloatClass::begin(void) {                                        // Board initialisation
     AutomationShield.serialPrint("FloatShield initialisation...");
+    #if SHIELDRELEASE == 1  
+      analogReference(DEFAULT);
+    #elif SHIELDRELEASE == 2
+      analogReference(EXTERNAL);
+    #endif
     Wire.begin();
     if (!distanceSensor.init()) {                                     // Setting up I2C distance sensor
         AutomationShield.error("FloatShield failed to initialise!");
@@ -29,13 +45,23 @@ void FloatClass::begin(void) {                                        // Board i
     distanceSensor.startContinuous();                                 // Setting continuous mode for laser sensor
     _minDistance = 17.0;                                              // Initializing min,max variables by approximate values so the functions can be used even without calibration but with lower precision
     _maxDistance = 341.0;
-    _range = _maxDistance - _minDistance;    
+    _range = _maxDistance - _minDistance;
     _wasCalibrated = false;
+#if SHIELDRELEASE == 2
+    TCCR2B = 0;                 // Clear Timer2 settings
+    TCNT2 = 0;                  // Clear Counter2 value
+    TCCR2A = bit(WGM21);        // Set Timer2 to CTC mode
+    OCR2A  = 19;                // Set register A compare value to 20 (relative to zero)
+    TIMSK2 = bit (OCIE2A);      // Enable Timer2 interrupt on compare match with register A
+    GTCCR = bit (PSRASY);       // Reset prescaler on Timer/Counter 2
+    TCCR2B = bit(CS21);         // Set prescaler to value 8 on Timer/Counter 2
+    attachInterrupt(digitalPinToInterrupt(FLOAT_YPIN), hallPeriodCounter, RISING); // Attach interrupt routine to external interrupt pin 1. Trigger at rising edge of signal
+#endif
     AutomationShield.serialPrint(" successful.\n");
 }
 
 void FloatClass::calibrate(void) {                         // Board calibration
-    AutomationShield.serialPrint("Calibration...");        
+    AutomationShield.serialPrint("Calibration...");
     float sum = 0.0;
     actuatorWrite(100.0);                                  // Sets fan speed to maximum
     while(sensorReadDistance() > 100.0) {                  // Waits until the ball is at least in the upper third of the tube
@@ -61,7 +87,6 @@ void FloatClass::calibrate(void) {                         // Board calibration
     _maxDistance = sum / 100.0;                            // Sets the maximal distance variable equal to the average reading
     _range = _maxDistance - _minDistance;                  // Sets the range variable equal to the difference of the maximal and minimal distance
 
-   
     _wasCalibrated = true;                                 // Sets the status of calibration to true
     AutomationShield.serialPrint(" sucessful.\n");
 }
@@ -92,8 +117,8 @@ float FloatClass::sensorReadAltitude(void) {                  // Sensor read alt
     return _ballAltitude;                                     // Returns the current altitude of the ball in milimetres
 }
 
-float FloatClass::sensorReadDistance(void) {                // Sensor read distance                          
-    _sensorValue = (float)distanceSensor.readRangeContinuousMillimeters();      // Reads the distance between sensor and the ball in milimetres    
+float FloatClass::sensorReadDistance(void) {                // Sensor read distance
+    _sensorValue = (float)distanceSensor.readRangeContinuousMillimeters();      // Reads the distance between sensor and the ball in milimetres
     return _sensorValue;                                                        // Returns the measured distance
 }
 
@@ -113,5 +138,13 @@ float FloatClass::returnRange(void) {                       // Returns range of 
     return _range;
 }
 
+#if SHIELDRELEASE == 2
+int FloatClass::sensorReadRPM(void) {
+    _rpm = 300000 / hallPeriod;                            // Calculate RPM out of current value of period of hall signal in custom time units
+    return _rpm;
+}
+#endif
+
 FloatClass FloatShield;                                     // Creation of FloatClass object
+
 #endif
