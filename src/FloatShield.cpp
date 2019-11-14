@@ -139,8 +139,8 @@ float FloatClass::returnRange(void) {                       // Returns range of 
 }
 
 #if SHIELDRELEASE == 2
-int FloatClass::sensorReadRPM(void) {
-    _rpm = 300000 / hallPeriod;                            // Calculate RPM out of current value of period of hall signal in custom time units
+int FloatClass::sensorReadRPM(void) {    
+    _rpm = 3000000 / hallPeriod;                            // Calculate RPM out of current value of period of hall signal in custom time units
     return _rpm;
 }
 #endif
