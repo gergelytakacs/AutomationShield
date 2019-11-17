@@ -153,8 +153,8 @@ float BOBClass::sensorRead(){
   # if ECHO_TO_SERIAL 
 Serial.print("pos :"); Serial.print(pos);Serial.print(" ");
  Serial.print("ballPos :"); Serial.print(ballPos);Serial.print(" ");
-  return ballPos;
     # endif
+return ballPos;
 }
 
 BOBClass BOBShield;
