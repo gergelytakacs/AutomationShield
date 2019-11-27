@@ -110,24 +110,24 @@ switch modelType
         gamma = k / tau;
 
         % Model structure
-        A = [-alpha, 0, 0; ...           % State-transition matrix
-                  0, 0, 1; ...
-               beta, 0, -beta];
-        B = [gamma; 0; 0];               % Input matrix
-        C = [0, 1, 0];                   % Output matrix
+        A = [0, 1, 0; ...                % State-transition matrix
+             0, -beta, beta; ...
+             0, 0, -alpha];
+        B = [0; gamma; 0];               % Input matrix
+        C = [1, 0, 0];                   % Output matrix
         D = 0;                           % No direct feed-through
         K = zeros(3, 1);                 % Disturbance
         K(2) = 25;                       % State noise
 
-        x0 = [v0; h0; dh0];              % Initial condition
+        x0 = [h0; dh0; v0];              % Initial condition
         disp('Initial guess:')
         sys = idss(A, B, C, D, K, x0, 0) % Construct state-space representation
 
         % Mark the free parameters
-        sys.Structure.A.Free = [1, 0, 0; ... % Free and fixed variables
-                                0, 0, 0; ...
-                                1, 0, 1];
-        sys.Structure.B.Free = [1; 0; 0];    % Free and fixed variables
+        sys.Structure.A.Free = [0, 0, 0; ... % Free and fixed variables
+                                0, 1, 1; ...
+                                0, 0, 1];
+        sys.Structure.B.Free = [0; 1; 0];    % Free and fixed variables
         sys.Structure.C.Free = false;        % No free parameters
 
         sys.DisturbanceModel = 'estimate';   % Estimate disturbance model
