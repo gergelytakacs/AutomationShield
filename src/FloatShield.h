@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 13.11.2019.
+  Last update: 27.11.2019.
 */
 
 #ifndef FLOATSHIELD_H_             // Include guard
@@ -32,13 +32,14 @@
 #endif
 
 // Defining pins used by the FloatShield board
-#if SHIELDRELEASE == 1              
+#if SHIELDRELEASE == 1
   #define FLOAT_UPIN 3              // Fan (Actuator)
   #define FLOAT_RPIN A0             // Potentiometer runner (Reference)
-#elif SHIELDRELEASE == 2            
+#elif SHIELDRELEASE == 2
   #define FLOAT_UPIN 5              // Fan (Actuator)
   #define FLOAT_RPIN A0             // Potentiometer runner (Reference)
   #define FLOAT_YPIN 3              // Hall sensor signal (Output)
+  #define FLOAT_RPM_CONST 68        // Represents the slope of RPM to PWM fan dependency graph 
 #endif
 
 #ifdef VL53L0X_h                    // If library for distance sensor was sucessfully included
@@ -57,12 +58,13 @@ public:
     float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
     float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
     float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
-  #if SHIELDRELEASE == 2                                         
+  #if SHIELDRELEASE == 2
+    void actuatorWriteRPM(float);                                // Write actuator RPM - function takes input 0.0-17000.0 (RPM) and sets fan speed accordingly
     int sensorReadRPM(void);                                     // Returns fan RPM calculated from hall sensor signal
-    volatile int hundredthsOfMillisecond;                        // Variable for storing custom time unit created using Timer2
-    volatile int hallPeriod;                                     // Period of hall signal in custom time units
+    volatile unsigned int hundredthsOfMillisecond;               // Variable for storing custom time unit created using Timer2
+    volatile unsigned int hallPeriod;                            // Period of hall signal in custom time units
   #endif
-  
+
 private:
     float _minDistance;                  // Variable for storing minimal distance measured by sensor in milimetres
     float _maxDistance;                  // Variable for storing maximal distance measured by sensor in milimetres
@@ -73,12 +75,12 @@ private:
     float _sensorValue;                  // Variable for storing measured distance by sensor in milimetres
     float _sensorPercent;                // Variable for percentual altitude of the ball in the tube 0.0-100.0
     float _ballAltitude;                 // Variable for altitude of the ball in tube in milimetres
-  #if SHIELDRELEASE == 2                 
+  #if SHIELDRELEASE == 2
     int _rpm;                            // Variable for storing current value of fan rotations per minute
   #endif
 };
 
 extern FloatClass FloatShield;           // Creation of external FloatClass object
 
-#endif                                   
+#endif
 #endif                                   // End of guard

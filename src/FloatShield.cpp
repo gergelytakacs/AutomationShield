@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 13.11.2019.
+  Last update: 27.11.2019.
 */
 
 #include "FloatShield.h"         // Include header file
@@ -117,7 +117,7 @@ float FloatClass::sensorReadAltitude(void) {                  // Sensor read alt
     return _ballAltitude;                                     // Returns the current altitude of the ball in milimetres
 }
 
-float FloatClass::sensorReadDistance(void) {                // Sensor read distance
+float FloatClass::sensorReadDistance(void) {                                    // Sensor read distance
     _sensorValue = (float)distanceSensor.readRangeContinuousMillimeters();      // Reads the distance between sensor and the ball in milimetres
     return _sensorValue;                                                        // Returns the measured distance
 }
@@ -139,6 +139,12 @@ float FloatClass::returnRange(void) {                       // Returns range of 
 }
 
 #if SHIELDRELEASE == 2
+void FloatClass::actuatorWriteRPM(float rpm){                                             // Write actuator RPM
+    float calculatedPWM = rpm / FLOAT_RPM_CONST;                                          // Takes the float type RPM value 0.0-17000.0 and recalculates it to range 0.0-255.0
+    calculatedPWM = AutomationShield.constrainFloat(calculatedPWM, 0.0, 255.0);           // Constrains the calculated value to fit the range 0.0-255.0 - safety precaution
+    analogWrite(FLOAT_UPIN, (int)calculatedPWM);                                          // Sets the fan RPM using the constrained value of PWM
+}
+
 int FloatClass::sensorReadRPM(void) {    
     _rpm = 3000000 / hallPeriod;                            // Calculate RPM out of current value of period of hall signal in custom time units
     return _rpm;
