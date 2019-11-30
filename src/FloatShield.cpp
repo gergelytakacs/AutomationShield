@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 27.11.2019.
+  Last update: 30.11.2019.
 */
 
 #include "FloatShield.h"         // Include header file
@@ -32,12 +32,19 @@ void hallPeriodCounter(void) {                                    // Interrupt r
 
 void FloatClass::begin(void) {                                        // Board initialisation
     AutomationShield.serialPrint("FloatShield initialisation...");
-    #if SHIELDRELEASE == 1  
-      analogReference(DEFAULT);
-    #elif SHIELDRELEASE == 2
-      analogReference(EXTERNAL);
+    #ifdef ARDUINO_ARCH_AVR                                           // For boards with AVR architecture
+      Wire.begin();                                                   // Use Wire object
+      #if SHIELDRELEASE == 1                                          // For shield release 1
+        analogReference(DEFAULT);                                     // Use default analog reference
+      #elif SHIELDRELEASE == 2                                        // For shield release 2
+        analogReference(EXTERNAL);                                    // Use external analog reference
+      #endif
+    #elif ARDUINO_ARCH_SAM                                            // For boards with SAM architecture
+      Wire1.begin();                                                  // Use Wire1 object
+    #elif ARDUINO_ARCH_SAMD                                           // For boards with SAMD architecture
+      Wire.begin();                                                   // Use Wire object
     #endif
-    Wire.begin();
+    distanceSensor.setTimeout(1000);                                  // Set sensor timeout to 1 second
     if (!distanceSensor.init()) {                                     // Setting up I2C distance sensor
         AutomationShield.error("FloatShield failed to initialise!");
     }

@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 27.11.2019.
+  Last update: 30.11.2019.
 */
 
 #ifndef FLOATSHIELD_H_             // Include guard
@@ -25,10 +25,8 @@
   #define SHIELDRELEASE 2          // Latest version by default
 #endif
 
-#ifndef VL53L0X_h                                           // If library for distance sensor is not already included
-  #if __has_include("lib/vl53l0x-arduino/VL53L0X.h")        // If said library is present in main library file
-    #include "lib/vl53l0x-arduino/VL53L0X.h"                // Include it from there
-  #endif
+#ifndef VL53L0X_h                                           // If library for distance sensor is not already included  
+    #include "lib/vl53l0x-arduino/VL53L0X.h"                // Include it from the library folder  
 #endif
 
 // Defining pins used by the FloatShield board
