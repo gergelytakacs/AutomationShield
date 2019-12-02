@@ -12,18 +12,24 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 30.11.2019.
+  Last update: 2.12.2019.
 */
 
 #include "FloatShield.h"         // Include header file
 
 #ifdef VL53L0X_h                 // If library for distance sensor was sucessfully included
 
-#if SHIELDRELEASE == 2
-ISR (TIMER2_COMPA_vect) {                  // Interrupt routine on compare match with register A on Timer2
-    FloatShield.hundredthsOfMillisecond++; // Increment custom time unit
-}
-
+#if SHIELDRELEASE == 2           // For shield version 2
+  #ifdef ARDUINO_ARCH_AVR        // For AVR architecture boards
+    ISR (TIMER2_COMPA_vect) {                   // Interrupt routine on compare match with register A on Timer2
+      FloatShield.hundredthsOfMillisecond++;    // Increment custom time unit
+    }
+  #elif ARDUINO_ARCH_SAM         // For SAM architecture boards
+    void TC6_Handler() {         // Interrupt routine on compare match with register RC on Timer2 channel 0
+      TC_GetStatus(TC2, 0);      // Read status of Timer2 channel 0 in order to allow the next interrupt
+      FloatShield.hundredthsOfMillisecond++;    // Increment custom time unit
+    }
+  #endif
 void hallPeriodCounter(void) {                                    // Interrupt routine on external interrupt pin 1
     FloatShield.hallPeriod = FloatShield.hundredthsOfMillisecond; // Save the period of hall signal in custom time units into variable
     FloatShield.hundredthsOfMillisecond = 0;                      // Reset custom time unit counter
@@ -32,18 +38,18 @@ void hallPeriodCounter(void) {                                    // Interrupt r
 
 void FloatClass::begin(void) {                                        // Board initialisation
     AutomationShield.serialPrint("FloatShield initialisation...");
-    #ifdef ARDUINO_ARCH_AVR                                           // For boards with AVR architecture
-      Wire.begin();                                                   // Use Wire object
-      #if SHIELDRELEASE == 1                                          // For shield release 1
-        analogReference(DEFAULT);                                     // Use default analog reference
-      #elif SHIELDRELEASE == 2                                        // For shield release 2
-        analogReference(EXTERNAL);                                    // Use external analog reference
-      #endif
-    #elif ARDUINO_ARCH_SAM                                            // For boards with SAM architecture
-      Wire1.begin();                                                  // Use Wire1 object
-    #elif ARDUINO_ARCH_SAMD                                           // For boards with SAMD architecture
-      Wire.begin();                                                   // Use Wire object
-    #endif
+#ifdef ARDUINO_ARCH_AVR                                               // For AVR architecture boards
+    Wire.begin();                                                     // Use Wire object
+  #if SHIELDRELEASE == 1                                              // For shield version 1
+    analogReference(DEFAULT);                                         // Use default analog reference
+  #elif SHIELDRELEASE == 2                                            // For shield version 2
+    analogReference(EXTERNAL);                                        // Use external analog reference
+  #endif
+#elif ARDUINO_ARCH_SAM                                                // For SAM architecture boards
+    Wire1.begin();                                                    // Use Wire1 object
+#elif ARDUINO_ARCH_SAMD                                               // For SAMD architecture boards
+    Wire.begin();                                                     // Use Wire object
+#endif
     distanceSensor.setTimeout(1000);                                  // Set sensor timeout to 1 second
     if (!distanceSensor.init()) {                                     // Setting up I2C distance sensor
         AutomationShield.error("FloatShield failed to initialise!");
@@ -54,7 +60,9 @@ void FloatClass::begin(void) {                                        // Board i
     _maxDistance = 341.0;
     _range = _maxDistance - _minDistance;
     _wasCalibrated = false;
-#if SHIELDRELEASE == 2
+    
+#if SHIELDRELEASE == 2          // For shield version 2                                           
+#ifdef ARDUINO_ARCH_AVR         // For AVR architecture boards
     TCCR2B = 0;                 // Clear Timer2 settings
     TCNT2 = 0;                  // Clear Counter2 value
     TCCR2A = bit(WGM21);        // Set Timer2 to CTC mode
@@ -62,6 +70,16 @@ void FloatClass::begin(void) {                                        // Board i
     TIMSK2 = bit (OCIE2A);      // Enable Timer2 interrupt on compare match with register A
     GTCCR = bit (PSRASY);       // Reset prescaler on Timer/Counter 2
     TCCR2B = bit(CS21);         // Set prescaler to value 8 on Timer/Counter 2
+#elif ARDUINO_ARCH_SAM                                                        // For SAM architecture boards
+    pmc_set_writeprotect(false);                                              // Turn off register write protection
+    pmc_enable_periph_clk(TC6_IRQn);                                          // Enable peripheral clock for Timer2 channel 0
+    TC_Configure(TC2, 0, TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK5);   // Configure Timer2 channel 0 to count up to value specified in RC register and to use slow clock
+    TC_SetRC(TC2, 0, 319);                                                    // Count up to value 320 (relative to zero)
+    TC_Start(TC2, 0);                                                         // Start Timer2 channel 0
+    TC2->TC_CHANNEL[0].TC_IER =  TC_IER_CPCS | TC_IER_CPAS;                   // Enable RC compare interrupt (enable register)
+    TC2->TC_CHANNEL[0].TC_IDR = ~(TC_IER_CPCS | TC_IER_CPAS);                 // Enable RC compare interrupt (disable register)
+    NVIC_EnableIRQ(TC6_IRQn);                                                 // Attach interrupt routine to compare interrupt
+#endif
     attachInterrupt(digitalPinToInterrupt(FLOAT_YPIN), hallPeriodCounter, RISING); // Attach interrupt routine to external interrupt pin 1. Trigger at rising edge of signal
 #endif
     AutomationShield.serialPrint(" successful.\n");
@@ -71,11 +89,11 @@ void FloatClass::calibrate(void) {                         // Board calibration
     AutomationShield.serialPrint("Calibration...");
     float sum = 0.0;
     actuatorWrite(100.0);                                  // Sets fan speed to maximum
-    while(sensorReadDistance() > 100.0) {                  // Waits until the ball is at least in the upper third of the tube
+    while (sensorReadDistance() > 100.0) {                 // Waits until the ball is at least in the upper third of the tube
         delay(100);                                        // (This is because of varying time it takes for the ball to travel the first half of the tube)
     }
     delay(1000);                                           // Waits unil the ball reaches top and somewhat stabilises itself
-    for(int i=0; i<100; i++) {                             // Measures 100 values with sampling 25 miliseconds and calculates the average reading from those values
+    for (int i = 0; i < 100; i++) {                        // Measures 100 values with sampling 25 miliseconds and calculates the average reading from those values
         sum += sensorReadDistance();                       // (Simply using minimal value would be inconsistent because of shape of the ball combined with its ability to move horizontally in the tube)
         delay(25);
     }
@@ -83,11 +101,11 @@ void FloatClass::calibrate(void) {                         // Board calibration
 
     sum = 0.0;
     actuatorWrite(0.0);                                    // Turns off the fan
-    while(sensorReadDistance() < 300.0) {                  // Waits until the ball is at least in the lower third of the tube
+    while (sensorReadDistance() < 300.0) {                 // Waits until the ball is at least in the lower third of the tube
         delay(100);                                        // (This is probably unecessary, because ball has no problem falling down, but for the sake of consistency)
     }
     delay(1000);
-    for(int i=0; i<100; i++) {                             // Measures 100 values with sampling 25 miliseconds and calculates the average reading from those values
+    for (int i = 0; i < 100; i++) {                        // Measures 100 values with sampling 25 miliseconds and calculates the average reading from those values
         sum += sensorReadDistance();                       // (Simply using maximal value would be inconsistent as in previous case)
         delay(25);
     }
@@ -145,14 +163,14 @@ float FloatClass::returnRange(void) {                       // Returns range of 
     return _range;
 }
 
-#if SHIELDRELEASE == 2
-void FloatClass::actuatorWriteRPM(float rpm){                                             // Write actuator RPM
+#if SHIELDRELEASE == 2                                                                    // For shield version 2
+void FloatClass::actuatorWriteRPM(float rpm) {                                            // Write actuator RPM
     float calculatedPWM = rpm / FLOAT_RPM_CONST;                                          // Takes the float type RPM value 0.0-17000.0 and recalculates it to range 0.0-255.0
     calculatedPWM = AutomationShield.constrainFloat(calculatedPWM, 0.0, 255.0);           // Constrains the calculated value to fit the range 0.0-255.0 - safety precaution
     analogWrite(FLOAT_UPIN, (int)calculatedPWM);                                          // Sets the fan RPM using the constrained value of PWM
 }
 
-int FloatClass::sensorReadRPM(void) {    
+int FloatClass::sensorReadRPM(void) {
     _rpm = 3000000 / hallPeriod;                            // Calculate RPM out of current value of period of hall signal in custom time units
     return _rpm;
 }
