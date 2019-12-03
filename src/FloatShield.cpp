@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 2.12.2019.
+  Last update: 3.12.2019.
 */
 
 #include "FloatShield.h"         // Include header file
@@ -28,6 +28,13 @@
     void TC6_Handler() {         // Interrupt routine on compare match with register RC on Timer2 channel 0
       TC_GetStatus(TC2, 0);      // Read status of Timer2 channel 0 in order to allow the next interrupt
       FloatShield.hundredthsOfMillisecond++;    // Increment custom time unit
+    }
+  #elif ARDUINO_ARCH_SAMD                                                   // For SAMD architecture boards
+    void TC4_Handler() {                                                    // Interrupt routine on overflow of Timer/Counter 4    
+      if (TC4->COUNT16.INTFLAG.bit.OVF && TC4->COUNT16.INTENSET.bit.OVF) {  // Make sure that overflow happened
+      FloatShield.hundredthsOfMillisecond++;                                // Increment custom time unit
+      REG_TC4_INTFLAG = TC_INTFLAG_OVF;                                     // Clear the overflow interrupt flag
+      }
     }
   #endif
 void hallPeriodCounter(void) {                                    // Interrupt routine on external interrupt pin 1
@@ -79,6 +86,13 @@ void FloatClass::begin(void) {                                        // Board i
     TC2->TC_CHANNEL[0].TC_IER =  TC_IER_CPCS | TC_IER_CPAS;                   // Enable RC compare interrupt (enable register)
     TC2->TC_CHANNEL[0].TC_IDR = ~(TC_IER_CPCS | TC_IER_CPAS);                 // Enable RC compare interrupt (disable register)
     NVIC_EnableIRQ(TC6_IRQn);                                                 // Attach interrupt routine to compare interrupt
+#elif ARDUINO_ARCH_SAMD
+    REG_GCLK_GENCTRL = GCLK_GENCTRL_GENEN | GCLK_GENCTRL_SRC_DFLL48M | GCLK_GENCTRL_ID(4);      // Enable Generic clock 4 and set the 48MHz clock source for Generic clock 4   
+    REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK4 | GCLK_CLKCTRL_ID_TC4_TC5;   // Set Generic clock 4 as a Timer clock source and feed it to Timer4 and Timer5 
+    REG_TC4_COUNT16_CC0 = 1874;                                                                 // Set the Timer4 CC0 register as the TOP value in match frequency mode
+    NVIC_EnableIRQ(TC4_IRQn);                                                                   // Connect Timer4 to Nested Vector Interrupt Controller (NVIC)    
+    REG_TC4_CTRLA |= TC_CTRLA_PRESCALER_DIV256 | TC_CTRLA_WAVEGEN_MFRQ | TC_CTRLA_ENABLE;       // Set prescaler to 256 and put the timer TC4 into match frequency (MFRQ) mode 
+    REG_TC4_INTENSET = TC_INTENSET_OVF;                                                         // Enable Timer4 interrupts
 #endif
     attachInterrupt(digitalPinToInterrupt(FLOAT_YPIN), hallPeriodCounter, RISING); // Attach interrupt routine to external interrupt pin 1. Trigger at rising edge of signal
 #endif
