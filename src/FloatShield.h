@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 30.11.2019.
+  Last update: 5.12.2019.
 */
 
 #ifndef FLOATSHIELD_H_             // Include guard
@@ -61,6 +61,7 @@ public:
     int sensorReadRPM(void);                                     // Returns fan RPM calculated from hall sensor signal
     volatile unsigned int hundredthsOfMillisecond;               // Variable for storing custom time unit created using Timer2
     volatile unsigned int hallPeriod;                            // Period of hall signal in custom time units
+    volatile bool pulseMeasured;                                // Variable for storing information if pulse length was sucessfully measured
   #endif
 
 private:
@@ -74,7 +75,7 @@ private:
     float _sensorPercent;                // Variable for percentual altitude of the ball in the tube 0.0-100.0
     float _ballAltitude;                 // Variable for altitude of the ball in tube in milimetres
   #if SHIELDRELEASE == 2
-    int _rpm;                            // Variable for storing current value of fan rotations per minute
+    int _rpm;                            // Variable for storing current value of fan rotations per minute    
   #endif
 };
 

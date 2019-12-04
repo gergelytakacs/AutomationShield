@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 3.12.2019.
+  Last update: 5.12.2019.
 */
 
 #include "FloatShield.h"         // Include header file
@@ -40,6 +40,7 @@
 void hallPeriodCounter(void) {                                    // Interrupt routine on external interrupt pin 1
     FloatShield.hallPeriod = FloatShield.hundredthsOfMillisecond; // Save the period of hall signal in custom time units into variable
     FloatShield.hundredthsOfMillisecond = 0;                      // Reset custom time unit counter
+    FloatShield.pulseMeasured = 1;                                // Set flag that pulse length was measured
 }
 #endif
 
@@ -185,8 +186,12 @@ void FloatClass::actuatorWriteRPM(float rpm) {                                  
 }
 
 int FloatClass::sensorReadRPM(void) {
+    if(pulseMeasured){                                      // If pulse length was correctly measured
     _rpm = 3000000 / hallPeriod;                            // Calculate RPM out of current value of period of hall signal in custom time units
-    return _rpm;
+    pulseMeasured = 0;                                      // Reset flag for next pulse measuring
+    return _rpm;                                            // Return RPM value
+    } else                                                  // If pulse length was not correctly measured - no power going to the fan                                     
+    return 0;                                               // Return 0                                              
 }
 #endif
 
