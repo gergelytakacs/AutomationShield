@@ -16,12 +16,11 @@ Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
 
 class LinkClass {
   public:
-
     void  begin(void);
-    void initialize();
     float referenceRead();    //r(t)
-    void actuatorWrite(float);          //y(t)
-  float sensorRead();  
+    void  actuatorWrite(float);          //y(t)
+    float sensorRead();  
+  
   private:
     int _referenceRead;
     float _referenceValue;
@@ -30,19 +29,15 @@ class LinkClass {
 };
 #endif
 
-
 extern LinkClass LinkShield;
 Servo myservo;
-
 
 // declaring PIN and initializing sensor library
 void LinkClass::begin() {
   myservo.attach(LINK_UPIN);      // set Servo pin
   analogReference(EXTERNAL);
-}
 
-void LinkClass::initialize() {
- # if ECHO_TO_SERIAL 
+   # if ECHO_TO_SERIAL 
   Serial.println("Accelerometer Test"); Serial.println("");
    # endif 
   /* Initialise the sensor */
@@ -58,11 +53,12 @@ void LinkClass::initialize() {
   accel.setRange(ADXL345_RANGE_4_G);
 }
 
+
 float LinkClass::sensorRead() {
   sensors_event_t event;
   accel.getEvent(&event);
-  _accelZ = event.acceleration.z
-           return _accelZ;
+  _accelZ = event.acceleration.z;
+  return _accelZ;
 }
 
 //values from potentiometer in degrees , for fututre use
@@ -73,5 +69,7 @@ float LinkClass::referenceRead() {
 }
 
 void LinkClass::actuatorWrite(float _angle){
-   myservo.write((int)angle);
+   myservo.write((int)_angle);
   }
+
+LinkClass LinkShield;
