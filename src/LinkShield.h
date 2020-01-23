@@ -37,8 +37,6 @@ class LinkClass {
     float referenceRead();    //r(t)
     void  actuatorWrite(float);          //y(t)
     float sensorRead();  
-    
-
     void calibrate();
   
   private:
