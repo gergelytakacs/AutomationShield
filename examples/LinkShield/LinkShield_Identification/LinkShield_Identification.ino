@@ -26,8 +26,8 @@ bool realTimeViolation = false;       // Flag for real-time sampling violation
 
 float y = 0.0;                        // Output variable
 float u = 0;                          // Input (open-loop), initialized to zero
-float U[]={135.0, 45.0, 135.0, 45.0}; // Input trajectory
-int T = 500;                          // Section length (appr. '/.+2 s)
+float U[]={45.0, 90.0}; // Input trajectory
+int T = 1500;                          // Section length (appr. '/.+2 s)
 int i = 0;                            // Section counter
 
 void setup() {
