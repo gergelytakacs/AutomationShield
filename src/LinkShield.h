@@ -1,3 +1,20 @@
+/*
+  API for the LinkShield didactic hardware.
+  
+  The file is a part of the application programmers interface for
+  the LinkShield didactic tool for control engineering and 
+  mechatronics education. The LinkShield implements an a flexible
+  rotational link experiment on an Arduino shield.
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Gergely Takács and Martin Vríčan. 
+  Last update: 23.1.2020.
+*/
+
 #ifndef LINKSHIELD_H_                     //Include guard
 #define LINKSHIELD_H_
 
