@@ -19,15 +19,16 @@
 #include "LinkShield.h"               // Include the library
 #include <SamplingServo.h>            // Include sampling
 
-unsigned long Ts = 5;                // Sampling in milliseconds
+unsigned long Ts = 3;                 // Sampling in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep=false;                  // Flag for sampling 
 bool realTimeViolation = false;       // Flag for real-time sampling violation
+bool endExperiment = false;           // Boolean flag to end the experiment
 
 float y = 0.0;                        // Output variable
-float u = 0;                          // Input (open-loop), initialized to zero
-float U[]={45.0, 90.0}; // Input trajectory
-int T = 1500;                          // Section length (appr. '/.+2 s)
+float u = 0.0;                        // Input (open-loop), initialized to zero
+float U[]={0.0, 90.0}; // Input trajectory
+int T = 2000;                         // Section length (appr. '/.+2 s)
 int i = 0;                            // Section counter
 
 void setup() {
@@ -51,6 +52,9 @@ void loop() {
 }
 
 void stepEnable(){                                     // ISR 
+  if(endExperiment == true){                           // If the experiment is over
+    while(1);                                          // Do nothing
+  }
   if(nextStep == true) {                               // If previous sample still running
         realTimeViolation = true;                      // Real-time has been violated
         Serial.println("Real-time samples violated."); // Print error message
@@ -65,7 +69,7 @@ void step(){
 // Switching between experiment sections
 
 if(i>(sizeof(U)/sizeof(U[0]))) {      // If at end of trajectory
-        while(1);                     // Stop program execution
+        endExperiment=true;           // Stop program execution at next ISR
     } else if (k % (T*i) == 0) {      // If at the end of section
         u = U[i];                     // Progress in trajectory
         i++;                          // Increment section counter
