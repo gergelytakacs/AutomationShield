@@ -19,15 +19,15 @@
 #include "LinkShield.h"               // Include the library
 #include <SamplingServo.h>            // Include sampling
 
-unsigned long Ts = 5;                // Sampling in milliseconds
+unsigned long Ts = 3;                // Sampling in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep=false;                  // Flag for sampling 
 bool realTimeViolation = false;       // Flag for real-time sampling violation
 
 float y = 0.0;                        // Output variable
 float u = 0;                          // Input (open-loop), initialized to zero
-float U[]={45.0, 90.0}; // Input trajectory
-int T = 1500;                          // Section length (appr. '/.+2 s)
+float U[]={0.0, 90.0}; // Input trajectory
+int T = 2000;                          // Section length (appr. '/.+2 s)
 int i = 0;                            // Section counter
 
 void setup() {
