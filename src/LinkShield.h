@@ -72,6 +72,7 @@ void LinkClass::begin() {
   }
   /* Set the range to whatever is appropriate for your project */
   accel.setRange(ADXL345_RANGE_4_G);
+accel.setDataRate(ADXL345_DATARATE_3200_HZ);
 }
 
 
