@@ -19,9 +19,10 @@
 #include "LinkShield.h"               // Include the library
 #include <SamplingServo.h>            // Include sampling
 
-unsigned long Ts = 10;                // Sampling in milliseconds
+unsigned long Ts = 5;                // Sampling in milliseconds
 unsigned long k = 0;                  // Sample index
-bool enable=false;                    // Flag for sampling 
+bool nextStep=false;                  // Flag for sampling 
+bool realTimeViolation = false;       // Flag for real-time sampling violation
 
 float y = 0.0;                        // Output variable
 float u = 0;                          // Input (open-loop), initialized to zero
@@ -43,14 +44,19 @@ void setup() {
 
 // Main loop launches a single step at each enable time
 void loop() {
-  if (enable) {                       // If ISR enables
+  if (nextStep) {                     // If ISR enables
     step();                           // Algorithm step
-    enable=false;                     // Then disable
+    nextStep=false;                   // Then disable
   }  
 }
 
-void stepEnable(){                    // ISR 
-  enable=true;                        // Change flag
+void stepEnable(){                                     // ISR 
+  if(nextStep == true) {                               // If previous sample still running
+        realTimeViolation = true;                      // Real-time has been violated
+        Serial.println("Real-time samples violated."); // Print error message
+        while(1);                                      // Stop program execution
+  }   
+  nextStep=true;                                       // Change flag
 }
 
 // A signle algoritm step
