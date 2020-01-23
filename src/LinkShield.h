@@ -57,7 +57,7 @@ Servo myservo;
 
 // declaring PIN and initializing sensor library
 void LinkClass::begin() {
-  myservo.attach(LINK_UPIN);      // set Servo pin
+  myservo.attach(LINK_UPIN,1000,2000);      // set Servo pin
   analogReference(EXTERNAL);
   AutomationShield.serialPrint("Accelerometer Test. \n");
 
@@ -85,7 +85,7 @@ float LinkClass::sensorBias(int testLength){
 void LinkClass::calibrate(){
   AutomationShield.serialPrint("Calibration...");   
   
-  LinkShield.actuatorWrite(0.0);          // Go to zero and wait
+  LinkShield.actuatorWrite(45.0);          // Go to zero and wait
   delay(500);
       
   _sensorBias=LinkShield.sensorBias(1000);
@@ -113,7 +113,8 @@ float LinkClass::referenceRead() {
 }
 
 void LinkClass::actuatorWrite(float _angle){
-   myservo.write((int)_angle);
+  int _modAngle=map((int)_angle,0,180,0,90);
+   myservo.write(_modAngle);
   }
 
 LinkClass LinkShield;
