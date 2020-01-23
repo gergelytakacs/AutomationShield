@@ -69,7 +69,7 @@ void LinkClass::begin() {
     while (1);  
   }
   /* Set the range to whatever is appropriate for your project */
-  accel.setRange(ADXL345_RANGE_4_G);
+  accel.setRange(ADXL345_RANGE_8_G);
 accel.setDataRate(ADXL345_DATARATE_3200_HZ);
 }
 
@@ -85,7 +85,7 @@ float LinkClass::sensorBias(int testLength){
 void LinkClass::calibrate(){
   AutomationShield.serialPrint("Calibration...");   
   
-  LinkShield.actuatorWrite(45.0);          // Go to zero and wait
+  LinkShield.actuatorWrite(0.0);          // Go to zero and wait
   delay(500);
       
   _sensorBias=LinkShield.sensorBias(1000);
@@ -113,7 +113,7 @@ float LinkClass::referenceRead() {
 }
 
 void LinkClass::actuatorWrite(float _angle){
-  int _modAngle=map((int)_angle,0,180,0,90);
+  int _modAngle=map((int)_angle,0,90,0,180);
    myservo.write(_modAngle);
   }
 
