@@ -4,9 +4,11 @@
   Example used to acquire data for LinkShield system identification.
   
   The LinkShield implements an a flexible rotational link experiment
-  on an Arduino shield. This example initialises the sampling 
-  subsystem from the AutomationShield library and allows user
-  
+  on an Arduino shield. This example initializes the sampling 
+  subsystem from the AutomationShield library, then performs an
+  open-loop experiment where the input changes stored in U are
+  executed, with each level change for T samples.
+    
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
@@ -19,25 +21,26 @@
 #include "LinkShield.h"               // Include the library
 #include <SamplingServo.h>            // Include sampling
 
-unsigned long Ts = 5;                // Sampling in milliseconds
+unsigned long Ts = 3;                 // Sampling in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep=false;                  // Flag for sampling 
 bool realTimeViolation = false;       // Flag for real-time sampling violation
+bool experimentEnd = false;           // If the experiment should be terminated
 
 float y = 0.0;                        // Output variable
-float u = 0;                          // Input (open-loop), initialized to zero
+float u = 0.0;                        // Input (open-loop), initialized to zero
 float U[]={135.0, 45.0, 135.0, 45.0}; // Input trajectory
-int T = 500;                          // Section length (appr. '/.+2 s)
+int T = 500;                          // Section length
 int i = 0;                            // Section counter
 
 void setup() {
  Serial.begin(2000000);               // Initialize serial
-
+ 
  // Initialize linkshield hardware
  LinkShield.begin();                  // Define hardware pins
  LinkShield.calibrate();              // Remove sensor bias
  
- // Initialize sampling function
+ // Initialize sampling functions
  Sampling.period(Ts *1000);           // Sampling init.
  Sampling.interrupt(stepEnable);      // Interrupt fcn.
 }
@@ -56,7 +59,10 @@ void stepEnable(){                                     // ISR
         Serial.println("Real-time samples violated."); // Print error message
         while(1);                                      // Stop program execution
   }   
-  nextStep=true;                                       // Change flag
+  if(experimentEnd == true){                           // If experiment is over
+        while(1);                                      // Stop program execution
+  }
+  nextStep=true;                                       // Otherwise change flag
 }
 
 // A signle algoritm step
@@ -65,17 +71,18 @@ void step(){
 // Switching between experiment sections
 
 if(i>(sizeof(U)/sizeof(U[0]))) {      // If at end of trajectory
-        while(1);                     // Stop program execution
-    } else if (k % (T*i) == 0) {      // If at the end of section
+        experimentEnd=true;           // Change experiment end flag
+} 
+else if (k % (T*i) == 0) {            // If at the end of section
         u = U[i];                     // Progress in trajectory
         i++;                          // Increment section counter
-    }
+}
                  
 y = LinkShield.sensorRead();          // Read sensor 
 LinkShield.actuatorWrite(u);          // Actuate
    
 Serial.print(y);                      // Print output  
-Serial.print(", ");
+Serial.print(", ");                   // Next column
 Serial.println(u);                    // Print input
 
 k++;                                  // Sample counter
