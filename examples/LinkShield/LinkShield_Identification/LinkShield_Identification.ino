@@ -1,5 +1,5 @@
 /*
-  LinkShield identification example.
+  LinkShield system identification example.
 
   Example used to acquire data for LinkShield system identification.
   
@@ -47,9 +47,9 @@ void setup() {
 
 // Main loop launches a single step at each enable time
 void loop() {
-  if (nextStep) {                     // If ISR enables
+  if (nextStep) {                     // If ISR enables step
     step();                           // Algorithm step
-    nextStep=false;                   // Then disable
+    nextStep=false;                   // Then disable stepping
   }  
 }
 
