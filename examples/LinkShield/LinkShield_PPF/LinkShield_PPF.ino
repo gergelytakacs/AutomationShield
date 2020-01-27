@@ -42,7 +42,7 @@ float epp = 0.0;
 
 
 //Not bad
-float g=20.0; // zeta 0.04
+float g=2;
 
 float b0 = 0.0;
 float b1 = 0.121845865729993;
@@ -104,7 +104,6 @@ y = LinkShield.sensorRead();          // Read sensor
 // PPF trial
 
 u = -((g*(b1*ep+b2*epp)-a1*up-a2*upp)/a0);
-u=0.0;
 e=-y;
 ep=e;
 epp=ep;
