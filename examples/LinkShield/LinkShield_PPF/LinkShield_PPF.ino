@@ -42,11 +42,11 @@ float epp = 0.0;
 
 
 //Not bad
-float g=20000.0; // zeta 0.04
+float g=20.0; // zeta 0.04
 
 float b0 = 0.0;
-float b1 = 0.120778907478803e-4;
-float b2 = 0.119158688388414e-4;
+float b1 = 0.121845865729993;
+float b2 = 0.120211333659273;
 
 float a0 = 1.0;
 float a1 = -1.718562876079719;

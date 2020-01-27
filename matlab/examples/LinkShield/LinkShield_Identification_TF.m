@@ -1,4 +1,4 @@
-%   LinkShield grey-box signle mode transfer function identification
+%   LinkShield grey-box single mode transfer function identification
 % 
 %   Identification of a linear second order transfer function capturing a
 %   single vibration mode, on real measured data.
