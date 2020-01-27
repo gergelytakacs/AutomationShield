@@ -15,7 +15,7 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Tak·cs. 
+%   Created by Gergely Tak√°cs. 
 %   Created on: 27.1.2020
 %   Last update: 27.1.2020.  
 
