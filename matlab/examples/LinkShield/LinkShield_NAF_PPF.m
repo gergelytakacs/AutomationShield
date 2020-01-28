@@ -28,16 +28,17 @@ Ts=0.005;                                      % Choose transfer function
 load sys;                                      % Load identified system
 omega=sqrt(sys.denominator(3));                % Load natural frequency
 
-omega_c=sqrt(sys.denominator(3));              % Controller freq. = system freq.
+omega_c=omega;                                 % Controller freq. = system freq.
 zeta_c=0.04;                                   % Controller damping
-%g=1;                                          % Choose unit for realization
-g=1;                                          % Choose scaled for simulation
+g=2;                                           % Choose unit for realization
+%g=1;                                          % Choose scaled for simulation
 
 %% Create NAF/PPF controller
 
 num=g*omega_c^2;                               % TF numerator
 den=[1, 2*zeta_c*omega_c omega_c^2];           % TF denominator
 C=tf(num,den);                                 % Define transfer function
+bode(C);                                       % Bode plot of C
 CD=c2d(C,Ts);                                  % Discretization of TF
 
 M = idpoly(CD,'NoiseVariance',0)               % Difference equation
