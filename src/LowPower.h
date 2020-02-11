@@ -1,3 +1,24 @@
+/*
+ * API implementing low-power functionality and sleep modes.
+ * 
+ * This file implements low-power functionality and sleep modes
+ * and has been only tested on the ATmega 328p MCU, e.g. works
+ * only on the Arduino UNO.
+ * 
+ * This code is part of the AutomationShield hardware and software
+ * ecosystem. Visit http://www.automationshield.com for more
+ * details. This code is licensed under a Creative Commons
+ * Attribution-NonCommercial 4.0 International License.
+ *
+ * Created by Gergely Takács
+ * Last update: 11.2.2020.
+ *
+ * Based on the tutorials of 
+ * Kevin Darrah https://www.youtube.com/watch?v=urLSDi7SD8M (power down)
+ * Julian Ilett https://www.youtube.com/watch?v=iMC6eG24S9g (slowdown)
+*/
+
+
 #ifndef LOWPOWER_H_                     //Include guard
 #define LOWPOWER_H_
 
