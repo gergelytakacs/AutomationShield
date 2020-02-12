@@ -21,6 +21,7 @@ PIDInc	KEYWORD1
 Sampling	KEYWORD1
 SamplingCore	KEYWORD1
 SamplingServo	KEYWORD1
+LowPower	KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
@@ -36,9 +37,9 @@ calibration	KEYWORD2
 
 constrainFloat	KEYWORD2
 mapFloat	KEYWORD2
-
-
 sensorBias	KEYWORD2
+
+
 getThermistorVoltage	KEYWORD2
 getThermistorResistance	KEYWORD2
 initialize	KEYWORD2
@@ -63,6 +64,13 @@ period	KEYWORD2
 interrupt	KEYWORD2
 getInterruptCallback	KEYWORD2
 getSamplingPeriod	KEYWORD2
+
+# LowPower ###########################
+
+powerDown	KEYWORD2
+void setWatchDog KEYWORD2
+void slowDown KEYWORD2
+
 ######################################
 #Constants (LITERAL1)
 ######################################
