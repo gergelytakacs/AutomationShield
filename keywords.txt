@@ -14,6 +14,7 @@ HeatShield	KEYWORD1
 MotoShield	KEYWORD1
 TugShield	KEYWORD1
 BOBShield	KEYWORD1
+LinkShield	KEYWORD1
 MagnetoShield	KEYWORD1
 PIDAbs	KEYWORD1
 PIDInc	KEYWORD1
@@ -36,6 +37,8 @@ calibration	KEYWORD2
 
 constrainFloat	KEYWORD2
 mapFloat	KEYWORD2
+sensorBias	KEYWORD2
+
 
 getThermistorVoltage	KEYWORD2
 getThermistorResistance	KEYWORD2
