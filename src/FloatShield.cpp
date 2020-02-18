@@ -20,10 +20,10 @@
 #ifdef VL53L0X_h                 // If library for distance sensor was sucessfully included
 
 #if SHIELDRELEASE == 2           // For shield version 2
-  #ifdef ARDUINO_ARCH_AVR        // For AVR architecture boards
-/*     ISR (TIMER2_COMPA_vect) {                   // Interrupt routine on compare match with register A on Timer2
+/*   #ifdef ARDUINO_ARCH_AVR        // For AVR architecture boards
+    ISR (TIMER2_COMPA_vect) {                   // Interrupt routine on compare match with register A on Timer2
       FloatShield.hundredthsOfMillisecond++;    // Increment custom time unit
-    } */
+    }
   #elif ARDUINO_ARCH_SAM         // For SAM architecture boards
     void TC6_Handler() {         // Interrupt routine on compare match with register RC on Timer2 channel 0
       TC_GetStatus(TC2, 0);      // Read status of Timer2 channel 0 in order to allow the next interrupt
@@ -36,7 +36,7 @@
       REG_TC4_INTFLAG = TC_INTFLAG_OVF;                                     // Clear the overflow interrupt flag
       }
     }
-  #endif
+  #endif */
 void hallPeriodCounter(void) {                                    // Interrupt routine on external interrupt pin 1
     FloatShield.hallPeriod = FloatShield.hundredthsOfMillisecond; // Save the period of hall signal in custom time units into variable
     FloatShield.hundredthsOfMillisecond = 0;                      // Reset custom time unit counter
