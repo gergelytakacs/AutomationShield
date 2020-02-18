@@ -14,12 +14,14 @@ HeatShield	KEYWORD1
 MotoShield	KEYWORD1
 TugShield	KEYWORD1
 BOBShield	KEYWORD1
+LinkShield	KEYWORD1
 MagnetoShield	KEYWORD1
 PIDAbs	KEYWORD1
 PIDInc	KEYWORD1
 Sampling	KEYWORD1
 SamplingCore	KEYWORD1
 SamplingServo	KEYWORD1
+LowPower	KEYWORD1
 
 ######################################
 #Methods and Functions (KEYWORD2)
@@ -35,7 +37,7 @@ calibration	KEYWORD2
 
 constrainFloat	KEYWORD2
 mapFloat	KEYWORD2
-
+sensorBias	KEYWORD2
 
 
 getThermistorVoltage	KEYWORD2
@@ -62,6 +64,13 @@ period	KEYWORD2
 interrupt	KEYWORD2
 getInterruptCallback	KEYWORD2
 getSamplingPeriod	KEYWORD2
+
+# LowPower ###########################
+
+powerDown	KEYWORD2
+void setWatchDog KEYWORD2
+void slowDown KEYWORD2
+
 ######################################
 #Constants (LITERAL1)
 ######################################
