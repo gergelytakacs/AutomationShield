@@ -7,6 +7,4 @@
 [submodule "src/lib/Adafruit_Sensor"]
 	path = src/lib/Adafruit_Sensor
 	url = https://github.com/adafruit/Adafruit_Sensor
-[submodule "src/lib/--name"]
-	path = src/lib/--name
-	url = https://github.com/gergelytakacs/Adafruit_ADXL345
+
