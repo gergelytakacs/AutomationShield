@@ -85,8 +85,14 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/MotoShield/MotoShield_PID/MotoShield_PID.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MotoShield/MotoShield_StepResponse/MotoShield_StepResponse.ino
 
+### LinkShield ###
+#Uno#
+ - arduino --verify --board arduino:avr:uno $PWD/examples/LinkShield/LinkShield_Identification/LinkShield_Identification.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/LinkShield/LinkShield_PID/LinkShield_PID.ino
+ 
 ### FloatShield ###
 #Uno#
+ - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_Identification/FloatShield_Identification.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
 
