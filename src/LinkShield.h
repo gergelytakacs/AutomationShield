@@ -22,7 +22,7 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include "lib/Adafruit_Sensor/Adafruit_Sensor.h"
-#include "lib/Adafruit_ADXL345_U/Adafruit_ADXL345_U.h"
+#include "lib/Adafruit_ADXL345/Adafruit_ADXL345_U.h"
 #include "AutomationShield.h"
 
 //Defining pins used by LinkShield
