@@ -70,7 +70,7 @@ void FloatClass::begin(void) {                                        // Board i
     _wasCalibrated = false;
     
 #if SHIELDRELEASE == 2          // For shield version 2                                           
-#ifdef ARDUINO_ARCH_AVR         // For AVR architecture boards
+/* #ifdef ARDUINO_ARCH_AVR         // For AVR architecture boards
     TCCR2B = 0;                 // Clear Timer2 settings
     TCNT2 = 0;                  // Clear Counter2 value
     TCCR2A = bit(WGM21);        // Set Timer2 to CTC mode
@@ -93,7 +93,7 @@ void FloatClass::begin(void) {                                        // Board i
     REG_TC4_COUNT16_CC0 = 1874;                                                                 // Set the Timer4 CC0 register as the TOP value in match frequency mode
     NVIC_EnableIRQ(TC4_IRQn);                                                                   // Connect Timer4 to Nested Vector Interrupt Controller (NVIC)    
     REG_TC4_CTRLA |= TC_CTRLA_PRESCALER_DIV256 | TC_CTRLA_WAVEGEN_MFRQ | TC_CTRLA_ENABLE;       // Set prescaler to 256 and put the timer TC4 into match frequency (MFRQ) mode 
-    REG_TC4_INTENSET = TC_INTENSET_OVF;                                                         // Enable Timer4 interrupts
+    REG_TC4_INTENSET = TC_INTENSET_OVF;                                                         // Enable Timer4 interrupts */
 #endif
     //attachInterrupt(digitalPinToInterrupt(FLOAT_YPIN), hallPeriodCounter, RISING); // Attach interrupt routine to external interrupt pin 1. Trigger at rising edge of signal
 #endif
