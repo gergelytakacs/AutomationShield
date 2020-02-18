@@ -45,6 +45,12 @@ script:
 
 ###### Arduino IDE ######
 
+### FloatShield ###
+#Uno#
+ - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_Identification/FloatShield_Identification.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
+ 
 ### HeatShield ###
 #Uno#
  - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_PID/HeatShield_PID.ino
@@ -90,12 +96,6 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/LinkShield/LinkShield_Identification/LinkShield_Identification.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/LinkShield/LinkShield_PPF/LinkShield_PPF.ino
  
-### FloatShield ###
-#Uno#
- - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_Identification/FloatShield_Identification.ino
- - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
- - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
-
 ### TugShield ###
 #Uno#
  - arduino --verify --board arduino:avr:uno $PWD/examples/TugShield/TugShield_PID/TugShield_PID.ino
