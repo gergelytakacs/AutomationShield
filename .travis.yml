@@ -88,7 +88,7 @@ script:
 ### LinkShield ###
 #Uno#
  - arduino --verify --board arduino:avr:uno $PWD/examples/LinkShield/LinkShield_Identification/LinkShield_Identification.ino
- - arduino --verify --board arduino:avr:uno $PWD/examples/LinkShield/LinkShield_PID/LinkShield_PID.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/LinkShield/LinkShield_PPF/LinkShield_PPF.ino
  
 ### FloatShield ###
 #Uno#
