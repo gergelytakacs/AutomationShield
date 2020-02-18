@@ -21,9 +21,9 @@
 
 #if SHIELDRELEASE == 2           // For shield version 2
   #ifdef ARDUINO_ARCH_AVR        // For AVR architecture boards
-    ISR (TIMER2_COMPA_vect) {                   // Interrupt routine on compare match with register A on Timer2
+/*     ISR (TIMER2_COMPA_vect) {                   // Interrupt routine on compare match with register A on Timer2
       FloatShield.hundredthsOfMillisecond++;    // Increment custom time unit
-    }
+    } */
   #elif ARDUINO_ARCH_SAM         // For SAM architecture boards
     void TC6_Handler() {         // Interrupt routine on compare match with register RC on Timer2 channel 0
       TC_GetStatus(TC2, 0);      // Read status of Timer2 channel 0 in order to allow the next interrupt
@@ -71,13 +71,13 @@ void FloatClass::begin(void) {                                        // Board i
     
 #if SHIELDRELEASE == 2          // For shield version 2                                           
 #ifdef ARDUINO_ARCH_AVR         // For AVR architecture boards
-    /* TCCR2B = 0;                 // Clear Timer2 settings
+    TCCR2B = 0;                 // Clear Timer2 settings
     TCNT2 = 0;                  // Clear Counter2 value
     TCCR2A = bit(WGM21);        // Set Timer2 to CTC mode
     OCR2A  = 19;                // Set register A compare value to 20 (relative to zero)
     TIMSK2 = bit (OCIE2A);      // Enable Timer2 interrupt on compare match with register A
     GTCCR = bit (PSRASY);       // Reset prescaler on Timer/Counter 2
-    TCCR2B = bit(CS21);         // Set prescaler to value 8 on Timer/Counter 2 */
+    TCCR2B = bit(CS21);         // Set prescaler to value 8 on Timer/Counter 2
 #elif ARDUINO_ARCH_SAM                                                        // For SAM architecture boards
     pmc_set_writeprotect(false);                                              // Turn off register write protection
     pmc_enable_periph_clk(TC6_IRQn);                                          // Enable peripheral clock for Timer2 channel 0
