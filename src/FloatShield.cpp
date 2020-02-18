@@ -95,10 +95,10 @@ void FloatClass::begin(void) {                                        // Board i
     REG_TC4_CTRLA |= TC_CTRLA_PRESCALER_DIV256 | TC_CTRLA_WAVEGEN_MFRQ | TC_CTRLA_ENABLE;       // Set prescaler to 256 and put the timer TC4 into match frequency (MFRQ) mode 
     REG_TC4_INTENSET = TC_INTENSET_OVF;                                                         // Enable Timer4 interrupts 
 #endif
-    attachInterrupt(digitalPinToInterrupt(FLOAT_YPIN), hallPeriodCounter, RISING); // Attach interrupt routine to external interrupt pin 1. Trigger at rising edge of signal
+    attachInterrupt(digitalPinToInterrupt(FLOAT_YPIN), hallPeriodCounter, RISING); // Attach interrupt routine to external interrupt pin 1. Tri */gger at rising edge of signal
 #endif
     AutomationShield.serialPrint(" successful.\n");
-	*/
+	
 }
 
 void FloatClass::calibrate(void) {                         // Board calibration
