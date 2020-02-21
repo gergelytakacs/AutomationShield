@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Martin Vríčan. 
-  Last update: 23.1.2020.
+  Last update: 21.2.2020.
 */
 
 #ifndef LINKSHIELD_H_                     //Include guard
@@ -129,7 +129,7 @@ void LinkClass::ADXL345_BW_RATE(){ //BandWidth rate setup - 1600Hz
   void LinkClass::ADXL345_OFSZ(){ //Offset calibration
   Wire.beginTransmission(ADXL345);
   Wire.write(0x20); 
-  Wire.write(0);//((int)-_sensorBias);
+  Wire.write(0);//((int)-_sensorBias); //Offset set to 0 yet
   Wire.endTransmission();
   delay(10); 
 }
