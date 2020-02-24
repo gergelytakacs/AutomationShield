@@ -7,10 +7,10 @@
 %   Attribution-NonCommercial 4.0 International License.
 % 
 %   Created by Peter Chmurciak. 
-%   Last update: 9.7.2019.
+%   Last update: 6.9.2019.
 
 % Sensor class definition, inheriting LibraryBase class properties
-classdef Pololu_VL53L0X < arduinoio.LibraryBase          
+classdef Pololu_VL53L0X < matlabshared.addon.LibraryBase          
 
     % Define command IDs for commandHandler method
     properties(Access = private, Constant = true)
@@ -24,10 +24,11 @@ classdef Pololu_VL53L0X < arduinoio.LibraryBase
     properties(Access = protected, Constant = true)
         LibraryName = 'Pololu/Pololu_VL53L0X'
         DependentLibraries = {}
-        ArduinoLibraryHeaderFiles = {}
+        LibraryHeaderFiles = {}        
         CppHeaderFile = fullfile(arduinoio.FilePath(mfilename('fullpath')), 'src', 'Pololu_VL53L0X.h')
         CppClassName = 'Pololu_VL53L0X'
         ResourceOwner = 'Pololu/Pololu_VL53L0X'
+        Pins = {'A4', 'A5'}
     end
     
     % Hidden methods (not meant to be used directly by the user) with unrestricted access
@@ -35,8 +36,7 @@ classdef Pololu_VL53L0X < arduinoio.LibraryBase
         
         % Constructor
         function obj = Pololu_VL53L0X(parentObj)
-            obj.Parent = parentObj;
-            obj.Pins = {'A4', 'A5'};
+            obj.Parent = parentObj;            
             count = getResourceCount(obj.Parent, obj.ResourceOwner);            
             if count > 0
                 error('You can use only one VL53L0X sensor!');

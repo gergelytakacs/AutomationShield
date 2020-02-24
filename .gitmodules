@@ -4,3 +4,10 @@
 [submodule "src/lib/vl53l0x-arduino"]
 	path = src/lib/vl53l0x-arduino
 	url = https://github.com/PeterChmurciak/vl53l0x-arduino
+[submodule "src/lib/Adafruit_Sensor"]
+	path = src/lib/Adafruit_Sensor
+	url = https://github.com/adafruit/Adafruit_Sensor
+
+[submodule "Adafruit_ADXL345"]
+	path = src/lib/Adafruit_ADXL345
+	url = https://github.com/gergelytakacs/Adafruit_ADXL345
