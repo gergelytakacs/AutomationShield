@@ -131,9 +131,9 @@ void MagnetoShieldClass::actuatorWriteVoltage(float u){
     dacIn = constrain(dacIn,IRF520_LSAT,IRF520_HSAT); 				// Constrains to IRF520 saturation
 	dacWrite(dacIn);  	   									  		// Writes to DAC
 	#elif SHIELDRELEASE == 3
-	uint16_t DAC = voltageToDac(u);									// Re-computes DAC levels according to Voltage
-	DAC = constrain(DAC,0,4095);									// Constrain input into acceptable range
-	dacWrite(DAC);  	   											// Writes to DAC
+	uint16_t dacIn = voltageToDac(u);									// Re-computes DAC levels according to Voltage
+	dacIn = constrain(dacIn,0,4095);									// Constrain input into acceptable range
+	dacWrite(dacIn);  	   											// Writes to DAC
 	#endif
 }
 		
