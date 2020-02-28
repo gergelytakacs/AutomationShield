@@ -15,7 +15,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 17.7.2019.
+  Last update: 28.2.2020.
 */
 
 #include <FloatShield.h>              // Include main library  
@@ -36,9 +36,15 @@ float u = 0.0;                                                    // Input (Fan 
 int T = 2400;             // Section length
 int i = 0;                // Section counter
 
-#define KP 0.25           // PID Kp constant
-#define TI 5              // PID Ti constant
-#define TD 0.01           // PID Td constant
+#if SHIELDRELEASE == 1
+  #define KP 0.25           // PID Kp constant
+  #define TI 5              // PID Ti constant
+  #define TD 0.01           // PID Td constant
+#elif SHIELDRELEASE == 2
+  #define KP 0.01           // PID Kp constant
+  #define TI 2              // PID Ti constant
+  #define TD 0.01           // PID Td constant
+#endif
 
 void setup() {                         // Setup - runs only once
     Serial.begin(250000);              // Begin serial communication
@@ -60,7 +66,11 @@ void setup() {                         // Setup - runs only once
         r = R[0];                               // Reference set to first point in trajectory
 #endif
         y = FloatShield.sensorRead();           // Read sensor
-        u = PIDAbs.compute(r-y,30,100,30,100);  // PID
+        #if SHIELDRELEASE == 1
+          u = PIDAbs.compute(r-y,30,100,30,100);  // PID
+        #elif SHIELDRELEASE == 2
+          u = PIDAbs.compute(r-y,40,100,40,100);  // PID
+        #endif
         FloatShield.actuatorWrite(u);           // Actuate
         if(y >= r*2/3) {                        // If the ball is getting close to reference
             break;                              // Continue program
