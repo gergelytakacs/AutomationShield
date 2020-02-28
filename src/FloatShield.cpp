@@ -160,7 +160,8 @@ float FloatClass::sensorReadRPM(void) {                   // Read current fan RP
     }
     return _rpm;                                          // Return RPM value
   } else                                                  // If pulse length was not correctly measured - no power going to the fan
-    pulseCount = 0;                                     
+    pulseCount = 0;
+    sampleCounter = 0;                                     
   return 0;                                               // Return 0
 }
 #endif
