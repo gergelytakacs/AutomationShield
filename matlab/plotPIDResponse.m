@@ -11,9 +11,9 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Peter Chmurciak.
-%   Last update: 22.7.2019.
+%   Last update: 28.2.2020.
 
-function plotPIDResponse(aFile, aFig)            % Function definition
+function plotPIDResponse(aFile)                  % Function definition
 if isa(aFile,'char')                             % If input is filename
 data = load(aFile);                              % Loads data to a variable
 [fPath, fName, fExt] = fileparts(aFile);         % Analyzes file properties
@@ -43,7 +43,7 @@ maxValue = max([max(r), max(y), max(u)]);        % Finds extreme values
 minValue = min([min(r), min(y), min(u)]);
 range = maxValue - minValue;                     % Calculates data range
 
-figure(aFig)                                                   % Plots on specified figure
+figure                                                         % Plots on specified figure
 plot(k, u, 'Color', [0.4660, 0.6740, 0.1880], 'LineWidth', 1)  % Plots input
 hold on
 plot(k, y, 'Color', [0.8500, 0.3250, 0.0980], 'LineWidth', 1)  % Plots output
