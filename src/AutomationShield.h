@@ -29,10 +29,17 @@
 
 // THESE ARE NOT VISIBLE OUTSIDE THE SCOPE OF THE FILE, DO WE NEED THEM?
 // Common definitions
-#define AREF 5.0 // ADC reference voltage for 5 V logic
-#define ARES AREF/1023.0 // ADC resolution for 5 V logic
-#define AREF3V3 3.3 // ADC reference voltage for 3.3 V logic
-#define ARES3V3 AREF3V3/1023.0 // ADC resolution for 3.3 V logic
+#ifdef ARDUINO_ARCH_AVR                     // Chip uses 10-bit ADC
+  #define AREF 5.0                              // ADC reference voltage for 5 V logic
+  #define ARES AREF/1023.0                      // ADC resolution for 5 V logic
+  #define AREF3V3 3.3                           // ADC reference voltage for 3.3 V logic
+  #define ARES3V3 AREF3V3/1023.0                // ADC resolution for 3.3 V logic
+#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM // Chip uses 12-bit ADC
+  #define AREF 5.0                              // ADC reference voltage for 5 V logic
+  #define ARES AREF/4095.0                      // ADC resolution for 5 V logic
+  #define AREF3V3 3.3                           // ADC reference voltage for 3.3 V logic
+  #define ARES3V3 AREF3V3/4095.0                // ADC resolution for 3.3 V logic
+#endif
 #define ABSZERO 273.15 // Absolute zero in Celsius 
 
 // Diagnostics
