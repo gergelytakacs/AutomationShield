@@ -10,6 +10,7 @@
    This code is part of the AutomationShield hardware and software
    ecosystem. Visit http://www.automationshield.com for more
    details. This code is licensed under a Creative Commons
+   Attribution-NonCommercial 4.0 International License.
 
    Created by Peter Chmurčiak based on work of Anna Vargová
    Last update: 11.03.2020
