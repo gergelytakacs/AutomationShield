@@ -11,3 +11,6 @@
 [submodule "src/lib/vl53l0x-arduino"]
 	path = src/lib/vl53l0x-arduino
 	url = https://github.com/PeterChmurciak/vl53l0x-arduino
+[submodule "src/lib/BasicLinearAlgebra"]
+	path = src/lib/BasicLinearAlgebra
+	url = https://github.com/tomstewart89/BasicLinearAlgebra

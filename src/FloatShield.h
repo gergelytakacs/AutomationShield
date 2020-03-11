@@ -20,6 +20,7 @@
 
 #include "AutomationShield.h"      // Include the main library
 #include <Wire.h>                  // Include the I2C protocol library
+#include "lib/BasicLinearAlgebra/BasicLinearAlgebra.h"     // Include library for matrix operations
 
 #ifndef SHIELDRELEASE              // Define release version of used hardware
   #define SHIELDRELEASE 2          // Latest version by default
@@ -56,6 +57,7 @@ class FloatClass {                                               // Class for Fl
     float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
     float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
     float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
+    #include "getGainLQ.inl"                                     // Include template function for calculating K gain for LQ control applications
 #if SHIELDRELEASE == 2
     void actuatorWriteRPM(float);                                // Write actuator RPM - function takes input 0.0-17000.0 (RPM) and sets fan speed accordingly
     volatile unsigned int pulseCount;                            // Variable for storing the amount of pulses that were measured within set time interval
