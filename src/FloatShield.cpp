@@ -102,7 +102,7 @@ float FloatClass::referenceRead(void) {                                         
 
 float FloatClass::referenceReadAltitude(void) {                                                             // Reference read
   _referenceValue = (float)analogRead(FLOAT_RPIN);                                                          // Reads the actual analog value of potentiometer runner
-  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, _minDistance, _maxDistance);  // Remapps the analog value from original range 0.0-1023 to calibrated altitude range 17.0-341.0 (mm)
+  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, _range);                 // Remapps the analog value from original range 0.0-1023 to calibrated altitude range 0.0-324.0 (mm)
   return _referencePercent;                                                                                 // Returns the altitude proportional to position of potentiometer runner
 }
 

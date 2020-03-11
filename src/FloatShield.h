@@ -50,7 +50,7 @@ class FloatClass {                                               // Class for Fl
     void calibrate(void);                                        // Board calibration - finding out the minimal and maximal values measured by distance sensor
     void actuatorWrite(float);                                   // Write actuator - function takes input 0.0-100.0 and sets fan speed accordingly
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
-    float referenceReadAltitude(void);                           // Reference read altitude - returns potentiometer position in calibrated altitude range 17.0-341.0 (mm)
+    float referenceReadAltitude(void);                           // Reference read altitude - returns potentiometer position in calibrated altitude range 0.0-324.0 (mm)
     float sensorRead(void);                                      // Sensor read - returns the altitude of the ball in tube in percentual range 0.0(ball is on the fan)-100.0(ball is on the tube ceiling)
     float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in milimetres
     float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in milimetres
