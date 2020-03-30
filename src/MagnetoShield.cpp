@@ -26,8 +26,11 @@ void MagnetoShieldClass::begin(){
 			analogReference(EXTERNAL);
 		#endif
 	#elif ARDUINO_ARCH_SAM
+		analogReadResolution(12);
 		Wire1.begin();
+		
 	#elif ARDUINO_ARCH_SAMD
+		analogReadResolution(12);
 		Wire.begin();
 	#endif
 }
@@ -104,7 +107,11 @@ void MagnetoShieldClass::calibration(){
 	}
 	// Selects maximum ADC value to filter for any noise.
 	// Magnet cannot get physically higher than ceiling
-	dacWrite(255);				// Full power to magnet
+	#if SHIELDRELEASE == 1 || SHIELDRELEASE == 2
+	dacWrite(255);				// Full power to magnet for 8-bit DAC
+	#elif SHIELDRELEASE == 3
+	dacWrite(4095);				// Full power to magnet for 12-bit DAC
+	#endif
 	delay(500);					   			    // Wait for things to settle
 	maxCalibrated = analogRead(MAGNETO_YPIN);	// overwrite default values -> independency of the meassurement from default saturation	
 	for (int i=1; i<=100; i++) {				// Perform 100 measurements
@@ -218,7 +225,7 @@ float MagnetoShieldClass::gaussToDistance(float g){
 #if SHIELDRELEASE == 2 || SHIELDRELEASE == 3
 	// Default sensor reading method
 	float MagnetoShieldClass::referenceRead(){	
-		return  (AutomationShield.mapFloat(analogRead(MAGNETO_RPIN),0.0,1024.0,0.0,100.0));
+		return  (AutomationShield.mapFloat(analogRead(MAGNETO_RPIN),0.0,ADCREF,0.0,100.0));
 	}
 	
 	// Reads the voltage on the Electromagnet
