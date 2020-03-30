@@ -27,8 +27,10 @@ void MagnetoShieldClass::begin(){
 		#endif
 	#elif ARDUINO_ARCH_SAM
 		Wire1.begin();
+		analogReadResolution(12);
 	#elif ARDUINO_ARCH_SAMD
 		Wire.begin();
+		analogReadResolution(12);
 	#endif
 }
 
