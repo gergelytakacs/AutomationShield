@@ -1,73 +1,41 @@
-// PID example fot rhe MotoShield
+#include <MotoShield.h>     //--Include API
+#include <PIDAbs.h>        //--Include PID control lib
 
-#include "MotoShield.h"
-#include <Sampling.h>            // Include sampling
+int Ts = 40;               //--Sampling period in milliseconds
+float r = 0.0;            //--Reference
+float y = 0.0;           //--Output
+float u = 0.0;          //--Input          
 
-unsigned long Ts = 10; // sampling time in milliseconds
-
-bool enable=false; // flag for the sampling function
-
-// variables for the PID
-
-float r = 0.00;
-float y = 0.00;
-float u = 0.00;
-float error = 0.00;
+#define KP 0.000001          //--PID Kp constant
+#define TI 0.0003           //--PID Ti constant
+#define TD 0.001           //--PID Td constant
 
 
 void setup() {
-  
-  Serial.begin(9600);
-  
-  MotoShield.begin(); // defining hardware pins
-  MotoShield.setDirection(true); // setting the motor direction
-  
-  MotoShield.setMotorSpeed(100); // calibration
-  delay(1000);
-  
-  Sampling.period(Ts * 1000);  // initialize the sampling function, input is the sampling time in microseconds
-  Sampling.interrupt(stepEnable); // setting the interrupts, the input is the ISR function
-
- // setting the PID constants
- PIDAbs.setKp(0.007);
- PIDAbs.setTi(0.015);
- PIDAbs.setTd(0.0002);
- PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
-}// end of the setup
-
-void loop() {
-
-  if (enable) {
-    step();
-    enable=false;
-    
-  }  
-
-} // end of the loop
-
-
-void stepEnable(){  // ISR
-  enable=true;
+  Serial.begin(2000000);               //--Initialize serial communication # 2 Mbaud
+  MotoShield.begin(Ts);               //--Initialize MotoShield
+  MotoShield.calibration();          //--Calibration
+ PIDAbs.setKp(KP);    //--PID constants
+ PIDAbs.setTi(TI); 
+ PIDAbs.setTd(TD); 
+ PIDAbs.setTs(Ts); //--Defining sampling period
 }
 
-void step(){ // we have to put our code here
-  
-  
+void loop() {
+  if (MotoShield.stepEnable) {      //--Running the algorithm once every sample
+    step();               
+    MotoShield.stepEnable=false;  //--Setting the flag to false # built-in ISR sets flag to true at the end of each sample
+  }  
+}
 
-r = MotoShield.referenceRead();  // reading the reference value of the potentiometer
-float variable = MotoShield.readRevolutions(50);    // reading RPM of the motor
 
-y = AutomationShield.mapFloat(variable,0.00,25.00,0.00,100.00); //converting the RPM of the motor into %
+void step(){ //--Algorith ran once per sample
+  r = MotoShield.referenceRead();          //--Sensing Pot reference
+  y = MotoShield.sensorReadRPMPerc();     //--Sensing angular velocity in percent
+  u = PIDAbs.compute(r-y,0,100,0,100);   //--PID computation
+  MotoShield.actuatorWrite(u);          //--Actuation
 
-error = r - y; 
-
- u = PIDAbs.compute(error,0,100,0,100);
-
-MotoShield.setMotorSpeed(u);
-
-Serial.print(r);
-Serial.print(" ");
-Serial.print(y);
-Serial.print(" ");
-Serial.println(u);
+Serial.print(r);            //--Printing reference
+Serial.print(" ");            
+Serial.println(y);        //--Printing output
 }
