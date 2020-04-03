@@ -1,134 +1,99 @@
 #include "MotoShield.h"
+#include "AutomationShield.h"
+#include "Sampling.h"
 
-
-void MotoClass::begin(void){ // begin function initializes the pins, sets the ISR and sets initial values of some variables 
- pinMode(MOTO_UPIN,OUTPUT);  // EN1 - L293D
- pinMode(MOTO_IN1,OUTPUT);  // IN1 - L293D
- pinMode(MOTO_IN2,OUTPUT);  // IN2 - L293D
- pinMode(MOTO_C2,INPUT_PULLUP); // 2nd channel of the encoder
- pinMode(MOTO_C1,INPUT_PULLUP); // 1st channel of the encoder
- pinMode(MOTO_RPIN,INPUT); // analog pin pf the potentiometer (reference)
- pinMode(MOTO_Vout2,INPUT); // output of the second OPAMP (non-inverting), outputs the amplified voltage-drop
- pinMode(MOTO_Vout1,INPUT); // output of the first OPAMP (subtractor), outputs the voltage-drop through the resistor R
- pinMode(MOTO_U1,INPUT); // connected to analog pin, measures the voltage of the resistor's one side
- pinMode(MOTO_U2,INPUT);  // connected to analog pin, measures the voltage of the resistor's second side
-
-  attachInterrupt(digitalPinToInterrupt(MOTO_C1), MotoShield.countTicks, FALLING);  // setting the interrupts, it reacts, when the edge is falling
-
-  counter = 0;             // setting the intial value of the variables
-} // end of the begin() function
-
-void MotoClass::countTicks(){          // ISR - Interrupt Service Routine
-  Bstate = digitalRead(MOTO_C2);
-  counter ++ ;
+void MotoShieldClass::_InterruptServiceRoutine(){ //--ISR for the incremental encoder
+	count++; 
 }
 
-void MotoClass::motorON(){  // sets the motor's speed to maximum (switches on the motor at full speed)
-  analogWrite(MOTO_UPIN,255);
+void MotoShieldClass::_InterruptSample(){ //--ISR for each sample
+	counted = count;	//--memorizing number of ticks per given sample
+	count = 0; 			  //--resetting count variable for next the sample
+	stepEnable = true; //--auxiliary variable
 }
 
-void MotoClass::motorOFF(){  // switches off the motor 
-  digitalWrite(MOTO_UPIN,LOW);
+// Sets the direction motor - clockwise if input parameter is true
+//                          - counterclockwise if input parameter is false
+bool MotoShieldClass::setDirection(bool direction = true) { //--default direction - clockwise
+  if (direction) { 	 //--clockwise      
+    digitalWrite(MOTO_DIR_PIN1, 0);
+    digitalWrite(MOTO_DIR_PIN2, 1);
+    return 1;			 //--method returns 1 if direction is set clockwise
+  }
+  else {             //--counter-clockwise 
+    digitalWrite(MOTO_DIR_PIN1, 1);
+    digitalWrite(MOTO_DIR_PIN2, 0);
+    return 0; 		//--method returns 0 if direction is set counter-clockwise
+  }
 }
 
-void MotoClass::setMotorSpeed(float value){    // sets the speed of the motor, input value from 0-100
-if(value < 30){ value = 30; } // minimal power needed to rotate the shaft
-
-    convertedValue = AutomationShield.mapFloat(value,0.00,100.00,0.00,255.00);
-    analogWrite(MOTO_UPIN,convertedValue);   
+void MotoShieldClass::begin(float _Ts = 50.0){ //--default sample duration Ts=50 millis
+  pinMode(MOTO_YPIN1, INPUT); 	//--initialize hardware pins
+  pinMode(MOTO_YPIN2, INPUT);
+  pinMode(MOTO_RPIN, INPUT);
+  pinMode(MOTO_UPIN, OUTPUT);
+  pinMode(MOTO_DIR_PIN1,OUTPUT);
+  pinMode(MOTO_DIR_PIN2,OUTPUT); 
+  setDirection(true); 		      	 //--making setDirection() method non-mandatory
+  Sampling.period(_Ts*1000.0); //--defining sample duration in millisec
+  _K=60000.0/_Ts; 				        //--minute to millisec / sample duration
+  Sampling.interrupt(_InterruptSample);//--attaching sampling ISR
+  attachInterrupt(digitalPinToInterrupt(MOTO_YPIN1), _InterruptServiceRoutine, FALLING);//--attaching ISR for incremental encoder # mode-FALLING
 }
 
-void MotoClass::setDirection(bool dir){    // sets the direction of the rotation
-  if(dir){                  // if dir = true, the direction is counter-clockwise             
-digitalWrite(MOTO_IN1,HIGH);
-digitalWrite(MOTO_IN2,LOW);
-  }
- else {        // if dir = false, the direction is clockwise
-digitalWrite(MOTO_IN1,LOW);
-digitalWrite(MOTO_IN2,HIGH);  
- }  
-} // end of the  setDirection() function
-
-
-void MotoClass::revDirection(){  // reverses the pre-set direction, use only after setDirection() function
-Direction = digitalRead(MOTO_IN1);
-  if(Direction){                // the direction is clockwise
-digitalWrite(MOTO_IN1,LOW);
-digitalWrite(MOTO_IN2,HIGH);
-  }
-
-  else{        // the direction is counter-clockwise
-digitalWrite(MOTO_IN1,HIGH);
-digitalWrite(MOTO_IN2,LOW);
-  } 
-} // end of the revDirection() function
-
-float MotoClass::referenceRead(){           // referenceRead function returns the reference value of the potentiometer in percents, which was set by the user
-   _referenceRead = analogRead(MOTO_RPIN);
-   referenceValue = AutomationShield.mapFloat(_referenceRead,0.00,1023.00,0.00,100.00);
-  return referenceValue;
+float MotoShieldClass::referenceRead() {//--Reads potentiometers reference value and returns it in percentage
+  return AutomationShield.mapFloat((float)analogRead(MOTO_RPIN), 0.0, 1023.0, 0.0, 100.0);
 }
 
-float MotoClass::readVoltage(){ // reads and returns the voltage drop through the resistor R
-  ADCR1 = analogRead(MOTO_U1);
-  ADCR2 = analogRead(MOTO_U2);
+void MotoShieldClass::actuatorWrite(float percentValue) {//--duty cycle for the Motor, determining angular velocity
+	if(percentValue < _minDuty && percentValue != 0) percentValue = _minDuty; //--When input is 0, motor is disabled
+	analogWrite(MOTO_UPIN, AutomationShield.percToPwm(percentValue));
+}
+	
+ //--sensing minimal duty cycle for motor to spin
+//--sensing RPM at maximal PWM and at minimal PWM
+void MotoShieldClass::calibration(){
+	actuatorWrite(100);
+	delay(1000); //--delay for motor to reach maximal angular velocity
+	_maxRPM = sensorReadRPM(); //--sensing max RPM
+	actuatorWrite(0); //--disabling the motor
+	delay(500); //--delay for motor to stop spinning
+	int i = 25; //--initial PWM in %, presumed potentionally minimal
+	do{		//--infinite loop
+		  actuatorWrite(i);
+		  delay(1250); //--delay for motor to spin at least one revolution
+		  if(counted >= 7){ //--condition for detecting motor motion	
+		    	_minDuty = i; //--minimal duty cycle in %
+		    	_minRPM = sensorReadRPM();//--sensing minimal RPM
+			    actuatorWrite(0);//--disabling the motor
+		    	break; //--end of loop
+		   }
+	    i++; //--incrementing duty cycle variable by 1
+	}while(1);
+}
 
-  if(ADCR1 > ADCR2){
-  ADCU = ADCR1 - ADCR2;
-  }
+float MotoShieldClass::sensorReadRPMPerc(){//--Sensing RPM in %
+return AutomationShield.constrainFloat(AutomationShield.mapFloat(MotoShield.sensorReadRPM(), (float)_minRPM, (float)_maxRPM, 0.0, 100.0),0.0,100.0);
+}
 
-  if(ADCR2 > ADCR1){
-    ADCU = ADCR2 - ADCR1;
-  }
+float MotoShieldClass::sensorReadRPM(){//--Sensing RPM 
+	return (float)counted/7.0*_K;        //--7 is the number of ticks per one rotation
+}
 
-  k = (5.00 / 1023.00); // constant for converting analog values to Voltage
+float MotoShieldClass::sensorReadVoltage() {//--Voltage drop after the shunt(10ohm) resistor
+  return (analogRead(MOTO_YV1)-analogRead(MOTO_YV2))*5.0/1023.0;
+}
 
-  V = ADCU * k;
+float MotoShieldClass::sensorReadVoltageAmp1() {//--Output from differential OpAmp in Volts
+  return analogRead(MOTO_YAMP1)*5.0/1023.0; 
+}
 
- return V;
-} // end of the readVoltage() function
+float MotoShieldClass::sensorReadVoltageAmp2() {     //--Output from non-inverting OpAmp in Volt
+  return analogRead(MOTO_YAMP2)*5.0/1023.0/AMP_GAIN;//--Gain of OpAmp is 2.96 
+}
 
+float MotoShieldClass::sensorReadCurrent() {//--Current calculation based on non-inverting OpAmp output - Ohms law
+  return MotoShield.sensorReadVoltageAmp2()/R*1000.0;//--R represents 10ohms - shunt resistor # 1000 - conversion to mA
+}
 
-float MotoClass::readCurrent(){  // returns the current draw of the motor in mA 
- R = 10;
- float callVolt = MotoShield.readVoltage();
-  I = (callVolt / float(R)) * 1000.00;  // *1000.00 to have the value in mA
-  
-  return I;
-} // end of the readCurrent() function
-
-
-float MotoClass::durationTime(){         // returns the duration of one revolution in ms
-  rev = 380;        // counter value of one revolution of the back shaft               
-  count = counter;   
-  cValue = count - previousCount;
-  
-  t = millis();   // measuring the running time since the last reset
-  
-  if(cValue >= rev){      // if the counter value is higher or equal than one revolution
-   revTime = t;
-   durTime = revTime - prevTime;
-   previousCount = count;  
-  }
-    prevTime = revTime;
-    
-  return durTime * 7; // (7 * 380 = 2660)
-} // end of the durationTime() function
-
-float MotoClass::readRevolutions(int Time){ // returns the number of revolutions per minute
- Count = counter;   
-  noInterrupts();
-  rValue = Count - prevC;
-  h = 1000 / Time;                   // constant  
- 
- constant = ((float(h) * 60.00) / 2660.00);
- 
- REV = float(rValue) * constant;
- prevC = Count;
- interrupts();
- 
-return REV;
-} // end of the readRevolutions() function
-
-
-MotoClass MotoShield; // Construct instance (define)
+MotoShieldClass MotoShield; //--Creating an object in MotoShieldClass 
