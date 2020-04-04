@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 11.3.2020.
+  Last update: 4.4.2020.
 */
 
 #ifndef FLOATSHIELD_H_             // Include guard
@@ -23,7 +23,7 @@
 #include "lib/BasicLinearAlgebra/BasicLinearAlgebra.h"     // Include library for matrix operations
 
 #ifndef SHIELDRELEASE              // Define release version of used hardware
-  #define SHIELDRELEASE 2          // Latest version by default
+  #define SHIELDRELEASE 1          // Latest version by default
 #endif
 
 #ifndef VL53L0X_h                                           // If library for distance sensor is not already included  
@@ -59,6 +59,7 @@ class FloatClass {                                               // Class for Fl
     float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
     float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
     #include "getGainLQ.inl"                                     // Include template function for calculating K gain for LQ control applications
+    #include "getKalmanEstimate.inl"                             // Include template function for estimating internal states of linear SISO system (Kalman filter)
 #if SHIELDRELEASE == 2
     void actuatorWriteRPM(float);                                // Write actuator RPM - function takes input 0.0-17000.0 (RPM) and sets fan speed accordingly
     volatile unsigned int pulseCount;                            // Variable for storing the amount of pulses that were measured within set time interval
