@@ -19,6 +19,7 @@
 #define AMP_GAIN		2.96  //--Gain of non-inverting OpAmp
 #define RES			10.0 //--resistance of shunt resistor
 #define PPR			14.0 //--Pulses Per Rotation
+
 class MotoShieldClass{ //--creating a class for the MotoShield
   public:
 	bool setDirection(bool direction = true);
