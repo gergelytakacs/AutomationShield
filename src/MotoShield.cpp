@@ -38,7 +38,7 @@ void MotoShieldClass::begin(float _Ts = 50.0){ //--default sample duration Ts=50
   Sampling.period(_Ts*1000.0); //--defining sample duration in millisec
   _K=60000.0/_Ts; 				        //--minute to millisec / sample duration
   Sampling.interrupt(_InterruptSample);//--attaching sampling ISR
-  attachInterrupt(digitalPinToInterrupt(MOTO_YPIN1), _InterruptServiceRoutine, FALLING);//--attaching ISR for incremental encoder # mode-FALLING
+  attachInterrupt(digitalPinToInterrupt(MOTO_YPIN1), _InterruptServiceRoutine, CHANGE);//--attaching ISR for incremental encoder # mode-FALLING
 }
 
 float MotoShieldClass::referenceRead() {//--Reads potentiometers reference value and returns it in percentage
@@ -77,7 +77,7 @@ return AutomationShield.constrainFloat(AutomationShield.mapFloat(MotoShield.sens
 }
 
 float MotoShieldClass::sensorReadRPM(){//--Sensing RPM 
-	return (float)counted/7.0*_K;        //--7 is the number of ticks per one rotation
+	return (float)counted/14.0*_K;        //--7 is the number of ticks per one rotation
 }
 
 float MotoShieldClass::sensorReadVoltage() {//--Voltage drop after the shunt(10ohm) resistor
@@ -93,7 +93,7 @@ float MotoShieldClass::sensorReadVoltageAmp2() {     //--Output from non-inverti
 }
 
 float MotoShieldClass::sensorReadCurrent() {//--Current calculation based on non-inverting OpAmp output - Ohms law
-  return MotoShield.sensorReadVoltageAmp2()/R*1000.0;//--R represents 10ohms - shunt resistor # 1000 - conversion to mA
+  return MotoShield.sensorReadVoltageAmp2()/RES*1000.0;//--R represents 10ohms - shunt resistor # 1000 - conversion to mA
 }
 
 MotoShieldClass MotoShield; //--Creating an object in MotoShieldClass 
