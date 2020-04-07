@@ -1,5 +1,7 @@
 #include <MotoShield.h>
 #define TS 100.0 //--Sampling period in milliseconds
+float r;
+
 void setup() {
   Serial.begin(2000000);//--Initialize serial communication # 2 000 000 baudrate
   MotoShield.begin(TS);//--Initialize MotoShield with sampling period 100 millis
@@ -7,7 +9,7 @@ void setup() {
 }
 
 void loop() {
-  float r = MotoShield.referenceRead(); //--Reading potentiometers (reference) value in percents
+  r = MotoShield.referenceRead(); //--Reading potentiometers (reference) value in percents
   MotoShield.actuatorWrite(r); //--Defining potentiometers value as input
   Serial.print(MotoShield.sensorReadRPMPerc()); //--Printing angular velocity in percents to serial monitor
   Serial.print(" ");
