@@ -35,8 +35,8 @@ void MotoShieldClass::begin(float _Ts = 50.0){ //--default sample duration Ts=50
   pinMode(MOTO_DIR_PIN1,OUTPUT);
   pinMode(MOTO_DIR_PIN2,OUTPUT); 
   setDirection(true); 		      	 //--making setDirection() method non-mandatory
-  Sampling.period(_Ts*1000.0); //--defining sample duration in millisec
-  _K=60000.0/_Ts; 				        //--minute to millisec / sample duration
+  Sampling.period(_Ts*1000.0); 		//--defining sample duration in millisec
+  _K=60000.0/_Ts; 				       //--minute to millisec / sample duration
   Sampling.interrupt(_InterruptSample);//--attaching sampling ISR
   attachInterrupt(digitalPinToInterrupt(MOTO_YPIN1), _InterruptServiceRoutine, CHANGE);//--attaching ISR for incremental encoder # mode-FALLING
 }
@@ -62,7 +62,7 @@ void MotoShieldClass::calibration(){
 	do{		//--infinite loop
 		  actuatorWrite(i);
 		  delay(1250); //--delay for motor to spin at least one revolution
-		  if(counted >= 7){ //--condition for detecting motor motion	
+		  if(counted >= 14){ //--condition for detecting motor motion	
 		    	_minDuty = i; //--minimal duty cycle in %
 		    	_minRPM = sensorReadRPM();//--sensing minimal RPM
 			    actuatorWrite(0);//--disabling the motor
@@ -73,7 +73,7 @@ void MotoShieldClass::calibration(){
 }
 
 float MotoShieldClass::sensorReadRPMPerc(){//--Sensing RPM in %
-return AutomationShield.constrainFloat(AutomationShield.mapFloat(MotoShield.sensorReadRPM(), (float)_minRPM, (float)_maxRPM, 0.0, 100.0),0.0,100.0);
+	return AutomationShield.constrainFloat(AutomationShield.mapFloat(MotoShield.sensorReadRPM(), (float)_minRPM, (float)_maxRPM, 0.0, 100.0),0.0,100.0);
 }
 
 float MotoShieldClass::sensorReadRPM(){//--Sensing RPM 
