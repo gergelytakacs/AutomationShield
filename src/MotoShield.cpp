@@ -77,7 +77,7 @@ return AutomationShield.constrainFloat(AutomationShield.mapFloat(MotoShield.sens
 }
 
 float MotoShieldClass::sensorReadRPM(){//--Sensing RPM 
-	return (float)counted/14.0*_K;        //--7 is the number of ticks per one rotation
+	return (float)counted/PPR*_K;        //--7 is the number of ticks per one rotation
 }
 
 float MotoShieldClass::sensorReadVoltage() {//--Voltage drop after the shunt(10ohm) resistor
