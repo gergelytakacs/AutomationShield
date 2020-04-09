@@ -10,7 +10,7 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Tak·cs and Jakub MihalÌk. 
+  Created by Gergely Tak√°cs and Jakub Mihal√≠k. 
   Last update: 14.01.2019.
 */
 
@@ -28,10 +28,11 @@ void MagnetoShieldClass::begin(){
 	#elif ARDUINO_ARCH_SAM
 		analogReadResolution(12);
 		Wire1.begin();
-		
+		analogReadResolution(12);
 	#elif ARDUINO_ARCH_SAMD
 		analogReadResolution(12);
 		Wire.begin();
+		analogReadResolution(12);
 	#endif
 }
 
@@ -223,19 +224,19 @@ float MagnetoShieldClass::gaussToDistance(float g){
 	
 
 #if SHIELDRELEASE == 2 || SHIELDRELEASE == 3
-	// Default sensor reading method
+	// Default sensor reading method - returns value from 0 to 100
 	float MagnetoShieldClass::referenceRead(){	
 		return  (AutomationShield.mapFloat(analogRead(MAGNETO_RPIN),0.0,ADCREF,0.0,100.0));
 	}
 	
-	// Reads the voltage on the Electromagnet
+	// Reads the voltage on the Electromagnet in V
 	float MagnetoShieldClass::auxReadVoltage(){	
 		float v = ((float)analogRead(MAGNETO_VPIN))*ARES3V3*VGAIN;
 		return  v;
 	}
 	
 	
-	// Reads the voltage on the Electromagnet
+	// Reads the current on the Electromagnet in mA
 	float MagnetoShieldClass::auxReadCurrent(){	
 		float i =  ((float)analogRead(MAGNETO_IPIN))*ARES3V3*IGAIN;//-IBIAS;
 		return  i;

@@ -7,7 +7,7 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács, Tibor Konkoly, Gábor Penzinger
+  Created by Gergely Takï¿½cs, Tibor Konkoly, Gï¿½bor Penzinger
   Last update: 31.09.2018.
 */
 
@@ -27,6 +27,7 @@
 // THESE ARE NOT VISIBLE OUTSIDE THE SCOPE OF THE FILE, DO WE NEED THEM?
 // Common definitions
 #ifdef ARDUINO_ARCH_AVR                     // Chip uses 10-bit ADC
+
 	#define ADCREF 1023.0					// 10-bit resolution for AD convertor
 #elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM // Chip uses 12-bit ADC
 	#define ADCREF 4095.0					// 12-bit resolution for AD convertor
@@ -36,7 +37,6 @@
 #define ARES AREF/ADCREF                      // ADC resolution for 5 V logic
 #define AREF3V3 3.3                           // ADC reference voltage for 3.3 V logic
 #define ARES3V3 AREF3V3/ADCREF                // ADC resolution for 3.3 V logic
-
 #define ABSZERO 273.15 // Absolute zero in Celsius 
 
 // Diagnostics
