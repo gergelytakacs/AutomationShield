@@ -65,11 +65,21 @@
 	#define A1302_LSAT	19							// [10-bit ADC] Lower saturation of the Hall sensor
 	#define A1302_HSAT 382							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
 #elif SHIELDRELEASE == 2
-	#define A1302_LSAT	30							// [10-bit ADC] Lower saturation of the Hall sensor
-	#define A1302_HSAT 586							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+	#ifdef ARDUINO_ARCH_AVR
+		#define A1302_LSAT	30							// [10-bit ADC] Lower saturation of the Hall sensor
+		#define A1302_HSAT 586							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+	#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM
+		#define A1302_LSAT	120							// [12-bit ADC] Lower saturation of the Hall sensor
+		#define A1302_HSAT 2346							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
+	#endif
 #elif SHIELDRELEASE == 3
-	#define A1302_LSAT	28							// [10-bit ADC] Lower saturation of the Hall sensor
-	#define A1302_HSAT 631							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+	#ifdef ARDUINO_ARCH_AVR
+		#define A1302_LSAT	28							// [10-bit ADC] Lower saturation of the Hall sensor
+		#define A1302_HSAT 631							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+	#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM
+		#define A1302_LSAT	112							// [12-bit ADC] Lower saturation of the Hall sensor
+		#define A1302_HSAT 2526							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
+	#endif
 #endif
 
 // Gain constants for current and voltage measurements
@@ -111,7 +121,7 @@ public:
 	void begin(); 								// Initializes "Wire" library
 	void calibration();							// Finds out lowest and highest positions of magnet
 	#if SHIELDRELEASE == 1 || SHIELDRELEASE == 2
-	void dacWrite(uint8_t dacIn);			    	// Writes dacIn to DAC chip
+	void dacWrite(uint8_t DAClevel);			    	// Writes dacIn to DAC chip
 	uint8_t voltageToDac(float vOut);		   		// Computes DAC levels for magnet voltage based on MOSFET characteristic
 	#endif
 	
