@@ -18,7 +18,6 @@
 
 template <int m, int n>                    // Template function definition
 BLA::Matrix<m, n> getGainLQ(BLA::Matrix<n, n> &A, BLA::Matrix<n, m> &B, BLA::Matrix<n, n> &Q, BLA::Matrix<m, m> &R) {
-
   BLA::Matrix <m, n> K;                    // K gain matrix
   K.Fill(0.0);                             // Initialised with zeros
 

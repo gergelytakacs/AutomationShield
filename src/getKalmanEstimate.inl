@@ -20,7 +20,6 @@
 
 template <int n>                                             // Template function definition
 BLA::Matrix<n, 1> getKalmanEstimate(float systemInput, float measuredOutput, BLA::Matrix<n, n> &A, BLA::Matrix<n, 1> &B, BLA::Matrix<1, n> &C, BLA::Matrix<n, n> &Q, BLA::Matrix<1, 1> &R) {
-
   static BLA::Matrix <n, 1> xEstimate;                       // State matrix
   static BLA::Matrix <n, n> P;                               // Covariance matrix
   static BLA::Matrix <n, n> I;                               // Eye matrix
@@ -75,7 +74,6 @@ BLA::Matrix<n, 1> getKalmanEstimate(float systemInput, float measuredOutput, BLA
 
 template <int n, int m>                                      // Template function definition
 void getKalmanEstimate(BLA::Matrix<m, 1> &stateMatrix, float systemInput, float measuredOutput, BLA::Matrix<n, n> &A, BLA::Matrix<n, 1> &B, BLA::Matrix<1, n> &C, BLA::Matrix<n, n> &Q, BLA::Matrix<1, 1> &R) {
-
   static BLA::Matrix <n, 1> xEstimate;                       // State matrix
   static BLA::Matrix <n, n> P;                               // Covariance matrix
   static BLA::Matrix <n, n> I;                               // Eye matrix
