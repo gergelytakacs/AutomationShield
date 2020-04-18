@@ -23,7 +23,7 @@
 #include <FloatShield.h>              // Include main library  
 #include <Sampling.h>                 // Include sampling library
 
-#define MANUAL 1                      // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
+#define MANUAL 0                      // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
 unsigned long Ts = 25;                // Sampling period in miliseconds
 unsigned long k = 0;                  // Sample index
@@ -34,7 +34,7 @@ float R[] = {210.0, 160.0, 110.0, 145.0, 195.0, 245.0, 180.0, 130.0, 65.0,  95.0
 float y = 0.0;                                                                        // Output (Current ball altitude)
 float u = 0.0;                                                                        // Input (Fan power)
 
-int T = 2400;             // Section length
+int T = 1200;             // Section length
 int i = 0;                // Section counter
 
 // System state-space matrices
@@ -47,7 +47,7 @@ BLA::Matrix<3, 3> Q_Kalman = {5, 0, 0, 0, 1000, 0, 0, 0, 1000};     // Process e
 BLA::Matrix<1, 1> R_Kalman = {25};                                  // Measurement error covariance matrix
 
 // LQ gain with integrator
-BLA::Matrix<1, 4> K = {2.0762, 0.83344, 1.7599, -0.01914};          // Calculated gain K
+BLA::Matrix<1, 4> K = {0.35969, 0.14731, 0.19412, -0.00298};        // Calculated gain K
 
 BLA::Matrix<4, 1> X = {0, 0, 0, 0};        // Estimated state vector
 BLA::Matrix<4, 1> Xr = {0, 0, 0, 0};       // Reference state vector
