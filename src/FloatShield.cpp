@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 28.2.2020.
+  Last update: 11.3.2020.
 */
 
 #include "FloatShield.h"         // Include header file
@@ -98,6 +98,12 @@ float FloatClass::referenceRead(void) {                                         
   _referenceValue = (float)analogRead(FLOAT_RPIN);                                           // Reads the actual analog value of potentiometer runner
   _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
   return _referencePercent;                                                                  // Returns the percentual position of potentiometer runner
+}
+
+float FloatClass::referenceReadAltitude(void) {                                                             // Reference read
+  _referenceValue = (float)analogRead(FLOAT_RPIN);                                                          // Reads the actual analog value of potentiometer runner
+  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, _range);                 // Remapps the analog value from original range 0.0-1023 to calibrated altitude range 0.0-324.0 (mm)
+  return _referencePercent;                                                                                 // Returns the altitude proportional to position of potentiometer runner
 }
 
 float FloatClass::sensorRead(void) {                                                                       // Sensor read
