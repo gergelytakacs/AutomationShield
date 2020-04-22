@@ -10,10 +10,10 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Martin Gulan, Gergely Takács and Peter Chmurèiak.
-%   Last update: 18.4.2020.
+%   Last update: 22.4.2020.
 
 clc;
-clear;
+clear all;
 close all;
 
 %% Data preprocessing
@@ -114,8 +114,11 @@ estimatedModel = ssest(data, sys, Options) % Run estimation procedure
 % Create continuous state-space object
 continuousSSModel = ss(estimatedModel.A, estimatedModel.B, estimatedModel.C, estimatedModel.D);
 
+% Option to discretize the model with different Ts than default
+discretizationTs = Ts;
+
 % Discretize continuous model and get discrete state-space model
-discreteSSModel = c2d(continuousSSModel, Ts, 'zoh');
+discreteSSModel = c2d(continuousSSModel, discretizationTs, 'zoh');
 
 % Extract individual matrices
 matA = discreteSSModel.A;
@@ -139,6 +142,11 @@ matKhat = dlqr(matAhat, matBhat, matQhat, matRhat);
 % Set Q,R error covariance matrices
 Q_Kalman = diag([5, 1000, 1000]);
 R_Kalman = 25;
+
+% Save individual matrices for FloatShield_LQ example
+% save(fprintf('%s%.0f%s','FloatShield_LinearSS_Discrete_Matrices_',...
+%     discretizationTs*1000,'ms'),'matA','matB','matC','matD','matKhat',...
+%     'Q_Kalman','R_Kalman')
 
 % Filter and estimate states from identification data
 clear estimateKalmanState
