@@ -16,7 +16,8 @@
 %   Created by Peter Chmurciak.
 %   Last update: 23.4.2020.
 
-clc; clear all; close all;          % Clears command window, variables and opened figures
+clc; clear; close all;              % Clears command window, variables and opened figures
+clear estimateKalmanState;          % Clears persistent variables in estimate function
 
 FloatShield = FloatShield;          % Create FloatShield object from FloatShield class
 FloatShield.begin('COM4', 'UNO');   % Initialise shield with used Port and Board type
