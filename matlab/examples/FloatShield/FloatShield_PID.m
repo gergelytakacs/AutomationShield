@@ -14,7 +14,7 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Peter Chmurciak.
-%   Last update: 22.4.2020.
+%   Last update: 23.4.2020.
 
 clc; clear; close all;            % Clears command window, variables and opened figures
 
@@ -71,13 +71,14 @@ while (1)                                    % Infinite loop
     if (toc >= Ts * k)                            % If its time for next sample
         if (toc >= Ts * (k + 1))                  % Check if steps overlap
             disp('Sampling violation has occured.')
-            samplingViolation = 1                 % Set sampling violation flag
-            FloatShield.actuatorWrite(0)             
+            samplingViolation = 1                 % Set sampling violation flag            
+            FloatShield.actuatorWrite(0);             
             break                                 % Stop program if they do overlap
         end
         nextStep = 1;                             % Enable step flag
     end
 end
+response = response(1:k-1, :);                    % Remove unused space
 save responsePID response                         % Save results in responsePID.mat file
 disp('The example finished its trajectory. Results have been saved to "responsePID.mat" file.')
 plotPIDResponse('responsePID.mat')                % Plot results from responsePID.mat file
