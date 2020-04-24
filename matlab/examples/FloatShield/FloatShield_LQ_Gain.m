@@ -132,7 +132,7 @@ matBhat = [matB; 0];
 matChat = [matC, 0];
 
 % Set Q,R penalisation matrices
-matQhat = diag([1, 1, 1e6, 100]);
+matQhat = diag([1, 1, 1e7, 1e2]);
 matRhat = 1e7;
 
 % Calculate LQ gain that includes integrator state
@@ -145,7 +145,7 @@ R_Kalman = 25;
 
 % Save individual matrices for other examples
 % save(sprintf('%s%.0f%s','FloatShield_LinearSS_Discrete_Matrices_',...
-%     discretizationTs*1000,'ms'),'matA','matB','matC','matD','matKhat',...
+%     discretizationTs*1000,'ms'),'matA','matB','matC','matD',...
 %     'Q_Kalman','R_Kalman')
 
 % Filter and estimate states from identification data

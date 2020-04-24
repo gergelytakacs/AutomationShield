@@ -28,21 +28,32 @@ k = 1;                  % Algorithm step counter
 nextStep = 0;           % Algorithm step flag
 samplingViolation = 0;  % Sampling violation flag
 
-R = [210,160,110,145,195,245,180,130,65,95]; % Reference trajectory in mm
+Ref = [210,160,110,145,195,245,180,130,65,95]; % Reference trajectory in mm
 T = 1200;                           % Section length
 i = 0;                              % Section counter
-response = zeros(length(R)*T, 3);   % Preallocate output variable
+response = zeros(length(Ref)*T, 3); % Preallocate output variable
 
 X = [0; 0; 0; 0];       % State vector 
 Xr = [0; 0; 0; 0];      % Reference vector 
 
 % Load system state-space matrices from FloatShield_LQ_Gain example
-load FloatShield_LinearSS_Discrete_Matrices_25ms 
+load FloatShield_LinearSS_Discrete_Matrices_25ms
+
+% Create modified system state-space matrices that include integrator state
+matAhat = [matA, zeros(3, 1); -matC, 1];
+matBhat = [matB; 0];
+
+% Penalisation matrices
+Q = diag([1, 1, 1e7, 1e2]);     % State penalisation 
+R = 1e7;                        % Input penalisation
+
+% Calculate LQ gain that includes integrator state
+K = dlqr(matAhat, matBhat, Q, R);
 
 while (1)               % Lift the ball off the ground
-    Xr(1) = R(1);       % Set reference to the first point in trajectory
+    Xr(1) = Ref(1);     % Set reference to the first point in trajectory
     y = FloatShield.sensorReadAltitude();   % Read ball position
-    u = -matKhat * (X - Xr);                % Calculate LQ system input
+    u = -K * (X - Xr);                      % Calculate LQ system input
     FloatShield.actuatorWrite(u);           % Actuate
     % Estimate first three states with Kalman filter
     X(1:3) = estimateKalmanState(u, y, matA, matB, matC, Q_Kalman, R_Kalman); 
@@ -58,14 +69,14 @@ while (1)                           % Infinite loop
     if (nextStep)                   % If step flag is enabled
         if (mod(k, T*i) == 1)       % At the end of section, progress in trajectory
             i = i + 1;
-            if (i > length(R))      % If at the end of trajectory
+            if (i > length(Ref))    % If at the end of trajectory
                 FloatShield.actuatorWrite(0.0);
                 break               % Stop the program execution
             end
-            Xr(1) = R(i);           % Progress in trajectory
+            Xr(1) = Ref(i);         % Progress in trajectory
         end
         y = FloatShield.sensorReadAltitude();   % Read ball position
-        u = -matKhat * (X - Xr);                % Calculate LQ system input
+        u = -K * (X - Xr);                      % Calculate LQ system input
         FloatShield.actuatorWrite(u);           % Actuate
         % Estimate first three states with Kalman filter
         X(1:3) = estimateKalmanState(u, y, matA, matB, matC, Q_Kalman, R_Kalman);

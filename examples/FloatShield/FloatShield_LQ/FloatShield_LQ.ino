@@ -17,7 +17,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Peter Chmurčiak.
-  Last update: 18.4.2020.
+  Last update: 24.4.2020.
 */
 
 #include <FloatShield.h>              // Include main library  
@@ -47,7 +47,7 @@ BLA::Matrix<3, 3> Q_Kalman = {5, 0, 0, 0, 1000, 0, 0, 0, 1000};     // Process e
 BLA::Matrix<1, 1> R_Kalman = {25};                                  // Measurement error covariance matrix
 
 // LQ gain with integrator
-BLA::Matrix<1, 4> K = {0.35969, 0.14731, 0.19412, -0.00298};        // Calculated gain K
+BLA::Matrix<1, 4> K = {0.45815, 0.1997, 0.63981, -0.00252};         // Calculated gain K
 
 BLA::Matrix<4, 1> X = {0, 0, 0, 0};        // Estimated state vector
 BLA::Matrix<4, 1> Xr = {0, 0, 0, 0};       // Reference state vector
