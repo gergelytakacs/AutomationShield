@@ -14,7 +14,7 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Peter Chmurciak.
-%   Last update: 23.4.2020.
+%   Last update: 24.4.2020.
 
 clc; clear; close all;            % Clears command window, variables and opened figures
 
@@ -81,4 +81,4 @@ end
 response = response(1:k-1, :);                    % Remove unused space
 save responsePID response                         % Save results in responsePID.mat file
 disp('The example finished its trajectory. Results have been saved to "responsePID.mat" file.')
-plotPIDResponse('responsePID.mat')                % Plot results from responsePID.mat file
+plotResults('responsePID.mat')                    % Plot results from responsePID.mat file

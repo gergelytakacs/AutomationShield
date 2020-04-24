@@ -14,7 +14,7 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Peter Chmurciak.
-%   Last update: 23.4.2020.
+%   Last update: 24.4.2020.
 
 clc; clear; close all;              % Clears command window, variables and opened figures
 clear estimateKalmanState;          % Clears persistent variables in estimate function
@@ -88,4 +88,4 @@ end
 response = response(1:k-1, :);      % Remove unused space
 save responseLQ response            % Save results in responseLQ.mat file
 disp('The example finished its trajectory. Results have been saved to "responseLQ.mat" file.')
-plotPIDResponse('responseLQ.mat')   % Plot results from responseLQ.mat file
+plotResults('responseLQ.mat')       % Plot results from responseLQ.mat file
