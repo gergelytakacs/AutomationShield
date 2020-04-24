@@ -10,10 +10,10 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Martin Gulan, Gergely Takács and Peter Chmurèiak.
-%   Last update: 22.4.2020.
+%   Last update: 24.4.2020.
 
 clc;
-clear all;
+clear;
 close all;
 
 %% Data preprocessing
@@ -132,8 +132,8 @@ matBhat = [matB; 0];
 matChat = [matC, 0];
 
 % Set Q,R penalisation matrices
-matQhat = diag([1, 1, 1000000, 100]);
-matRhat = 10000000;
+matQhat = diag([1, 1, 1e6, 100]);
+matRhat = 1e7;
 
 % Calculate LQ gain that includes integrator state
 matKhat = dlqr(matAhat, matBhat, matQhat, matRhat);
@@ -143,8 +143,8 @@ matKhat = dlqr(matAhat, matBhat, matQhat, matRhat);
 Q_Kalman = diag([5, 1000, 1000]);
 R_Kalman = 25;
 
-% Save individual matrices for FloatShield_LQ example
-% save(fprintf('%s%.0f%s','FloatShield_LinearSS_Discrete_Matrices_',...
+% Save individual matrices for other examples
+% save(sprintf('%s%.0f%s','FloatShield_LinearSS_Discrete_Matrices_',...
 %     discretizationTs*1000,'ms'),'matA','matB','matC','matD','matKhat',...
 %     'Q_Kalman','R_Kalman')
 
