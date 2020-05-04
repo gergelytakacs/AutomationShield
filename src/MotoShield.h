@@ -17,30 +17,31 @@
 
 //--defining constants
 #define AMP_GAIN		2.96  //--Gain of non-inverting OpAmp
-#define RES			10.0 //--resistance of shunt resistor
-#define PPR			14.0 //--Pulses Per Rotation
+#define SHUNT			10.0 //--resistance of shunt resistor
 
 class MotoShieldClass{ //--creating a class for the MotoShield
   public:
 	bool setDirection(bool direction = true);
 	void begin(float _Ts = 50.0);
 	void calibration();
-	void actuatorWrite(float percentValue);    
+	void actuatorWrite(float percentValue);
+	void actuatorWriteVolt(float voltageValue);
 	float referenceRead();
 	float sensorReadRPM();
 	float sensorReadRPMPerc();
-    	float sensorReadVoltage();
+    float sensorReadVoltage();
 	float sensorReadVoltageAmp1();
 	float sensorReadVoltageAmp2();
 	float sensorReadCurrent();
-    	static void _InterruptServiceRoutine();
-    	static void _InterruptSample();
-   	static inline volatile unsigned int count; //--counting pulses of hall sensor encoder
-    	static inline volatile unsigned int counted; //--memorizing number of pulses per sample
+    static void _InterruptServiceRoutine();
+    static void _InterruptSample();
+   	static inline volatile uint8_t count; //--counting pulses of hall sensor encoder
+    static inline volatile uint8_t counted; //--memorizing number of pulses per sample
 	static inline volatile bool stepEnable; //--auxiliary variable # simplifies the creation of examples
-	int _minRPM; //--calibration variables
-	int _minDuty;
-	int _maxRPM;
+	unsigned int minRPM; //--calibration variables
+	unsigned int minDuty;
+	unsigned int maxRPM;
+	float minVolt;
 	
   private:
 	float _K; //--number of samples in one minute
