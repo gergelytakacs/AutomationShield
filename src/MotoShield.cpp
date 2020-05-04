@@ -28,15 +28,19 @@ bool MotoShieldClass::setDirection(bool direction = true) { //--default directio
 }
 
 void MotoShieldClass::begin(float _Ts = 50.0){ //--default sample duration Ts=50 millis
-  pinMode(MOTO_YPIN1, INPUT); 	//--initialize hardware pins
-  pinMode(MOTO_YPIN2, INPUT);
-  pinMode(MOTO_RPIN, INPUT);
-  pinMode(MOTO_UPIN, OUTPUT);
+  pinMode(MOTO_UPIN, OUTPUT);	
   pinMode(MOTO_DIR_PIN1,OUTPUT);
   pinMode(MOTO_DIR_PIN2,OUTPUT); 
+  pinMode(MOTO_YPIN1, INPUT); 	
+  pinMode(MOTO_YPIN2, INPUT);	//--initialize hardware pins
+  pinMode(MOTO_RPIN, INPUT);
+  pinMode(MOTO_YV1, INPUT);
+  pinMode(MOTO_YV2, INPUT);
+  pinMode(MOTO_YAMP1, INPUT);
+  pinMode(MOTO_YAMP2, INPUT);
   setDirection(true); 		      	 //--making setDirection() method non-mandatory
-  Sampling.period(_Ts*1000.0); 		//--defining sample duration in millisec
-  _K=60000.0/_Ts; 				       //--minute to millisec / sample duration
+  Sampling.period(_Ts*1000.0); //--defining sample duration in millisec
+  _K=60000.0/_Ts; 				        //--minute to millisec / sample duration
   Sampling.interrupt(_InterruptSample);//--attaching sampling ISR
   attachInterrupt(digitalPinToInterrupt(MOTO_YPIN1), _InterruptServiceRoutine, CHANGE);//--attaching ISR for incremental encoder # mode-FALLING
 }
@@ -46,8 +50,14 @@ float MotoShieldClass::referenceRead() {//--Reads potentiometers reference value
 }
 
 void MotoShieldClass::actuatorWrite(float percentValue) {//--duty cycle for the Motor, determining angular velocity
-	if(percentValue < _minDuty && percentValue != 0) percentValue = _minDuty; //--When input is 0, motor is disabled
+	if(percentValue < minDuty && percentValue != 0) percentValue = minDuty; //--When input is 0, motor is disabled
 	analogWrite(MOTO_UPIN, AutomationShield.percToPwm(percentValue));
+}
+
+void MotoShieldClass::actuatorWriteVolt(float voltageValue){ //--Expects Root Mean Square Voltage value as input	
+	minVolt = AREF * sqrt(minDuty/100.0); 			//--Calculate minimal voltage for Motor to spin
+	if(voltageValue < minVolt != 0) voltageValue = minVolt; 
+	analogWrite(MOTO_UPIN,sq(voltageValue)*255.0/sq(AREF)); //--Convert Urms -> PWM duty 8-bit
 }
 	
  //--sensing minimal duty cycle for motor to spin
@@ -55,33 +65,34 @@ void MotoShieldClass::actuatorWrite(float percentValue) {//--duty cycle for the 
 void MotoShieldClass::calibration(){
 	actuatorWrite(100);
 	delay(1000); //--delay for motor to reach maximal angular velocity
-	_maxRPM = sensorReadRPM(); //--sensing max RPM
+	maxRPM = sensorReadRPM(); //--sensing max RPM
 	actuatorWrite(0); //--disabling the motor
 	delay(500); //--delay for motor to stop spinning
-	int i = 25; //--initial PWM in %, presumed potentionally minimal
+	int i = 15; //--initial PWM in %, presumed potentionally minimal
 	do{		//--infinite loop
 		  actuatorWrite(i);
-		  delay(1250); //--delay for motor to spin at least one revolution
-		  if(counted >= 14){ //--condition for detecting motor motion	
-		    	_minDuty = i; //--minimal duty cycle in %
-		    	_minRPM = sensorReadRPM();//--sensing minimal RPM
+		  delay(300); //--delay for motor to spin at least one revolution
+		  if(counted >= 4){ //--condition for detecting motor motion	
+		    	delay(1000);//--delay for motor to reach minimal angular velocity
+				minDuty = i; //--minimal duty cycle in %
+		    	minRPM = sensorReadRPM();//--sensing minimal RPM
 			    actuatorWrite(0);//--disabling the motor
-		    	break; //--end of loop
+		    	break; //--end of the loop
 		   }
 	    i++; //--incrementing duty cycle variable by 1
 	}while(1);
 }
 
 float MotoShieldClass::sensorReadRPMPerc(){//--Sensing RPM in %
-	return AutomationShield.constrainFloat(AutomationShield.mapFloat(MotoShield.sensorReadRPM(), (float)_minRPM, (float)_maxRPM, 0.0, 100.0),0.0,100.0);
+return AutomationShield.constrainFloat(AutomationShield.mapFloat(MotoShield.sensorReadRPM(), (float)minRPM, (float)maxRPM, 0.0, 100.0),0.0,100.0);
 }
 
 float MotoShieldClass::sensorReadRPM(){//--Sensing RPM 
-	return (float)counted/PPR*_K;        //--PPR # pulses per one rotation
+	return (float)counted/14.0*_K;        //--14 is the number of ticks per one rotation
 }
 
 float MotoShieldClass::sensorReadVoltage() {//--Voltage drop after the shunt(10ohm) resistor
-  return (analogRead(MOTO_YV1)-analogRead(MOTO_YV2))*5.0/1023.0;
+  return fabs((analogRead(MOTO_YV2)-analogRead(MOTO_YV1))*5.0/1023.0);
 }
 
 float MotoShieldClass::sensorReadVoltageAmp1() {//--Output from differential OpAmp in Volts
@@ -89,11 +100,11 @@ float MotoShieldClass::sensorReadVoltageAmp1() {//--Output from differential OpA
 }
 
 float MotoShieldClass::sensorReadVoltageAmp2() {     //--Output from non-inverting OpAmp in Volt
-  return analogRead(MOTO_YAMP2)*5.0/1023.0/AMP_GAIN;//--Gain of OpAmp is 2.96 
+  return analogRead(MOTO_YAMP2)*5.0/1023.0;//--Gain of OpAmp is 2.96 
 }
 
-float MotoShieldClass::sensorReadCurrent() {//--Current calculation based on non-inverting OpAmp output - Ohms law
-  return MotoShield.sensorReadVoltageAmp2()/RES*1000.0;//--R represents 10ohms - shunt resistor # 1000 - conversion to mA
+float MotoShieldClass::sensorReadCurrent() {//--Current draw [mA] calculation based on non-inverting OpAmp output - Ohms law
+  return MotoShield.sensorReadVoltageAmp2()/SHUNT*1000.0;//--R represents 10ohms - shunt resistor # 1000 - conversion to mA
 }
 
 MotoShieldClass MotoShield; //--Creating an object in MotoShieldClass 
