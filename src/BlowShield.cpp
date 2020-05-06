@@ -64,7 +64,7 @@ unsigned long int val=pressureSensor.readPressure();
 }  
 //tu prichadza sranda s PID, ktora je totalne zla a ani nema byt definovana tu, ale mali by sme pouzivat fciu 
 //z AutomationShieldu. OPRAVIT! tu mam bulharsku konstantu :( 
-float PID(float P, float I, float D,float Ts, float Ek,float Esum,float Eback){ //funkcia PID regulatora, integacny a derivacny clen je upraveny 1000kou<--prepocet Ts z millis() na sekundy
+float BlowClass::PID(float P, float I, float D,float Ts, float Ek,float Esum,float Eback){ //funkcia PID regulatora, integacny a derivacny clen je upraveny 1000kou<--prepocet Ts z millis() na sekundy
     float u=(P*Ek)+(((P*Ts)/(100000.00*I))*Esum)+((100000.00*P*D/Ts)*(Ek-Eback));
     float uc=constrain(u,0.00,100.00);
     return uc;
