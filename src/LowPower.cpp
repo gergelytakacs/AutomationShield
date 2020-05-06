@@ -24,7 +24,7 @@
 
 #include "LowPower.h"
 
-#ifdef ARDUINO_AVR_UNO
+#ifdef ARDUINO_ARCH_AVR
 
 /* Set all GPIO pins to outputs to reduce current consumption 
  * Saves about 3 mA current. There are 19 pins on the UNO.
