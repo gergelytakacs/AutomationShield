@@ -1,4 +1,4 @@
-%   AutomationShield function for plotting system PID response.
+%   AutomationShield function for plotting experiment results.
 %
 %   Works with data saved in .mat file in format of matrix with three
 %   columns - [r, y, u] - [reference, output, input] in this order.
@@ -11,9 +11,9 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Peter Chmurciak.
-%   Last update: 28.2.2020.
+%   Last update: 24.4.2020.
 
-function plotPIDResponse(aFile)                  % Function definition
+function plotResults(aFile)                      % Function definition
 if isa(aFile,'char')                             % If input is filename
 data = load(aFile);                              % Loads data to a variable
 [fPath, fName, fExt] = fileparts(aFile);         % Analyzes file properties
@@ -51,7 +51,7 @@ stairs(k, r, 'Color', [0, 0.4470, 0.7410], 'LineWidth', 1)     % Plots reference
 hold off
 xlim([k(1), k(end)])                                           % Limits range of x-axis
 ylim([minValue - range / 25, maxValue + range / 25])           % Limits range of y-axis
-title('Plot of system PID response')                           % Figure description
+title('Plot of experiment results')                            % Figure description
 legend('Input u(k)', 'Output y(k)', 'Reference r(k)', 'Location', 'northwest')
 xlabel('k')
 ylabel('u(k)   y(k)   r(k)')

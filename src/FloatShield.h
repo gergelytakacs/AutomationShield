@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 28.2.2020.
+  Last update: 4.4.2020.
 */
 
 #ifndef FLOATSHIELD_H_             // Include guard
@@ -20,9 +20,10 @@
 
 #include "AutomationShield.h"      // Include the main library
 #include <Wire.h>                  // Include the I2C protocol library
+#include "lib/BasicLinearAlgebra/BasicLinearAlgebra.h"     // Include library for matrix operations
 
 #ifndef SHIELDRELEASE              // Define release version of used hardware
-  #define SHIELDRELEASE 2          // Latest version by default
+  #define SHIELDRELEASE 1          // Latest version by default
 #endif
 
 #ifndef VL53L0X_h                                           // If library for distance sensor is not already included  
@@ -49,6 +50,7 @@ class FloatClass {                                               // Class for Fl
     void calibrate(void);                                        // Board calibration - finding out the minimal and maximal values measured by distance sensor
     void actuatorWrite(float);                                   // Write actuator - function takes input 0.0-100.0 and sets fan speed accordingly
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
+    float referenceReadAltitude(void);                           // Reference read altitude - returns potentiometer position in calibrated altitude range 0.0-324.0 (mm)
     float sensorRead(void);                                      // Sensor read - returns the altitude of the ball in tube in percentual range 0.0(ball is on the fan)-100.0(ball is on the tube ceiling)
     float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in milimetres
     float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in milimetres
@@ -56,6 +58,8 @@ class FloatClass {                                               // Class for Fl
     float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
     float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
     float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
+    #include "getGainLQ.inl"                                     // Include template function for calculating K gain for LQ control applications
+    #include "getKalmanEstimate.inl"                             // Include template function for estimating internal states of linear SISO system (Kalman filter)
 #if SHIELDRELEASE == 2
     void actuatorWriteRPM(float);                                // Write actuator RPM - function takes input 0.0-17000.0 (RPM) and sets fan speed accordingly
     volatile unsigned int pulseCount;                            // Variable for storing the amount of pulses that were measured within set time interval
