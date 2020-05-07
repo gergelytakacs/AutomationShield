@@ -14,7 +14,9 @@ float u;//akčná veličina
 
 
 void setup() {
+  Serial.begin(9600);
   BlowShield.begin();               // Define hardware pins
+  //calibracia nefunguje, treba doladit veci okolo private premennych
   BlowShield.calibration();         // Calibrates shield 
 }
 
