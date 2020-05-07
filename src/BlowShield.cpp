@@ -20,7 +20,7 @@ void BlowClass::begin(void) {
 #ifdef ARDUINO_ARCH_AVR  
 	#if SHIELDRELEASE == 1                                            // For shield version 1
 //tu chyba inicializacia I2C. predpokladam, ze sa to udeje niekde v ramci adafruit kniznic...
-		Serial.begin(9600);
+		
 		pinMode(BLOW_UPIN,OUTPUT);
 		pinMode(BLOW_RPIN,INPUT);
 		digitalWrite(BLOW_UPIN,HIGH); //turn off pump
