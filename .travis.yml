@@ -52,6 +52,14 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_LQ/FloatShield_LQ.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_MPC/FloatShield_MPC.ino
+
+#Due#
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_Identification/FloatShield_Identification.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_LQ/FloatShield_LQ.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_MPC/FloatShield_MPC.ino
+
 ### HeatShield ###
 #Uno#
  - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_PID/HeatShield_PID.ino
