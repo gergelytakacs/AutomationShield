@@ -3,10 +3,10 @@
 %   LQ feedback control of ball altitude in the FloatShield.
 %
 %   This example initialises and calibrates the board then lifts
-%   the ball off the ground and starts LQ control using predefined
-%   reference trajectory. At the end of trajectory the results
-%   are stored in 'responseLQ.mat' file and are shown on the figure
-%   on the screen.
+%   the ball off the ground and starts linear quadratic (LQ) control 
+%   using a pre-defined %   reference trajectory. At the end of trajectory
+%   the results are stored in 'responseLQ.mat' file and are shown on the 
+%   figure on the screen.
 %
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
@@ -20,21 +20,21 @@ clc; clear; close all;              % Clears command window, variables and opene
 clear estimateKalmanState;          % Clears persistent variables in estimate function
 
 FloatShield = FloatShield;          % Create FloatShield object from FloatShield class
-FloatShield.begin('COM4', 'UNO');   % Initialise shield with used Port and Board type
-FloatShield.calibrate();            % Calibrate FloatShield
+FloatShield.begin('COM4', 'UNO');   % Initialises shield with used Port and Board type
+FloatShield.calibrate();            % Calibrates FloatShield
 
-Ts = 0.025;             % Sampling period in seconds
-k = 1;                  % Algorithm step counter
-nextStep = 0;           % Algorithm step flag
-samplingViolation = 0;  % Sampling violation flag
+Ts = 0.025;                         % Sampling period in seconds
+k = 1;                              % Algorithm step counter
+nextStep = 0;                       % Algorithm step flag
+samplingViolation = 0;              % Sampling violation flag
 
 Ref = [210,160,110,145,195,245,180,130,65,95]; % Reference trajectory in mm
 T = 1200;                           % Section length
 i = 0;                              % Section counter
 response = zeros(length(Ref)*T, 3); % Preallocate output variable
 
-X = [0; 0; 0; 0];       % State vector 
-Xr = [0; 0; 0; 0];      % Reference vector 
+X = [0; 0; 0; 0];                   % State vector 
+Xr = [0; 0; 0; 0];                  % Reference vector 
 
 % Load system state-space matrices from FloatShield_LQ_Gain example
 load FloatShield_LinearSS_Discrete_Matrices_25ms

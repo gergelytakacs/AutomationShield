@@ -4,8 +4,8 @@
 %    Usage:
 %    [Ac, b0, B0] = setConstraintsMPC(uL, uU, xL, xU, np, A, B);
 %
-%    Where uL,uU are values of lower and upper limitation of input and 
-%    xL,xU are are values of lower and upper limitation of states, 
+%    Where uL,uU are values of lower and upper boundaries on input and 
+%    xL,xU are are values of lower and upper boundaries on states, 
 %    np is prediction horizon and A,B are linear state-space matrices.
 %
 %    Depending on the number of inputs to the function also only input
@@ -20,10 +20,12 @@
 %    details. This code is licensed under a Creative Commons
 %    Attribution-NonCommercial 4.0 International License.
 %
-%    Inspired by book "ZÁKLADY PREDIKTÍVNEHO RIADENIA"
+%    Inspired by the book "ZÁKLADY PREDIKTÍVNEHO RIADENIA"
 %    (from authors: Gergely Takács, Martin Gulan, STU 2018)
+%    see https://github.com/gergelytakacs/Zaklady-prediktivneho-riadenia
+%    for the book in PDF (in Slovak) and the original examples.
 %
-%    Created by Peter Chmurèiak
+%    Created by Peter Chmurciak
 %    Last update: 24.4.2020
 
 function [Ac, b0, B0] = setConstraintsMPC(p1, p2, p3, p4, p5, p6, p7)

@@ -1,5 +1,6 @@
-%    Function used to calculate required matrices H,G,F used in linear MPC
-%    through linear state-space matrices, horizon and penalisation matrices.
+%    Function used to calculate the matrices H,G,F (Hessian, etc.)
+%    for the quadratic cost function used in linear MPC through inputting
+%    the linear state-space matrices, horizon and penalisation matrices.
 % 
 %    Usage:
 %    [H, G, F] = getCostFunctionMPC(A, B, np, Q, R, P);
@@ -16,10 +17,12 @@
 %    details. This code is licensed under a Creative Commons
 %    Attribution-NonCommercial 4.0 International License.
 %
-%    Inspired by book "ZÁKLADY PREDIKTÍVNEHO RIADENIA" 
+%    Inspired by the book "ZÁKLADY PREDIKTÍVNEHO RIADENIA"
 %    (from authors: Gergely Takács, Martin Gulan, STU 2018)
+%    see https://github.com/gergelytakacs/Zaklady-prediktivneho-riadenia
+%    for the book in PDF (in Slovak) and the original examples.
 %
-%    Created by Peter Chmurèiak
+%    Created by Peter Chmurciak
 %    Last update: 24.4.2020
 
 function [H, G, F] = getCostFunctionMPC(A, B, np, Q, R, P)

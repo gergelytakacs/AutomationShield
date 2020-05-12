@@ -1,13 +1,15 @@
 /*
   FloatShield closed-loop LQ control example
 
-  LQ feedback control of ball altitude in the FloatShield.
+  Linear quadratic feedback control of ball altitude in the
+  FloatShield open-source air flotation device.
 
   This example initialises the sampling subsystem from
-  the AutomationShield library and then with the help of
-  Kalman filtering realises LQ control of the ball altitude.
-  It allows user to select wheter the reference altitude is
-  given by the potentiometer or by a predetermined reference
+  the AutomationShield library and then with estimates states
+  by Kalman filtering and implements a linear quadratic (LQ)
+  control of the ball altitude. It allows the user to select
+  wheter the reference altitude is given by the onboard
+  potentiometer or by a predetermined reference
   trajectory. Upload the code to your board and open the
   Serial Plotter tool in Arduino IDE.
 
@@ -20,37 +22,36 @@
   Last update: 24.4.2020.
 */
 
-#include <FloatShield.h>              // Include main library  
-#include <Sampling.h>                 // Include sampling library
+#include <FloatShield.h>              // Include API for FloatShield  
+#include <Sampling.h>                 // Include interrupt-based sampling framework
 
 #define MANUAL 0                      // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
-unsigned long Ts = 25;                // Sampling period in miliseconds
+unsigned long Ts = 25;                // Sampling period in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep = false;                // Flag for step function
 bool realTimeViolation = false;       // Flag for real-time sampling violation
 
-float R[] = {210.0, 160.0, 110.0, 145.0, 195.0, 245.0, 180.0, 130.0, 65.0,  95.0};    // Reference trajectory
-float y = 0.0;                                                                        // Output (Current ball altitude)
-float u = 0.0;                                                                        // Input (Fan power)
+float R[] = {210.0, 160.0, 110.0, 145.0, 195.0, 245.0, 180.0, 130.0, 65.0,  95.0};    // [mm] Reference trajectory
+float y = 0.0;                                                                        // [mm] Output (Current ball altitude)
+float u = 0.0;                                                                        // [%]  Input (Fan power)
 
 int T = 1200;             // Section length
-int i = 0;                // Section counter
+int i = 0;                // Section counter for pre-set reference
 
-// System state-space matrices
-BLA::Matrix<3, 3> A = {1, 0.02437, 0.00061, 0, 0.9502, 0.04721, 0, 0, 0.89871};
-BLA::Matrix<3, 1> B = {0.00011, 0.01321, 0.51677};
-BLA::Matrix<1, 3> C = {1, 0, 0};
+// Linear, discrete state-space matrices for FloatShield model
+BLA::Matrix<3, 3> A = {1, 0.02437, 0.00061, 0, 0.9502, 0.04721, 0, 0, 0.89871}; // State matrix A
+BLA::Matrix<3, 1> B = {0.00011, 0.01321, 0.51677};                              // Input matrix B
+BLA::Matrix<1, 3> C = {1, 0, 0};                                                // Output matrix C
 
 // Kalman process and measurement error covariances
-BLA::Matrix<3, 3> Q_Kalman = {5, 0, 0, 0, 1000, 0, 0, 0, 1000};     // Process error covariance matrix
-BLA::Matrix<1, 1> R_Kalman = {25};                                  // Measurement error covariance matrix
+BLA::Matrix<3, 3> Q_Kalman = {5, 0, 0, 0, 1000, 0, 0, 0, 1000};     // Process noise covariance matrix
+BLA::Matrix<1, 1> R_Kalman = {25};                                  // Measurement noise covariance matrix
 
 // LQ gain with integrator
-BLA::Matrix<1, 4> K = {0.45815, 0.1997, 0.63981, -0.00252};         // Calculated gain K
-
-BLA::Matrix<4, 1> X = {0, 0, 0, 0};        // Estimated state vector
-BLA::Matrix<4, 1> Xr = {0, 0, 0, 0};       // Reference state vector
+BLA::Matrix<1, 4> K = {0.45815, 0.1997, 0.63981, -0.00252};         // Pre-calculated LQ gain K
+BLA::Matrix<4, 1> X = {0, 0, 0, 0};                                 // Estimated state vector
+BLA::Matrix<4, 1> Xr = {0, 0, 0, 0};                                // Reference state vector
 
 void setup() {                       // Setup - runs only once
   Serial.begin(250000);              // Begin serial communication
@@ -58,11 +59,11 @@ void setup() {                       // Setup - runs only once
   FloatShield.begin();               // Initialise FloatShield board
   FloatShield.calibrate();           // Calibrate FloatShield board
 
-  Sampling.period(Ts * 1000);        // Set sampling period in microseconds
+  Sampling.period(Ts * 1000);        // Set sampling period in microseconds (Ts in ms)
 
-  while (1) {                                       // Wait for ball to lift off from ground
-#if MANUAL                                          // If Manual mode is active
-    Xr(0)  = FloatShield.referenceReadAltitude();   // Read reference from potentiometer
+  while (1) {                                                                 // Wait for ball to lift off from ground
+#if MANUAL                                                                    // If Manual mode is active
+    Xr(0)  = FloatShield.referenceReadAltitude();                             // Read reference from potentiometer
 #else                                                                         // If Automatic mode is active
     Xr(0)  = R[0];                                                            // Reference set to first point in trajectory
 #endif
@@ -70,13 +71,13 @@ void setup() {                       // Setup - runs only once
     u = -(K * (X - Xr))(0);                                                   // Calculate LQ system input
     FloatShield.actuatorWrite(u);                                             // Actuate
     FloatShield.getKalmanEstimate(X, u, y, A, B, C, Q_Kalman, R_Kalman);      // Estimate internal states X
-    X(3) = X(3) + (Xr(0) - X(0));                                             // Add error to the summation state
+    X(3) = X(3) + (Xr(0) - X(0));                                             // Add error to the integral state
     if (y >= Xr(0) * 2 / 3) {                                                 // If the ball is getting close to reference
       break;                                                                  // Continue program
     }
-    delay(Ts);                              // Wait before repeating the loop
+    delay(Ts);                                                                // Wait before repeating the loop
   }
-  Sampling.interrupt(stepEnable);           // Set interrupt function
+  Sampling.interrupt(stepEnable);                                             // Set interrupt function
 }
 
 void loop() {                       // Loop - runs indefinitely

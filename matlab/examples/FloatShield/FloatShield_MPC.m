@@ -1,8 +1,9 @@
-%   FloatShield closed-loop MPC response example.
+%   FloatShield closed-loop MPC control example.
 %
-%   MPC feedback control of ball altitude in the FloatShield.
+%   Model Predictive Control (MPC) of the ball altitude in the FloatShield
+%   air levitation device.
 %
-%   This example initialises and calibrates the board then lifts
+%   This example initialises and calibrates the FloatShield board then lifts
 %   the ball off the ground and starts MPC control using predefined
 %   reference trajectory. At the end of trajectory the results
 %   are stored in 'responseMPC.mat' file and are shown on the figure

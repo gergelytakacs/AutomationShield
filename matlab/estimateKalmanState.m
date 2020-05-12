@@ -19,9 +19,9 @@
 %    details. This code is licensed under a Creative Commons
 %    Attribution-NonCommercial 4.0 International License.
 %
-%    Inspired by Phil Goddard from www.goddardconsulting.ca
+%    Inspired by the tutorial of Phil Goddard from www.goddardconsulting.ca
 %
-%    Created by Peter Chmurèiak
+%    Created by Peter Chmurciak
 %    Last update: 5.4.2020
 
 function [stateEstimate, outputEstimate] = estimateKalmanState(systemInput, measuredOutput, A, B, C, Q, R, xEstimateIC)

@@ -1,7 +1,8 @@
 /*
   FloatShield closed-loop MPC control example
 
-  MPC feedback control of ball altitude in the FloatShield.
+  Model Predictive Control (MPC) of ball altitude in the 
+  FloatShield open-source air flotation device.
 
   This example initialises the sampling subsystem from
   the AutomationShield library and then with the help of
