@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 11.3.2020.
+  Last update: 10.5.2020.
 */
 
 #include "FloatShield.h"         // Include header file
@@ -125,7 +125,7 @@ float FloatClass::sensorReadDistance(void) {                                  //
   return _sensorValue;                                                        // Returns the measured distance
 }
 
-bool FloatClass::returnCalibrated(void) {                   // Returns calibration status
+bool FloatClass::wasCalibrated(void) {                   // Returns calibration status
   return _wasCalibrated;
 }
 
