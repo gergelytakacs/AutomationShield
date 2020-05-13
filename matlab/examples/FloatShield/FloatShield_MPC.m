@@ -56,9 +56,9 @@ Np = 2;                         % Prediction horizon
 % Get final state penalisation matrix P
 [K, P] = dlqr(matAhat, matBhat, Q, R);
 % Get Hessian, Gradient and F matrices of cost function
-[H, G, F] = getCostFunctionMPC(matAhat, matBhat, Np, Q, R, P); 
+[H, G, F] = calculateCostFunctionMPC(matAhat, matBhat, Np, Q, R, P); 
 % Set input constraints onto the system
-[Ac, b0] = setConstraintsMPC(uL, uU, Np); 
+[Ac, b0] = applyConstraintsMPC(uL, uU, Np); 
 
 H = (H + H') / 2;                           % Create symmetric Hessian matrix
 opt = optimoptions('quadprog', 'Display', 'none');  % Turn off display
