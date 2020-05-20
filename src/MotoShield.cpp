@@ -1,3 +1,19 @@
+/*
+  API for the MotoShield didactic hardware.
+
+  The file is a part of the application programmers interface for
+  the MotoShield didactic device for control engineering.
+  The MotoShield includes a DC Motor with Hall incremental encoder
+  and current measuring periphery.
+
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Ján Boldocký.
+  Last update: 23.4.2020.
+*/
 #include "MotoShield.h"
 #include "AutomationShield.h"
 #include "Sampling.h"
@@ -14,16 +30,14 @@ void MotoShieldClass::_InterruptSample(){ //--ISR for each sample
 
 // Sets the direction motor - clockwise if input parameter is true
 //                          - counterclockwise if input parameter is false
-bool MotoShieldClass::setDirection(bool direction = true) { //--default direction - clockwise
+void MotoShieldClass::setDirection(bool direction = true) { //--default direction - clockwise
   if (direction) { 	 //--clockwise      
     digitalWrite(MOTO_DIR_PIN1, 0);
     digitalWrite(MOTO_DIR_PIN2, 1);
-    return 1;			 //--method returns 1 if direction is set clockwise
   }
   else {             //--counter-clockwise 
     digitalWrite(MOTO_DIR_PIN1, 1);
     digitalWrite(MOTO_DIR_PIN2, 0);
-    return 0; 		//--method returns 0 if direction is set counter-clockwise
   }
 }
 
@@ -55,7 +69,6 @@ void MotoShieldClass::actuatorWrite(float percentValue) {//--duty cycle for the 
 }
 
 void MotoShieldClass::actuatorWriteVolt(float voltageValue){ //--Expects Root Mean Square Voltage value as input	
-	minVolt = AREF * sqrt(minDuty/100.0); 			//--Calculate minimal voltage for Motor to spin
 	if(voltageValue < minVolt != 0) voltageValue = minVolt; 
 	analogWrite(MOTO_UPIN,sq(voltageValue)*255.0/sq(AREF)); //--Convert Urms -> PWM duty 8-bit
 }
@@ -65,7 +78,7 @@ void MotoShieldClass::actuatorWriteVolt(float voltageValue){ //--Expects Root Me
 void MotoShieldClass::calibration(){
 	actuatorWrite(100);
 	delay(1000); //--delay for motor to reach maximal angular velocity
-	maxRPM = sensorReadRPM(); //--sensing max RPM
+	maxRPM = counted; //--sensing max RPM
 	actuatorWrite(0); //--disabling the motor
 	delay(500); //--delay for motor to stop spinning
 	int i = 15; //--initial PWM in %, presumed potentionally minimal
@@ -75,8 +88,9 @@ void MotoShieldClass::calibration(){
 		  if(counted >= 4){ //--condition for detecting motor motion	
 		    	delay(1000);//--delay for motor to reach minimal angular velocity
 				minDuty = i; //--minimal duty cycle in %
-		    	minRPM = sensorReadRPM();//--sensing minimal RPM
-			    actuatorWrite(0);//--disabling the motor
+		    	minRPM = counted;//--sensing minimal RPM
+			    minVolt = AREF * sqrt(minDuty/100.0); //--Calculate minimal voltage for Motor to spin
+				actuatorWrite(0);//--disabling the motor
 		    	break; //--end of the loop
 		   }
 	    i++; //--incrementing duty cycle variable by 1
@@ -84,7 +98,7 @@ void MotoShieldClass::calibration(){
 }
 
 float MotoShieldClass::sensorReadRPMPerc(){//--Sensing RPM in %
-return AutomationShield.constrainFloat(AutomationShield.mapFloat(MotoShield.sensorReadRPM(), (float)minRPM, (float)maxRPM, 0.0, 100.0),0.0,100.0);
+return AutomationShield.constrainFloat(AutomationShield.mapFloat(counted, (float)minRPM, (float)maxRPM, 0.0, 100.0),0.0,100.0);
 }
 
 float MotoShieldClass::sensorReadRPM(){//--Sensing RPM 
@@ -100,7 +114,7 @@ float MotoShieldClass::sensorReadVoltageAmp1() {//--Output from differential OpA
 }
 
 float MotoShieldClass::sensorReadVoltageAmp2() {     //--Output from non-inverting OpAmp in Volt
-  return analogRead(MOTO_YAMP2)*5.0/1023.0;//--Gain of OpAmp is 2.96 
+  return analogRead(MOTO_YAMP2)*5.0/1023.0/AMP_GAIN;//--Gain of OpAmp is 2.96 
 }
 
 float MotoShieldClass::sensorReadCurrent() {//--Current draw [mA] calculation based on non-inverting OpAmp output - Ohms law
