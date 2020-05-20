@@ -1,6 +1,17 @@
+/*
+  MotoShield step response example.
+
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Ján Boldocký.
+  Last update: 23.4.2020.
+*/
 #include <MotoShield.h>
 #define TS 100.0 //--Sampling period in milliseconds
-#define u  70.0 //--Step value in percent
+#define u  100.0 //--Step value in percent
 void setup() {
   Serial.begin(9600); //--Initialize serial communication # 9600 baudrate
   MotoShield.begin(TS); //--Initialize MotoShield with sampling period 100 millis
