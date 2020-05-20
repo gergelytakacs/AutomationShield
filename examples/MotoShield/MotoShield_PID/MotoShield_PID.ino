@@ -1,8 +1,23 @@
+/*
+  MotoShield PID control example.
+
+    The following code is an example of MotoShield API in use with
+    two modes of reference value setting. For PID computation, 
+    PID control library has been used.
+
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Ján Boldocký.
+  Last update: 23.4.2020.
+*/
 #include <MotoShield.h>     //--Include API
 #include <PIDAbs.h>        //--Include PID control lib
 
 #define TS 40.0            //--Defining Sample period in milliseconds
-#define AUTO 1           //--Defining reference Mode # MANUAL / AUTO
+#define AUTO 0           //--Defining reference Mode # MANUAL / AUTO
 
 #define KP 0.000001          //--PID Kp constant
 #define TI 0.0003           //--PID Ti constant
