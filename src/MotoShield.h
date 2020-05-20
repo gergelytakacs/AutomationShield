@@ -45,12 +45,12 @@ class MotoShieldClass{ //--creating a class for the MotoShield
 	float referenceRead();
 	float sensorReadRPM();
 	float sensorReadRPMPerc();
-    float sensorReadVoltage();
+    	float sensorReadVoltage();
 	float sensorReadVoltageAmp1();
 	float sensorReadVoltageAmp2();
 	float sensorReadCurrent();
    	static inline volatile uint16_t count; //--counting pulses of hall sensor encoder
-    static inline volatile uint16_t counted; //--memorizing number of pulses per sample
+    	static inline volatile uint16_t counted; //--memorizing number of pulses per sample
 	static inline volatile bool stepEnable; //--auxiliary variable # simplifies the creation of examples
 	uint32_t minRPM, minDuty, maxRPM; //--calibration variables
 	float minVolt;
