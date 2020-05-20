@@ -1,10 +1,24 @@
+%   MotoShield R1 MATLAB API.
+%
+%   This file contains MotoShield API which includes class
+%   and methods for full control of the prototype (R1). Beware,
+%   digital pins 2 and 4 have to be connected with a jumper cable
+%   in order for Velocity Measurement method to work.
+%
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+%
+%   Created by Ján Boldocký
+%   Last update: 19.04.2020
 classdef MotoShield < handle %-class definition
 
     properties(Access = public)%-public entities
         arduino; %-object for the MCU
         encoder; %-object for quadrature incremental encoder
         %-calibration variables
-        minDuty=25; %-class variable # default value 25
+        minDuty = 25; %-default value
         minRPM;
         maxRPM;
     end
@@ -20,7 +34,7 @@ classdef MotoShield < handle %-class definition
         MOTO_YAMP1 = 'A2';  %-Differential OpAmp output
         MOTO_YAMP2 = 'A3';  %-Non-inverting OpAmp output
         MOTO_RPIN = 'A4';   %-potentiometer reference
-        RES = 10.0;         %-resistance of shunt resistor in ohms
+        SHUNT = 10.0;         %-resistance of shunt resistor in ohms
         AMP_GAIN = 2.96;    %-gain of non-inverting OpAmp
         PPR = 7;            %-pulses per rotation
     end
@@ -73,7 +87,7 @@ classdef MotoShield < handle %-class definition
             voltageDropAmp2 = readVoltage(MotoShieldObject.arduino,MotoShieldObject.MOTO_YAMP2)/MotoShieldObject.AMP_GAIN * 100 / 5;
         end
         function current = sensorReadCurrent(MotoShieldObject) %-Ohms law # current calculation
-            current = voltageDropAmp2 / MotoShieldObject.RES * 1000.0;
+            current = voltageDropAmp2 / MotoShieldObject.SHUNT * 1000.0;
         end
         function calibration(MotoShieldObject) %-calibration
         actuatorWrite(MotoShieldObject,100);   %-actuate
@@ -81,12 +95,13 @@ classdef MotoShield < handle %-class definition
         MotoShieldObject.maxRPM = readSpeed(MotoShieldObject.encoder);
         actuatorWrite(MotoShieldObject,0);%-stop the motor
         pause(0.5); %-wait for motor to stop spinning
-        i = 25; %-initial duty in %, presumed potentionally minimal
+        i = 15; %-initial duty in %, presumed potentionally minimal
         while(1) %-infinite loop
-            resetCount(MotoShieldObject.encoder); %-resets count to 0
+           resetCount(MotoShieldObject.encoder); %-resets count to 0
             actuatorWrite(MotoShieldObject,i); %-actuate
-            pause(1.25); %-wait for at least one revolution
-            if abs(readCount(MotoShieldObject.encoder)) > 28 %-detecting motion # 28pulses = 1 revolution # abs() in case of decrement when clockwise dir
+            pause(0.3); %-wait for at least one revolution           
+            if abs(readCount(MotoShieldObject.encoder)) > 8 %-detecting motion
+                pause(1); %-%-wait for motor to spin at minRPM
                 MotoShieldObject.minDuty = i; %-if motor is spinning, this is minimal duty
                 MotoShieldObject.minRPM = readSpeed(MotoShieldObject.encoder); %-sense minimal RPM
                 actuatorWrite(MotoShieldObject,0); %-turn off motor
