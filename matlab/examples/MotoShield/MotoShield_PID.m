@@ -1,3 +1,15 @@
+%   MotoShield PID control example
+% 
+%   This is an example of MotoShield Matlab API in use featuring
+%   two modes of reference value setting. For PID computation, PID class is
+%   is used.
+%
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+% 
+%   Created by Gergely Takács and Ján Boldocký.
 clear
 close all
 clc 
