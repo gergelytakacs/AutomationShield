@@ -1,107 +1,90 @@
 /*
   API for the LinkShield didactic hardware.
-  
+
   The file is a part of the application programmers interface for
-  the LinkShield didactic tool for control engineering and 
+  the LinkShield didactic tool for control engineering and
   mechatronics education. The LinkShield implements an a flexible
   rotational link experiment on an Arduino shield.
-  
+
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by Gergely Takács and Martin Vríčan. 
-  Last update: 23.1.2020.
+  Created by Gergely Takács and Martin Vríčan.
+  Last update: 20.5.2020.
 */
 
 #ifndef LINKSHIELD_H_                     //Include guard
 #define LINKSHIELD_H_
 
-#include <Wire.h>
-#include <Arduino.h>
+//include necessary libraries
+#include <Wire.h>                        
+#include <Arduino.h>                
 #include <Servo.h>
-#include "lib/Adafruit_Sensor/Adafruit_Sensor.h"
-#include "lib/Adafruit_ADXL345/Adafruit_ADXL345_U.h"
 #include "AutomationShield.h"
 
 //Defining pins used by LinkShield
-#define LINK_RPIN 0   //Potentiometer pin
-#define LINK_UPIN 9   //Servo pin
+#define LINK_RPIN 0         //Potentiometer pin
+#define LINK_UPIN 9         //Servo pin
 
-Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
+#define ADXL345 0x53        //Define default addres for ADXL345 sensor
 
-class LinkClass {
+class LinkClass {                         //Creating class
   public:
-    void  begin(void);
-    float referenceRead();    //r(t)
-    void  actuatorWrite(float);          //y(t)
-    float sensorRead();  
-    void calibrate();
-  
+    void  begin(void);                    //initialization function 
+    float referenceRead();                //r(t)
+    void  actuatorWrite(float);           //y(t)
+    float sensorRead();                   //u(t)
+    void  calibrate();                    //Calibration function
+
   private:
-    int _referenceRead;
+    void  ADXL_POWER_CTL();               //Set ADXL345 to measure mode
+    void  ADXL345_BW_RATE();              //Set ADXL345 data and bandwidth rate
+    void  ADXL_DATA_FORMAT();             //ADXL345 output data formating
+    void  ADXL345_OFSZ();                 //Set offset to Z axis
+    float ADXL345_DATAZ();                //Read Z accel
+    int   _referenceRead;                 
     float _referenceValue;
     float _accelZ;
     float _angle;
-    float _sensorBias;                   // Sensor bias from 0
-    bool _wasCalibrated;                 // Variable for storing calibration status
-
-    float sensorBias(int); // Takes N measurements and computes average
+    float _sensorBias;                    // Sensor bias from 0
+    float _Z_out;
+    float sensorBias(int);                // Takes N measurements and computes average
 
 };
-#endif
-
-extern LinkClass LinkShield;
+LinkClass LinkShield;
 Servo myservo;
 
 // declaring PIN and initializing sensor library
 void LinkClass::begin() {
-  myservo.attach(LINK_UPIN,1000,2000);      // set Servo pin
-  analogReference(EXTERNAL);
-  AutomationShield.serialPrint("Accelerometer Test. \n");
-
-  /* Initialise the sensor */
-  if (!accel.begin())
-  {
-    /* There was a problem detecting the ADXL345 ... check your connections */
-    AutomationShield.serialPrint("No accelerometer Test.");
-    while (1);  
-  }
-  /* Set the range to whatever is appropriate for your project */
-  accel.setRange(ADXL345_RANGE_8_G);
-accel.setDataRate(ADXL345_DATARATE_3200_HZ);
+  myservo.attach(LINK_UPIN, 1000, 2000);    // Set Servo pin and PWM range
+  analogReference(EXTERNAL);                // Set reference voltage
+  Wire.begin();                             // Initialize I2C communication
+  LinkShield.ADXL_POWER_CTL();
+  LinkShield.ADXL_DATA_FORMAT();
+  LinkShield.ADXL345_BW_RATE();
 }
 
-
-float LinkClass::sensorBias(int testLength){
-  float _accelZsum = 0;  
-  for (int i=0; i<testLength; i++ ){
-    _accelZsum=_accelZsum+LinkShield.sensorRead();
-  }
-  return _accelZsum/testLength;
-}
-
-void LinkClass::calibrate(){
-  AutomationShield.serialPrint("Calibration...");   
-  
-  LinkShield.actuatorWrite(0.0);          // Go to zero and wait
+void LinkClass::calibrate() {
+  AutomationShield.serialPrint("Calibration...");
+  LinkShield.actuatorWrite(0.0);                    // Go to zero and wait
   delay(500);
-      
-  _sensorBias=LinkShield.sensorBias(1000);
-  _wasCalibrated = true;                                 // Sets the status of calibration to true
+  _sensorBias = -(LinkShield.sensorBias(1000)/4);   // Calculate offset to LSB/g
+  ADXL345_OFSZ();                                   
   AutomationShield.serialPrint(" sucessful.\n");
-  
-  }
+}
 
+float LinkClass::sensorBias(int testLength) {
+  float _accelZsum = 0;
+  for (int i = 0; i < testLength; i++ ) {                 //Make N measurements
+    _accelZsum = _accelZsum + LinkShield.sensorRead();    
+  }
+  return _accelZsum / testLength;                         //Compute average
+}
 
 float LinkClass::sensorRead() {
-  sensors_event_t event;
-  accel.getEvent(&event);
-  _accelZ = event.acceleration.z;
-  if(_wasCalibrated){
-    _accelZ=_accelZ-_sensorBias;
-    }
+  _accelZ = ADXL345_DATAZ();
   return _accelZ;
 }
 
@@ -112,9 +95,50 @@ float LinkClass::referenceRead() {
   return _referenceValue;
 }
 
-void LinkClass::actuatorWrite(float _angle){
-  int _modAngle=map((int)_angle,0,90,0,180);
-   myservo.write(_modAngle);
-  }
+void LinkClass::actuatorWrite(float _angle) {
+  int _modAngle = map((int)_angle, 0, 90, 0, 180);
+  myservo.write(_modAngle);
+}
 
-LinkClass LinkShield;
+void LinkClass::ADXL_POWER_CTL() {    
+  Wire.beginTransmission(ADXL345);
+  Wire.write(0x2D);
+  Wire.write(0b1000);
+  Wire.endTransmission();
+  delay(10);
+}
+
+void LinkClass::ADXL_DATA_FORMAT() {    //Data format function - Range, justify, etc...
+  Wire.beginTransmission(ADXL345);
+  Wire.write(0x31);
+  Wire.write(0b1101);
+  Wire.endTransmission();
+  delay(10);
+}
+
+void LinkClass::ADXL345_BW_RATE() {     //BandWidth and data rate setup - 1600Hz
+  Wire.beginTransmission(ADXL345);
+  Wire.write(0x2C);
+  Wire.write(0b1111);
+  Wire.endTransmission();
+  delay(10);
+}
+
+void LinkClass::ADXL345_OFSZ() {        //Offset calibration
+  Wire.beginTransmission(ADXL345);
+  Wire.write(0x20);
+  Wire.write((int)(_sensorBias));
+  Wire.endTransmission();
+  delay(10);
+}
+
+float LinkClass::ADXL345_DATAZ() {      //Reading of Z-axis value(other axis not needed)
+  Wire.beginTransmission(ADXL345);
+  Wire.write(0x36); // Start with register 0x36 (ACCEL_ZOUT_H)
+  Wire.endTransmission(false);
+  Wire.requestFrom(ADXL345, 2, true);
+  _Z_out = ( Wire.read() | Wire.read() << 8)/4096; // Z-axis value
+  return _Z_out;
+}
+
+#endif
