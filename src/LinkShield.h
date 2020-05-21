@@ -91,7 +91,7 @@ float LinkClass::sensorRead() {
 //values from potentiometer in degrees , for fututre use
 float LinkClass::referenceRead() {
   _referenceRead = analogRead(LINK_RPIN);
-  _referenceValue = AutomationShield.mapFloat((float)_referenceRead, 0.00, 1023.00, 0.00, 180.00);
+  _referenceValue = AutomationShield.mapFloat((float)_referenceRead, 0.00, 1023.00, 0.00, 90.00);
   return _referenceValue;
 }
 
