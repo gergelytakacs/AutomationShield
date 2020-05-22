@@ -12,9 +12,9 @@
 clc; clear; close all;
 
 %% Data preprocessing
-load aprbsResult.mat                            % Read identificaiton results
-Ts = 0.02;                                      % Sampling Period
-data = iddata(y,u,Ts,'Name','Experiment');      % Create identification data object
+load aprbsResult.mat                            %_Load data
+Ts = 0.02;                                      %_Sampling Period
+data = iddata(y,u,Ts,'Name','Experiment');      %_Identification data object
 data = detrend(data);                           % Remove offset and linear trends  
 data.InputName = 'Input Voltage';               %_Input
 data.InputUnit =  'V';                          %_Input unit
@@ -29,7 +29,7 @@ Ke = 1;     %_Electromotive force constant # Voltage over Velocity
 Kt = 1;     %_Motor torque constant # Torque over Current
 R = 10.3;         %_Electric resistance
 L = 0.1;        %_Electric inductance
-% TF Model
+
 b0 = Kt;                         %_Gain # Numerator
 a2 =  J*L;                       %_Polynomial coefficients # Denominator
 a1 = (J*R+b*L);
@@ -41,17 +41,16 @@ sys.Structure.Denominator.Maximum = [1000 1000 inf];
 sys.Structure.Denominator.Minimum = [0 0 0];
 sys.Structure.Numerator.Maximum= inf;
 sys.Structure.Numerator.Minimum= 0;
-%Configure estimation procedure
-Options = tfestOptions;                         % Identification options for tfest
-Options.Display = 'on';                         % Show progress
-Options.InitialCondition = 'estimate';         % Estimate initial condition as well
-Options.SearchOptions.MaxIterations = 100;
+Options = tfestOptions;                        %_Options # tfest
+Options.Display = 'on';                        
+Options.InitialCondition = 'estimate';         
+Options.SearchOptions.MaxIterations = 100; %_Maximum number of iterations
 
 %_Identification
 disp('Estimated model:')                       
-model = tfest(data,sys,Options)                % Identification result model
-zmodel = c2d(model,Ts);                        % Identification result discrete model
-compare(data,model);                           % Compare data to model
-                                               % List model parameters
-grid on                                        % Turn on the grid
-save MotoShield_GreyboxModel_TF model
+model = tfest(data,sys,Options)                %_Identified model
+zmodel = c2d(model,Ts);                        %_Discrete model
+compare(data,model);                           %_Model/data comparison
+                                               
+grid on                                       
+save MotoShield_GreyboxModel_TF model zmodel
