@@ -90,26 +90,27 @@ classdef MotoShield < handle %-class definition
             current = voltageDropAmp2 / MotoShieldObject.SHUNT * 1000.0;
         end
         function calibration(MotoShieldObject) %-calibration
-        actuatorWrite(MotoShieldObject,100);   %-actuate
+        writePWMDutyCycle(MotoShieldObject.arduino, MotoShieldObject.MOTO_UPIN, 1);   %-actuate
         pause(1);   %-wait for motor to spin at maxRPM
         MotoShieldObject.maxRPM = readSpeed(MotoShieldObject.encoder);
-        actuatorWrite(MotoShieldObject,0);%-stop the motor
+        writePWMDutyCycle(MotoShieldObject.arduino, MotoShieldObject.MOTO_UPIN, 0);%-stop the motor
         pause(0.5); %-wait for motor to stop spinning
-        i = 15; %-initial duty in %, presumed potentionally minimal
+        i = 0.15; %-initial duty in %, presumed potentionally minimal
+        resetCount(MotoShieldObject.encoder); %-resets count to 0
         while(1) %-infinite loop
-           resetCount(MotoShieldObject.encoder); %-resets count to 0
-            actuatorWrite(MotoShieldObject,i); %-actuate
+            writePWMDutyCycle(MotoShieldObject.arduino, MotoShieldObject.MOTO_UPIN, i);%-actuate
             pause(0.3); %-wait for at least one revolution           
             if abs(readCount(MotoShieldObject.encoder)) > 8 %-detecting motion
                 pause(1); %-%-wait for motor to spin at minRPM
-                MotoShieldObject.minDuty = i; %-if motor is spinning, this is minimal duty
+                MotoShieldObject.minDuty = i*100; %-if motor is spinning, this is minimal duty
                 MotoShieldObject.minRPM = readSpeed(MotoShieldObject.encoder); %-sense minimal RPM
                 actuatorWrite(MotoShieldObject,0); %-turn off motor
                 break; %-exit the loop
             end
-            i=i+1; %-increment
+            i=i+0.01; %-increment
         end %-end of while loop
         end %- end of funciton
+        
         function rpm = sensorReadRPM(MotoShieldObject) %-sensing RPM # proper nomenclature
         rpm = readSpeed(MotoShieldObject.encoder);
         end
