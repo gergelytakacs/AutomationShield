@@ -1,36 +1,50 @@
-//volanie potrebných knižnic 
-#include <BlowShield.h>
-//toto neviem, ci nam treba... bude treba odladit. :)
-#include <Sampling.h>            // Include sampling
-int Ts=4000;//časový interval pre časovanie v milisekundách
-#define P 1.0                // PID Kp
-#define I 4.0               // PID Ti
-#define D 0.00001           // PID Td
-float Ek=0;//regulačná odchýlka v čase k
-float Esum=0;//suma všetkých odchýlok do času k
-float Eback=0;//predchádzajúca regulačná odchýlka
-float u;//akčná veličina
-//koniec casti PID
+#include "BlowShield.h"
+//#include "Sampling.h"
 
+#define Kp  30
+#define Ti  3
+#define Td  1
+unsigned long Ts = 4000;  
+bool enable = false;
 
 void setup() {
-  Serial.begin(9600);
-  BlowShield.begin();               // Define hardware pins
-  //calibracia nefunguje, treba doladit veci okolo private premennych
-  BlowShield.calibration();         // Calibrates shield 
+  // put your setup code here, to run once:
+Serial.begin(9600);
+BlowShield.begin();
+BlowShield.calibration();
+
+// Initialize sampling function
+//Sampling.period(Ts * 1000);   // Sampling init.
+//Sampling.interrupt(stepEnable); // Interrupt fcn.
+
+PIDAbs.setKp(Kp); 
+PIDAbs.setTi(Ti); 
+PIDAbs.setTd(Td);  
+//PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
+
 }
 
 void loop() {
+ // if (enable) {               // If ISR enables
+    Step();                 // Algorithm step
+  //  enable=false;               // Then disable
+  //}  
+//}
   // put your main code here, to run repeatedly:
-  //toto tu ma byt vlastne krokova funkcia v interrupte. 
- Eback=Ek; //uloženie predchádzajúcej reg. odchýlky skôr, než sa prepíše.
-  Ek=BlowShield.referenceRead()-BlowShield.sensorRead();//načítanie aktuálnej reg. odchýlky
-  Esum=Esum+Ek;//inkrementácia Esum
-  u=PID(P,I,D,Ts,Ek,Esum,Eback);//Zavolanie fcie PID() z knižnice.
-uWrite(u);//zápis akčnej veličiny na ledku 
-//vypísanie hodnoty na potenciometri v % a svetla z LDR v trubičke ako % na škále minimum a maximum:
-Serial.print(BlowShield.referenceRead());
-Serial.print(",");
-Serial.println(BlowShield.sensorRead());
-delayMicroseconds(Ts);
+
+
+//void stepEnable(){              // ISR 
+//  enable=true;                  // Change flag
+}
+
+void Step(){
+
+  float r = BlowShield.referenceRead();
+  float y = BlowShield.sensorRead();
+  float u = PIDAbs.compute(r-y,0,100,0,100);   // PID
+  BlowShield.actuatorWrite(u);        // Actuate
+  
+  Serial.print(BlowShield.referenceRead());
+  Serial.print(",");
+  Serial.println(BlowShield.sensorRead());
 }
