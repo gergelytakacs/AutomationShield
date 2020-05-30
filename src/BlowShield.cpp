@@ -26,7 +26,7 @@ void BlowClass::begin(void) {
  #endif
  
  if (!pressureSensor.begin(BMP280_ADRESA)) {                                     // Setting up I2C pressure sensor
-    //AutomationShield.error("BlowShield failed to initialise!");                // *****Chyba pri kompilacii kvoli diplicitnemu volaniu - ZISTIT PRECO!!!*****
+    AutomationShield.error("BlowShield failed to initialise!");                
 //toto neviem naco je, ale bolo to u Gigiho tak zatial to nechavam
   while (1);
  }
@@ -62,7 +62,7 @@ if (val>106000) {                                                               
 }
 //pracovna verzia, treba poanglictit. a popratat a spravne datove typy pouzit.
   float percento = map((long int)val, _minPressure,_maxPressure, 0.00, 100.00);
-  //percento = AutomationShield.constrainFloat(_sensorPercent, 0.0, 100.0);                  // *****Chyba pri kompilacii kvoli diplicitnemu volaniu - ZISTIT PRECO!!!*****
+        //percento = AutomationShield.constrainFloat(_sensorPercent, 0.0, 100.0);                  
   return percento;
 }
 

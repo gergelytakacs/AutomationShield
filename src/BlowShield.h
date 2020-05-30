@@ -15,7 +15,7 @@
 #ifndef BLOWSHIELD_H_             // Include guard
 #define BLOWSHIELD_H_
 
-#include "AutomationShield.h"      // Include the main library
+#include <AutomationShield.h>     // Include the main library
 #include <Wire.h>                  // Include the I2C protocol library
 
 
