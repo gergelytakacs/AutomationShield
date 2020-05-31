@@ -1,4 +1,4 @@
-﻿/*
+/*
   tu príde pokec, ktorý napíše Vladko. niečo v zmysle: 
   API for the FloatShield didactic hardware.
   The file is a part of the application programmers interface for
