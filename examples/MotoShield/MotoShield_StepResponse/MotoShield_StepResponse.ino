@@ -10,10 +10,10 @@
   Last update: 23.4.2020.
 */
 #include <MotoShield.h>
-#define TS 100.0 //--Sampling period in milliseconds
+#define TS 40.0 //--Sampling period in milliseconds
 #define u  100.0 //--Step value in percent
 void setup() {
-  Serial.begin(9600); //--Initialize serial communication # 9600 baudrate
+  Serial.begin(250000); //--Initialize serial communication # 9600 baudrate
   MotoShield.begin(TS); //--Initialize MotoShield with sampling period 100 millis
   MotoShield.calibration(); //--Calibration method
   MotoShield.actuatorWrite(u); //--Step value in percents
