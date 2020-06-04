@@ -28,25 +28,24 @@ R = [80, 70, 50, 85, 35, 60]; %-Reference trajectory
 T = 100;                                     %-Section length
 i = 0;                                        %-Section counter
 
-Kp = 0.05;                          %-PID constants
-Ti = 0.003;                          
-Td = 1;                          
+Kp = 0.007;                          %-PID constants
+Ti = 0.002;                          
+Td = 0.1;                          
 PID.setParameters(Kp, Ti, Td, Ts);  %-Setting PID constants
 
 tic                                          %-Start measuring time
 while (1)     %-Loop
-    
         if (toc >= Ts * k)                            %-If its time for next sample
             stepEnable = 1;                             %-Next step premission
         end
     if (stepEnable)                          %-Start algorithm if stepEnabled
+        if(Manual == 0)             %-AUTOMATIC mode 
         if (mod(k, T*i) == 1)                %-Moving trough trajectory values
             i = i + 1;                       
             if (i > length(R))               %-If trajectory ended
                 MotoShield.actuatorWrite(0.0); %-Disable Motor
                 break                        %-End of Loop
             end
-            if(Manual == 0)             %-AUTOMATIC mode 
                 r = R(i);                 %-Move to next the value in trajectory
             end                    
         end
@@ -54,7 +53,7 @@ while (1)     %-Loop
             r = MotoShield.referenceRead(); %-Read reference from potentiometer
         end
         y = MotoShield.sensorReadRPMPerc();       %-Sense RPM
-        u = PID.compute(r-y, 0, 100, 0, 100)  %-computing Actuating Signal
+        u = PID.compute(r-y, 0, 100, 0, 100);  %-computing Actuating Signal
         MotoShield.actuatorWrite(u);          %-Actuate
         response(k, :) = [r, y, u];            %-Storing data
         k = k + 1;                             %-Incrementing sample index
