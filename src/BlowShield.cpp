@@ -28,6 +28,7 @@ void BlowClass::begin(void) {
     AutomationShield.error("BlowShield failed to initialise!");           // Error if sensor is not connected
   while (1);
  }
+delay(5000);
 }
 
 void BlowClass::calibration(void) {                       // Board calibration

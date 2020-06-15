@@ -4,9 +4,9 @@
 unsigned long Ts = 1;           // Sampling in milliseconds
 bool enable = false;            // Flag for sampling
 
-#define Kp  10                  // PID Kp
-#define Ti  3                   // PID Ti
-#define Td  0.1                 // PID Td
+#define Kp  15                  // PID Kp
+#define Ti  1.5                   // PID Ti
+#define Td  0.01                 // PID Td
 
 void setup() {
   
@@ -21,7 +21,7 @@ Sampling.interrupt(stepEnable); // Interrupt fcn.
 PIDAbs.setKp(Kp);               // Proportional
 PIDAbs.setTi(Ti);               // Integral
 PIDAbs.setTd(Td);               // Derivative
-//PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
+PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
 
 }
 

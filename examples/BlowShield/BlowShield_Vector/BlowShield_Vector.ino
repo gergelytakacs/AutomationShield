@@ -4,14 +4,14 @@
 unsigned long Ts = 1;           // Sampling in milliseconds
 bool enable = false;            // Flag for sampling
 float r = 0.0;  
-float R[] = {35.0, 50.0, 75.0, 60.0, 40.0};
+float R[] = {50.0, 40.0, 60.0, 30.0, 45.0};
 int T = 300;
 unsigned long k = 0;    
 int i;
 
-#define Kp  30                  // PID Kp
-#define Ti  3                   // PID Ti
-#define Td  0.1                 // PID Td
+#define Kp  20                  // PID Kp
+#define Ti  2                   // PID Ti
+#define Td  0.01                 // PID Td
 
 void setup() {
   
@@ -26,7 +26,7 @@ Sampling.interrupt(stepEnable); // Interrupt fcn.
 PIDAbs.setKp(Kp);               // Proportional
 PIDAbs.setTi(Ti);               // Integral
 PIDAbs.setTd(Td);               // Derivative
-//PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
+PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
 
 }
 
