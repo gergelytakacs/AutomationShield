@@ -4,7 +4,7 @@
 
 ## About AutomationShield
 
-Arduino, MATLAB and Simulink IDE for the AutomationShield expansion boards for control engineering education. You can read more about the AutomationShield project in our [Wiki page](https://github.com/gergelytakacs/AutomationShield/wiki).
+Arduino, MATLAB and Simulink API and example collection for the AutomationShield expansion boards for control engineering and mechatronics education. You can read more about the AutomationShield project in our [Wiki page](https://github.com/gergelytakacs/AutomationShield/wiki).
 
 ## Downloading and Installing the AutomationShield Library
 
