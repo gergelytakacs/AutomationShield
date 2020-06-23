@@ -1,4 +1,4 @@
-#include "BlowShield.h"         // Include the library
+#include <BlowShield.h>         // Include the library
 #include <Sampling.h>           // Include sampling
 
 unsigned long Ts = 1;           // Sampling in milliseconds
