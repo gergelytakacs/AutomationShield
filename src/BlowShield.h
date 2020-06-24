@@ -1,16 +1,16 @@
 /*
-  tu príde pokec, ktorý napíše Vladko. niečo v zmysle: 
-  API for the FloatShield didactic hardware.
+  API for the BlowShield didactic hardware.
   The file is a part of the application programmers interface for
-  the FloatShield didactic tool for control engineering and
-  mechatronics education. The FloatShield implements an air-flow
-  levitation experiment on an Arduino shield.
+  the BlowShield didactic tool for control engineering and
+  mechatronics education. The goal of this particular shield is 
+  to obtain and keep the required value of pressure in the vessel 
+  despite its leakage.Arduino shield.
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 4.4.2020.
+  Created by Martin Staroň, Anna Vargová, Eva Vargová and Martin Vričan.
+  Last update: 24.6.2020.
 */
 #ifndef BLOWSHIELD_H_             // Include guard
 #define BLOWSHIELD_H_
