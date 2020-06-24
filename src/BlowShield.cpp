@@ -17,7 +17,7 @@ Dalsi pokec a'la Vlado tu.
 
 // Sensor library
 
-void BlowClass::readCoefficients() {
+void BlowClass::readCoefficients() {                   // read calibration coeficient
   dig_T1 = ((uint16_t)((BlowShield.readRegister(BMP280_DIG_T1_MSB_REG) << 8) + BlowShield.readRegister(BMP280_DIG_T1_LSB_REG)));
   dig_T2 = ((int16_t)((BlowShield.readRegister(BMP280_DIG_T2_MSB_REG) << 8) + BlowShield.readRegister(BMP280_DIG_T2_LSB_REG)));
   dig_T3 = ((int16_t)((BlowShield.readRegister(BMP280_DIG_T3_MSB_REG) << 8) + BlowShield.readRegister(BMP280_DIG_T3_LSB_REG)));
@@ -79,8 +79,8 @@ uint32_t BlowClass::press_read() {        //value from sensor
 }
 
 uint32_t BlowClass::temp_read() {        //value from sensor
-  Wire.beginTransmission(BMP280_addr);       //sensor address
-  Wire.write(0xFA);         //first reg
+  Wire.beginTransmission(BMP280_addr);   //sensor address
+  Wire.write(0xFA);                      //first register
   Wire.endTransmission(false);
   Wire.requestFrom(BMP280_addr, 3, true);
   temp_raw_data = Wire.read();
@@ -88,11 +88,11 @@ uint32_t BlowClass::temp_read() {        //value from sensor
     temp_raw_data |= Wire.read();
     temp_raw_data <<= 8;
     temp_raw_data |= Wire.read();
-  temp_raw_data >>= 4;   //remove zeroes from last bit
+  temp_raw_data >>= 4;                 //remove zeroes from last bit
   return temp_raw_data;
 }
 
-void BlowClass::readTemperature() {   //tempriture counting
+void BlowClass::readTemperature() {    //tempriture counting
   int32_t _var1, _var2;
 
   int32_t adc_T = temp_read();
@@ -103,7 +103,7 @@ void BlowClass::readTemperature() {   //tempriture counting
   t_fine = _var1 + _var2 ;
 }
 
-float BlowClass::readPressure() {  //pressure counting
+float BlowClass::readPressure() {        //pressure counting
   int64_t _var1, _var2, _press;
 
   int32_t adc_P = BlowShield.press_read();
@@ -117,7 +117,7 @@ float BlowClass::readPressure() {  //pressure counting
   _var1 = (((((int64_t)1) << 47) + _var1)) * ((int64_t)dig_P1) >> 33;
 
   if (_var1 == 0) {
-    return 0; // avoid exception caused by division by zero
+    return 0;               // avoid exception caused by division by zero
   }
   _press = 1048576 - adc_P;
   _press = (((_press << 31) - _var2) * 3125) / _var1;
@@ -125,7 +125,7 @@ float BlowClass::readPressure() {  //pressure counting
   _var2 = (((int64_t)dig_P8) * _press) >> 19;
 
   _press = ((_press + _var1 + _var2) >> 8) + (((int64_t)dig_P7) << 4);
-  return (float)_press / 256;    //pressure in Pa
+  return (float)_press / 256;            //pressure in Pa
 }
 
 
@@ -142,7 +142,7 @@ void BlowClass::begin(void) {
 Wire.begin();
   BlowShield.begin_config();
   BlowShield.readCoefficients();
-  BlowShield.readTemperature();       //potrebne pre t_fine
+  BlowShield.readTemperature();             //necesary for t_fine
 delay(5000);
 }
 
