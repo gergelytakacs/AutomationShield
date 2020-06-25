@@ -56,7 +56,7 @@
 
 // Defining pins used by the FloatShield board
 #if SHIELDRELEASE == 1
-  #define BLOW_UPIN 11              // Pump (Actuator)
+  #define BLOW_UPIN 11             // Pump (Actuator)
   #define BLOW_RPIN A0             // Potentiometer runner (Reference)
 #endif
 
@@ -67,7 +67,7 @@ class BlowClass {           // Class for BlowShield device
     // BlowShield public function
     void begin(void);                                            // Board initialisation - initialisation of pressure sensor, pin modes and variables
     void Step(void);
-    void calibration(void);                                        // Board calibration - finding out the minimal and maximal values measured by pressure sensor
+    void calibration(void);                                      // Board calibration - finding out the minimal and maximal values measured by pressure sensor
     void actuatorWrite(float);                                   // Write actuator - function takes input 0.0-100.0 and sets pump speed accordingly
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
     float sensorRead(void);                                      // Sensor read - returns the pressure in percentual range 0.0-100.0
@@ -81,9 +81,9 @@ class BlowClass {           // Class for BlowShield device
 
   private:
     // BlowShield private 
-    float _minPressure;                  // Variable for storing minimal distance measured by sensor in milimetres
-    float _maxPressure;                  // Variable for storing maximal distance measured by sensor in milimetres
-    float _sensorPercent;                // Variable for percentual altitude of the ball in the tube 0.0-100.0
+    float _minPressure;                  // Variable for storing minimal pressure
+    float _maxPressure;                  // Variable for storing maximal pressure
+    float _sensorPercent;                // Variable for percentual pressure in the vessel 0.0-100.0
     bool _wasCalibrated;                 // Variable for storing calibration status
     
     // Sensor private
