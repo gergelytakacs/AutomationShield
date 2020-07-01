@@ -10,7 +10,7 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Takács and Jakub Mihalík. 
+  Created by Gergely TakĂˇcs and Jakub MihalĂ­k. 
   Last update: 14.01.2019.
 */
 
@@ -28,11 +28,9 @@ void MagnetoShieldClass::begin(){
 	#elif ARDUINO_ARCH_SAM
 		analogReadResolution(12);
 		Wire1.begin();
-		analogReadResolution(12);
 	#elif ARDUINO_ARCH_SAMD
 		analogReadResolution(12);
 		Wire.begin();
-		analogReadResolution(12);
 	#endif
 }
 
