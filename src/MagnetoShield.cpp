@@ -10,8 +10,8 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely TakĂˇcs and Jakub MihalĂ­k. 
-  Last update: 14.01.2019.
+  Created by Gergely Takács and Jakub Mihalík. 
+  Last update: 1.07.2020.
 */
 
 #include "MagnetoShield.h"
