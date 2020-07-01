@@ -10,7 +10,7 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Tak·cs and Jakub MihalÌk. 
+  Created by Gergely Tak√°cs and Jakub Mihal√≠k. 
   Last update: 14.01.2019.
 */
 
@@ -84,8 +84,8 @@
 
 // Gain constants for current and voltage measurements
 #if SHIELDRELEASE == 2 ||  SHIELDRELEASE==3 
-	#define VGAIN 4.0   						   // Defines the voltage sensing gain (voltage divider)
-    #define IGAIN 33.33333333 					   // Defines the current sensing gain mA/V
+	#define VGAIN 4.2256  							   // Defines the voltage sensing gain (voltage divider), theoretical value 4.0
+    #define IGAIN 33.33333333 					   	   // Defines the current sensing gain mA/V
 	//#define IBIAS 3.01 	   					   	   // Current sensing bias mA
 #endif
 
@@ -162,7 +162,7 @@ private:
 	uint16_t maxCalibrated = A1302_HSAT;		// ADC on Hall for ceiling
     bool calibrated = 0;						// If the calibration routine was completed
     #if SHIELDRELEASE == 3
-    float voltageRef = 10.3;					// Maximal voltage measured directly on electromagnet, possibility to change with changeVoltageRef()
+    float voltageRef = 10.6; 					// Maximal voltage measured directly on electromagnet, possibility to change with changeVoltageRef()
     #endif
 };
 
