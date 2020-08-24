@@ -107,6 +107,11 @@
 		#define P3 2.464							    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
 		#define P4 0.08407								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
 	#endif
+#SHIELDRELEASE==3
+		#define P1    1.41353993			      		// Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
+	    #define P2  -15.4070873						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
+        #define P3  389.266686						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
+		#define P4  -11.7613432						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
 #endif
 
 // Distance model based on magnetic flux density

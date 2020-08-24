@@ -211,11 +211,12 @@ float MagnetoShieldClass::gaussToDistance(float g){
 #if SHIELDRELEASE == 1 || SHIELDRELEASE == 2
 	uint8_t MagnetoShieldClass::voltageToDac(float vOut){
 		uint8_t dacOut = (uint8_t)round(P1*pow(vOut,P2)+P3*exp((vOut*P4)));
-		return dacOut;
+		return dacOut; 
 	}
 #elif SHIELDRELEASE == 3
 	uint16_t MagnetoShieldClass::voltageToDac(float vOut){
-		uint16_t dacOut = (uint16_t)round(vOut*4095/voltageRef);
+		uint16_t dacOut = (uint16_t)round(P1 * pow(vOut,3) + P2 * pow(vOut,2) + P3 * vOut + P4);
+     	//uint16_t dacOut = (uint16_t)round(vOut*4095/voltageRef);
 		return dacOut;
 	}
 #endif
