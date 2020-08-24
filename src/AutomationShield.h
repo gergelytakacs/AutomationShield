@@ -51,7 +51,14 @@
     void serialPrint(const char *str);
     float constrainFloat(float x, float min_x, float max_x); 
     byte percToPwm(float perc); 
+	void printLowHigh(char *named, float low, float high, char *unit, short int precision); // Prints a single line for range measurements in an ordered form
+	void printSeparator(char); 																	// Prints a line of dashes, 60 characters wide, then a new line.
+	void printLowHighFirst(void); 															// Creates a header for displaying numeric ranges with a label and unit
+	bool printTestResults(char *text,float value, float low, float high);	 				// Evaluates and prints if a number fits into a range	
 }; // end of the class
+
+
+
 
 extern AutomationShieldClass AutomationShield; // Declare external instance
 

@@ -49,5 +49,60 @@ byte AutomationShieldClass::percToPwm(float perc){
  Serial.print(str);                                    // Print message to serial monitor
  #endif 
  }
+ 
+ 
+// Prints a single line for range measurements in an ordered form, e.g.
+// Coil current 0.0 50.6  mA
+// Enter the name of the range, first number, second number, then a unit
+void AutomationShieldClass::printLowHigh(char *named, float low, float high, char *unit, short int precision){
+  Serial.print(named);  
+  Serial.print("\t");
+  Serial.print(low, precision);
+  Serial.print("\t");
+  Serial.print(high, precision);
+  Serial.print("\t");
+  Serial.println(unit);
+}
+
+// Prints a line of dashes, 60 characters wide, then a new line.
+void AutomationShieldClass::printSeparator(char separator){
+ if (separator == "-"){
+   Serial.println("------------------------------------------------------------");
+ }
+ else if (separator == "="){
+   Serial.println("============================================================");
+ }
+ else if (separator == "*"){
+   Serial.println("************************************************************");
+ }
+ else{
+   Serial.println("------------------------------------------------------------"); 
+ }
+}
+
+// Creates a header for displaying numeric ranges with a label and unit, e.g.
+// Begins with a new line, displays TEST LOW HIGH  UNIT, then a line of dashes.
+void AutomationShieldClass::printLowHighFirst(void){
+   Serial.println("");
+  Serial.println("TEST \t\tLOW\tHIGH\tUNIT");
+  printSeparator("-");
+}
+
+// Evaluates and prints if a number fits into a range
+// First come a description, then the value to be tested, the lower
+// end of the range, and the higher end. 
+// Returns 0 on success and 1 on failure
+bool AutomationShieldClass::printTestResults(char *text,float value, float low, float high){
+  Serial.print(text);
+  Serial.print("\t\t");                // print tab characters
+  if (value >= low && value <= high) {
+    Serial.println(" Ok.");
+    return 0;
+  }
+  else {
+    Serial.println(" Fail.");
+    return 1;
+  }
+}
 
 AutomationShieldClass AutomationShield; // Construct instance (define)

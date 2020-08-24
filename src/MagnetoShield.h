@@ -11,7 +11,7 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
   Created by Gergely Takács and Jakub Mihalík. 
-  Last update: 14.01.2019.
+  Last update: 21.08.2020.
 */
 
 #ifndef MAGNETOSHIELD_H							// Include guard
@@ -21,7 +21,7 @@
 #include "Wire.h" 								// I2C library for the DAC chip
 
 #ifndef SHIELDRELEASE
-	#define SHIELDRELEASE 3   					//  Use number only: e.g. for R2 is 2
+	#define SHIELDRELEASE 3   					//  Use number only: e.g. for R3 is 3
 #endif
 
 
@@ -40,6 +40,13 @@
 	#define MCP4725 (0x60)						// 12-bit DAC, Chip: MCP4725
 #endif
 
+// Maximal levels of the DAC
+#if SHIELDRELEASE==1 || SHIELDRELEASE==2
+  #define DACMAX 255 // Maximal decimal DAC value for 8 bits
+#else
+  #define DACMAX 4095 // Maximal decimal DAC value for 12 bits
+#endif
+
 // Input pins on Adruino
 #define MAGNETO_YPIN A3							// Defines the location of the Hall sensor
 #if SHIELDRELEASE==2 || SHIELDRELEASE==3
@@ -52,7 +59,7 @@
 #define EMAGNET_HEIGHT 20.0				        // [mm] Location of electromagnet above ground
 #define MAGNET_LOW	3.0  					    // [mm] Top of the magnet from ground - distance from Hall element
 #define MAGNET_HIGH 8.0						    // [mm] Top of the magnet from ground - distance from Hall element
-#define A1302_SENSITIVITY	769.23	    		// [G/V] = 1.3 mV/G Sensitivity of the A1302 Hall sensor
+#define HALL_SENSITIVITY	769.23	    		// [G/V] = 1.3 mV/G Sensitivity of the A1302 Hall sensor
 #define LOAD_RESISTANCE	196.6					// [Ohm] Load resistance
 
 #if SHIELDRELEASE==1 || SHIELDRELEASE==2
@@ -62,23 +69,23 @@
 #endif
 
 #if SHIELDRELEASE == 1
-	#define A1302_LSAT	19							// [10-bit ADC] Lower saturation of the Hall sensor
-	#define A1302_HSAT 382							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+	#define HALL_LSAT	19							// [10-bit ADC] Lower saturation of the Hall sensor
+	#define HALL_HSAT 382							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
 #elif SHIELDRELEASE == 2
 	#ifdef ARDUINO_ARCH_AVR
-		#define A1302_LSAT	30							// [10-bit ADC] Lower saturation of the Hall sensor
-		#define A1302_HSAT 586							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+		#define HALL_LSAT	30							// [10-bit ADC] Lower saturation of the Hall sensor
+		#define HALL_HSAT 586							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
 	#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM
-		#define A1302_LSAT	120							// [12-bit ADC] Lower saturation of the Hall sensor
-		#define A1302_HSAT 2346							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
+		#define HALL_LSAT	120							// [12-bit ADC] Lower saturation of the Hall sensor
+		#define HALL_HSAT 2346							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
 	#endif
 #elif SHIELDRELEASE == 3
 	#ifdef ARDUINO_ARCH_AVR
-		#define A1302_LSAT	28							// [10-bit ADC] Lower saturation of the Hall sensor
-		#define A1302_HSAT 631							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+		#define HALL_LSAT	28							// [10-bit ADC] Lower saturation of the Hall sensor
+		#define HALL_HSAT 631							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
 	#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM
-		#define A1302_LSAT	112							// [12-bit ADC] Lower saturation of the Hall sensor
-		#define A1302_HSAT 2526							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
+		#define HALL_LSAT	112							// [12-bit ADC] Lower saturation of the Hall sensor
+		#define HALL_HSAT 2526							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
 	#endif
 #endif
 
@@ -107,11 +114,11 @@
 		#define P3 2.464							    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
 		#define P4 0.08407								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
 	#endif
-#SHIELDRELEASE==3
-		#define P1    1.41353993			      		// Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
-	    #define P2  -15.4070873						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
-        #define P3  389.266686						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
-		#define P4  -11.7613432						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
+#elif SHIELDRELEASE==3
+	#define P1    1.41353993			      		// Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
+	#define P2  -15.4070873						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
+    #define P3  389.266686						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
+	#define P4  -11.7613432						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
 #endif
 
 // Distance model based on magnetic flux density
@@ -140,7 +147,7 @@ public:
 	void dacWrite(uint16_t DAClevel);			// Writes DAClevel (DAC levels) to DAC register
 	uint16_t voltageToDac(float vOut);
 	float getVoltageRef();						// Returns voltage reference for DAC to Voltage conversion (4095 = voltageRef = default 10.3V)
-	void changeVoltageRef(float v_ref);			// Change voltage reference for DAC to Voltage conversion
+	void setVoltageRef(float v_ref);			// Change voltage reference for DAC to Voltage conversion
 	#endif
 	
 		
@@ -158,16 +165,16 @@ public:
 	// Get functions to extract private variables
 	uint16_t getMinCalibrated();						// Returns the minimum calibrated value for the magnetic field (10-bit ADC levels).
 	uint16_t getMaxCalibrated();						// Returns the maximum calibrated value for the magnetic field (10-bit ADC levels).
-
+	
 	
 private:							
     float d_p1;			     					// Calibrated distance function constant (f(y) = d_p1*x^d_p2) for Flux vs. distance from magnet
 	float d_p2;									// Calibrated distance function constant (f(y) = d_p1*x^d_p2) for Flux vs. distance from magnet
-	uint16_t minCalibrated = A1302_LSAT;		// ADC on Hall for ground
-	uint16_t maxCalibrated = A1302_HSAT;		// ADC on Hall for ceiling
+	uint16_t minCalibrated = HALL_LSAT;		// ADC on Hall for ground
+	uint16_t maxCalibrated = HALL_HSAT;		// ADC on Hall for ceiling
     bool calibrated = 0;						// If the calibration routine was completed
     #if SHIELDRELEASE == 3
-    float voltageRef = 10.6; 					// Maximal voltage measured directly on electromagnet, possibility to change with changeVoltageRef()
+		float voltageRef = 9.8; 			    // [V] Maximal voltage measured directly on electromagnet, possibility to change manually with changeVoltageRef()
     #endif
 };
 
