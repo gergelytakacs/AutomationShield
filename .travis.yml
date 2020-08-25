@@ -88,19 +88,19 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_R2_Identification/MagnetoShield_R2_Identification.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
- - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_PowerCalibrate.ino
 #Due#
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_R2_PID/MagnetoShield_R2_PID.ino
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_R2_Identification/MagnetoShield_R2_Identification.ino
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
- - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_PowerCalibrate.ino
 #Zero#
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_R2_PID/MagnetoShield_R2_PID.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_R2_Identification/MagnetoShield_R2_Identification.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_PowerCalibrate.ino
 
 ### MotoShield ###
 #Uno#
