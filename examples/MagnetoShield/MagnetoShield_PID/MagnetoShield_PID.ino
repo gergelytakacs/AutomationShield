@@ -29,9 +29,16 @@
 
 // PID Tuning
 // Negative part of the gain in the error computation
-#define KP 2.3                        // PID Kp
-#define TI 0.1                        // PID Ti
-#define TD 0.03                       // PID Td
+
+#ifdef SHIELDRELEASE==1 || SHIELDRELEASE==2
+  #define KP 2.3                        // PID Kp
+  #define TI 0.1                        // PID Ti
+  #define TD 0.03                       // PID Td
+#elif SHIELDRELEASE==3
+  #define KP 1.3                        // PID Kp
+  #define TI 0.3                        // PID Ti
+  #define TD 0.01                       // PID Td
+#endif 
 
 #if MANUAL                            // If it is manual reference
   Ts=3250;                             // Slightly slower for manual
@@ -40,8 +47,15 @@ unsigned long k = 0;                  // Sample index
 bool enable=false;                    // Flag for sampling 
 bool realTimeViolation=false;         // Flag for real-time violations
 float r = 0.0;                        // Reference
-float R[]={14.0,13.0,14.0,14.5,13.5}; // Reference trajectory (pre-set)
-int i = i;                            // Experiment section counter
+
+
+#ifdef SHIELDRELEASE==1 || SHIELDRELEASE==2
+  float R[]={14.0,13.0,14.0,14.5,13.5}; // Reference trajectory (pre-set
+#elif SHIELDRELEASE==3
+  float R[]={14.5,13.5,15.5,16.0,14.0}; // Reference trajectory (pre-set)
+#endif 
+
+int   i = 0;                          // Experiment section counter
 float y = 0.0;                        // [mm] Output
 float u = 0.0;                        // [V] Input          
 
@@ -115,7 +129,10 @@ void step(){
 
 // Control algorithm
 y = MagnetoShield.sensorRead();         // [mm] sensor read
-u = PIDAbs.compute(-(r-y),0,12,0,20);      // Compute constrained absolute-form PID
+u = PIDAbs.compute(-(r-y),0,MagnetoShield.getVoltageRef(),-10,10);      // Compute constrained absolute-form PID
+
+
+
 MagnetoShield.actuatorWrite(u);         // [V] actuate
 
 // Print to serial port

@@ -217,12 +217,14 @@ float MagnetoShieldClass::gaussToDistance(float g){
 	// Computes DAC levels for equivalent magnet voltage. For release R3 is the conversion linear
 #if SHIELDRELEASE == 1 || SHIELDRELEASE == 2
 	uint8_t MagnetoShieldClass::voltageToDac(float vOut){
-		uint8_t dacOut = (uint8_t)round(P1*pow(vOut,P2)+P3*exp((vOut*P4)));
+		uint8_t dacOut = (uint8_t)(round(P1*pow(vOut,P2)+P3*exp((vOut*P4))));
 		return dacOut;
 	}
 #elif SHIELDRELEASE == 3
 	uint16_t MagnetoShieldClass::voltageToDac(float vOut){
-		uint16_t dacOut = (uint16_t)round(P1 * pow(vOut,3) + P2 * pow(vOut,2) + P3 * vOut + P4);
+		float dacOutTemp=round((P1 * pow(vOut,3)) + (P2 * pow(vOut,2)) + (P3 * vOut) + P4);
+		if (dacOutTemp<=0.0) dacOutTemp=0.0;		// Prevent negative values
+		uint16_t dacOut = (int16_t)(dacOutTemp);
 		return dacOut;
 	}
 #endif
