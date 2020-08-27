@@ -85,7 +85,7 @@ void AutomationShieldClass::printSeparator(char separator){
 void AutomationShieldClass::printLowHighFirst(void){
    Serial.println("");
   Serial.println("TEST \t\tLOW\tHIGH\tUNIT");
-  printSeparator("-");
+  printSeparator('-');
 }
 
 // Evaluates and prints if a number fits into a range

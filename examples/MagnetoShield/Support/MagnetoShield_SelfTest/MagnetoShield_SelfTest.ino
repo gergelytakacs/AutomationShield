@@ -22,9 +22,9 @@ void setup() {
   Serial.begin(9600);       // Starts serial communication
   Serial.println();
   Serial.println();
-  AutomationShield.printSeparator("=");
+  AutomationShield.printSeparator('=');
   Serial.println("TESTING MAGNETOSHIELD COMPONENTS");
-  AutomationShield.printSeparator("=");
+  AutomationShield.printSeparator('=');
   MagnetoShield.begin();       // Initializes shield
   MagnetoShield.dacWrite(0);   // Turns off magnet
 
@@ -121,7 +121,7 @@ else {
 
 // Summary --------------------------------------
 Serial.println(" ");
-AutomationShield.printSeparator("=");
+AutomationShield.printSeparator('=');
 Serial.println("Details:");
 AutomationShield.printLowHighFirst();
 AutomationShield.printLowHigh("Potentiometer",potReferenceLow,potReferenceHi,"%",0);
