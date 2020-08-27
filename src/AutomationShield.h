@@ -45,16 +45,24 @@
 
 // class(es) .h part of the library
  class AutomationShieldClass{   
-  public:    
+ public:    
     float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
     void error(const char *str);
-    void serialPrint(const char *str);
     float constrainFloat(float x, float min_x, float max_x); 
     byte percToPwm(float perc); 
+	float quality(float, char *method); 															// Quality metric for feedback control input
+	
+	// Printing functions
+    void serialPrint(const char *str); 														// Should be renamed to diagnostic printLowHigh
+	void print(float, float, float);
 	void printLowHigh(char *named, float low, float high, char *unit, short int precision); // Prints a single line for range measurements in an ordered form
-	void printSeparator(char); 																	// Prints a line of dashes, 60 characters wide, then a new line.
+	void printSeparator(char); 																// Prints a line of dashes, 60 characters wide, then a new line.
 	void printLowHighFirst(void); 															// Creates a header for displaying numeric ranges with a label and unit
 	bool printTestResults(char *text,float value, float low, float high);	 				// Evaluates and prints if a number fits into a range	
+
+
+  private:
+	float qualityVal;																		// Variable to store quality at all times
 }; // end of the class
 
 

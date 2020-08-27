@@ -66,13 +66,13 @@ void AutomationShieldClass::printLowHigh(char *named, float low, float high, cha
 
 // Prints a line of dashes, 60 characters wide, then a new line.
 void AutomationShieldClass::printSeparator(char separator){
- if (separator == "-"){
+ if (separator == '-'){
    Serial.println("------------------------------------------------------------");
  }
- else if (separator == "="){
+ else if (separator == '='){
    Serial.println("============================================================");
  }
- else if (separator == "*"){
+ else if (separator == '*'){
    Serial.println("************************************************************");
  }
  else{
@@ -103,6 +103,33 @@ bool AutomationShieldClass::printTestResults(char *text,float value, float low, 
     Serial.println(" Fail.");
     return 1;
   }
+}
+
+// Data print of a certain number of floats for displaying and logging. 
+// A common task with AutomationShield. Different number of arguments
+// is handled by method overloading.
+void AutomationShieldClass::print(float value1, float value2, float value3){
+  Serial.print(value1);
+  Serial.print(", ");
+  Serial.print(value2);
+  Serial.print(", ");
+  Serial.println(value3);
+}
+
+float AutomationShieldClass::quality(float e, char *metric){
+	// see http://facstaff.cbu.edu/rprice/lectures/tuning.html
+	if (metric == "IE") { 												// Integral Square Error
+		return qualityVal = (qualityVal + e);
+	}
+	else if (metric == "IAE") { 										// Integral Square Error
+		return qualityVal = (qualityVal + abs(e));
+	}
+	else if (metric == "ISE") { 										// Integral Square Error
+		return qualityVal = (qualityVal + pow(e,2));
+	}
+	else {
+		return -1.0;
+	}	
 }
 
 AutomationShieldClass AutomationShield; // Construct instance (define)
