@@ -29,7 +29,7 @@ short Saturation;
 
 void setup() {
    Serial.begin(9600);                           // Starts serial communication
-   AutomationShield.printSeparator("=");          //
+   AutomationShield.printSeparator('=');          //
    Serial.println("Calibration in progress...");   // Begin note
    MagnetoShield.begin();                        // Initializes shield
    MagnetoShield.calibration();                  // Calibrates shield
