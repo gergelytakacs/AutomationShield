@@ -60,7 +60,7 @@ float y = 0.0;                        // [mm] Output
 float u = 0.0;                        // [V] Input          
 
 #ifdef ARDUINO_ARCH_AVR
-  unsigned long Ts = 3200;                // Sampling in microseconds, lower limit 3.2 ms
+  unsigned long Ts = 3250;                // Sampling in microseconds, lower limit near 3.2 ms
   int T = 1500;                           // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAMD
   unsigned long Ts = 4200;                 // Sampling in microseconds, lower limit 
@@ -130,9 +130,6 @@ void step(){
 // Control algorithm
 y = MagnetoShield.sensorRead();         // [mm] sensor read
 u = PIDAbs.compute(-(r-y),0,MagnetoShield.getVoltageRef(),-10,10);      // Compute constrained absolute-form PID
-
-
-
 MagnetoShield.actuatorWrite(u);         // [V] actuate
 
 // Print to serial port

@@ -68,6 +68,18 @@ void setup() {
   AutomationShield.printTestResults("Testing Hall sensor high...",hallHi, 550.0, 650.0);
   testFail = testFail || AutomationShield.printTestResults("Testing Hall sensor high...",hallHi, 550.0, 650.0);
 
+  Serial.print("Testing magnet polarity...");
+  Serial.print("\t\t");                // print tab characters
+  float magnetPolarity = 1.0;
+  if (hallHi > 650) magnetPolarity = 0.0;
+  if (magnetPolarity) {
+    Serial.println(" Ok.");
+  }
+  else {
+    Serial.println(" Fail.");
+    testFail = 1;
+  }
+  
 // Voltage supply test --------------------------------------
 #if SHIELDRELEASE==1 || SHIELDRELEASE==2
 
