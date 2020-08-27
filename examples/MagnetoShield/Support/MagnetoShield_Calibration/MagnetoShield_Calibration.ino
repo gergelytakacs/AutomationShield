@@ -34,7 +34,7 @@ void setup() {
    MagnetoShield.begin();                        // Initializes shield
    MagnetoShield.calibration();                  // Calibrates shield
    Serial.println("Done.");   // Begin note
-   AutomationShield.printSeparator("="); 
+   AutomationShield.printSeparator('='); 
      
    Minimum=MagnetoShield.getMinCalibrated();     //  Getting borders for flying
    Maximum=MagnetoShield.getMaxCalibrated(); 
