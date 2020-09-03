@@ -27,29 +27,16 @@
 #include <Sampling.h>            // Include sampling
 
 
-// PID Tuning
-// Negative part of the gain in the error computation
-#ifdef SHIELDRELEASE==1 || SHIELDRELEASE==2
-  float R[] = {14.0, 13.0, 14.0, 14.5, 13.5, 13.0}; // Reference trajectory (pre-set)
-  float wPP = 1.5;                              // [V] Injected input noise amplitude (peak-to-peak)
-#elif SHIELDRELEASE==3
-  float R[] = {14.5, 13.5, 15.5, 16.0, 14.0};   // Reference trajectory (pre-set)
-  float wPP = 2.0;                                // [V] Injected input noise amplitude (peak-to-peak)
-#endif
-
+float R[]={14.0}; // Reference trajectory (pre-set)
+int T = 10000;                           // Experiment section length (steps)
+float wPP = 6.0;                         // [V] Injected input noise amplitude (peak-to-peak)
 
 // PID Tuning parameters
 // Less-aggressive tuning introduces less saturation
 // Negative part of gain built in the error computation
-#ifdef SHIELDRELEASE==1 || SHIELDRELEASE==2
- #define KP  2.1                            // PID Kp
- #define TI  0.1                            // PID Ti
- #define TD  0.02                           // PID Td
-#elif SHIELDRELEASE==3
- #define KP 1.3                        // PID Kp
- #define TI 0.3                        // PID Ti
- #define TD 0.01                       // PID Td
-#endif
+  #define KP 2.3                        // PID Kp
+  #define TI 0.1                        // PID Ti
+  #define TD 0.03                       // PID Td
 
 unsigned long k = 0;                  // Sample index
 bool enable = false;                  // Flag for sampling
@@ -64,14 +51,14 @@ float wBias=wPP/2.0;                  // [V] Noise bias
 int   wP=(int)wPP*100;                // For (pseudo)-random generator
 
 #ifdef ARDUINO_ARCH_AVR
-unsigned long Ts = 3300;                // Sampling in microseconds, lower limit 3.2 ms
-int T = 1500;                           // Experiment section length (steps)
+  unsigned long Ts = 3250;                // Sampling in microseconds, lower limit 3.2 ms
+
 #elif ARDUINO_ARCH_SAMD
   unsigned long Ts = 5000;              // Sampling in microseconds
   int T = 1500;                         // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAM
-  unsigned long Ts = 1300;              // Sampling in microseconds
-  int T = 3000;                         // Experiment section length (steps) 
+  unsigned long Ts = 3250;              // Sampling in microseconds
+  int T = 1500;                         // Experiment section length (steps) 
 #endif  
 
 void setup() {
