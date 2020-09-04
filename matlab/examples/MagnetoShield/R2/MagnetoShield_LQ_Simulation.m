@@ -8,9 +8,9 @@ Ts=5E-3;                                                        % [s] sampling f
 R=[14.0,13.0,14.0,14.5,13.5,13.0]';                             % [mm] Reference levels for the simulation
 T=1000;                                                         % [samples] Section length for each reference level
 
-y0=13.64                                                        % [mm] Linearization point based on the experimental identification
-i0=0.0032                                                       % [A] Linearization point based on the experimental identification
-u0=2.09                                                         % [V] Linearization point based on the experimental identification
+y0=13.64;                                                       % [mm] Linearization point based on the experimental identification
+i0=0.0032;                                                      % [A] Linearization point based on the experimental identification
+u0=2.09;                                                        % [V] Linearization point based on the experimental identification
 
 ra=(R-y0)/1000;                                                 % [mm] Adjusted reference levels for the linearization point
 t=0:Ts:(T*length(R)-1)*Ts;                                      % [s] Time vector for the simulation

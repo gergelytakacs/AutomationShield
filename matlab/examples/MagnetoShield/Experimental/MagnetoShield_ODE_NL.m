@@ -13,9 +13,9 @@
 %   Created by Jakub Mihalík and Gergely Takács. 
 %   Last update: 25.09.2019.
 
-function [dx,y] = MagnetoShield_ODE(t,x,u,K,m,R,L,g,C,varargin)
+function [dx,y] = MagnetoShield_ODE(t,x,u,K,m,R,L,g,varargin)
 
 y = [x(1); x(3)];									% Outputs available: position, current
 dx(1) = x(2);										% Order 2 -> 2 x Order 1
-dx(2) = -g+K/m*x(3)/x(1)^4-C*x(2); 					% Mechanical equation
-dx(3) = -R/L*x(3)+1/L*u(1)+K*1/(L*x(1)^4)*x(2);	    % Electrical equation
+dx(2) =  g - K/m*x(3)^2/x(1)^2;         % Mechanical equation
+dx(3) = -R/L*x(3)+1/L*u(1)+(2*K/L)*(x(3)*x(1)^2)*x(2);	    % Electrical equation

@@ -14,20 +14,16 @@
 %   Last update: 25.09.2019.
 
 function [A,B,C,D,K] = MagnetoShield_ODE_Lin2(par,ts,aux)
-alpha =  par(1);
-beta= par(2);
-gamma =  par(3);
-delta = par(4);
-epsilon = par(5);
+
                                  % Parameter guess
 
-A = [ 0      1     0 ;
-      alpha  0    -beta;
-      0     gamma -delta];
+A = [ 0       1     0 ;
+      par(1)  0    -par(2);
+      0    -par(3) -par(4)];
 
 B = [ 0; 
       0; 
-      epsilon ];
+      par(5)];
 C = [ 1 0 0;
       0 0 1 ];
 D = zeros(2,1);
