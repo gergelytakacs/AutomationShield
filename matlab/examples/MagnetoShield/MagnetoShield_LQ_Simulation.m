@@ -2,20 +2,20 @@ clc; clear; close all;                                          % Close and clea
 
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
 
-disturbance=1;                                                  % Adds disturbance to simulation (1)
+disturbance=0;                                                  % Adds disturbance to simulation (1)
 
 Ts=5E-3;                                                        % [s] sampling for discrete control
 R=[14.0,13.0,14.0,14.5,13.5,13.0]';                             % [mm] Reference levels for the simulation
 T=1000;                                                         % [samples] Section length for each reference level
 
-y0=13.64                                                        % [mm] Linearization point based on the experimental identification
-i0=0.0032                                                       % [A] Linearization point based on the experimental identification
-u0=2.09                                                         % [V] Linearization point based on the experimental identification
+y0=14.0068;                                                     % [mm] Linearization point based on the experimental identification
+i0=0.0169;                                                      % [A] Linearization point based on the experimental identification
+u0=3.6651 ;                                                     % [V] Linearization point based on the experimental identification
 
 ra=(R-y0)/1000;                                                 % [mm] Adjusted reference levels for the linearization point
 t=0:Ts:(T*length(R)-1)*Ts;                                      % [s] Time vector for the simulation
 umin=0;                                                         % [V] Lower input constraint
-umax=12;                                                        % [V] Upper input constraint
+umax=10;                                                        % [V] Upper input constraint
 i=1;                                                            % [-] Section counter for the simulation
 r=ra(1);                                                        % [mm] First reference to start simulation
 

@@ -1,7 +1,11 @@
+
+  
 clc; clear all;                                 % Clears screen and all variables
 
+fixedInductance=0;                              % Fixed or distance dependent inductance?
+                                                % to mathematical model
 load('IDExperiment1');
-Ts=0.003250;                                    % [s] Sampling
+Ts=0.003250;                                       % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output in meters
 u=result(:,2);                                  % [V] Input is closed loop + probe signal
 i=result(:,3)/1000;                             % [A] Current
@@ -20,6 +24,7 @@ data = data(100:end);                           % Discard the time when magnet i
 data=detrend(data);                             % Discard offset                               
 dataf = fft(data);                              % Frequency domain 
 
+% Initial parameters for linearized model
 %% Parameters
 m  = 0.945E-3;                                  % [kg] Magnet mass
 R  = 198.3;                                     % [Ohm] Solenoid resistance
@@ -35,11 +40,16 @@ i0 = mean(i);                                   % [A] Current linearization arou
 % Initial states
 h0=data.y(1,1);                                 % Initial position estimate
 dh0=(data.y(2,1)-data.y(1,1))/Ts;               % Initial velocity estimate
-ii0=data.y(1,2);                                % Initial current estimate
+ii0=data.y(1,2);                                 % Initial current estimate
 
-sys = idgrey('MagnetoShield_ODE',[m; Km; R; L; Ke],'c',[y0; u0; i0]);
-sys.DisturbanceModel = 'estimate';              % Estimate disturbance model
-sys.InitialState = 'estimate';                  % Estimate initial states
+% Initial parameters for generic linearized model
+alpha   = 2*(Km/m)*u0^2/y0^3;                   % Linearized parameter guess
+beta    = 2*(Km/m)*u0/y0^2;                     % Linearized parameter guess
+gamma   = 2*Ke*i0/(L*y0^2);                     % Linearized parameter guess
+delta   = R/L;                                  % Linearized parameter guess
+epsilon = 1/L;                                  % Linearized parameter guess
+
+sys = idgrey('MagnetoShield_ODE_LP',[alpha;beta;gamma;delta;epsilon],'c',[]);
 
 Options = greyestOptions;
 Options.Display = 'on';                         % Show progress
@@ -48,6 +58,11 @@ Options.InitialState = 'estimate';              % Estimate initial condition
 model = greyest(dataf,sys,Options)
 
 compare(dataf,model)
+
+
+
+
+
 
 
 

@@ -132,8 +132,8 @@ Ld=['L (measured): ',num2str(L),' [H],   L (model): ',num2str(1/model.b(3),3),' 
 disp(Ld)
 Rd=['R (measured): ',num2str(R),' [Ohm], R (model): ',num2str(-model.a(3,3)/model.b(3),3),' [Ohm]'];
 disp(Rd)
+
 if fixedInductance==0 
-   
 Kmodel=([model.a(2,1)*2*m*y0^3/u0^2 -(model.a(2,3)*2*m*y0^2)/u0]);
 Kstd=std([model.a(2,1)*2*m*y0^3/u0^2 -(model.a(2,3)*2*m*y0^2)/u0]);
 Kdm=['Km (guess): ',num2str(Km), ',    Km (model): ',num2str(Kmodel(1))];
@@ -142,4 +142,6 @@ Kde=['Ke (guess): ',num2str(Km), ',    Ke (model): ',num2str(Kmodel(2))];
 disp(Kde)
 end
 
+model = model*1000;
+save MagnetoShield_Models_Greybox_SS model      % Save plant model (mm)
 

@@ -31,8 +31,8 @@
   
 clc; clear all;                                 % Clears screen and all variables
 close all;                                      % Closes all figures
-load ID_PID_4000us.mat                          % Load data file
-Ts=0.004;                                       % [s] Sampling
+load MagnetoShield_ID_Data.mat                  % Load data file
+Ts=0.003250;                                    % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output (position)
 u=result(:,2);                                  % [V] Input and probe signal
 i=result(:,3)/1000;                             % [i] Current
@@ -44,7 +44,7 @@ data.OutputName = 'Position';                   % Output name
 data.OutputUnit = 'm';                          % Output unit
 data.Tstart = 0;                                % Starting time
 data.TimeUnit = 's';                            % Time unit
-data = data(100:end);                           % Discard the time when magnet is on ground, pick close to linearization point              
+%data = data(100:end);                           % Discard the time when magnet is on ground, pick close to linearization point              
 data = detrend(data,1);                         % Remove steady-state component to get delta formulation
 dataf = fft(data);                              % Frequency domain (tfest() handles unstable models only in f-domain)
 
@@ -62,7 +62,7 @@ disp(['Linearized around ',num2str(y0*1000),' mm, at ',num2str(u0),' V.'])
 %% Creating model structure
 b0= -(2*K*i0)/(m*L*y0^2);                       % Gain
 a2=  (R/L);                                     % Polynomial coefficients
-a1=  ((2*K*i0^2)*(2*K-L*y0))/(m*L*y0^4)
+a1=  ((2*K*i0^2)*(2*K-L*y0))/(m*L*y0^4);
 a0= -(2*K*R*i0^2)/(m*L*y0^3);
 
 disp('Initial model:')
@@ -84,36 +84,37 @@ compare(model, dataf);                          % Compare to original spectra
 model=model*1000;                               % Plant model, but in mm for better scaling
 save MagnetoShield_Models_Greybox_TF model      % Save plant model (mm)
 
+
+
 %% Response in closed-loop
 P=c2d(model,Ts);                                % Plant, but discrete
 
 % Original feedback controller used in the identification procedure
-Kp=2.1;                                         % [V*mm]
+Kp=2.3;                                         % [V*mm]
 Ti=0.1;                                         % [s]
 Td=0.02;                                        % [s]
-C = pidstd(Kp,Ti,Td,inf,Ts)                     % Baseline controller
-S=feedback(C*P,-1);                             % Closed-loop negative feedback
+C  = pidstd(Kp,Ti,Td,inf,Ts)                    % Baseline controller
+S  = feedback(C*P,-1);                           % Closed-loop negative feedback
 
-% Simulate response
+
 figure(2)                                       % New figure
 subplot(2,1,1)                                  % Subplot structure
-T=0:0.004:29.9;                                 % Time vector
-U=u(1:length(T))-u0;                            % True input minus linearization point is delta input
-Y = y0*1000-lsim(S,U,T);                        % Simulated output plus linearization point                            
-plot(T,y(1:length(T))*1000)                     % Experiment output in mm
+Tsim=0:Ts:(length(y)-1)*Ts;                     % Time vector
+U = u-u0;                                         % True input minus linearization point is delta input
+Y = y0*1000-lsim(S,U,Tsim);                     % Simulated output plus original linearization point                            
+plot(Tsim,Y)                                    % Simulated output
 hold on                                         % Hold graph
-plot(T,Y)                                       % Simulated output
-legend('Experiment','Simulation')               % Figure legend     
+plot(Tsim,y*1000)                               % Experiment output in mm
+legend('Simulation','Experiment')               % Figure legend     
 xlabel('Time (s)')                              % X-label
 ylabel('Distance (mm)')                         % Y-label
 grid on                                         % Grid on
-axis([0,30,1,20])                               % Set axis          
+axis([0,20,0,20])                               % Set axis          
 
-subplot(2,1,2)                                  % Subplot structure
-T=0:0.004:29.9;                                   % Time vector               
-plot(T,u(1:length(T)))                          % Experiment input in V
+subplot(2,1,2)                                  % Subplot structure     
+plot(Tsim,u)                          % Experiment input in V
 legend('Experiment')                            % Figure legend     
 xlabel('Time (s)')                              % X-label
 ylabel('Voltage (V)')                           % Y-label
 grid on                                         % Grid on
-axis([0,30,1,12])                               % Set axis       
+axis([0,20,1,12])                               % Set axis       

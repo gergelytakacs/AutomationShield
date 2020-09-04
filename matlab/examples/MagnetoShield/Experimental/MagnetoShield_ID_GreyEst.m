@@ -17,7 +17,7 @@ data.OutputUnit{2} = 'A';                       % Output 2 unit
 data.Tstart = 0;                                % Starting time
 data.TimeUnit = 's';                            % Time unit
 data = data(100:end);                           % Discard the time when magnet is on ground, pick close to linearization point
-data=detrend(data);                             % Discard offset  
+data=detrend(data);                             % Discard offset                               
 dataf = fft(data);                              % Frequency domain 
 
 %% Parameters
@@ -38,31 +38,17 @@ dh0=(data.y(2,1)-data.y(1,1))/Ts;               % Initial velocity estimate
 ii0=data.y(1,2);                                % Initial current estimate
 
 sys = idgrey('MagnetoShield_ODE',[m; Km; R; L; Ke],'c',[y0; u0; i0]);
-
-% %m
-% sys.Structure.Parameters.Minimum(1)=0.1E-3;
-% sys.Structure.Parameters.Maximum(1)=1.5E-3;
-sys.Structure.Parameters.Free(1)=0;
-% %Km
-sys.Structure.Parameters.Minimum(2)=0;
-sys.Structure.Parameters.Maximum(2)=1;
-%R
-sys.Structure.Parameters.Minimum(3)=R/1.1;
-sys.Structure.Parameters.Maximum(3)=R*1.1;
-%L
-sys.Structure.Parameters.Minimum(4)=L/2;
-sys.Structure.Parameters.Maximum(4)=L*2;
-%Ke
-sys.Structure.Parameters.Minimum(5)=0;
-sys.Structure.Parameters.Maximum(5)=1;
-
+sys.DisturbanceModel = 'estimate';              % Estimate disturbance model
+sys.InitialState = 'estimate';                  % Estimate initial states
 
 Options = greyestOptions;
 Options.Display = 'on';                         % Show progress
+Options.Focus =   'simulation';                 % Identification focus
+Options.EnforceStability = 0;                   % Unstable model
 Options.InitialState = 'estimate';              % Estimate initial condition
+Options.DisturbanceModel= 'estimate';
 
-model = greyest(dataf,sys,Options)
-
+model=greyest(dataf,sys,Options)
 compare(dataf,model)
 
 
