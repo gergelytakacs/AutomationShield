@@ -51,14 +51,11 @@ float wBias=wPP/2.0;                  // [V] Noise bias
 int   wP=(int)wPP*100;                // For (pseudo)-random generator
 
 #ifdef ARDUINO_ARCH_AVR
-  unsigned long Ts = 3250;                // Sampling in microseconds, lower limit 3.2 ms
-
+  unsigned long Ts = 3250;              // Sampling in microseconds, lower limit 3.2 ms
 #elif ARDUINO_ARCH_SAMD
-  unsigned long Ts = 5000;              // Sampling in microseconds
-  int T = 1500;                         // Experiment section length (steps) 
+  unsigned long Ts = 5000;              // Sampling in microseconds                
 #elif ARDUINO_ARCH_SAM
   unsigned long Ts = 3250;              // Sampling in microseconds
-  int T = 1500;                         // Experiment section length (steps) 
 #endif  
 
 void setup() {
