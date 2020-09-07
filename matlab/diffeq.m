@@ -1,8 +1,8 @@
 %   AutomationShield SISO difference equation
 %
 %   Solves a SISO difference equation at time (k), that is computes y(k)
-%   for a(1)*y(n) = b(1)*x(n) + b(2)*x(n-1) + ... + b(nb+1)*x(n-nb)
-%                             - a(2)*y(n-1) - ... - a(na+1)*y(n-na)
+%   for y(n) = b(1)*x(n) + b(2)*u(n-1) + ... + b(nb+1)*u(n-nb)
+%                        - a(2)*y(n-1) - ... - a(na+1)*y(n-na)
 %
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
