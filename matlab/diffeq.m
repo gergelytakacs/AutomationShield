@@ -12,16 +12,25 @@
 %   Created by Gergely Takács. 
 %   Last update: 7.9.2020.
 
-function y = diffeq(a,b,u)
+function y = diffeq(a,b,u,varargin)
 
 persistent Ybuf Ubuf                           % Creates a persistent variable
 
 if isempty(Ybuf)
     na   = length(a);                          % Determines order of a
-    nb   = length(b);                          % Determines order of b         
+    nb   = length(b);                          % Determines order of b
     
-    Ybuf = zeros(1,na-1);                      % Creates a buffer for y(k)   
-    Ubuf = zeros(1,nb-1);                      % Creates a buffer for u(k)
+    if nargin == 4
+        Ybuf = varargin{1}*ones(1,na-1);                      % Creates a buffer for y(k)
+        Ubuf = zeros(1,nb-1);                         % Creates buffer for u(k)    else if nargin == 5
+    else if nargin == 5;
+            Ybuf = varargin{1}*ones(1,na-1);                      % Creates a buffer for y(k)
+            Ubuf = varargin{2}*ones(1,nb-1);                      % Creates a buffer for u(k)
+        else
+            Ybuf = zeros(1,na-1);                      % Creates a buffer for y(k)
+            Ubuf = zeros(1,nb-1);                      % Creates a buffer for u(k)
+        end
+    end
 end
 
 y = sum(Ubuf.*b(2:end))-sum(Ybuf.*a(2:end));   % Computes y(k)
