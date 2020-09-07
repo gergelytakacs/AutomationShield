@@ -27,12 +27,12 @@
 %   Attribution-NonCommercial 4.0 International License.
 % 
 %   Created by Gergely Takács. 
-%   Last update: 25.09.2019.
+%   Last update: 7.9.2020.
   
 clc; clear all;                                 % Clears screen and all variables
 close all;                                      % Closes all figures
-load MagnetoShield_ID_Data.mat                  % Load data file
-Ts=0.003250;                                    % [s] Sampling
+load MagnetoShield_ID_Data.mat                          % Load data file
+Ts=0.00325;                                       % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output (position)
 u=result(:,2);                                  % [V] Input and probe signal
 i=result(:,3)/1000;                             % [i] Current
@@ -44,7 +44,7 @@ data.OutputName = 'Position';                   % Output name
 data.OutputUnit = 'm';                          % Output unit
 data.Tstart = 0;                                % Starting time
 data.TimeUnit = 's';                            % Time unit
-%data = data(100:end);                           % Discard the time when magnet is on ground, pick close to linearization point              
+data = data(100:end);                           % Discard the time when magnet is on ground, pick close to linearization point              
 data = detrend(data,1);                         % Remove steady-state component to get delta formulation
 dataf = fft(data);                              % Frequency domain (tfest() handles unstable models only in f-domain)
 
@@ -62,7 +62,7 @@ disp(['Linearized around ',num2str(y0*1000),' mm, at ',num2str(u0),' V.'])
 %% Creating model structure
 b0= -(2*K*i0)/(m*L*y0^2);                       % Gain
 a2=  (R/L);                                     % Polynomial coefficients
-a1=  ((2*K*i0^2)*(2*K-L*y0))/(m*L*y0^4);
+a1=  ((2*K*i0^2)*(2*K-L*y0))/(m*L*y0^4)
 a0= -(2*K*R*i0^2)/(m*L*y0^3);
 
 disp('Initial model:')

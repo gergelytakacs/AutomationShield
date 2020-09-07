@@ -1,22 +1,36 @@
+clc; clear; 
 load MagnetoShield_Models_Greybox_TF
-load MagnetoShield_ID_Data
+load MagnetoShield_PID_Data
 
+Ts=0.005;
+y0=mean(result(:,2));
 %% Response in closed-loop
 P=c2d(model,Ts);                                % Plant, but discrete
 
 % Original feedback controller used in the identification procedure
-Kp=2.3;                                         % [V*mm]
-Ti=0.1;                                         % [s]
-Td=0.02;                                        % [s]
-C  = pidstd(Kp,Ti,Td,inf,Ts)                    % Baseline controller
-S  = feedback(C*P,-1);                           % Closed-loop negative feedback
+Kp = -4.3;                                         % [V*mm]
+Ti =  0.1;                                         % [s]
+Td =  0.02;                                        % [s]
+C  = pidstd(Kp,Ti,Td,[inf],Ts)                           % Baseline controller
+%C  = c2d(C,Ts);                                 % Plant, but discrete
 
 
+S  = feedback(P,C,-1);                           % Closed-loop negative feedback
+isstable(S)
+Tsim=0:Ts:(length(result)-1)*Ts;  
+lsim(S,result(:,1)-y0,Tsim);
+
+
+
+
+return
 figure(2)                                       % New figure
 subplot(2,1,1)                                  % Subplot structure
-Tsim=0:Ts:(length(y)-1)*Ts;                     % Time vector
-U = u-u0;                                         % True input minus linearization point is delta input
-Y = y0*1000-lsim(S,U,Tsim);                     % Simulated output plus original linearization point                            
+Tsim=0:Ts:(length(result)-1)*Ts;                     % Time vector
+%U = u-u0;                                         % True input minus linearization point is delta input
+Y = y0*1000-lsim(S,result(:,1),Tsim);                     % Simulated output plus original linearization point    
+                        
+
 plot(Tsim,Y)                                    % Simulated output
 hold on                                         % Hold graph
 plot(Tsim,y*1000)                               % Experiment output in mm
