@@ -1,7 +1,7 @@
 clc; clear; close all;                                          % Close and clear all
-
+clear PID
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
-
+load MagnetoShield_PID_Data
 disturbance=1;                                                  % Adds disturbance to simulation (1)
 
 Ts=5E-3;                                                        % [s] sampling for discrete control
@@ -35,7 +35,7 @@ Ci=[zeros(ny,nx) C];                                            % Augmenting C b
 
 %% LQ design
 Qlq=diag([1E2 10 10 1]);                                        % State penalty matrix
-Rlq=1E-3;                                                       % Input penalty matrix
+Rlq=1E-4;                                                       % Input penalty matrix
 K=dlqr(Ai,Bi,Qlq,Rlq);                                          % LQ gain
 
 %% Simulation
@@ -44,7 +44,15 @@ x0=[0 0 0]';                                                    % Initial condit
 X=x0;                                                           % State logging (initialization)
 xI=0;                                                           % Integrator initialization
 y=[17 0]';                                                      % Output logging (initialization)
-x1p=0;                                                          % Previous state
+Y=y;
+x1p=0;     
+                                                     
+PID = PID;                        % Create PID object from PID class
+
+Kp=2.3;                                                         % [V*mm]
+Ti=0.1;                                                         % [s]
+Td=0.02;                                                        % [s]
+PID.setParameters(Kp, Ti, Td, Ts);                              % Feed the constants to PID object % Previous state
 
 for k=1:length(t)-1
     % Experiment (simulation) profile
@@ -63,8 +71,9 @@ for k=1:length(t)-1
     
     % Control
     xI(k+1)=xI(k)+(r-x1);                                       % Integrator state
-    U(k)=-K*[xI(k); xhat]+u0;                                   % LQ compensation for the integrator augmented linear part
-    U(k)=constrain(U(k),umin,umax);                             % Constrain inputs like on the real system
+    U2(k)   = PID.compute((r*1000-(y(1,k)-y0)), 0-u0, 10-u0, 0-u0, 10-u0)+u0;        % Compute PID response;
+    U(k)    =-K*[xI(k); xhat]+u0;                               % LQ compensation for the integrator augmented linear part
+
 
 
     % Model
@@ -80,6 +89,12 @@ for k=1:length(t)-1
 end
 
 %% Plotting
+
+plot(U)
+hold on
+plot(U2)
+axis([0,6000,0, 10])
+return
 
 figure(1);                                                      % New figure
 

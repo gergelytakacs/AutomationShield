@@ -1,6 +1,6 @@
 clc; clear all;                                 % Clears screen and all variables
 
-load('IDExperiment1');
+load('MagnetoShield_ID_Data');
 Ts=0.003250;                                    % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output in meters
 u=result(:,2);                                  % [V] Input is closed loop + probe signal

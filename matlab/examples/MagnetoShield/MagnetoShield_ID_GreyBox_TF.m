@@ -31,6 +31,7 @@
   
 clc; clear all;                                 % Clears screen and all variables
 close all;                                      % Closes all figures
+
 load MagnetoShield_ID_Data.mat                          % Load data file
 Ts=0.00325;                                       % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output (position)

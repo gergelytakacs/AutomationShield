@@ -18,7 +18,7 @@ C  = pidstd(Kp,Ti,Td,[inf],Ts)                           % Baseline controller
 S  = feedback(P,C,-1);                           % Closed-loop negative feedback
 isstable(S)
 Tsim=0:Ts:(length(result)-1)*Ts;  
-lsim(S,result(:,1)-y0,Tsim);
+lsim(S,result(:,1),Tsim);
 
 
 

@@ -16,7 +16,7 @@ T=20;                                                           % [samples] Sect
 y0=14.0068;                                                     % [mm] Linearization point based on the experimental identification
 u0=3.6651 ;                                                     % [V] Linearization point based on the experimental identification
 
-ra=(R-y0)/1000;                                                 % [mm] Adjusted reference levels for the linearization point
+ra=(R-y0);                                                      % [mm] Adjusted reference levels for the linearization point
 t=0:Ts:(T*length(R)-1)*Ts;                                      % [s] Time vector for the simulation
 umin=0;                                                         % [V] Lower input constraint
 umax=10;                                                        % [V] Upper input constraint
@@ -25,20 +25,20 @@ r=ra(1);                                                        % [mm] First ref
 
 P=c2d(model,Ts);                                                % Plant, but discrete
 PD = idpoly(P,'NoiseVariance',0);                               % Plant as a difference equation
+
 %% PID Feedback Controller Design
 
 PID = PID;                        % Create PID object from PID class
 
-Kp=2.1;                                                         % [V*mm]
+Kp=2.3;                                                         % [V*mm]
 Ti=0.1;                                                         % [s]
 Td=0.02;                                                        % [s]
-PID.setParameters(Kp, Ti, Td, Ts);                              % Feed the constants to PID object 
+PID.setParameters(Kp, Ti, Td, Ts);                              % Feed the constants to PID object, previous state 
 
 %% Simulation
 
-ys =17;                                                           % Output logging (initialization)
-                                                                  % Previous stat
-Y = 0;
+ys =17;                                                         % Output logging (initialization)
+Y = ys;                                                          % Previous stat
 
 for k=1:length(t)-1
     % Experiment (simulation) profile
@@ -47,11 +47,10 @@ for k=1:length(t)-1
         i = i + 1;                                              % We move to the next index
         r = ra(i);                                              % and use the actual, corrected reference
     end
-
-    u   = PID.compute(Y(k)-r, -u0, 10+u0, -u0, 10+u0)+u0;      % Compute PID response;
-    U(k)=constrain(u,umin,umax);                                % Constrain inputs like on the real system
-    Y(k+1) = diffeq(PD.f,PD.b,U(k),ys-y0)+y0;                              % System model
-    %Y(k+1)=constrain(u,12,17);                                % Constrain outputs like on the real system
+ 
+    U(k)   = PID.compute((r-(Y(1,k)-y0)), 0-u0, 10-u0, 0-u0, 10-u0)+u0;    % Compute PID response;
+    Y(k+1) = diffeq(PD.f,PD.b,U(k))+y0;                            % System model
+    Y(k+1) = constrain(Y(k+1),12,17);                                      % Constrain outputs like on the real system
 end
 
 
@@ -61,7 +60,7 @@ figure(1);                                                      % New figure
 subplot(2,1,1)                                                  % Top subplot
 plot(t(1:end-1),Rr);                                            % Plot reference
 hold on                                                         % Draw on top of this
-plot(t,Y);                                                % Plot the output (position)
+plot(t,Y);                                                      % Plot the output (position)
 grid on                                                         % Grid is enabled
 xlabel('Time (s)')                                              % X axis label
 ylabel('Position (mm)')                                         % Y axis label

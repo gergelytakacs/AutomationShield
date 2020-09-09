@@ -125,7 +125,7 @@ Options.InitialState = 'estimate';              % Estimate initial condition
 %% Estimate and list parameters
 disp('Identified model:')
 model = ssest(dataf,sys,Options)                % Launch estimation procedure
-compare(dataf,model)                            % Compare data to model
+compare(data,model,1)                            % Compare data to model
 
 disp('---Parameter Comparison---')
 Ld=['L (measured): ',num2str(L),' [H],   L (model): ',num2str(1/model.b(3),3),' H'];
@@ -142,6 +142,6 @@ Kde=['Ke (guess): ',num2str(Km), ',    Ke (model): ',num2str(Kmodel(2))];
 disp(Kde)
 end
 
-model = model*1000;
+
 save MagnetoShield_Models_Greybox_SS model      % Save plant model (mm)
 

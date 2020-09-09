@@ -78,6 +78,7 @@ while (1)                                    % Infinite loop
         nextStep = 1;                             % Enable step flag
     end
 end
+
 response = response(1:k-1, :);                    % Remove unused space
 save responsePID response                         % Save results in responsePID.mat file
 disp('The example finished its trajectory. Results have been saved to "responsePID.mat" file.')

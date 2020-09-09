@@ -4,7 +4,7 @@ clc; clear all;                                 % Clears screen and all variable
 
 fixedInductance=0;                              % Fixed or distance dependent inductance?
                                                 % to mathematical model
-load('IDExperiment1');
+load('MagnetoShield_ID_Data');
 Ts=0.003250;                                       % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output in meters
 u=result(:,2);                                  % [V] Input is closed loop + probe signal
