@@ -63,7 +63,7 @@
 
 #if SHIELDRELEASE==4
 	#define HALL_SENSITIVITY	800.00	    		// [G/V] = 1.25 mV/G Sensitivity of the TI DRV5055Z4 Hall sensor
-#elif
+#else
 	#define HALL_SENSITIVITY	769.23	    		// [G/V] = 1.3 mV/G Sensitivity of the A1302 Hall sensor (typical, datasheet)
 #endif
 
