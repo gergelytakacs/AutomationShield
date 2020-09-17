@@ -17,12 +17,12 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács. 
-  Last update: 24.8.20220.
+  Last update: 17.9.2020.
 */
 #include <AutomationShield.h> 
 #include <MagnetoShield.h>     // Include header for hardware API
 
-
+// Maximum and minimum mean voltage, ADC or position (not magnetic)
 int Minimum;
 int Maximum;
 short Saturation;
@@ -36,20 +36,20 @@ void setup() {
    Serial.println("Done.");   // Begin note
    AutomationShield.printSeparator("="); 
      
-   Minimum=MagnetoShield.getMinCalibrated();     //  Getting borders for flying
-   Maximum=MagnetoShield.getMaxCalibrated(); 
+   Minimum=MagnetoShield.getMinCalibrated();     //  minimum ADC, maximum Gauss
+   Maximum=MagnetoShield.getMaxCalibrated();     //  maximum ADC, minimum Gauss
    
-   Serial.print("Hall sensor maximum reading: ");  
+   Serial.print("Hall sensor maximum magnetic reading at: ");  
    Serial.print(Minimum);
-   Serial.print(" ADC levels when magnet at top, that is ");   
+   Serial.print(" ADC levels when magnet at bottom, that is ");   
    Serial.print(MagnetoShield.adcToGauss(Minimum));
    Serial.print(" G, estimated distance from electromagnet is "); 
    Serial.print(MagnetoShield.gaussToDistance(MagnetoShield.adcToGauss(Maximum)));
    Serial.println(" mm");
    
-   Serial.print("Hall sensor minimum reading: ");  
+   Serial.print("Hall sensor minimum magnetic reading at: ");  
    Serial.print(Maximum);
-   Serial.print(" ADC levels when magnet at bottom, that is ");  
+   Serial.print(" ADC levels when magnet at top, that is ");  
    Serial.print(MagnetoShield.adcToGauss(Maximum));
    Serial.print(" G, estimated distance from electromagnet is "); 
    Serial.print(MagnetoShield.gaussToDistance(MagnetoShield.adcToGauss(Minimum)));

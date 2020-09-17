@@ -21,7 +21,7 @@
 #include "Wire.h" 								// I2C library for the DAC chip
 
 #ifndef SHIELDRELEASE
-	#define SHIELDRELEASE 3   					//  Use number only: e.g. for R3 is 3
+	#define SHIELDRELEASE 4   					//  Use number only: e.g. for R3 is 3
 #endif
 
 
@@ -36,7 +36,7 @@
 // Addresses of the DAC chip
 #if SHIELDRELEASE==1 || SHIELDRELEASE==2
 	#define PCF8591 (0x90 >> 1)					// 8-bit DAC, Chip: PCF8591
-#elif SHIELDRELEASE==3
+#elif SHIELDRELEASE==3 || SHIELDRELEASE==4
 	#define MCP4725 (0x60)						// 12-bit DAC, Chip: MCP4725
 #endif
 
@@ -49,7 +49,7 @@
 
 // Input pins on Adruino
 #define MAGNETO_YPIN A3							// Defines the location of the Hall sensor
-#if SHIELDRELEASE==2 || SHIELDRELEASE==3
+#if SHIELDRELEASE==2 || SHIELDRELEASE==3 || SHIELDRELEASE==4
 	#define MAGNETO_RPIN A0                        // Defines the location of reference pot
 	#define MAGNETO_VPIN A1						   // Defines the location of input voltage sensing
 	#define MAGNETO_IPIN A2						   // Defines the location of input current sensing
@@ -59,8 +59,13 @@
 #define EMAGNET_HEIGHT 20.0				        // [mm] Location of electromagnet above ground
 #define MAGNET_LOW	3.0  					    // [mm] Top of the magnet from ground - distance from Hall element
 #define MAGNET_HIGH 8.0						    // [mm] Top of the magnet from ground - distance from Hall element
-#define HALL_SENSITIVITY	769.23	    		// [G/V] = 1.3 mV/G Sensitivity of the A1302 Hall sensor
 #define LOAD_RESISTANCE	196.6					// [Ohm] Load resistance
+
+#if SHIELDRELEASE==4
+	#define HALL_SENSITIVITY	800.00	    		// [G/V] = 1.25 mV/G Sensitivity of the TI DRV5055Z4 Hall sensor
+#elif
+	#define HALL_SENSITIVITY	769.23	    		// [G/V] = 1.3 mV/G Sensitivity of the A1302 Hall sensor (typical, datasheet)
+#endif
 
 #if SHIELDRELEASE==1 || SHIELDRELEASE==2
 	#define LOAD_HSAT	204							// [8-bit DAC] Upper saturation of the magnets before dropping
@@ -69,7 +74,7 @@
 #endif
 
 #if SHIELDRELEASE == 1
-	#define HALL_LSAT	19							// [10-bit ADC] Lower saturation of the Hall sensor
+	#define HALL_LSAT 19							// [10-bit ADC] Lower saturation of the Hall sensor
 	#define HALL_HSAT 382							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
 #elif SHIELDRELEASE == 2
 	#ifdef ARDUINO_ARCH_AVR
@@ -87,10 +92,18 @@
 		#define HALL_LSAT	112							// [12-bit ADC] Lower saturation of the Hall sensor
 		#define HALL_HSAT 2526							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
 	#endif
+#elif SHIELDRELEASE == 4
+	#ifdef ARDUINO_ARCH_AVR
+		#define HALL_LSAT	35							// [10-bit ADC] Lower saturation of the Hall sensor
+		#define HALL_HSAT 621							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
+	#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM
+		#define HALL_LSAT	112							// [12-bit ADC] Lower saturation of the Hall sensor
+		#define HALL_HSAT 2526							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
+	#endif
 #endif
 
 // Gain constants for current and voltage measurements
-#if SHIELDRELEASE == 2 ||  SHIELDRELEASE==3 
+#if SHIELDRELEASE == 2 ||  SHIELDRELEASE==3 ||  SHIELDRELEASE==4
 	#define VGAIN 4.2256  							   // Defines the voltage sensing gain (voltage divider), theoretical value 4.0
     #define IGAIN 33.33333333 					   	   // Defines the current sensing gain mA/V
 	//#define IBIAS 3.01 	   					   	   // Current sensing bias mA
@@ -114,7 +127,7 @@
 		#define P3 2.464							    // Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
 		#define P4 0.08407								// Power function constant (f(y) = P1*x^P2+P3*exp(x^P4)) for DAC vs. Output voltage
 	#endif
-#elif SHIELDRELEASE==3
+#elif SHIELDRELEASE==3 || SHIELDRELEASE==4
 	#define P1    1.41353993			      		// Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
 	#define P2  -15.4070873						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
     #define P3  389.266686						    // Polynomial constant (f(y) =  p1*x^3 + p2*x^2 + p3*x + p4 for DAC vs. Output voltage
@@ -137,13 +150,13 @@ public:
 	uint8_t voltageToDac(float vOut);		   		// Computes DAC levels for magnet voltage based on MOSFET characteristic
 	#endif
 	
-	#if SHIELDRELEASE == 2 || SHIELDRELEASE == 3
+	#if SHIELDRELEASE == 2 || SHIELDRELEASE == 3 || SHIELDRELEASE == 4
 	float auxReadVoltage(); 			    // Returns voltage potential of the electromagnet
 	float auxReadCurrent(); 			    // Returns current through the electromagnet
 	float referenceRead();					// Returns potentiometer value in percents
 	#endif
 	
-	#if SHIELDRELEASE == 3
+	#if SHIELDRELEASE == 3 || SHIELDRELEASE == 4
 	void dacWrite(uint16_t DAClevel);			// Writes DAClevel (DAC levels) to DAC register
 	uint16_t voltageToDac(float vOut);
 	float getVoltageRef();						// Returns voltage reference for DAC to Voltage conversion (4095 = voltageRef = default 10.3V)
@@ -173,8 +186,8 @@ private:
 	uint16_t minCalibrated = HALL_LSAT;		// ADC on Hall for ground
 	uint16_t maxCalibrated = HALL_HSAT;		// ADC on Hall for ceiling
     bool calibrated = 0;						// If the calibration routine was completed
-    #if SHIELDRELEASE == 3
-		float voltageRef = 9.8; 			    // [V] Maximal voltage measured directly on electromagnet, possibility to change manually with changeVoltageRef()
+    #if SHIELDRELEASE == 3 || SHIELDRELEASE == 4
+		float voltageRef = 10.0; 			    // [V] Maximal voltage measured directly on electromagnet, possibility to change manually with changeVoltageRef()
     #endif
 };
 
