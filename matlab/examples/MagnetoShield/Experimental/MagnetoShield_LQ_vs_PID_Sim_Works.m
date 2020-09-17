@@ -1,22 +1,21 @@
 clc; clear; close all;                                          % Close and clear all
-
+clear PID
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
-
+load MagnetoShield_PID_Data
 disturbance=1;                                                  % Adds disturbance to simulation (1)
-disturbance_amp=1E-5;                                           % Process noise amplitude
 
 Ts=5E-3;                                                        % [s] sampling for discrete control
-R=[14.0,13.0,14.0,14.5,13.5,13.0]';                             % [mm] Reference levels for the simulation
+R=[14.0,13.0,15.0,16.5,13.5,13.0]';                             % [mm] Reference levels for the simulation
 T=1000;                                                         % [samples] Section length for each reference level
 
-y0=14.0068;                                                     % [mm] Linearization point based on the experimental identification
-i0=0.0169;                                                      % [A] Linearization point based on the experimental identification
-u0=3.6651 ;                                                     % [V] Linearization point based on the experimental identification
+y0= 14.3;                                                       % [mm] Linearization point based on the experimental identification
+i0= 0.0219;                                                     % [A] Linearization point based on the experimental identification
+u0= 4.6234;                                                     % [V] Linearization point based on the experimental identification
 
 ra=(R-y0)/1000;                                                 % [mm] Adjusted reference levels for the linearization point
 t=0:Ts:(T*length(R)-1)*Ts;                                      % [s] Time vector for the simulation
 umin=0;                                                         % [V] Lower input constraint
-umax=10;                                                        % [V] Upper input constraint
+umax=12;                                                        % [V] Upper input constraint
 i=1;                                                            % [-] Section counter for the simulation
 r=ra(1);                                                        % [mm] First reference to start simulation
 
@@ -45,7 +44,15 @@ x0=[0 0 0]';                                                    % Initial condit
 X=x0;                                                           % State logging (initialization)
 xI=0;                                                           % Integrator initialization
 y=[17 0]';                                                      % Output logging (initialization)
-x1p=0;                                                          % Previous state
+Y=y;
+x1p=0;     
+                                                     
+PID = PID;                        % Create PID object from PID class
+
+Kp=2.3;                                                         % [V*mm]
+Ti=0.1;                                                         % [s]
+Td=0.02;                                                        % [s]
+PID.setParameters(Kp, Ti, Td, Ts);                              % Feed the constants to PID object % Previous state
 
 for k=1:length(t)-1
     % Experiment (simulation) profile
@@ -64,8 +71,9 @@ for k=1:length(t)-1
     
     % Control
     xI(k+1)=xI(k)+(r-x1);                                       % Integrator state
-    U(k)=-K*[xI(k); xhat]+u0;                                   % LQ compensation for the integrator augmented linear part
-    U(k)=constrain(U(k),umin,umax);                             % Constrain inputs like on the real system
+    U2(k)   = PID.compute((r*1000-(y(1,k)-y0)), 0-u0, 10-u0, 0-u0, 10-u0)+u0;        % Compute PID response;
+    U(k)    =-K*[xI(k); xhat]+u0;                               % LQ compensation for the integrator augmented linear part
+
 
 
     % Model
@@ -73,7 +81,7 @@ for k=1:length(t)-1
     X(1,k+1)=constrain(X(1,k+1),12E-3-y0*1E-3,17E-3-y0*1E-3);   % Cage limits
     X(3,k+1)=constrain(X(3,k+1),-i0,60E-3-i0);                  % No reverse current possible
     if disturbance
-        X(:,k+1)=X(:,k+1)+rand(1)*disturbance_amp;                         % Add random position disturbance (e.g. process noise)
+        X(:,k+1)=X(:,k+1)+rand(1)*1E-4;                         % Add random position disturbance (e.g. process noise)
     end
     y(1,k+1)=X(1,k)*1000+y0;                                    % Position measurement on the real system
     y(2,k+1)=(X(3,k)+i0)*1000;                                  % Current measurement on the real system
@@ -81,6 +89,12 @@ for k=1:length(t)-1
 end
 
 %% Plotting
+
+plot(U)
+hold on
+plot(U2)
+axis([0,6000,0, 10])
+return
 
 figure(1);                                                      % New figure
 
@@ -91,8 +105,8 @@ plot(t(1:end-1),y(1,1:end-1));                                  % Plot the outpu
 grid on                                                         % Grid is enabled
 xlabel('Time (s)')                                              % X axis label
 ylabel('Position (mm)')                                         % Y axis label
-legend('Reference','Simulation')
-axis([0,30,12,15])
+%legend('Reference','Position')
+
 subplot(2,1,2)                                                  % Bottom subplot
 plot(t(1:end-1),U);                                             % Plot inputs
 grid on                                                         % Allow grid
