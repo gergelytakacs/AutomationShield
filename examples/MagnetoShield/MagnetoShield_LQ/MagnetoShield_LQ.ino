@@ -39,7 +39,7 @@ float Ts = 4.200;                 // Sampling in microseconds, lower limit
 #endif
 
 // LQ gain with integrator
-BLA::Matrix<4, 1> K = {115.458, -4666.8, -101.15, 37.033};
+BLA::Matrix<1, 4> K = {115.458, -4666.8, -101.15, 37.033};
 BLA::Matrix<4, 1> X = {0, 0, 0, 0};                                 // Estimated state vector
 BLA::Matrix<4, 1> Xr = {0, 0, 0, 0}; 
 
@@ -104,8 +104,7 @@ X(2) = (y - yp)/(1000.0*(float(Ts)/1000.0));
 X(3) = (I-I0)/1000.0;  // [mA] Current read)// [mm] sensor read
 
 yp = y;
-
-u = -(K(0)*X(0) + K(1)*X(1) + K(2)*X(2) + K(3)*X(3)) + u0;
+u = -(K*X)(0) + u0;
 u = AutomationShield.constrainFloat(u,0,10);  
 MagnetoShield.actuatorWrite(u); // [V] actuate
 
