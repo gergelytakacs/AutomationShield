@@ -3,11 +3,12 @@ clear;
 
 load MagnetoShield_Models_Greybox_SS
 
-dt = 0.05;                                                      % [s] Sample time for discretization
-N  = 5;                                                         % [steps] Target horizon
+dt = 0.005;                                                      % [s] Sample time for discretization
+N  = 3;                                                         % [steps] Target horizon
 
-umin = 0;                                                       % [V] minimal input voltage
-umax = 10;                                                      % [V] maximal input voltage
+u0= 4.6234;                                                     % [V] Input linearization
+umin = 0-u0;                                                    % [V] minimal input voltage
+umax = 10-u0;                                                   % [V] maximal input voltage
 
 %% Discretization
 modeld=c2d(model,dt);                                           % Discretized linear state-space model
@@ -24,8 +25,8 @@ Bd=[zeros(ny,nu); B];                                           % Augmenting B b
 Cd=[zeros(ny,nx) C];                                            % Augmenting C by the integrator
 
 %% LQ design
-Q=diag([1E2 10 10 1]);                                        % State penalty matrix
-R=1E-3;                                                       % Input penalty matrix
+Q=diag([50 100 10 1]);                                        % State penalty matrix
+R=0.01;                                                       % Input penalty matrix
 
 muAOMPC_Problem('MagnetoShield', Ad, Bd, Q, R, dt, N, umin, umax)
 muAOMPC_Main('MagnetoShield')

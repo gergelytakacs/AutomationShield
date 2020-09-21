@@ -19,12 +19,12 @@
 
   Created by Gergely Takacs.
   Created on:  9.9.2020
-  Last update: 9.9.2020.
+  Last update: 21.9.2020.
 */
 
-#include <MagnetoShield.h>          // Include main library  
-#include <Sampling.h>               // Include sampling library
-//#include "MagnetoShield_muAO-MPC/MagnetoShield_MPC.h" // Include muAO-MPC compiled files
+#include <MagnetoShield.h>                            // Include main library  
+#include <Sampling.h>                                 // Include sampling library
+#include "MagnetoShield_muAO-MPC/MagnetoShield_MPC.h"               // Include muAO-MPC compiled files
 
 #define MANUAL 0                    // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
@@ -35,7 +35,7 @@ bool realTimeViolation = false;     // Flag for real-time sampling violation
 
 float Ref[] = {14.0,13.0,14.0,15.0,14.0};   // Reference trajectory
 float y = 0.0;                      // [mm] Output (Current object height)
-float yp= 0.0;
+float yp= 0.0;                      // [mm] Previous output (Object height in previous sample)
 float u = 0.0;                      // [V] Input (Magnet voltage)
 float I = 0.0;                      // [mA] Input (Magnet current)
 
@@ -43,28 +43,28 @@ float y0= 14.3;                     // [mm] Linearization point based on the exp
 float I0= 21.9;                     // [mA] Linearization point based on the experimental identification
 float u0= 4.6234;                   // [V] Linearization point based on the experimental identification
 
-int T = 1500;                       // Section length
-int i = 0;                          // Section counter
+int T = 500;                        // Section length
+int s = 0;                          // Section counter
 
-float K[4] = {0.2106E3,   -5.7575E3,   -0.1264E3,    0.0458E3};
-float X[4] = {0, 0, 0, 0};          // Estimated state vector
-float Xr[4] = {0, 0, 0, 0};         // Reference state vector
-//extern struct mpc_ctl ctl;          // Object representing presets for MPC controller
+float X[4]  = {0.0, 0.0, 0.0, 0.0}; // Estimated initial state vector
+float Xr[4] = {0.0, 0.0, 0.0, 0.0}; // Initial reference state vector
 
-void setup() {                       // Setup - runs only once
-  Serial.begin(250000);              // Begin serial communication
+extern struct mpc_ctl ctl;          // Object representing presets for MPC controller
 
-  MagnetoShield.begin();             // Initialize MagnetoShield device
-  MagnetoShield.calibration();         // Calibrate MagnetoShield device
+void setup() {                      // Setup - runs only once
+  Serial.begin(250000);             // Begin serial communication
 
-  Sampling.period(Ts * 1000);        // Set sampling period in microseconds
-  Sampling.interrupt(stepEnable);    // Set interrupt function
+  MagnetoShield.begin();            // Initialize MagnetoShield device
+  MagnetoShield.calibration();      // Calibrate MagnetoShield device
+
+  Sampling.period(Ts * 1000);       // Set sampling period in microseconds
+  Sampling.interrupt(stepEnable);   // Set interrupt function
 }
 
-void loop() {                        // Loop - runs indefinitely
-  if (nextStep) {                    // If ISR enables step flag
-    step();                          // Run step function
-    nextStep = false;                // Disable step flag
+void loop() {                       // Loop - runs indefinitely
+  if (nextStep) {                   // If ISR enables step flag
+    step();                         // Run step function
+    nextStep = false;               // Disable step flag
   }
 }
 
@@ -80,38 +80,37 @@ void stepEnable() {                                // ISR
 
 void step() {                                      // Define step function
 #if MANUAL                                         // If Manual mode is active
-  Xr[0]  = MagnetoShield.referenceReadAltitude();  // Read reference from potentiometer
+    Xr[1]  = MagnetoShield.referenceReadAltitude()/1000;  // Read reference from potentiometer
 #else                                              // If Automatic mode is active
-  if (i > (sizeof(Ref) / sizeof(Ref[0]))) {        // If at end of trajectory
+  if (s > (sizeof(Ref) / sizeof(Ref[0]))) {        // If at end of trajectory
     MagnetoShield.actuatorWrite(0.0);              // Turn off the magnet
     while (1);                                     // Stop program execution
-  } else if (k % (T * i) == 0) {                   // If at the end of section
-    Xr[0]  = Ref[i]/1000;                          // Progress in reference trajectory
-    i++;                                           // Increment section counter
+  } else if (k % (T * s) == 0) {                   // If at the end of section
+    Xr[1]  = (Ref[s]-y0)/1000.0;                   // Progress in reference trajectory
+    s++;                                           // Increment section counter
   }
 #endif
 
-  y = MagnetoShield.sensorRead();           // Read sensor
-  I = MagnetoShield.auxReadCurrent();
-  //mpc_ctl_solve_problem(&ctl, X);                   // Calculate MPC system input
-  //u = ctl.u_opt[0];                                 // Save system input into input variable
-  u = -(K[0]*X[0]+K[1]*X[1]+K[2]*X[2]+K[3]*X[3])+u0;
+  y = MagnetoShield.sensorRead();                  // Read Hall sensor
+  I = MagnetoShield.auxReadCurrent();              // Read current sensor
   
-  MagnetoShield.actuatorWrite(u);                   // Actuate
-
-  X[1] = (y-y0)/1000;                               // [m] First state, position measurement/approximation
-  X[2] = (y-yp)/(1000*(Ts/1000));                   // [m/s] Second state, speed - approximation
-  X[3]=  (I-I0)/1000;                               // [A] Third state, current measurement
-  //MagnetoShield.getKalmanEstimate(X, u, y, A, B, C, Q_Kalman, R_Kalman);    // Estimate internal states X
-  
-  X[0] = X[0] + (Xr[1] - X[1]);                                           // Add error to the summation state
-  
+// Direct position and current measurement, simple difference for speed
+// Saving valuable milliseconds for MPC algorithm
+  X[0] = X[0] + (Xr[1]-X[1]);                      // Add error to the summation state
+  X[1] = (y-y0)/1000.0;                            // [m] First state, position measurement/approximation
+  X[2] = (y-yp)/(1000.0*(float(Ts)/1000.0));       // [m/s] Second state, speed - approximation
+  X[3]=  (I-I0)/1000.0;                            // [A] Third state, current measurement  
   yp=y;
-  Serial.print(Xr[0]*1000);       // Print reference
-  Serial.print(" ");
-  Serial.print(y);           // Print output
-  Serial.print(" ");
-  Serial.println(u);         // Print input
 
-  k++;                       // Increment index
+  mpc_ctl_solve_problem(&ctl, X);                  // Calculate MPC system input
+  u = ctl.u_opt[0]+u0;                             // Save system input into input variable
+  MagnetoShield.actuatorWrite(u);                  // Actuate
+
+  Serial.print((Xr[1]*1000+y0));                   // Print reference
+  Serial.print(" ");
+  Serial.print(y);                                 // Print output
+  Serial.print(" ");
+  Serial.println(u);                               // Print input
+
+  k++;                                             // Increment sample index
 }
