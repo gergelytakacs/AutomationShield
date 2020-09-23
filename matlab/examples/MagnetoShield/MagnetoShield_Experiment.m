@@ -11,13 +11,14 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Takács. 
+%   Created by Gergely Takacs. 
 %   Last update: 25.09.2019.
 
-l=1500;                         % Experiment section length
-lngth=5*l;                      % PID
-port='COM10'                    % Your port
-baud=2000000;                     % Baud rate (2M for AVR, 250 000 for SAM3)
+
+l=1000;                         % Experiment section length
+lngth=5*l;                      % Number of sections
+port='COM13'                    % Your port
+baud=250000;                    % Baud rate (2M for AVR, 250 000 for SAM3)
 
 result=readExperiment(lngth,port,baud);
 plot(result)                    % Just a preview
