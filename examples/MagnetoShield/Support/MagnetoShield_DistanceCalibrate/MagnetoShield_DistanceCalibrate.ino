@@ -29,12 +29,12 @@ short Saturation;
 
 void setup() {
    Serial.begin(9600);                           // Starts serial communication
-   AutomationShield.printSeparator("=");          //
+   AutomationShield.printSeparator('=');          //
    Serial.println("Calibration in progress...");   // Begin note
    MagnetoShield.begin();                        // Initializes shield
    MagnetoShield.calibration();                  // Calibrates shield
    Serial.println("Done.");   // Begin note
-   AutomationShield.printSeparator("="); 
+   AutomationShield.printSeparator('='); 
      
    Minimum=MagnetoShield.getMinCalibrated();     //  minimum ADC, maximum Gauss
    Maximum=MagnetoShield.getMaxCalibrated();     //  maximum ADC, minimum Gauss
