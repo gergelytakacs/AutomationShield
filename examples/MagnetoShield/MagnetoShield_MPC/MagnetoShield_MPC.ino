@@ -5,12 +5,16 @@
   MagnetoShield open-source air flotation device.
 
   This example initialises the sampling subsystem from
-  the AutomationShield library and then with the help of
-  Kalman filtering realises MPC control of the ball altitude.
-  It allows user to select wheter the reference altitude is
-  given by the potentiometer or by a predetermined reference
-  trajectory. Upload the code to your board and open the
-  Serial Plotter tool in Arduino IDE.
+  the AutomationShield library and then realises MPC control of
+  the altitude of the permanent magnet. MPC control is implemented
+  by using the muAO-MPC software, see MagnetoShield_Export_muAOMPC.m
+  for the problem definition. The example allows teh user to select
+  wheter the reference altitude is given by the potentiometer or by 
+  a predetermined reference trajectory. Upload the code to your board
+  and open the Serial Plotter tool in Arduino IDE.
+
+  Tested on an Arduino Mega, as the memory of the Uno is insufficient for
+  the given horizon length.
 
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -19,7 +23,7 @@
 
   Created by Gergely Takacs.
   Created on:  9.9.2020
-  Last update: 21.9.2020.
+  Last update: 23.9.2020.
 */
 
 #include <MagnetoShield.h>                            // Include main library  
@@ -43,7 +47,7 @@ float y0= 14.3;                     // [mm] Linearization point based on the exp
 float I0= 21.9;                     // [mA] Linearization point based on the experimental identification
 float u0= 4.6234;                   // [V] Linearization point based on the experimental identification
 
-int T = 500;                        // Section length
+int T = 1000;                        // Section length
 int s = 0;                          // Section counter
 
 float X[4]  = {0.0, 0.0, 0.0, 0.0}; // Estimated initial state vector
@@ -107,10 +111,11 @@ void step() {                                      // Define step function
   MagnetoShield.actuatorWrite(u);                  // Actuate
 
   Serial.print((Xr[1]*1000+y0));                   // Print reference
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.print(y);                                 // Print output
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.println(u);                               // Print input
+ // Serial.println(AutomationShield.quality((Xr[1]-X[1])*1000,"ISE"));
 
   k++;                                             // Increment sample index
 }
