@@ -102,9 +102,9 @@ script:
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_PowerCalibrate/MagnetoShield_PowerCalibrate.ino
 #Zero#
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_MPC/MagnetoShield_MPC.ino
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_LQ/MagnetoShield_LQ.ino
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_PolePlacement/MagnetoShield_PolePlacement.ino
+#- arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_MPC/MagnetoShield_MPC.ino
+#- arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_LQ/MagnetoShield_LQ.ino
+#- arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_PolePlacement/MagnetoShield_PolePlacement.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_Identification/MagnetoShield_Identification.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_DistanceCalibrate/MagnetoShield_DistanceCalibrate.ino
