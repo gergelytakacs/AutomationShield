@@ -1,13 +1,15 @@
-%   MAGNETOSHIELD LQ GAIN CALCULATION AND SIMULATION EXAMPLE
+%   MAGNETOSHIELD POLE PLACEMENT AND SIMULATION EXAMPLE
 %
 %   This example reads the linearized model of the MagnetoShield device,
-%   then expands it with an integrator and then computes the LQ gain. This
-%   LQ gain is used to crate a simulation run for the trajectory tracking
-%   of magnetic levitation. The user may switch between direct state
-%   measurement, numerical differentiation and a Kalman filter. Disturbance
-%   may be added to the signal to make it more realistic. The Kalman filter
-%   matrices and the LQ gain are exported into the BLA matrix format, that
-%   is used in the actual MagnetoShield LQ example, see MagnetoShield_LQ.ino.
+%   then expands it with an integrator and then computes a suitable state
+%   feedback gain via pole-placement. This gain is used to crate a 
+%   simulation run for the trajectory tracking %   of magnetic levitation. 
+%   The user may switch between direct state measurement, numerical
+%   differentiation and a Kalman filter. Disturbance may be added to the
+%   signal to make it more realistic. The Kalman filter matrices and the 
+%   feedback gain are exported into the BLA matrix format, that is used in 
+%   the actual MagnetoShield Pole Plaement example, see 
+%   MagnetoShield_PolePlacement.ino for more details.
 %
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
@@ -25,6 +27,8 @@
 %   Last updated by:  Gergely Takács
 %   Last update on:   24.9.2020
 
+%  Learn more about pole placement at 
+%  http://ctms.engin.umich.edu/CTMS/index.php?example=Introduction&section=ControlStateSpace
 
 clc; clear; close all;                                          % Close and clear all
 
@@ -55,7 +59,7 @@ modeld=c2d(model,Ts);                                           % Discretized li
 A=modeld.a;                                                     % Extract A
 B=modeld.b;                                                     % Extract B
 C=[1 0 0];                                                      % C for introducing an integration component
-
+                             
 
 if disturbance
     Q_Kalman = diag([0.0001, 100, 100]);                          %process noise  covariance matrix 
@@ -65,22 +69,39 @@ else
     R_Kalman = diag([0.001, 0.001]);
 end
 
-                                   
-
-
 %% Model augmentation by integration
 [ny nx]=size(C);                                                % Sizing C
 [nx nu]=size(B);                                                % Sizing B
 Ai=[eye(ny,ny) -C;                                              % Augmenting A by an integrator
     zeros(nx,ny)  A];          
 Bi=[zeros(ny,nu); B];                                           % Augmenting B by the integrator
-Ci=[zeros(ny,nx) C];                                            % Augmenting C by the integrator
+Ci=[zeros(ny,ny) C];                                            % Augmenting C by the integrator
 
-%% LQ design
-Qlq=diag([50 1000 100 10]);                                     % State penalty matrix
-Rlq=0.01;                                                       % Input penalty matrix
-K=dlqr(Ai,Bi,Qlq,Rlq);                                          % LQ gain
+%% Pole placement design
+modeli=ss(Ai,Bi,Ci,0,Ts);                                       % Create a system from the integrator-expanded model
 
+figure(1)
+iopzmap(modeli)                                                 % Pole-zero map
+zgrid                                                           % Show grid for Z domain
+hold on                                                         % Hold for next plot
+axis([-1.5,1.5,-1.5,1.5])                                       % Set axes
+pbaspect([1 1 1])
+disp('Open loop poles. [Hit any key to continue...]')
+pause();
+
+P=eig(Ai);                                                      % Extract poles
+
+
+p1 = 0.95;                                                      % Originally marginally stable for the integrator, less makes the response more aggressive
+p2 = 0.98;                                                      % Originally unstable, less makes the response more aggressive
+p3 = P(3);                                                      % Stays the same
+p4 = P(4);                                                      % Stays the same
+
+K = place(Ai,Bi,[p1 p2 p3, p4]);                                % Create state feedback matrix based on new poles
+
+model_cl = ss(Ai-Bi*K,Bi,Ci,0,Ts);                              % Create closed-loop model
+iopzmap(model_cl)                                               % Show new poles on plot
+disp('Closed loop poles.')
 %% Simulation
 U=0;
 x0=[1E-3 0 0]';                                                 % Initial condition
@@ -137,7 +158,7 @@ end
 
 %% Plotting
 
-figure(1);                                                      % New figure
+figure(2);                                                      % New figure
 
 subplot(2,1,1)                                                  % Top subplot
 plot(t(1:end-1),Rr);                                            % Plot reference
