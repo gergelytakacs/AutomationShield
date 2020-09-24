@@ -2,13 +2,12 @@ clc; clear; close all;                                          % Close and clea
 
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
 
-disturbance=0;                                                  % Adds disturbance to simulation (1)
+disturbance=1;                                                  % Adds disturbance to simulation (1)
 
-filter = 'difference';                                              %Select state estimation method: 'Kalman', 'model', 'difference'
+filter = 'Kalman';                                              %Select state estimation method: 'Kalman', 'model', 'difference'
 
-
-% Ts=0.003250;                                                    % [s] sampling for discrete control
-Ts=0.005; 
+                                                               
+Ts=0.004;                                                       % [s] sampling for discrete control
 R=[14.0,13.0,15.0,14.5,13.5,13.0]';                             % [mm] Reference levels for the simulation
 T=1000;                                                         % [samples] Section length for each reference level
 
@@ -22,7 +21,7 @@ umin=0;                                                         % [V] Lower inpu
 umax=12;                                                        % [V] Upper input constraint
 i=1;                                                            % [-] Section counter for the simulation
 r=ra(1);                                                        % [mm] First reference to start simulation
-u_p =0;
+                   
 %% Discretization
 modeld=c2d(model,Ts);                                           % Discretized linear state-space model
 A=modeld.a;                                                     % Extract A
@@ -31,11 +30,11 @@ C=[1 0 0];                                                      % C for introduc
 
 
 if disturbance
-    Q_Kalman = diag([0.0001, 100, 1]);                          %process noise  covariance matrix 
-    R_Kalman = diag([0.001, 0.001]);                            %measurement noise covariance matrix
+    Q_Kalman = diag([0.0001, 100, 100]);                          %process noise  covariance matrix 
+    R_Kalman = diag([0.001, 0.001]);                              %measurement noise covariance matrix
 else
-    Q_Kalman = diag([0.0001, 100, 1]);
-    R_Kalman = diag([0.00025, 0.001]);
+    Q_Kalman = diag([0.0001, 100, 10]);
+    R_Kalman = diag([0.001, 0.001]);
 end
 
                                    
@@ -50,16 +49,16 @@ Bi=[zeros(ny,nu); B];                                           % Augmenting B b
 Ci=[zeros(ny,nx) C];                                            % Augmenting C by the integrator
 
 %% LQ design
-Qlq=diag([100 1000 1 1]);                                        % State penalty matrix
+Qlq=diag([50 1000 100 10]);                                     % State penalty matrix
 Rlq=0.01;                                                       % Input penalty matrix
 K=dlqr(Ai,Bi,Qlq,Rlq);                                          % LQ gain
 
 %% Simulation
 U=0;
-x0=[1E-3 0 0]';                                                    % Initial condition
+x0=[1E-3 0 0]';                                                 % Initial condition
 X=x0;                                                           % State logging (initialization)
 xI=0;                                                           % Integrator initialization
-y=[17 0]';                                                % Output logging (initialization)
+y=[17 0]';                                                      % Output logging (initialization)
 x1p=0;                                                          % Previous state
 xICWhole = [0;0;0.0223];                                        % Initial conditions for Kalman filter
 
@@ -83,11 +82,11 @@ for k=1:length(t)-1
     
 %State estimation based on user option   
 if strcmp(filter,'Kalman')
-       [xhat, yhat] = estimateKalmanState(U(k)-u0, Y', A, B, modeld.c, Q_Kalman, R_Kalman, xICWhole); 
+       [xhat, yhat] = estimateKalmanState(U(k), Y', A, B, modeld.c, Q_Kalman, R_Kalman, xICWhole); 
 elseif strcmp(filter,'model')
        xhat = [x1; x2; x3];
 elseif strcmp(filter,'difference')
-       x2 = (x1 - x1p)/Ts
+       x2 = (x1 - x1p)/Ts;
        x1p=x1; 
        xhat = [x1; x2; x3];
 end
@@ -101,7 +100,7 @@ end
     X(1,k+1)=constrain(X(1,k+1),12E-3-y0*1E-3,17E-3-y0*1E-3);   % Cage limits
     X(3,k+1)=constrain(X(3,k+1),-i0,60E-3-i0);                  % No reverse current possible
     if disturbance
-        X(1,k+1)=X(1,k+1)+rand(1)*1E-4;                         % Add random position disturbance (e.g. process noise)
+        X(1,k+1)=X(1,k+1)+rand(1)*0.3E-4;                       % Add random position disturbance (e.g. process noise)
     end
     y(1,k+1)=X(1,k)*1000+y0;                                    % Position measurement on the real system
     y(2,k+1)=(X(3,k)+i0)*1000;                                  % Current measurement on the real system
@@ -138,21 +137,6 @@ printSSMatrix(Q_Kalman, 'Q_Kalman')
 printSSMatrix(R_Kalman, 'R_Kalman')
 printSSMatrix(K, 'K')
 
-% Printing function defined
-function printSSMatrix(SSmatrix, name)
-matrixSize = size(SSmatrix);
-vector = SSmatrix';
-vector = vector(:)';
-vector = round(vector, 5);
-fprintf('BLA::Matrix<%d, %d> %s%s', matrixSize(1), matrixSize(2), name, ' = {');
-for i = 1:length(vector)
-    fprintf('%.5g', vector(i));
-    if i < length(vector)
-        fprintf('%s', ', ');
-    end
-end
-fprintf('%s', '};');
-fprintf('\n');
-end
+
 
 
