@@ -1,8 +1,9 @@
-//   MAGNETOSHIELD LQ EXAMPLE
+//   MAGNETOSHIELD POLE PLACEMENT EXAMPLE
 //
 //   This example reads uses the linearized model of the MagnetoShield
-//   and the LQ gain calculated in the MagnetoShield_LQ_Simulation.m
-//   example in MATLAB. The state measurement can be performed directly
+//   and the state feedback gain calculated in the corresponding
+//   MagnetoShield_PolePlacement_Simulation.m example in MATLAB. 
+//   The state measurement can be performed directly
 //   by reading the position and current values, then differentiating
 //   for the velocity, or states may be observed via the Kalman filter.
 //   Due to the fast dynamics of the plant, AVR architecture-based
@@ -24,22 +25,20 @@
 //   Created on:       23.9.2020
 //   Last updated by:  Gergely Takacs
 //   Last update on:   24.9.2020
-
+//   Tested on:        Arduino Mega2560
 
 #include <MagnetoShield.h>
 #include <Sampling.h>
-#include <BasicLinearAlgebra.h>       // Include template function for calculating K gain for LQ control applications
+#include <BasicLinearAlgebra.h>       // Include template function for calculating K gain for state feedback control applications
 
 #define MANUAL 0
 #define USE_KALMAN_FILTER 0           // Use Kalman filter. Kalman filtering only works if ARDUINO_ARCH_SAM = 1 (e.g. Arduino DUE)
 #define USE_DIFFERENTIATION 1         // Use differentiation to claculate speed
 float R[]={14.0,13.0,14.0,15.0,14.0}; // Reference trajectory (pre-set)
   
-  
 unsigned long k = 0;                  // Sample index
 bool enable=false;                    // Flag for sampling 
 bool realTimeViolation=false;         // Flag for real-time violations
-
 
 float Ref;                          // [mm] Reference
 float y = 0.0;                      // [mm] Output (Current object height)
@@ -75,7 +74,7 @@ BLA::Matrix<3, 1> xIC = {1e-3, 0, 0};                                 // Kalman 
 #endif
 
 
-BLA::Matrix<1, 4> K = {52.25, -4548, -122.19, 44.731};              // LQ gain with integrator, see MATLAB example
+BLA::Matrix<1, 4> K = {8.7355, -2773, -62.884, 22.922};             // Stategain with integrator, see MATLAB example
 BLA::Matrix<4, 1> X = {0, 0, 0, 0};                                 // Initial state vector
 BLA::Matrix<4, 1> Xr = {0, 0, 0, 0};                                // Initial state reference
 
@@ -147,7 +146,7 @@ X(3) = (I-I0)/1000.0;                        // current compensated for lineariz
 yp = y;                                      // at the end of the calculation current value becomes previous value for the next iteration
 #endif
 
-u = -(K*X)(0) + u0;                          // LQ control algorithm
+u = -(K*X)(0) + u0;                          // Fixed state feedback control algorithm
 
 #if USE_KALMAN_FILTER && ARDUINO_ARCH_SAM
   BLA::Matrix<2, 1> Y = {(float)((y-y_0)/1000.0f), ((I-I0)/1000.0f)};            // measured states are stored in this vector
