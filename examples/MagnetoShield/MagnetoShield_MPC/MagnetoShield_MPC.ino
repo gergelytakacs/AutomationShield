@@ -43,7 +43,7 @@ float yp= 0.0;                      // [mm] Previous output (Object height in pr
 float u = 0.0;                      // [V] Input (Magnet voltage)
 float I = 0.0;                      // [mA] Input (Magnet current)
 
-float y0= 14.3;                     // [mm] Linearization point based on the experimental identification
+float y_0= 14.3;                     // [mm] Linearization point based on the experimental identification
 float I0= 21.9;                     // [mA] Linearization point based on the experimental identification
 float u0= 4.6234;                   // [V] Linearization point based on the experimental identification
 
@@ -90,7 +90,7 @@ void step() {                                      // Define step function
     MagnetoShield.actuatorWrite(0.0);              // Turn off the magnet
     while (1);                                     // Stop program execution
   } else if (k % (T * s) == 0) {                   // If at the end of section
-    Xr[1]  = (Ref[s]-y0)/1000.0;                   // Progress in reference trajectory
+    Xr[1]  = (Ref[s]-y_0)/1000.0;                   // Progress in reference trajectory
     s++;                                           // Increment section counter
   }
 #endif
@@ -101,7 +101,7 @@ void step() {                                      // Define step function
 // Direct position and current measurement, simple difference for speed
 // Saving valuable milliseconds for MPC algorithm
   X[0] = X[0] + (Xr[1]-X[1]);                      // Add error to the summation state
-  X[1] = (y-y0)/1000.0;                            // [m] First state, position measurement/approximation
+  X[1] = (y-y_0)/1000.0;                            // [m] First state, position measurement/approximation
   X[2] = (y-yp)/(1000.0*(float(Ts)/1000.0));       // [m/s] Second state, speed - approximation
   X[3]=  (I-I0)/1000.0;                            // [A] Third state, current measurement  
   yp=y;
@@ -110,7 +110,7 @@ void step() {                                      // Define step function
   u = ctl.u_opt[0]+u0;                             // Save system input into input variable
   MagnetoShield.actuatorWrite(u);                  // Actuate
 
-  Serial.print((Xr[1]*1000+y0));                   // Print reference
+  Serial.print((Xr[1]*1000+y_0));                   // Print reference
   Serial.print(", ");
   Serial.print(y);                                 // Print output
   Serial.print(", ");
