@@ -28,15 +28,20 @@
 #define MANUAL 0                      // Reference by pot (1) or automatically (0)?
 
 // PID Tuning
-#define KP 4.0                        // PID Kp
-#define TI 0.2                        // PID Ti
-#define TD 0.03                       // PID Td
+#define KP 3.5                        // PID Kp
+#define TI 0.6                        // PID Ti
+#define TD 0.025                      // PID Td
+
+//Alternate PID Tuning at Ts = 3250
+//#define KP 4.0                        // PID Kp
+//#define TI 0.2                        // PID Ti
+//#define TD 0.03                       // PID Td
 
 float R[]={14.0,13.0,14.0,15.0,14.0}; // Reference trajectory (pre-set)
   
   
-#if MANUAL                            // If it is manual reference
-  Ts=3250;                             // Slightly slower for manual
+#if MANUAL                             // If it is manual reference
+  Ts=5000;                             // Slightly faster for manual
 #endif
 unsigned long k = 0;                  // Sample index
 bool enable=false;                    // Flag for sampling 
@@ -49,14 +54,14 @@ float y = 0.0;                        // [mm] Output
 float u = 0.0;                        // [V] Input          
 
 #ifdef ARDUINO_ARCH_AVR
-  unsigned long Ts = 3250;                // Sampling in microseconds, lower limit near 3.2 ms
-  int T = 1500;                           // Experiment section length (steps) 
+  unsigned long Ts = 5000;                // Sampling in microseconds, lower limit near 3.2 ms
+  int T = 1000;                           // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAMD
-  unsigned long Ts = 4200;                 // Sampling in microseconds, lower limit 
-  int T = 1500;                            // Experiment section length (steps) 
+  unsigned long Ts = 5000;                 // Sampling in microseconds, lower limit 
+  int T = 1000;                            // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAM
-  unsigned long Ts = 1300;                 // Sampling in microseconds, lower limit 1.3 ms
-  int T = 3000;                            // Experiment section length (steps) 
+  unsigned long Ts = 5000;                 // Sampling in microseconds, lower limit 1.3 ms
+  int T = 1000;                            // Experiment section length (steps) 
 #endif  
 
 void setup() {

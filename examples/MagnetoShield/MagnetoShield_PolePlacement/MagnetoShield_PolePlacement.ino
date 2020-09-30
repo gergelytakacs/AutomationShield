@@ -24,7 +24,7 @@
 //   Created by:       Gergely Takacs and Gabor penzinger. 
 //   Created on:       23.9.2020
 //   Last updated by:  Gergely Takacs
-//   Last update on:   24.9.2020
+//   Last update on:   30.9.2020
 //   Tested on:        Arduino Mega2560
 
 #include <MagnetoShield.h>
@@ -53,13 +53,13 @@ int i = 0;                          // Section counter
 
 #if ARDUINO_ARCH_AVR
 float Ts = 5;                       // Sampling in microseconds, lower limit near 5 ms
-  int T = 1500;                     // Experiment section length (steps) 
+  int T = 1000;                     // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAMD
 float Ts = 5;                       // Sampling in microseconds
-  int T = 1500;                     // Experiment section length (steps) 
+  int T = 1000;                     // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAM
  float Ts = 4;                      // Sampling in microseconds, lower limit 1.3 ms
-  int T = 3000;                     // Experiment section length (steps) 
+  int T = 1000;                     // Experiment section length (steps) 
 #endif
 
 #if USE_KALMAN_FILTER && ARDUINO_ARCH_SAM

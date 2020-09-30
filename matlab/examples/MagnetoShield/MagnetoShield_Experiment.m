@@ -17,8 +17,8 @@
 
 l=1000;                         % Experiment section length
 lngth=5*l;                      % Number of sections
-port='COM13'                    % Your port
-baud=250000;                    % Baud rate (2M for AVR, 250 000 for SAM3)
+port='COM4'                    % Your port
+baud=2000000;                    % Baud rate (2M for AVR, 250 000 for SAM3)
 
 result=readExperiment(lngth,port,baud);
 plot(result)                    % Just a preview

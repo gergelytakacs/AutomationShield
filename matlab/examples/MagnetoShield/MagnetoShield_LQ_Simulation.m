@@ -77,8 +77,8 @@ Bi=[zeros(ny,nu); B];                                           % Augmenting B b
 Ci=[zeros(ny,nx) C];                                            % Augmenting C by the integrator
 
 %% LQ design
-Qlq=diag([50 1000 100 10]);                                     % State penalty matrix
-Rlq=0.01;                                                       % Input penalty matrix
+Qlq=diag([50 100 100 10]);                                     % State penalty matrix
+Rlq=0.1;                                                       % Input penalty matrix
 K=dlqr(Ai,Bi,Qlq,Rlq);                                          % LQ gain
 
 %% Simulation

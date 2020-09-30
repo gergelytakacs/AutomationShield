@@ -54,19 +54,19 @@ int i = 0;                          // Section counter
 
 #if ARDUINO_ARCH_AVR
 float Ts = 5;                       // Sampling in microseconds, lower limit near 5 ms
-  int T = 1500;                     // Experiment section length (steps) 
+  int T = 1000;                     // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAMD
 float Ts = 5;                       // Sampling in microseconds
-  int T = 1500;                     // Experiment section length (steps) 
+  int T = 1000;                     // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAM
- float Ts = 4;                      // Sampling in microseconds, lower limit 1.3 ms
-  int T = 3000;                     // Experiment section length (steps) 
+ float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
+  int T = 1000;                     // Experiment section length (steps) 
 #endif
 
 #if USE_KALMAN_FILTER && ARDUINO_ARCH_SAM
   // Linear, discrete state-space matrices for MagnetoShield model 
 BLA::Matrix<3, 3> A = {1.0172, 0.00405, -0.001, 8.6344, 1.034, -0.36779, -0.14718, -0.02536, 0.09199};
-BLA::Matrix<3, 1> B = {-0, -0.00284, 0.00425};
+BLA::Matrix<3, 1> B = {0, -0.00284, 0.00425};
 BLA::Matrix<2, 3> C = {1, 0, 0, 0, 0, 1};
 BLA::Matrix<3, 3> Q_Kalman = {0.0001, 0, 0, 0, 100, 0, 0, 0, 100};    // process noise  covariance matrix
 BLA::Matrix<2, 2> R_Kalman = {0.001, 0, 0, 0.001};                    // measurement noise covariance matrix
@@ -74,7 +74,7 @@ BLA::Matrix<3, 1> xIC = {1e-3, 0, 0};                                 // Kalman 
 #endif
 
 
-BLA::Matrix<1, 4> K = {52.25, -4548, -122.19, 44.731};              // LQ gain with integrator, see MATLAB example
+BLA::Matrix<1, 4> K = {18.046, -3972.5, -93.018, 33.947};              // LQ gain with integrator, see MATLAB example
 BLA::Matrix<4, 1> X = {0, 0, 0, 0};                                 // Initial state vector
 BLA::Matrix<4, 1> Xr = {0, 0, 0, 0};                                // Initial state reference
 
