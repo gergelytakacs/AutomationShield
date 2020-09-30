@@ -1,7 +1,7 @@
-function result=readExperiment(lngth,port,baudrate)
+function result=readExperiment(lngth,port,baud)
 
-s = serial(port);    % Serial port handle                            
-set(s,'BaudRate',baudrate); % Set speed
+s = serial(port);       % Serial port handle                            
+set(s,'BaudRate',baud); % Set speed
 fopen(s);               % Open port
 result=[];
 
