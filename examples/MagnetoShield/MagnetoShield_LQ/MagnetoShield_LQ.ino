@@ -28,7 +28,6 @@
 
 #include <MagnetoShield.h>
 #include <Sampling.h>
-#include <BasicLinearAlgebra.h>       // Include template function for calculating K gain for LQ control applications
 
 #define MANUAL 0
 #define USE_KALMAN_FILTER 0           // Use Kalman filter. Kalman filtering only works if ARDUINO_ARCH_SAM = 1 (e.g. Arduino DUE)
