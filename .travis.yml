@@ -84,7 +84,6 @@ script:
 
 ### MagnetoShield ###
 #Uno#
- - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_MPC/MagnetoShield_MPC.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_LQ/MagnetoShield_LQ.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_PolePlacement/MagnetoShield_PolePlacement.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
