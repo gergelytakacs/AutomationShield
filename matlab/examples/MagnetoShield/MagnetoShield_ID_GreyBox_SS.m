@@ -42,22 +42,21 @@ g  = 9.81;										% [m/s2] Gravitational acceleration
 m  = 0.945E-3;                                  % [kg] Magnet mass
 R  = 198.3;                                     % [Ohm] Solenoid resistance
 L  = 0.239;                                     % [H] Solenoid inductance
-Km = 0.0037;                                     % Magnetic constant (rhough estimate)
-Ke = Km;
+Km = 0.0037;                                    % Magnetic constant for the mechanical part
+Ke = Km;                                        % Magnetic constant for the electrical part
 
-% Linearization points
+% Linearization points based on the experiment
 y0 = mean(y);                                   % [m] Output (position) linearization around setpoint
 u0 = mean(u);                                   % [V] Input linearization around setpoint
 i0 = mean(i);                                   % [A] Current linearization around setpoint
 
-% i0 = sqrt(g*m*y0^2/Km);                         % [A] Current linearization around setpoint
-% u0 = R*i0;                                      % [V] Input linearization around setpoint
+% Exact linearization points based on the model
+% i0 = sqrt(g*m*y0^2/Km);                        % [A] Current linearization around setpoint
+% u0 = R*i0;                                     % [V] Input linearization around setpoint
 
-delta_y = y-y0;
-delta_i = i-i0;
-delta_u = u-u0;			
-
-
+delta_y = y-y0;                                 % [m] Distance data adjusted by linearization points
+delta_i = i-i0;                                 % [A] Current data adjusted by linearization points
+delta_u = u-u0;                                 % [V] Voltage input data adjusted by linearization points
 
 % Initial parameters for generic linearized model
 alpha   = 2*(Km/m)*i0^2/y0^3;                   % Linearized parameter guess
@@ -65,7 +64,6 @@ beta    = 2*(Km/m)*i0/y0^2;                     % Linearized parameter guess
 gamma   = 2*Ke*i0/(L*y0^2);                     % Linearized parameter guess
 delta   = R/L;                                  % Parameter guess
 epsilon = 1/L;                                  % Parameter gues
-
 
 %% System identification data object
 data = iddata([delta_y delta_i],delta_u,Ts,'Name','Magnetic Levitation');    % Data file
@@ -78,14 +76,13 @@ data.OutputUnit{2} = 'A';                       % Output 2 unit
 data.Tstart = 0;                                % Starting time
 data.TimeUnit = 's';                            % Time unit
 data = data(100:end);                           % Discard the time when magnet is on ground, pick close to linearization point
-data=detrend(data);                             % Discard offset, takes care of linearization too
+data=detrend(data);                             % Discard offset, takes care of linearization too (if mean is taken as lin. point)
 dataf = fft(data);                              % Frequency domain 																		   
 
 % Initial states
 h0=data.y(1,1);                                 % Initial position estimate
 dh0=(data.y(2,1)-data.y(1,1))/Ts;               % Initial velocity estimate
 ii0=data.y(1,2);                                 % Initial current estimate
-
 
 %% Construct model
 if fixedInductance==1                           % Magnet inductance L fixed
