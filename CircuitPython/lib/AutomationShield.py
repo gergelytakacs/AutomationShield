@@ -46,3 +46,37 @@ def constrain(x, xmin, xmax):               # A wrapper to keep compatibility wi
 
 def constrainFloat(x, xmin, xmax):          # A wrapper to keep compatibility with Arduino API
     return baseConstrain(x, xmin, xmax)     # Just calls baseConstrain()
+
+# Prints a line of separators
+def printSeparator(separator):
+    length = 60
+    print(separator*length)
+
+# Evaluates and prints if a number fits into a range
+# First come a description, then the value to be tested, the lower
+# end of the range, and the higher end.
+# Returns 0 on success and 1 on failure
+def printTestResults(text, value, low, high):
+    print(text, end="", flush=True)            # Print line
+    if value >= low and value <= high:                           # compare
+        print(" Ok.")                                            # if it is ok, print ok
+        testFail = False                                         # the test has not failed
+    else:                                                        # else the test has failed
+        print(" Fail.")                                          # print failed
+        testFail = True                                          # turn flag on
+    return testFail                                                  # return state
+
+# Creates a header for displaying numeric ranges with a label and unit, e.g.
+# Begins with a new line, displays TEST LOW HIGH  UNIT, then a line of dashes.
+def printLowHighFirst():
+    print("")
+    header = ['TEST', 'LOW', 'HIGH', 'UNIT']
+    print ('{0:<20} {1:<10} {2:<10} {3:<10} '.format(*header))
+    printSeparator('-')
+
+# Prints a single line for range measurements in an ordered form, e.g.
+# Coil current 0.0 50.6  mA
+# Enter the name of the range, first number, second number, then a unit
+def printLowHigh(name, low, high, unit, precision):
+    line = [name, low, high, unit]
+    print ('{0:<20} {1:<10.{prec}f} {2:<10.{prec}f} {3:<10} '.format(*line,prec=precision))
