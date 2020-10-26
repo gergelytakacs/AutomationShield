@@ -30,7 +30,6 @@ import board                        # Imports the boars module defining pin loca
 import busio                        # Imports the busio module defining I2C communicaiton for the DAC chip
 from analogio import AnalogIn       # Imports AnalogIn from the analogio module defining analog input for the sensors
 import AutomationShield             # Imports the AutomationShield module for common functions and common constants
-import microcontroller              # Imports microcontroller functionality, e.g. to tell CPU clock
 
 calibrated = False                  # Variable storing calibration state, initialized as false
 
@@ -47,7 +46,7 @@ MAGNETO_YPIN = AnalogIn(board.A3)   # Defines the location of the Hall sensor
 
 EMAGNET_HEIGHT = const(20)          # [mm] Location of electromagnet above ground
 MAGNET_LOW = const(3)     	        # [mm] Top of the magnet from ground - distance from Hall element (low)
-MAGNET_HIGH = const(8)		        # [mm] Top of the magnet from ground - distance from Hall element (high)
+MAGNET_HIGH = const(8)		        #[mm] Top of the magnet from ground - distance from Hall element (high)
 
 HALL_SENSITIVITY = const(800)       # [G/V] = 1.25 mV/G Sensitivity of the TI DRV5055Z4 Hall sensor
 HALL_LSAT = const(2528)             # [16-bit ADC] Lower saturation of the Hall sensor
