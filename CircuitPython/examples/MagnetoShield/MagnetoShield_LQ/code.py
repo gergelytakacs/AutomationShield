@@ -154,7 +154,6 @@ def step():
 # Main loop launches a single step at each enable time
 while True:                                     # Infinite loop
     Sampling.stepEnable()                       # Routine to enable the algorithm step, changes the flag Sampling.enable
-    print(Sampling.Settings.enable)
     if Sampling.Settings.enable:                # If time comes
         step()                                  # Algorithm step
         Sampling.Settings.enable = False        # Then disable

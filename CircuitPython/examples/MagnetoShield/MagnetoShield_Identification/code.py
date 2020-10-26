@@ -94,10 +94,10 @@ MagnetoShield.calibration()                     # Calibrate device
 fallbackSettings()                              # These are only active when CPU speed is 48 MHz. Comment if you want to use settings as above
 
 # Set the PID settings
-PIDAbs.setKp(KP)                                # Proportional
-PIDAbs.setTi(TI)                                # Integral
-PIDAbs.setTd(TD)                                # Derivative
-PIDAbs.setTs(Ts)                                # Sampling (use Ts in microseconds)
+PIDAbs.Settings.setKp(KP)                       # Proportional
+PIDAbs.Settings.setTi(TI)                       # Integral
+PIDAbs.Settings.setTd(TD)                       # Derivative
+PIDAbs.Settings.setTs(Ts)                       # Sampling (use Ts in microseconds)
 
 Sampling.begin(Ts)                              # Initialize sampling subsystem (based on time.monotonic_ns())
 
@@ -108,9 +108,9 @@ def step():
         Sampling.Settings.realTimeViolation = False      # Not a real-time violation
         MagnetoShield.actuatorWrite(0.0)        # then turn off magnet
         if PLOTTING_POST:                       # In case plotting in post is enabled
-            for j in range(0,len(Ylog)):        # for every element in the log vector of outputs
+            for j in range(0,len(Ylog)):           # for every element in the log vector of outputs
                 print((Ulog[j],Ylog[j],Ilog[j],))   # Print to serial
-                #time.sleep(0.05)               # Wait a bit so that Mu plotter can catch up. Uncomment this for Mu illustration
+                time.sleep(0.05)               # Wait a bit so that Mu plotter can catch up. Uncomment this for Mu illustration
         while True:                             # then stop
             pass                                # and do nothing
     else:                                       # if the experiment is not yet over
@@ -128,14 +128,13 @@ def step():
         Ulog.append(u)                          # append input u to input vector
         Ylog.append(y)                          # append output y to output vector
         Ilog.append(I)                          # append current output I to output vector
-    else:                                       # otherwise we are plotting "real time"
+    #else:                                       # otherwise we are plotting "real time"
         print((u, y, I))                        # send data to output and
     k += 1                                      # Increment time-step k
 
 # Main loop launches a single step at each enable time
 while True:                                     # Infinite loop
     Sampling.stepEnable()                       # Routine to enable the algorithm step, changes the flag Sampling.enable
-    print(Sampling.Settings.enable)
     if Sampling.Settings.enable:                # If time comes
         step()                                  # Algorithm step
         Sampling.Settings.enable = False        # Then disable
