@@ -42,7 +42,7 @@ print("Calibration in progress...")   # Begin note
 MagnetoShield.begin()                 # Initializes shield
 MagnetoShield.calibration()           # Calibrates shield
 print("Done.")                        # Done note
-AutomationShield.printSeparator('=');
+AutomationShield.printSeparator('=')
 
 Minimum=MagnetoShield.minCalibrated   #  minimum ADC, maximum Gauss
 Maximum=MagnetoShield.maxCalibrated   #  maximum ADC, minimum Gauss
