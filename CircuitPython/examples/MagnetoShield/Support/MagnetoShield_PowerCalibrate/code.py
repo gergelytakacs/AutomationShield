@@ -50,4 +50,3 @@ for level in range(0, MagnetoShield.DACMAX):        # Run through all levels
     u = usum / numMeas                           # Calculate average
     i = isum / numMeas                           # Calculate average
     print((level, u, i))                         # Print results
-
