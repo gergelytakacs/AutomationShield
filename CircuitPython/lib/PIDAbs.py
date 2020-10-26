@@ -26,6 +26,11 @@ import AutomationShield     # Import the AutomationShield module for constrain f
 eSum = 0.0                  # Sum of the error for integral
 e = [0.0, 0.0]              # List to stores curent and previous error
 
+Kp = 0.0
+Ti = 0.0
+Td = 0.0
+Ts = 0.0
+
 # These could be solved in a prettier way, but let's keep consistent with the Arduino API!
 def setKp(Kpin):            # Takes the proportional gain
     global Kp               # Sets Kp as a global variable
