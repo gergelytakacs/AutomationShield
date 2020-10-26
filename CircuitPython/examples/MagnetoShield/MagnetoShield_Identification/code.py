@@ -42,7 +42,6 @@ import AutomationShield                         # Imports the AutomationShield m
 import MagnetoShield                            # Imports the MagnetoShield module for hardware functionality
 import Sampling                                 # Imports the Sampling module for pseudo-real time sampling
 import PIDAbs                                   # Imports the PIDAbs module for the absolute PID algoritm
-import time                                     # Imports the time module for delays
 
 from random import seed                         # Import seeding functionality
 from random import randint                      # Generate random integers
