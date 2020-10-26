@@ -32,8 +32,6 @@
 
 import MagnetoShield         # Imports the MagnetoShield module for hardware functionality
 import AutomationShield      # Imports AutomationShield module for generic functionality
-import time                  # Imports the time module for delays
-
 
 # Maximum and minimum mean voltage, ADC or position (not magnetic)
 
