@@ -19,7 +19,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács.
-  Last update: 16.01.2019
+  Last update: 13.10.2020
 */
 #include <MagnetoShield.h>            // Include header for hardware API
 #include <Sampling.h>            // Include sampling
@@ -39,10 +39,6 @@
 
 float R[]={14.0,13.0,14.0,15.0,14.0}; // Reference trajectory (pre-set)
   
-  
-#if MANUAL                             // If it is manual reference
-  Ts=5000;                             // Slightly faster for manual
-#endif
 unsigned long k = 0;                  // Sample index
 bool enable=false;                    // Flag for sampling 
 bool realTimeViolation=false;         // Flag for real-time violations
@@ -112,7 +108,7 @@ void step(){
   r=AutomationShield.mapFloat(MagnetoShield.referenceRead(),0.0,100.0,12.0,17.0);
 #else                                   // If pre-set experiment
   if (i>sizeof(R)/sizeof(R[0])){        // If experiment finished
-    realTimeViolation=false; 
+    realTimeViolation=false;            // Not a real-time violation
     MagnetoShield.actuatorWrite(0);     // then turn off magnet
     while(1);                           // and stop
   }
