@@ -108,8 +108,8 @@ def step():
             MagnetoShield.actuatorWrite(0.0)    # then turn off magnet
             if DATA_OUTPUT:                     # if outputs are requested
                 if PLOTTING_POST:                   # In case plotting in post is enabled
-                    for j in range(0,len(Ylog)):    # for every element in the log vector of outputs
-                        print((Ylog[j],Ulog[j],))   # Print to serial
+            	    for j in enumerate(Ylog):             # for every element in the log vector of outputs
+                        print((Ylog[j[0]],Ulog[j[0]],))   # Print to serial
                         time.sleep(0.03)            # Wait a bit so that Mu plotter can catch up
             while True:                         # then stop
                 pass                            # and do nothing

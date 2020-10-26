@@ -108,9 +108,9 @@ def step():
         Sampling.Settings.realTimeViolation = False      # Not a real-time violation
         MagnetoShield.actuatorWrite(0.0)        # then turn off magnet
         if PLOTTING_POST:                       # In case plotting in post is enabled
-            for j in range(0,len(Ylog)):           # for every element in the log vector of outputs
-                print((Ulog[j],Ylog[j],Ilog[j],))   # Print to serial
-                time.sleep(0.05)               # Wait a bit so that Mu plotter can catch up. Uncomment this for Mu illustration
+            for j in enumerate(Ylog):           # for every element in the log vector of outputs
+                print((Ulog[j[0]],Ylog[j[0]],Ilog[j[0]],))   # Print to serial
+                #time.sleep(0.05)               # Wait a bit so that Mu plotter can catch up. Uncomment this for Mu illustration
         while True:                             # then stop
             pass                                # and do nothing
     else:                                       # if the experiment is not yet over
