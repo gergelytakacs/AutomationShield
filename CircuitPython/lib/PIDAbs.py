@@ -19,42 +19,41 @@
   Created by:       Gergely Takács
   Created on:       12.10.2020.
   Last updated by:  Gergely Takács
-  Last update:      13.10.2020.
+  Last update:      26.10.2020.
 """
 
 import AutomationShield     # Import the AutomationShield module for constrain functions
-eSum = 0.0                  # Sum of the error for integral
-e = [0.0, 0.0]              # List to stores curent and previous error
 
-Kp = 0.0
-Ti = 0.0
-Td = 0.0
-Ts = 0.0
-
+class Settings_:
 # These could be solved in a prettier way, but let's keep consistent with the Arduino API!
-def setKp(Kpin):            # Takes the proportional gain
-    global Kp               # Sets Kp as a global variable
-    Kp = Kpin               # Stores the input argument in the global variable
+    def __init__(self):
+        self.Kp = 0.0
+        self.Ti = 0.0
+        self.Td = 0.0
+        self.Ts = 0.0
+        self.eSum = 0.0                  # Sum of the error for integral
+        self.e = [0.0, 0.0]              # List to stores curent and previous error
 
-def setTi(Ti_in):           # Takes the integral time constant
-    global Ti               # Sets Ts as a global variable
-    Ti = Ti_in              # Stores the input argument in the global variable
+    def setKp(self,Kpin):            # Takes the proportional gain
+        self.Kp = Kpin               # Stores the input argument in the global variable
 
-def setTd(Td_in):           # Takes the derivative time constant
-    global Td               # Sets Ts as a global variable
-    Td = Td_in              # Stores the input argument in the global variable
+    def setTi(self,Ti_in):           # Takes the integral time constant
+        self.Ti = Ti_in              # Stores the input argument in the global variable
 
-def setTs(Ts_in):           # Takes the sampling time in microseconds!
-    global Ts               # Sets Ts as a global variable
-    Ts = Ts_in / 1000000    # Stores the input argument in the global variable
+    def setTd(self,Td_in):           # Takes the derivative time constant
+        self.Td = Td_in              # Stores the input argument in the global variable
+
+    def setTs(self,Ts_in):           # Takes the sampling time in microseconds!
+        self.Ts = Ts_in / 1000000    # Stores the input argument in the global variable
+
+Settings = Settings_()
 
 # Computes an absolute PID input
-def compute(err, saturationMin, saturationMax, antiWindupMin, antiWindupMax):           # Requres error, input saturation and intergral windup saturation
-    global eSum, Kp, Ti, Td, Ts, e                                                      # Sets these as global variables
-    eSum = eSum + err                                                                   # Sum of errors for the integral (summation) part
-    e[1] = err                                                                          # New error in position [1] (right)
-    eSum = AutomationShield.constrainFloat((Kp * Ts / Ti )* eSum, antiWindupMin, antiWindupMax) / (Kp * Ts / Ti)        # Anti-windup by clamping
-    u = ( Kp * e[1]) + ((Kp * Ts / Ti) * eSum) + ((Kp * Td / Ts) * (e[1] - e[0]))       # Absolute PID, computes the unsaturated input
+def compute(err, saturationMin, saturationMax, antiWindupMin, antiWindupMax):           # Requres error, input saturation and intergral windup saturation                                                                      # Sets these as global variables
+    Settings.eSum = Settings.eSum + err                                                                   # Sum of errors for the integral (summation) part
+    Settings.e[1] = err                                                                          # New error in position [1] (right)
+    Settings.eSum = AutomationShield.constrainFloat((Settings.Kp * Settings.Ts / Settings.Ti )* Settings.eSum, antiWindupMin, antiWindupMax) / (Settings.Kp * Settings.Ts / Settings.Ti)        # Anti-windup by clamping
+    u = (Settings.Kp * Settings.e[1]) + ((Settings.Kp * Settings.Ts / Settings.Ti) * Settings.eSum) + ((Settings.Kp * Settings.Td / Settings.Ts) * (Settings.e[1] - Settings.e[0]))       # Absolute PID, computes the unsaturated input
     usat = AutomationShield.constrainFloat(u,saturationMin,saturationMax)               # Saturates the input
-    e[0] = e[1]                                                                         # Stores error in the list
+    Settings.e[0] = Settings.e[1]                                                                         # Stores error in the list
     return usat                                                                         # Returns the saturated input

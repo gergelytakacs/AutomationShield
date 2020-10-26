@@ -105,7 +105,7 @@ Sampling.begin(Ts)                              # Initialize sampling subsystem 
 def step():
     global r, R, i, k                           # Access these global variables
     if (k > (len(R) * T) - 1):                  # if the experiment is overs
-        Sampling.realTimeViolation = False      # Not a real-time violation
+        Sampling.Settings.realTimeViolation = False      # Not a real-time violation
         MagnetoShield.actuatorWrite(0.0)        # then turn off magnet
         if PLOTTING_POST:                       # In case plotting in post is enabled
             for j in range(0,len(Ylog)):        # for every element in the log vector of outputs
@@ -135,6 +135,7 @@ def step():
 # Main loop launches a single step at each enable time
 while True:                                     # Infinite loop
     Sampling.stepEnable()                       # Routine to enable the algorithm step, changes the flag Sampling.enable
-    if Sampling.enable:                         # If time comes
+    print(Sampling.Settings.enable)
+    if Sampling.Settings.enable:                # If time comes
         step()                                  # Algorithm step
-        Sampling.enable = False                 # Then disable
+        Sampling.Settings.enable = False        # Then disable
