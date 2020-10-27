@@ -1,9 +1,9 @@
 clear;close all;clc;
-load 'MagnetoShield_Models_Greybox_SS model.mat';
+load '../../../matlab/examples/MagnetoShield/MagnetoShield_Models_Greybox_SS';
 %% MagnetoShield - LQR simulation and control initialization for Simulink
 
 order = 'SISO';                 % SISO - position / SIMO - position & current
-Ts = 0.0025;                     % Sampling
+Tss = 0.001;                    % Sampling of the Simulink simulation
 
 % Matrices extraction from model
 modeld=c2d(model,Ts);           % Discretized linear state-space model
