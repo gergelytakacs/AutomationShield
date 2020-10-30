@@ -3,7 +3,7 @@ load '../../../matlab/examples/MagnetoShield/MagnetoShield_Models_Greybox_SS';
 %% MagnetoShield - LQR simulation and control initialization for Simulink
 
 order = 'SISO';                 % SISO - position / SIMO - position & current
-Tss = 0.001;                    % Sampling of the Simulink simulation
+Ts = 0.001;                    % Sampling of the Simulink simulation
 
 % Matrices extraction from model
 modeld=c2d(model,Ts);           % Discretized linear state-space model
@@ -22,7 +22,6 @@ Qlq=diag([70 100 20 40]);      % State penalty matrix
 Rlq=0.1;                       % Input penalty matrix
 K=dlqr(Ai,Bi,Qlq,Rlq);         % LQ gain for system states
 
-
 % Measurement matrices of state-space and Kalman filter gains
 if order == 'SISO'                  % Setup if just position is measured
     C = [1 0 0];
@@ -36,14 +35,15 @@ elseif order == 'SIMO'             % Setup if position and current are measured
     Q = diag([0.0001, 100, 80]);   % Penalty of the model for Kalman filter
     R = [0.001, 0.01];             % Penalty of measurement for Kalman filter
 end
+
 %% Model properties, stability and responses
 
 % MagnetoShield discrete model with LQ-gain implemented
 A_lq = [A-B*K(2:4) -B*K(1); 
           -Ci          1   ];
 B_lq = [0;0;0;1];                   % input is reference r(k)
-C_lq = [1 0 0 0];                   % measured state - position
-D_lq = [0];
+C_lq = [C zeros(size(C,1),1)];      % measured state - position
+D_lq = zeros(size(C,1),1);
 sys = ss(A_lq,B_lq,C_lq,D_lq,Ts);
 
 % Properties of the model
@@ -58,7 +58,9 @@ figure('Name','Impulse response')
 impulse(sys);
 figure('Name','Step response')
 step(sys);
-figure('Name','Root locus')
-rlocus(sys)
-zgrid
-axis([-1.5 1.5 -1.5 1.5])
+if order=='SISO'                    % root locus plot possible for SISO
+    figure('Name','Root locus')
+    rlocus(sys)
+    zgrid
+    axis([-1.5 1.5 -1.5 1.5])
+end
