@@ -10,7 +10,6 @@ modeld=c2d(model,Ts);           % Discretized linear state-space model
 A = modeld.a;                   % Extract A
 B = modeld.b;                   % Extract B
 Ci = [1 0 0];                   % Position is measured for integrator 'xi' computation
-D = 0;
 
 % Discrete augmented model with integrator state - unstable, unobservable
 Ai = [1 -Ci;
@@ -39,10 +38,10 @@ end
 %% Model properties, stability and responses
 
 % MagnetoShield discrete model with LQ-gain implemented
-A_lq = [A-B*K(2:4) -B*K(1); 
-          -Ci          1   ];
-B_lq = [0;0;0;1];                   % input is reference r(k)
-C_lq = [C zeros(size(C,1),1)];      % measured state - position
+A_lq = [1        -Ci; 
+     -B*K(1)  A-B*K(2:4)];
+B_lq = [1;0;0;0];                   % input is reference r(k)
+C_lq = [zeros(size(C,1),1) C];      % measured state - position
 D_lq = zeros(size(C,1),1);
 sys = ss(A_lq,B_lq,C_lq,D_lq,Ts);
 
