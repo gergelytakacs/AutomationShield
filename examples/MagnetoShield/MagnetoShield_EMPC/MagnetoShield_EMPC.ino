@@ -38,7 +38,7 @@
 
 #define MANUAL 0                    // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
-unsigned long Ts =5;                // Sampling period in miliseconds
+unsigned long Ts = 5;                // Sampling period in miliseconds
 unsigned long k = 0;                // Sample index
 bool nextStep = false;              // Flag for step function
 bool realTimeViolation = false;     // Flag for real-time sampling violation
