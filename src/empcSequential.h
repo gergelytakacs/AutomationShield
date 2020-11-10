@@ -57,6 +57,9 @@ void empcSequential( float *X, float *U){
             } 
         }
         abspos = abspos + pgm_read_word(&(MPT_NC[ireg]));
+        if (isinside==1) {
+                iregmin = ireg;
+        }   
     }
     for (ix=0; ix<MPT_RANGE; ix++) {
         sx = 0;
@@ -67,7 +70,6 @@ void empcSequential( float *X, float *U){
     }
 	#else
 	for (ireg=0; ireg<MPT_NR; ireg++) {
-
         isinside = 1;
         nc = MPT_NC[ireg];
         for (ic=0; ic<nc; ic++) {
@@ -82,6 +84,9 @@ void empcSequential( float *X, float *U){
             } 
         }
         abspos = abspos + MPT_NC[ireg];
+        if (isinside==1) {
+                iregmin = ireg;
+        }   
     }
     for (ix=0; ix<MPT_RANGE; ix++) {
         sx = 0;

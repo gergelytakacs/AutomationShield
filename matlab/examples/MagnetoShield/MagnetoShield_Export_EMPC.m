@@ -33,7 +33,7 @@ clc; clear; close all;                                          % Close and clea
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
                                                                
 Ts=0.005;                                                       % [s] sampling for discrete control
-N=5;                                                            % [steps] prediction horizon
+N=4;                                                            % [steps] prediction horizon
 ul=0;                                                           % [V] Adjust lower input constraint for linearization
 uh=10;                                                          % [V] Adjust upper input constraint for linearization
 
