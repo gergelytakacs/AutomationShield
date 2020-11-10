@@ -5,7 +5,8 @@
 %   the number of bytes required for storage in the memory. The computation
 %   does not contain anything, but the storage requirements of the
 %   polyhedra and the associated control laws, e.g. the real memory
-%   requirement will contain the rest of your control application
+%   requirement will contain the rest of your control application. This 
+%   can be estimated as ~10 kB in most cases including a serial interface.
 
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
@@ -26,6 +27,12 @@
 
 function memory = empcMemory(ectrl, numeric)
 
+base = 10*1024;                % Estimate for the control loop
+UNO = 32256 - base;            % Free memory for the UNO in bytes
+MEGA = 253952 - base;          % Free memory for the MEGA in bytes
+DUE = 524288 - base;           % Free memory for the DUE in bytes
+
+eightBit = 1024*32/4;          % Maximal number of elements in a C array for 8 bit architectures
 if numeric == 'float'
     bytes = 4;                 % 4 bytes for a single precision floating point number
 elseif numeric == 'double'
@@ -33,11 +40,54 @@ elseif numeric == 'double'
 else
     error('Numeric type undefined.')
 end    
-floats = 0;                    % Initialize zero numbers
+floatsA = 0;                    % Initialize zero numbers
+floatsB = 0;                    % Initialize zero numbers
+floatsG = 0;                    % Initialize zero numbers
+floatsF = 0;                    % Initialize zero numbers
 for i = 1:ectrl.optimizer.Num  % Sweep through all partitions
-        floats = floats + prod(size(ectrl.optimizer.Set(i).A));
-        floats = floats + prod(size(ectrl.optimizer.Set(i).b));
-        floats = floats + prod(size(ectrl.optimizer.Set(i).Functions('primal').F));
-        floats = floats + prod(size(ectrl.optimizer.Set(i).Functions('primal').g));
+        floatsA = floatsA + prod(size(ectrl.optimizer.Set(i).A));
+        floatsB = floatsB + prod(size(ectrl.optimizer.Set(i).b));
+        floatsF = floatsF + prod(size(ectrl.optimizer.Set(i).Functions('primal').F));
+        floatsG = floatsG + prod(size(ectrl.optimizer.Set(i).Functions('primal').g));
 end
+
+if (floatsA > eightBit) || (floatsB > eightBit) || (floatsF > eightBit) || (floatsG > eightBit)
+    warning('Array size not addressable in 8-bit architectures.')
+end
+
+intsNC = ectrl.optimizer.Num*4; % NC stored in full ints, but why?
+
+
+floats = (floatsA+floatsB+floatsF+floatsG+intsNC);
 memory = (floats*bytes);      % Number of floating point numbers*number of bytes in each of them
+
+if memory >= UNO
+    warning('This EMPC controller is unlikely to fit on the Arduino Uno.')
+end
+
+if memory >= MEGA
+    warning('This EMPC controller is unlikely to fit on the Arduino Mega.')
+end
+
+if memory >= DUE
+    warning('This EMPC controller is unlikely to fit on the Arduino Due.')
+end
+
+
+% Notes
+
+% Max 32256
+% Just sketch 444
+% PGMREAD Float = 460
+% Serial.begin 1438
+% Control w/o = 10074
+% Control w/ = 22080
+
+% all now 11598
+
+% Mega
+
+% Max 253952
+% Just sketch 662
+% PGMREAD Float = 678
+% Serial.begin 1438

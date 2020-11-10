@@ -23,14 +23,18 @@
 
   Created by Gergely Takacs.
   Created on:  9.11.2020
-  Last update: 9.11.2020.
+  Last update: 11.11.2020.
 */
 
 #include <MagnetoShield.h>                            // Include main library  
 #include <Sampling.h>                                 // Include sampling library
-#include <avr/pgmspace.h>                             // PROGMEM instructions
-#include "ectrl.h"                                    // include EMPC matrices
-#include "evalfun.h"                                  // include seq. search
+
+#ifdef ARDUINO_ARCH_AVR
+  #include "AVR\ectrl.h"                                    // include EMPC matrices
+#else
+  #include "ectrl.h"
+#endif
+#include <empcSequential.h>
 
 #define MANUAL 0                    // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
@@ -78,6 +82,7 @@ void loop() {                       // Loop - runs indefinitely
 void stepEnable() {                                // ISR
   if (nextStep == true) {                          // If previous sample still running
     realTimeViolation = true;                      // Real-time has been violated
+    noInterrupts();
     Serial.println("Real-time samples violated."); // Print error message
     MagnetoShield.actuatorWrite(0.0);              // Turn off the fan
     while (1);                                     // Stop program execution
@@ -109,7 +114,7 @@ void step() {                                      // Define step function
   X[3]=  (I-I0)/1000.0;                            // [A] Third state, current measurement  
   yp=y;
 
-  ectrl(X, u_opt);                                 // solve Explicit MPC problem 
+  empcSequential(X, u_opt);                         // solve Explicit MPC problem 
   u = u_opt[0]+u0;                                 // Save system input into input variable
   MagnetoShield.actuatorWrite(u);                  // Actuate
 

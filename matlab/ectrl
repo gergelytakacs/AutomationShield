@@ -1,41 +1,50 @@
-/*
-    MATRICES FOR EXPLICIT MPC POLYTOPES AND CORRESPONDING PWA LAWS
-
- 	  The automatically generated set of matrices have been adapted from 
-    the C code auto-generation routine of the Multi-Parametric Toolbox 3 
-    MPT3) of Kvasnica et al. for  MATLAB. Please see http://www.mpt3.org 
-    for more information. Please see the original "toC.m" for more details
-    in the MPT3.
-
-    The following C code has been slightly adapted to perform microcontroller
-    architecutre-specific changes for AVR and ARM Cortex-A devices.
-
-    The list of changes from the original are as follows:
-    - Changed "static" modifiers to "const" so microcontrollers will
-    prefer to use ROM instead of RAM.
-    - Added PROGMEM functionality for the AVR architecture, and calling
-    the necessary headers.
-    - Removed the possiblilty to use PWQ, this only handles PWA.
-    - Removed matrix export for the tie-breaking function.
-
-    Usage: include alongside with the empcSequential.h header to your
-    example.
-
-    This code snippet has been altered for the needs of the
-    the AutomationShield hardware and software ecosystem. 
-    Visit http://www.automationshield.com for more details.
+/* The function for evaluation of a piecewise affine control law associated
+   to a given state X using sequential search.
 
 
-    Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) 
-    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    
-    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)
+   where X is a vector of dimension MPT_DOMAIN and U is a vector of dimension 
+   MPT_RANGE for PWA functions ( 1 for PWQ functions). The output variable "region"
+   indicates index of a region where the point X is located. If "region" index is
+   smaller than 1 (region < 1), there is no control law associated to
+   a given state.
+
+   Please note that all code in this file is provided under the terms of the
+   GNU General Public License, which implies that if you include it directly
+   into your commercial application, you will need to comply with the license.
+   If you feel this is not a good solution for you or your company, feel free 
+   to contact the author:
+       michal.kvasnica@stuba.sk
+    to re-license this specific piece of code to you free of charge.
 */
+
+/* Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) 
+   Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    
+*/
+
+
+/*  This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+*/ 
+
+#include <avr/pgmspace.h> 
+
 #define MPT_NR 251
 #define MPT_DOMAIN 4
 #define MPT_RANGE 5
 #define MPT_ABSTOL 1.000000e-08
 
-const float MPT_A[] = {
+const float MPT_A[] PROGMEM = {
 7.8362587e-04,	-9.9970366e-01,	-2.2856740e-02,	8.3389282e-03,	2.0279738e-03,	
 -9.9969686e-01,	-2.3049335e-02,	8.4148861e-03,	3.0221971e-03,	-9.9968865e-01,	
 -2.3266562e-02,	8.4933301e-03,	-8.0766265e-04,	-9.9970790e-01,	-2.2693647e-02,	
@@ -2276,7 +2285,7 @@ const float MPT_B[] = {
 2.5853060e+03,	1.0000000e+04,	1.0000000e+04,	-1.9579359e+03,	9.1641001e+02,	
 -2.0490454e+03 };
 
-const int MPT_NC[] = {
+const int MPT_NC[] PROGMEM = {
 11,	6,	9,	10,	10,	
 8,	9,	18,	9,	8,	
 6,	11,	8,	9,	11,	
@@ -2330,7 +2339,7 @@ const int MPT_NC[] = {
 8 };
 
 
-const float MPT_F[] = {
+const float MPT_F[] PROGMEM = {
 -2.0264313e+01,	6.7030716e+03,	1.5600600e+02,	-5.6949131e+01,	0.0000000e+00,	
 0.0000000e+00,	0.0000000e+00,	0.0000000e+00,	0.0000000e+00,	0.0000000e+00,	
 0.0000000e+00,	0.0000000e+00,	2.4938832e+00,	3.0868764e+03,	7.0072952e+01,	
@@ -3338,7 +3347,7 @@ const float MPT_F[] = {
 };
 
 
-const float MPT_G[] = {
+const float MPT_G[] PROGMEM = {
 -4.1255260e+00,	5.3766000e+00,	5.3766000e+00,	-1.9038493e+00,	-4.6234000e+00,	
 -1.4804324e+00,	5.3766000e+00,	-8.5703238e-01,	-5.7902290e-01,	-4.6234000e+00,	
 -7.9086520e-01,	-6.4498117e-01,	5.3766000e+00,	-3.4799198e-01,	-4.6234000e+00,	
