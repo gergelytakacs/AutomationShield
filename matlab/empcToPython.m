@@ -1,23 +1,19 @@
-function empcToC(obj, architecture)
+function empcToPython(obj)
 global MPTOPTIONS
 
-%    "MPT3" EXPLICIT MPC CONTROLLER GENERATOR FOR MICROCONTROLLERS 
+%    "MPT3" EXPLICIT MPC CONTROLLER GENERATOR FOR PYTHON
 % 
 % 	 The function below has been adapted from the C code auto-generation
 %    routine of the Multi-Parametric Toolbox 3 (MPT3) of Kvasnica et al. 
 %    for  MATLAB. Please see http://www.mpt3.org for more information.
 %    Please see the original "toC.m" for more details in the MPT3
 % 
-%    The following code has been adapted to perform microcontroller 
-%    architecutre-specific changes for AVR and ARM Cortex-A devices.
+%    The following code has been adapted to write the region and PWA law
+%    matrices to a Python module.
 % 
 %    The list of changes from the original are as follows:
 % 	 - Removed much of the diagnostic features.
 %    - Removed the evaluation function part and Simulink port.
-%    - Changed "static" modifiers to "const" so microcontrollers will
-%    prefer to use ROM instead of RAM.
-%    - Added PROGMEM functionality for the AVR architecture, and calling
-%    the necessary headers.
 %    - Removed the possiblilty to use PWQ, this only handles PWA.
 %    - Removed matrix export for the tie-breaking function.
 % 
@@ -26,23 +22,15 @@ global MPTOPTIONS
 %    Visit http://www.automationshield.com for more details.
 % 
 %    Last updated by: Gergely Takacs
-%    Last updated on: 11.10.2020
-% 
+%    Last updated on: 11.11.2020
 % 
 %    Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) 
 %    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    
 %    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)
 
-AVR = 0;                        % Initialize default value
-if strcmp(architecture,'AVR')
-    AVR = 1;                    % Switch to enable PROGMEM functionality
-    precision = 'float';        % The AVR architecture does not implement double
-else
-    precision = 'float';        % Most MCU cannot hande double properly anyways
-end
-   
+ 
 obj = obj.optimizer;            % Extract optimizer from object
-file_name = 'ectrl.h';          % Leave it to default, thus it remains compatible with the AutomationShield examples
+file_name = 'ectrl.py';          % Leave it to default, thus it remains compatible with the AutomationShield examples
 
 % extract polyhedra with control law
 Pn = [obj.Set];
@@ -87,38 +75,51 @@ if fid<0,
 end
 
 header = {
-'/*'
+'"""'
 '    MATRICES FOR EXPLICIT MPC POLYTOPES AND CORRESPONDING PWA LAWS'
 ''
-' 	  The automatically generated set of matrices have been adapted from '
+' 	 The automatically generated set of matrices have been adapted from '
 '    the C code auto-generation routine of the Multi-Parametric Toolbox 3 '
 '    MPT3) of Kvasnica et al. for  MATLAB. Please see http://www.mpt3.org '
 '    for more information. Please see the original "toC.m" for more details'
 '    in the MPT3.'
 ''
-'    The following C code has been slightly adapted to perform microcontroller' 
-'    architecutre-specific changes for AVR and ARM Cortex-A devices.'
-''
+'    The following Python script has been rewritten from it C language'
+'    counterpart.'
+''    
 '    The list of changes from the original are as follows:'
-'    - Changed "static" modifiers to "const" so microcontrollers will'
-'    prefer to use ROM instead of RAM.'
-'    - Added PROGMEM functionality for the AVR architecture, and calling'
-'    the necessary headers.'
 '    - Removed the possiblilty to use PWQ, this only handles PWA.'
 '    - Removed matrix export for the tie-breaking function.'
 '' 
-'    Usage: include alongside with the empcSequential.h header to your'
-'    example.'
+'    Usage: this Python module is imported by the empc module'
+'    implementing the sequential search algorithm.'
 ''
-'    This code snippet has been altered for the needs of the' 
-'    the AutomationShield hardware and software ecosystem. '
-'    Visit http://www.automationshield.com for more details.'
+'  There are several limitations to this code. CircuitPython compiles'
+'  the *.py files at runtime and in RAM. Large problems stored in'
+'  ectrl.py cannot be evaluated because the file size itself is too'
+'  large. Moreover, the Python evaluation of the search function is'
+'  much slower than the C implementation. There are a couple of'
+'  possible but untried workarounds: (a) storing the lists as frozen'
+'  bytcode in the firmware, and (b) using uLab functionality instead'
+'  of lists and C-like element-by-element operations.'
+''
+'  If you have found any use of this code, please cite our work in your'
+'  academic publications, such as theses, conference articles or journal'
+'  papers. A list of publications connected to the AutomationShield'
+'  project is available at:'
+'  https://github.com/gergelytakacs/AutomationShield/wiki/Publications'
+'
+'  This code is part of the AutomationShield hardware and software'
+'  ecosystem. Visit http://www.automationshield.com for more'
+'  details. This code is licensed under a Creative Commons'
+'  Attribution-NonCommercial 4.0 International License.'
 ''
 ''
 '    Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) '
 '    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    '
-'    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)'
-'*/'
+'    Adapted for to Python by Gergely Takács in 2020 (gergely.takacs@stuba.sk)'
+'"""'
+''
 };
 
 
@@ -127,23 +128,15 @@ for i=1:numel(header)
     fprintf(fid,[header{i},'\n']);
 end
 
-if AVR;
-    fprintf(fid, '#include <avr/pgmspace.h> \n\n');
-end
-
-fprintf(fid, '#define MPT_NR %d\n', total_nr);
-fprintf(fid, '#define MPT_DOMAIN %d\n', nx);
-fprintf(fid, '#define MPT_RANGE %d\n', nu);
-fprintf(fid, '#define MPT_ABSTOL %e\n', MPTOPTIONS.abs_tol);
+fprintf(fid, 'MPT_NR = %d\n', total_nr);
+fprintf(fid, 'MPT_DOMAIN = %d\n', nx);
+fprintf(fid, 'MPT_RANGE = %d\n', nu);
+fprintf(fid, 'MPT_ABSTOL = %e\n', MPTOPTIONS.abs_tol);
 
 
 % write inequality constraints A*x <= b for each polytope
 ctr = 0;
-if AVR;
-    fprintf(fid, '\nconst %s MPT_A[] PROGMEM = {\n', precision);
-else
-    fprintf(fid, '\nconst %s MPT_A[] = {\n', precision);
-end
+fprintf(fid, '\nMPT_A = [\n');
 
 for ii = 1:total_nr,
     Ai = An{ii};
@@ -153,17 +146,9 @@ for ii = 1:total_nr,
         for kk = 1:length(a),
             ctr = ctr + 1;
             if ctr<nctotal*nx,
-                if isequal(precision,'float')
-                    fprintf(fid, '%.7e,\t', a(kk));
-                else
                     fprintf(fid, '%.14e,\t', a(kk));
-                end
             else
-                if isequal(precision,'float')
-                    fprintf(fid, '%.7e ', a(kk));
-                else
                     fprintf(fid, '%.14e ', a(kk));
-                end
             end
             if mod(ctr, 5)==0,
                 fprintf(fid, '\n');
@@ -171,15 +156,11 @@ for ii = 1:total_nr,
         end
     end
 end
-fprintf(fid, '};\n\n');
+fprintf(fid, ']\n\n');
 
 ctr = 0;
-if AVR;
-    fprintf(fid, 'const %s MPT_B[] PROGMEM = s{\n',precision);
-else
-    fprintf(fid, 'const %s MPT_B[] = {\n',precision);
-end
 
+fprintf(fid, 'MPT_B = [\n');
 
 for ii = 1:total_nr,
     bi = bn{ii};
@@ -187,30 +168,19 @@ for ii = 1:total_nr,
     for jj = 1:nc,
         ctr = ctr + 1;
         if ctr<nctotal,
-            if isequal(precision,'float')
-                fprintf(fid, '%.7e,\t', bi(jj));
-            else
                 fprintf(fid, '%.14e,\t', bi(jj));
-            end
         else
-            if isequal(precision,'float')
-                fprintf(fid, '%.7e ', bi(jj));
-            else
                 fprintf(fid, '%.14e ', bi(jj));
-            end
         end
         if mod(ctr, 5)==0,
             fprintf(fid, '\n');
         end
     end
 end
-fprintf(fid, '};\n\n');
+fprintf(fid, ']\n\n');
 
-if AVR;
-    fprintf(fid, 'const int MPT_NC[] PROGMEM = {\n');
-else 
-    fprintf(fid, 'const int MPT_NC[] = {\n');
-end
+fprintf(fid, 'MPT_NC = [\n');
+
 for ii = 1:total_nr,
     if ii < total_nr,
         fprintf(fid, '%d,\t', size(Pn(ii).H,1));
@@ -221,17 +191,13 @@ for ii = 1:total_nr,
         fprintf(fid, '\n');
     end
 end
-fprintf(fid, '};\n\n');
+fprintf(fid, ']\n\n');
 
 
 % write  linear and affine terms f(x) = F*x + G
-if AVR;
-    sub_write_matrix(Fi, 'MPT_F', fid, precision, 'AVR'); % linear term F
-    sub_write_matrix(Gi, 'MPT_G', fid, precision, 'AVR'); % affine term G
-else
-    sub_write_matrix(Fi, 'MPT_F', fid, precision, 'generic'); % linear term F
-    sub_write_matrix(Gi, 'MPT_G', fid, precision, 'generic'); % affine term G
-end
+sub_write_matrix(Fi, 'MPT_F', fid); % linear term F
+sub_write_matrix(Gi, 'MPT_G', fid); % affine term G
+
 
 fclose(fid);
 fprintf('Output written to "%s".\n', file_name);
@@ -239,7 +205,7 @@ fprintf('Output written to "%s".\n', file_name);
 end % Main function ends here.
 
 
-function sub_write_matrix(matrices, name, fid, precision, architecture)
+function sub_write_matrix(matrices, name, fid)
 %
 % writes a cell of matrices to a file with a given name
 %
@@ -247,26 +213,14 @@ function sub_write_matrix(matrices, name, fid, precision, architecture)
 %         matrix - a cell array with matrix data
 %         name - name of the matrix given as string
 %         fid - file identificator
-%         precision - either "float" or "double"
-
-AVR = 0;
-if strcmp(architecture, 'AVR')
-    AVR = 1;
-end
-   
 
 nr = numel(matrices);
 [nu,nx] = size(matrices{1});
 
-
 nctotalh = nu*nx*nr;
 ctr = 0;
 fprintf(fid, '\n');
-if AVR
-    fprintf(fid, 'const %s %s[] PROGMEM = {\n', precision, name);
-else    
-    fprintf(fid, 'const %s %s[] = {\n', precision, name);
-end
+fprintf(fid, '%s = [\n', name);
 for ii = 1:nr,
     M = matrices{ii};
     for jj = 1:nu,
@@ -274,17 +228,9 @@ for ii = 1:nr,
         for kk = 1:nx,
             ctr = ctr + 1;
             if ctr<nctotalh,
-                if isequal(precision,'float')
-                    fprintf(fid, '%.7e,\t', h(kk));
-                else
                     fprintf(fid, '%.14e,\t', h(kk));
-                end
             else
-                if isequal(precision,'float')
-                    fprintf(fid, '%.7e ', h(kk));
-                else
                     fprintf(fid, '%.14e ', h(kk));
-                end
             end
             if mod(ctr, 5)==0,
                 fprintf(fid, '\n');
@@ -292,6 +238,6 @@ for ii = 1:nr,
         end
     end
 end
-fprintf(fid, '};\n\n');
+fprintf(fid, ']\n\n');
 
 end
