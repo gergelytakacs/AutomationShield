@@ -33,7 +33,7 @@ clc; clear; close all;                                          % Close and clea
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
                                                                
 Ts=0.005;                                                       % [s] sampling for discrete control
-N=4;                                                            % [steps] prediction horizon
+N=2;                                                            % [steps] prediction horizon
 ul=0;                                                           % [V] Adjust lower input constraint for linearization
 uh=10;                                                          % [V] Adjust upper input constraint for linearization
 
@@ -77,5 +77,6 @@ ectrl = ctrl.toExplicit();                                      % transform it t
 %% Export controller
 %ectrl.exportToC('ectrl','cmpc')                                % Export to the default C code by the MPT
 empcToC(ectrl,'generic');                                       % Export to code suitable for Due, does not work on AVR
+empcToPython(ectrl);                                            % Export to code suitable for Python
 
 empcMemory(ectrl,'float')                                       % This many bytes for the optimizer matrices
