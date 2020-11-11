@@ -175,7 +175,7 @@ fprintf(fid, '};\n\n');
 
 ctr = 0;
 if AVR;
-    fprintf(fid, 'const %s MPT_B[] = PROGMEM {\n',precision);
+    fprintf(fid, 'const %s MPT_B[] PROGMEM = s{\n',precision);
 else
     fprintf(fid, 'const %s MPT_B[] = {\n',precision);
 end
