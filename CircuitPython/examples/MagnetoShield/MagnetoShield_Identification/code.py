@@ -42,6 +42,7 @@ import AutomationShield                         # Imports the AutomationShield m
 import MagnetoShield                            # Imports the MagnetoShield module for hardware functionality
 import Sampling                                 # Imports the Sampling module for pseudo-real time sampling
 import PIDAbs                                   # Imports the PIDAbs module for the absolute PID algoritm
+import time
 
 from random import seed                         # Import seeding functionality
 from random import randint                      # Generate random integers
@@ -109,7 +110,7 @@ def step():
         if PLOTTING_POST:                       # In case plotting in post is enabled
             for j in enumerate(Ylog):           # for every element in the log vector of outputs
                 print((Ulog[j[0]],Ylog[j[0]],Ilog[j[0]],))   # Print to serial
-                #time.sleep(0.05)               # Wait a bit so that Mu plotter can catch up. Uncomment this for Mu illustration
+                time.sleep(0.05)               # Wait a bit so that Mu plotter can catch up. Uncomment this for Mu illustration
         while True:                             # then stop
             pass                                # and do nothing
     else:                                       # if the experiment is not yet over
@@ -127,8 +128,6 @@ def step():
         Ulog.append(u)                          # append input u to input vector
         Ylog.append(y)                          # append output y to output vector
         Ilog.append(I)                          # append current output I to output vector
-    #else:                                       # otherwise we are plotting "real time"
-        print((u, y, I))                        # send data to output and
     k += 1                                      # Increment time-step k
 
 # Main loop launches a single step at each enable time
