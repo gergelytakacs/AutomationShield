@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 141.73 90.14" style="enable-background:new 0 0 141.73 90.14;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.42;fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+	.st1{opacity:0.42;stroke:#000000;stroke-width:0.75;stroke-miterlimit:10;}
+	.st2{opacity:0.42;fill:#999999;stroke:#000000;stroke-width:0.5;stroke-miterlimit:10;}
+	.st3{opacity:0.42;fill:#333333;stroke:#000000;stroke-width:0.5;stroke-miterlimit:10;}
+	.st4{opacity:0.42;fill:#333333;stroke:#000000;stroke-miterlimit:10;}
+	.st5{opacity:0.42;fill:#FFFFFF;stroke:#000000;stroke-width:0.75;stroke-miterlimit:10;}
+	.st6{opacity:0.42;}
+	.st7{opacity:0.42;stroke:#000000;stroke-miterlimit:10;}
+	.st8{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+	.st9{font-family:'MyriadPro-Regular';}
+	.st10{font-size:21px;}
+	.st11{font-family:'ArialMT';}
+	.st12{font-size:18px;}
+	.st13{font-size:8px;}
+</style>
+<g id="Layer_2">
+	<path class="st0" d="M68.77,76.12H25.24c-6.45,0-11.68-5.23-11.68-11.68v-34.7c0-6.45,5.23-11.68,11.68-11.68h43.53
+		c6.45,0,11.68,5.23,11.68,11.68v34.7C80.45,70.89,75.23,76.12,68.77,76.12z"/>
+	<rect x="80.45" y="42.5" class="st0" width="31.08" height="8.1"/>
+	<path class="st1" d="M90.28,19.71l0-3.53c8.45-4.31,15.82-0.06,15.82-0.06v3.53"/>
+	<rect x="93.96" y="25.22" class="st2" width="8.46" height="17.28"/>
+	<rect x="93.96" y="50.6" class="st3" width="8.46" height="17.28"/>
+	<path class="st1" d="M106.1,73.39v3.53c-8.45,4.31-15.82,0.06-15.82,0.06l0-3.53"/>
+	<path class="st4" d="M98.06,14.25c0-9.57,0-6.34,0-6.34"/>
+	<path class="st3" d="M112.33,10.23"/>
+	<line class="st4" x1="98.19" y1="7.38" x2="121.02" y2="7.38"/>
+	<path class="st4" d="M98.19,78.86c0,8.61,0,8.61,0,8.61"/>
+	<line class="st4" x1="121.02" y1="87.43" x2="98.19" y2="87.43"/>
+	<line class="st4" x1="120.85" y1="7.04" x2="120.85" y2="39.26"/>
+	<line class="st4" x1="135.77" y1="38.75" x2="120.68" y2="38.75"/>
+	<line class="st4" x1="120.73" y1="51.14" x2="120.73" y2="87.47"/>
+	<line class="st4" x1="135.82" y1="51.14" x2="120.73" y2="51.14"/>
+	<ellipse class="st5" cx="47.01" cy="47.77" rx="18.74" ry="17.83"/>
+	<g class="st6">
+		<path d="M57.49,58.21h-2.72V41.03h-0.1l-6.21,17.18h-2.52l-6.21-17.46h-0.1v17.46h-2.62V37.71h4.27l5.15,14.5
+			c0.58,1.57,0.87,2.59,0.97,3.05h0.1c0.29-0.83,0.68-1.85,1.17-3.33l5.15-14.23h3.79v20.51H57.49z"/>
+	</g>
+	<circle class="st7" cx="137.58" cy="38.75" r="1.99"/>
+	<circle class="st7" cx="137.58" cy="51.49" r="1.99"/>
+</g>
+<g id="Layer_1">
+	<line class="st8" x1="8.37" y1="45.33" x2="133.26" y2="45.33"/>
+	<text transform="matrix(1 0 0 1 64.9917 41.0046)" class="st9 st10">K</text>
+	<text transform="matrix(1 0 0 1 10.3689 61.6938)" class="st11 st12">a ·s + a · s + a</text>
+	<text transform="matrix(1 0 0 1 21.7227 64.7501)" class="st11 st13">2</text>
+	<text transform="matrix(1 0 0 1 41.0269 54.047)" class="st11 st13">2</text>
+	<text transform="matrix(1 0 0 1 71.449 65.4007)" class="st11 st13">1</text>
+	<text transform="matrix(1 0 0 1 126.6339 65.4003)" class="st11 st13">0</text>
+</g>
+</svg>
