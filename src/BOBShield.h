@@ -77,7 +77,7 @@ void BOBClass::calibration()
 		if (calmeasure < minCalibrated){ 			// If lower than already
 			minCalibrated = calmeasure; 			// Save new minimum
 		}
-			Serial.println(minCalibrated);
+			
 		delay(10);                                  // Measure for one second
 	}
 

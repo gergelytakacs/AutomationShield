@@ -1,12 +1,11 @@
 /*
   HeatShield closed-loop PID response example
 
-  PID feedback control of the heating block temperature.
+  PID feedback control of the servo.
   
   This example initializes the sampling and PID control 
   subsystems from the AutomationShield library and starts a 
-  predetermined reference trajectory for the heating block
-  temperature. 
+  predetermined reference trajectory for the ball position. 
   
   Upload the code to your board, then open the Serial
   Plotter function in your Arduino IDE. You may change the
@@ -35,9 +34,9 @@ int i = i;              // Section counter
 float y = 0.0;            // Output
 float u = 0.0;            // Input          
 
-#define KP 0.45                 // PID Kp
-#define TI 1000                  // PID Ti
-#define TD 0.3                   // PID Td
+#define KP 0.3                 // PID Kp
+#define TI 600.0                  // PID Ti
+#define TD 0.22                   // PID Td
 
 void setup() {
   Serial.begin(115200);               // Initialize serial
