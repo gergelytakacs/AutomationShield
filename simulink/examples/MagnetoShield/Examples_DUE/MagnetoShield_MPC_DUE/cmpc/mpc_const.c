@@ -50,13 +50,13 @@ const real_t u_lb[] = { /* Left (lower) constraint of the inputs for condensed Q
 
 };
 const real_t u_ub[] = { /* Right (upper) constraint of the inputs for condensed QP. */
-7.3766, 
-7.3766, 
-7.3766, 
-7.3766, 
-7.3766, 
-7.3766, 
-7.3766, 
+5.3766, 
+5.3766, 
+5.3766, 
+5.3766, 
+5.3766, 
+5.3766, 
+5.3766, 
 
 };
 const real_t e_lb[] = { /* Left (lower) constraint of the states for condensed QP. */

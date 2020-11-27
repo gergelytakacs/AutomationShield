@@ -27,7 +27,7 @@ N  = 7;                                                         % [steps] Target
 
 u0= 4.6234;                                                     % [V] Input linearization
 umin = 0-u0;                                                    % [V] minimal input voltage
-umax = 12-u0;                                                   % [V] maximal input voltage
+umax = 10-u0;                                                   % [V] maximal input voltage
 
 %% Discretization
 modeld=c2d(model,dt);                                           % Discretized linear state-space model

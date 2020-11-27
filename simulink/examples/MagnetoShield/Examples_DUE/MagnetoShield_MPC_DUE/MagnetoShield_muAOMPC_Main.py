@@ -5,4 +5,4 @@
 
 import muaompc
 mpc = muaompc.ltidt.setup_mpc_problem("MagnetoShield")
-mpc.generate_c_files(numeric="float32", singledir=True)
+mpc.generate_c_files(numeric="float32",singledir=True)

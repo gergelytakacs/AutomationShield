@@ -6,7 +6,7 @@
 dt = 0.003		 #Sampling
 N = 7		 #Prediction horizon
 u_lb = [[-4.6234]] 		 # Lower input constraint
-u_ub = [[7.3766]] 		 # Upper input constraint
+u_ub = [[5.3766]] 		 # Upper input constraint
 
 Ad = [
 	[ 1, -1, -0, -0],
