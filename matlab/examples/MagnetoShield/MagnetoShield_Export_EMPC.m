@@ -23,9 +23,9 @@
 %   project is available at: 
 %   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
 %
-%   Created by:       Gergely Tak·cs
+%   Created by:       Gergely Tak√°cs
 %   Created on:       9.11.2020
-%   Last updated by:  Gergely Tak·cs
+%   Last updated by:  Gergely Tak√°cs
 %   Last update on:   10.11.2020
 
 clc; clear; close all;                                          % Close and clear all
@@ -75,7 +75,10 @@ ctrl = MPCController(model, N)                                  % create an MPC 
 ectrl = ctrl.toExplicit();                                      % transform it to EMPC by the MPT
 
 %% Export controller
-%ectrl.exportToC('ectrl','cmpc')                                % Export to the default C code by the MPT
+%ectrl.exportToC('ectrl','empc')                                % Export to Simulink mex function
+%    cd empc;    
+%    mex ectrl_sfunc.c;
+
 empcToC(ectrl,'generic');                                       % Export to code suitable for Due, does not work on AVR
 empcToPython(ectrl);                                            % Export to code suitable for Python
 
