@@ -11,8 +11,8 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 4.4.2020.
+  Created by Gergely Takács, Peter Chmurčiak and Erik Mikuláš.
+  Last update: 2.12.2020.
 */
 
 #ifndef FLOATSHIELD_H_             // Include guard
@@ -23,7 +23,7 @@
 #include "lib/BasicLinearAlgebra/BasicLinearAlgebra.h"     // Include library for matrix operations
 
 #ifndef SHIELDRELEASE              // Define release version of used hardware
-  #define SHIELDRELEASE 1          // Latest version by default
+  #define SHIELDRELEASE 4          // Latest version by default
 #endif
 
 #ifndef VL53L0X_h                                           // If library for distance sensor is not already included  
@@ -39,6 +39,10 @@
   #define FLOAT_RPIN A0             // Potentiometer runner (Reference)
   #define FLOAT_YPIN 3              // Hall sensor signal (Output)
   #define FLOAT_RPM_CONST 68.1      // Constant representing the slope of RPM to PWM fan dependency graph 
+#elif SHIELDRELEASE == 4
+  #define MCP4725 (0x60)             // 12-bit DAC, Chip: MCP4725
+  #define DACMAX 4095                // Maximal decimal DAC value for 12 bits
+  #define FLOAT_RPIN A0             // Potentiometer runner (Reference)
 #endif
 
 #ifdef VL53L0X_h                    // If library for distance sensor was sucessfully included
@@ -66,6 +70,8 @@ class FloatClass {                                               // Class for Fl
     volatile bool pulseMeasured;                                 // Variable for storing information if pulse was sucessfully measured
     void setSamplingPeriod(float);                               // Sets the sampling period used for accurate RPM calculation (default 25ms)
     float sensorReadRPM(void);                                   // Returns fan RPM calculated from hall sensor signal
+#elif  SHIELDRELEASE == 4                                  
+    void dacWrite(uint16_t DAClevel);                 // Writes DAClevel (DAC levels) to DAC register
 #endif
 
   private:

@@ -11,13 +11,14 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 11.3.2020.
+  Created by Gergely Takács, Peter Chmurčiak and Erik Mikuláš.
+  Last update: 2.12.2020.
 */
 
 #include "FloatShield.h"         // Include header file
 
 #ifdef VL53L0X_h                 // If library for distance sensor was sucessfully included
+
 
 #if SHIELDRELEASE == 2           // For hardware release version 2  
   void hallPeriodCounter(void) {                                  // Interrupt routine on external interrupt pin 1
@@ -32,7 +33,7 @@ void FloatClass::begin(void) {                                      // Board ini
     Wire.begin();                                                   // Use Wire object
   #if SHIELDRELEASE == 1                                            // For shield version 1
     analogReference(DEFAULT);                                       // Use default analog reference
-  #elif SHIELDRELEASE == 2                                          // For shield version 2
+  #elif SHIELDRELEASE == 2 || SHIELDRELEASE == 4                                          // For shield version 2
     analogReference(EXTERNAL);                                      // Use external analog reference
   #endif
 #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards
@@ -54,6 +55,7 @@ void FloatClass::begin(void) {                                      // Board ini
 #if SHIELDRELEASE == 2          // For hardware release version 2                            
   attachInterrupt(digitalPinToInterrupt(FLOAT_YPIN), hallPeriodCounter, CHANGE); // Attach interrupt routine to external interrupt pin 1. Trigger at both rising and falling edge of signal
 #endif
+
   AutomationShield.serialPrint(" successful.\n");
 }
 
@@ -88,10 +90,51 @@ void FloatClass::calibrate(void) {                       // Board calibration
   AutomationShield.serialPrint(" sucessful.\n");
 }
 
-void FloatClass::actuatorWrite(float aPercent) {                                         // Write actuator
+#if SHIELDRELEASE == 4
+void FloatClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4,D3,D2,D1,D0)
+	#ifdef ARDUINO_ARCH_AVR
+		Wire.beginTransmission(MCP4725); 					//adressing
+	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
+	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
+	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
+	    uint8_t secndbyte=(DAClevel>>8);					//(0,0,0,0,0,0,0,0,D3,D2,D1,D0,0,0,0,0) of which only the 8 LSB's survive.
+	    Wire.write(firstbyte); //first 8 MSB's
+	    Wire.write(secndbyte); //last 4 LSB's
+	    Wire.endTransmission();
+	#elif ARDUINO_ARCH_SAM
+		Wire1.beginTransmission(MCP4725); 					//adressing
+	    Wire1.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
+	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
+	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
+	    uint8_t secndbyte=(DAClevel>>8);					//(0,0,0,0,0,0,0,0,D3,D2,D1,D0,0,0,0,0) of which only the 8 LSB's survive.
+	    Wire1.write(firstbyte); //first 8 MSB's
+	    Wire1.write(secndbyte); //last 4 LSB's
+	    Wire1.endTransmission();
+	#elif ARDUINO_ARCH_SAMD
+		Wire.beginTransmission(MCP4725); 					//adressing
+	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
+	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
+	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
+	    uint8_t secndbyte=(DAClevel>>8);					//(0,0,0,0,0,0,0,0,D3,D2,D1,D0,0,0,0,0) of which only the 8 LSB's survive.
+	    Wire.write(firstbyte); //first 8 MSB's
+	    Wire.write(secndbyte); //last 4 LSB's
+	    Wire.endTransmission();
+	#endif
+}
+#endif
+
+void FloatClass::actuatorWrite(float aPercent) {
+  
+  #if SHIELDRELEASE == 1 || SHIELDRELEASE == 2 || SHIELDRELEASE == 3                     // Write actuator
   float mappedValue = AutomationShield.mapFloat(aPercent, 0.0, 100.0, 0.0, 255.0);       // Takes the float type percentual value 0.0-100.0 and remapps it to range 0.0-255.0
   mappedValue = AutomationShield.constrainFloat(mappedValue, 0.0, 255.0);                // Constrains the remapped value to fit the range 0.0-255.0 - safety precaution
-  analogWrite(FLOAT_UPIN, (int)mappedValue);                                             // Sets the fan speed using the constrained value
+  analogWrite(FLOAT_UPIN, (int)mappedValue);
+
+  #elif SHIELDRELEASE == 4
+  float mappedValue = AutomationShield.mapFloat(aPercent, 0.0, 100.0, 0.0, 4095.0);       // Takes the float type percentual value 0.0-100.0 and remapps it to range 0.0-255.0
+  mappedValue = AutomationShield.constrainFloat(mappedValue, 0.0, 4095.0);                // Constrains the remapped value to fit the range 0.0-255.0 - safety precaution
+  dacWrite((int)mappedValue);                                              // Sets the fan speed using the constrained value
+  #endif                                            
 }
 
 float FloatClass::referenceRead(void) {                                                      // Reference read

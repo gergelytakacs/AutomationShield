@@ -23,6 +23,7 @@
 
 #define MANUAL 0                      // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
+
 unsigned long Ts = 25;                // Sampling period in miliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep = false;                // Flag for step function
@@ -41,6 +42,10 @@ int i = 0;                // Section counter
   #define TI 5              // PID Ti constant
   #define TD 0.01           // PID Td constant
 #elif SHIELDRELEASE == 2
+  #define KP 0.01           // PID Kp constant
+  #define TI 2              // PID Ti constant
+  #define TD 0.01           // PID Td constant
+  #elif SHIELDRELEASE == 4
   #define KP 0.01           // PID Kp constant
   #define TI 2              // PID Ti constant
   #define TD 0.01           // PID Td constant
