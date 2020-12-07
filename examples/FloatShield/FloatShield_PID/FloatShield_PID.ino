@@ -46,9 +46,9 @@ int i = 0;                // Section counter
   #define TI 2              // PID Ti constant
   #define TD 0.01           // PID Td constant
   #elif SHIELDRELEASE == 4
-  #define KP 0.01           // PID Kp constant
-  #define TI 2              // PID Ti constant
-  #define TD 0.01           // PID Td constant
+  #define KP 0.15           // PID Kp constant
+  #define TI 3              // PID Ti constant
+  #define TD 0.1           // PID Td constant
 #endif
 
 void setup() {                         // Setup - runs only once
@@ -75,6 +75,8 @@ void setup() {                         // Setup - runs only once
           u = PIDAbs.compute(r-y,30,100,30,100);  // PID
         #elif SHIELDRELEASE == 2
           u = PIDAbs.compute(r-y,40,100,40,100);  // PID
+        #elif SHIELDRELEASE == 4
+          u = PIDAbs.compute(r-y,10,100,10,100);  // PID
         #endif
         FloatShield.actuatorWrite(u);           // Actuate
         if(y >= r*2/3) {                        // If the ball is getting close to reference

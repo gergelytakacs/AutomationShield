@@ -40,7 +40,7 @@
   #define FLOAT_YPIN 3              // Hall sensor signal (Output)
   #define FLOAT_RPM_CONST 68.1      // Constant representing the slope of RPM to PWM fan dependency graph 
 #elif SHIELDRELEASE == 4
-  #define MCP4725 (0x60)             // 12-bit DAC, Chip: MCP4725
+  #define MCP4725 (0x62)             // 12-bit DAC, Chip: MCP4725
   #define DACMAX 4095                // Maximal decimal DAC value for 12 bits
   #define FLOAT_RPIN A0             // Potentiometer runner (Reference)
 #endif
