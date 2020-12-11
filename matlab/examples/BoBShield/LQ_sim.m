@@ -12,7 +12,7 @@ D=dsystem.D;
 
 
 % Penalizacne matice
-R=0.0001;
+R=0.00001;
 Q=C'*C;
 %penalizacna matica, zosilnenie;
 [K,P]= dlqr(A,B,Q,R);
@@ -79,7 +79,7 @@ Z=eig(A);
 Fi=(A-B*K); 
 Z2= eig(Fi);
 figure(2)
-plot(Z,'r+', 'MarkerSize',20)
+plot(complex(Z),'r+', 'MarkerSize',20)
 hold on
 zgrid 
 axis equal;
