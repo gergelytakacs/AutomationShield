@@ -1,12 +1,29 @@
-clear all; clc;
-%% Constants and parameters 
-% The code below describes the experiment how to calculate approximate  
-% number of turns of the coil of the electromagnet based on the Magnetic
-% flux density measurements and calculation of the initial guess of the
-% constant K used in the non-linear and linear model of the MagnetoShield.
+%   MAGNETOSHIELD Constants and parameters 
+%
+%   The code below describes the experiment how to calculate approximate  
+%   number of turns of the coil of the electromagnet based on the Magnetic
+%   flux density measurements and calculation of the initial guess of the
+%   constant K used in the non-linear and linear model of the MagnetoShield.
+%   Power supply of the electromagnet is 5 V.
+%   Used Hall sensor A1302KUA-T.
+%
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+%
+%   If you have found any use of this code, please cite our work in your
+%   academic publications, such as theses, conference articles or journal
+%   papers. A list of publications connected to the AutomationShield
+%   project is available at: 
+%   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
+%
+%   Created by:       Jakub Mihalik
+%   Created on:       5.12.2020
+%   Last updated by:  Jakub Mihalik
+%   Last update on:   22.12.2020
 
-% Power supply of the electromagnet is 5 V.
-% Used Hall sensor A1302KUA-T.
+clear all; clc;
 
 % CONSTANTS AND DIMENSIONS
 l_coil = (12.6-2.14)/1000;  % Height of the coil [m]

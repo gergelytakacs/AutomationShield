@@ -1,5 +1,35 @@
+%   MAGNETOSHIELD Pole-placement simulation and control initialization for Simulink
+%
+%   Code below is used as an initialization script for MagnetoShield system
+%   and default properties can be changed via this script.
+%   This example reads the linearized model of the MagnetoShield device,
+%   then expands it with an integrator and then computes Pole-placement
+%   gain based on choosen poles. For computation the Ackermann's formula
+%   was used. For estimation of the states is used Luenberger's observer
+%   and suitable form of Ackermann's formula was applied as well.
+%   Consequently are the model properties as stability, controlability,
+%   observability, step and impulse response evaluated and displayed. 
+%   Root-locus plot is shown too.
+%
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+%
+%   If you have found any use of this code, please cite our work in your
+%   academic publications, such as theses, conference articles or journal
+%   papers. A list of publications connected to the AutomationShield
+%   project is available at: 
+%   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
+%
+%   Created by:       Jakub Mihalik
+%   Created on:       5.12.2020
+%   Last updated by:  Jakub Mihalik
+%   Last update on:   22.12.2020
+
 clear;close all;clc;
 load '../../../matlab/examples/MagnetoShield/MagnetoShield_Models_Greybox_SS';
+
 %% MagnetoShield - Pole-placement simulation and control initialization for Simulink
 Ts = 0.001;                   % Sampling of the Simulink simulation
 

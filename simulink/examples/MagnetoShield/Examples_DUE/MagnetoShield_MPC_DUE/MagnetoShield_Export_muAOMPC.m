@@ -15,7 +15,8 @@
 % 
 %   Created by:  Gergely Takács. 
 %   Created on:  23.9.2020
-%   Last update: 24.11.2020
+%   Last updated by:  Jakub Mihalik
+%   Last update: 5.12.2020
 
 clc;
 clear;
