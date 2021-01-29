@@ -38,6 +38,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             FloatShieldObject.arduino = arduino(aPort, aBoard, 'Libraries', 'Pololu/Pololu_VL53L0X')  % Initialising object for arduino board
             FloatShieldObject.laserSensor = addon(FloatShieldObject.arduino, 'Pololu/Pololu_VL53L0X') % Initialising object for laser sensor
+            FloatShieldObject.dac = device(FloatShieldObject.arduino,'I2CAddress',62,'bus',busno,'bitrate',400000);
             beginSensor(FloatShieldObject.laserSensor)                                                % Initialising laser sensor
             disp('FloatShield initialized.')
         end
