@@ -121,6 +121,13 @@ void FloatClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D1
 	    Wire.endTransmission();
 	#endif
 }
+
+float FloatClass::actuatorReadVoltage(void) {
+
+  _actuatorVoltageADC = (float)analogRead(FLOAT_AVPIN);
+  _actuatorVoltage = 4.0 * AutomationShield.mapFloat(_actuatorVoltageADC, 0.0, ADCREF, 0.0, 3.3);
+  return _actuatorVoltage;
+}
 #endif
 
 void FloatClass::actuatorWrite(float aPercent) {
@@ -139,13 +146,13 @@ void FloatClass::actuatorWrite(float aPercent) {
 
 float FloatClass::referenceRead(void) {                                                      // Reference read
   _referenceValue = (float)analogRead(FLOAT_RPIN);                                           // Reads the actual analog value of potentiometer runner
-  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
+  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, ADCREF, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
   return _referencePercent;                                                                  // Returns the percentual position of potentiometer runner
 }
 
 float FloatClass::referenceReadAltitude(void) {                                                             // Reference read
   _referenceValue = (float)analogRead(FLOAT_RPIN);                                                          // Reads the actual analog value of potentiometer runner
-  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, _range);                 // Remapps the analog value from original range 0.0-1023 to calibrated altitude range 0.0-324.0 (mm)
+  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, ADCREF, 0.0, _range);                 // Remapps the analog value from original range 0.0-1023 to calibrated altitude range 0.0-324.0 (mm)
   return _referencePercent;                                                                                 // Returns the altitude proportional to position of potentiometer runner
 }
 

@@ -43,6 +43,7 @@
   #define MCP4725 (0x60)             // 12-bit DAC, Chip: MCP4725A0
   #define DACMAX 4095                // Maximal decimal DAC value for 12 bits
   #define FLOAT_RPIN A0             // Potentiometer runner (Reference)
+  #define FLOAT_AVPIN A1            // Pin for reading actuator voltage
 #endif
 
 #ifdef VL53L0X_h                    // If library for distance sensor was sucessfully included
@@ -72,6 +73,7 @@ class FloatClass {                                               // Class for Fl
     float sensorReadRPM(void);                                   // Returns fan RPM calculated from hall sensor signal
 #elif  SHIELDRELEASE == 4                                  
     void dacWrite(uint16_t DAClevel);                 // Writes DAClevel (DAC levels) to DAC register
+    float actuatorReadVoltage(void);
 #endif
 
   private:
@@ -89,6 +91,10 @@ class FloatClass {                                               // Class for Fl
     float _samplingPeriod = 25.0;                                        // Variable for storing sampling period in milliseconds used for accurate RPM calculation (default 25ms)
     float _nOfSamples = ceil(150.0 / _samplingPeriod);                   // Variable for storing number of samples required for accurate RPM calculation (default 6)
     float _pulseCountToRPM = 15000.0 / (_samplingPeriod * _nOfSamples);  // Variable for storing constant used to calculate RPM from number of pulses (default 100)
+#endif
+#if SHIELDRELEASE == 4
+    float _actuatorVoltage;               // Varaible for storing voltage measured at the output pin to actuator
+    float _actuatorVoltageADC;            // Varaible for storing RAW voltage measured at the output pin to actuator 0.0-1023.0
 #endif
 };
 
