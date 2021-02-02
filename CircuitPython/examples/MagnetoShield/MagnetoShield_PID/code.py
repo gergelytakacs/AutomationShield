@@ -16,7 +16,7 @@
 
   Tested with the following boards
   - Adafruit Metro M4 Express (1),(4)
-  - Adafruit Metro M0 Express (2),(3)
+  - Adafruit Metro M0 Express (2),(3), (4)
   - Adafruit Metro M4 Grand Central (1),(4)
 
   (1) Runs as expected. Mu cannot keep up with data output, use external means to log.
