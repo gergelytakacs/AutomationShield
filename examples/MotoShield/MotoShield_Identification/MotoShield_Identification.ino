@@ -27,6 +27,7 @@ float u;
 void setup() {
   Serial.begin(500000); //--initialize Serial
   MotoShield.begin(TS); //--initialize MotoShield
+  Serial.println("u, pps, I"); //--Print header
 }
 
 void loop() {

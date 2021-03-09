@@ -17,10 +17,11 @@ void setup() {
   MotoShield.begin(TS); //--Initialize MotoShield with sampling period 100 millis
   MotoShield.calibration(); //--Calibration method
   MotoShield.actuatorWrite(u); //--Step value in percents
+  Serial.println("y, u");  //--Print header 
 }
 
 void loop() {
   Serial.print(MotoShield.sensorReadRPMPerc()); //--Printing angular velocity in percents
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.println(u); //--Printing Step (reference) value
 }

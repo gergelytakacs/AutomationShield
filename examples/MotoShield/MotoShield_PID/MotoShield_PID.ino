@@ -41,6 +41,7 @@ void setup() {
  PIDAbs.setTi(TI); 
  PIDAbs.setTd(TD); 
  PIDAbs.setTs(TS); //--Defining sampling period
+ Serial.println("r, y, u");
 }
 
 void loop() {
@@ -67,6 +68,8 @@ y = MotoShield.sensorReadRPMPerc();     //--Sensing angular velocity in percent
 u = PIDAbs.compute(r-y,0,100,0,100);   //--PID computation
 MotoShield.actuatorWrite(u);          //--Actuation
 Serial.print(r);            //--Printing reference
-Serial.print(" ");            
-Serial.println(y);        //--Printing output
+Serial.print(", ");            
+Serial.print(y);        //--Printing output
+Serial.print(", ");
+Serial.println(u);
 }
