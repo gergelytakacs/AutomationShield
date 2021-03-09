@@ -17,7 +17,7 @@
 #include <PIDAbs.h>        //--Include PID control lib
 
 #define TS 40.0            //--Defining Sample period in milliseconds
-#define AUTO 0           //--Defining reference Mode # MANUAL / AUTO
+#define AUTO 1           //--Defining reference Mode # MANUAL / AUTO
 
 #define KP 0.000001          //--PID Kp constant
 #define TI 0.0003           //--PID Ti constant
@@ -41,7 +41,7 @@ void setup() {
  PIDAbs.setTi(TI); 
  PIDAbs.setTd(TD); 
  PIDAbs.setTs(TS); //--Defining sampling period
- Serial.println("r, y, u");
+ Serial.println("r, y, u"); //--Print header
 }
 
 void loop() {
