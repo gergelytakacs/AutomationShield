@@ -108,6 +108,12 @@ classdef MotoShield < handle %-class definition
                 break; %-exit the loop
             end
             i=i+0.01; %-increment
+            if i>1
+                error('[Calibration failed]: not able to detect minDuty')
+                actuatorWrite(MotoShieldObject,0); %-turn off motor
+                while(1)
+                end
+            end
         end %-end of while loop
         end %- end of funciton
         
