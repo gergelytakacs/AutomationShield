@@ -33,6 +33,7 @@ float r = 0.0;                                                    // Reference (
 float R[] = {65.0,50.0,35.0,45.0,60.0,75.0,55.0,40.0,20.0,30.0};  // Reference trajectory
 float y = 0.0;                                                    // Output (Current ball altitude)
 float u = 0.0;                                                    // Input (Fan power)
+float uv= 0.0;                                                    // Input (Fan Voltage)
 
 int T = 2400;             // Section length
 int i = 0;                // Section counter
@@ -119,11 +120,14 @@ void step() {                               // Define step function
     y = FloatShield.sensorRead();         // Read sensor
     u = PIDAbs.compute(r-y,0,100,0,100);  // PID
     FloatShield.actuatorWrite(u);         // Actuate
+    uv = FloatShield.actuatorReadVoltage(); // Read actuator voltage
 
     Serial.print(r);           // Print reference
-    Serial.print(" ");
+    Serial.print(", ");
     Serial.print(y);           // Print output
-    Serial.print(" ");
-    Serial.println(u);         // Print input
+    Serial.print(", ");
+    Serial.print(u);         // Print input
+    Serial.print(", ");
+    Serial.println(uv);         // Print actuator voltage
     k++;                       // Increment index
 }
