@@ -1,5 +1,5 @@
 /*
-  HeatShield closed-loop PID response example
+  BoBShield closed-loop PID response example
 
   PID feedback control of the servo.
   
@@ -17,7 +17,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács. 
-  Last update: 12.10.2018.
+  Last update: 10.2.2021.
 */
 
 #include <BOBShield.h>
@@ -30,7 +30,7 @@ bool enable=false;                  // Flag for sampling
 float r = 0.0;            // Reference
 float R[]={30.0,50.0,8.0,65.0,15.0,40.0};;    // Reference trajectory
 int T = 1000;           // Section length
-int i = i;              // Section counter
+int i = 0;              // Section counter
 float y = 0.0;            // Output
 float u = 0.0;            // Input          
 

@@ -12,7 +12,7 @@ D=dsystem.D;
 
 
 % Penalizacne matice
-R=0.00001;
+R=0.000001;
 Q=C'*C;
 %penalizacna matica, zosilnenie;
 [K,P]= dlqr(A,B,Q,R);

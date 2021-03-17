@@ -4,7 +4,7 @@ clc; clear; close all;
 %% Data preprocessing
 %load data from experiment
 load('dataAprbsAll.mat')
-u=dataAll(:,1);
+u=dataAll(:,1)*pi/180;
 y=dataAll(:,2)/1000;
 %moving average filtering of y
 % windowSize = 5; 
@@ -98,11 +98,11 @@ D = [0];
     sys = idss(A,B,C,D,K,x0,0)                 % Construct state-space representation
 
     % Mark the free parameters
-    sys.Structure.A.Free = [0 1; 0 0];        
+    sys.Structure.A.Free = [0 0; 0 0];        
     sys.Structure.B.Free = [0  1]';         % Free and fixed variables
     sys.Structure.C.Free = false;              % No free parameters
 
-    sys.DisturbanceModel = 'estimate';         % Estimate disturbance model
+    sys.DisturbanceModel = 'none';         % Estimate disturbance model
     sys.InitialState = 'estimate';             % Estimate initial states
 
     % Set identification options

@@ -1,14 +1,14 @@
 
 clc; clear; close all;
 %% Choose the type of grey-box model to identify
-model = 'nonlinear';                            % Nonlinear state-space model
-%model = 'linearSS';                             % Linear state-space model
+%model = 'nonlinear';                            % Nonlinear state-space model
+model = 'linearSS';                             % Linear state-space model
 %model = 'linearTF';                             % Linear transfer function
 %% Choose the ODE for nl grey-box model
 %ODE ='linearODE';   %only for check
-%ODE ='sinus';
+ODE ='sinus';
 %ODE ='sinus2';
-ODE ='4thorder';
+%ODE ='4thorder';
 %% Data preprocessing
 %load data from experiment
 load('dataAprbsAllNEW.mat')
@@ -39,8 +39,8 @@ data.TimeUnit = 's';                            % Time unit
 m= 2.101e-3; % mass of the ball in kg
 g=9.81; %gravitational acceleration 
 J = 9.99e-6; % ball's moment of inertia 
-R=0.004; %radius of the ball in m
-H = 6.5;
+R=0.0037; %radius of the ball in m
+H = m*g;
 bb=1;
 L=0.04; %m
 h=(H*2*R)/L;
@@ -172,11 +172,11 @@ D = [0];
     sys = idss(A,B,C,D,K,x0,0)                 % Construct state-space representation
 
     % Mark the free parameters
-    sys.Structure.A.Free = [0 1; 0 0];        
+    sys.Structure.A.Free = false;        
     sys.Structure.B.Free = [0  1]';         % Free and fixed variables
     sys.Structure.C.Free = false;              % No free parameters
 
-     sys.DisturbanceModel = 'estimate';         % Estimate disturbance model
+     sys.DisturbanceModel = 'none';         % Estimate disturbance model
     sys.InitialState = 'estimate';             % Estimate initial states
 
     % Set identification options
