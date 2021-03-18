@@ -2,5 +2,4 @@ function f = objfun(x);
 
 LQtune
 
-f=norm(Xr(1)-X3((1),1:end-1));
-end
+f=norm(Ref-X3((1),1:end-1))+norm(U3)';
