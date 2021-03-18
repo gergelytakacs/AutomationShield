@@ -14,10 +14,13 @@ D=dsystem.D;
  A = [A, zeros(2, 1); -C, 1];
  B = [B; 0];
  C = [C, 0];
+ 
+ 
+load x
 
 % Penalizacne matice
-R=0.00000001;
-Q=diag([1e8, 0, 1]); %Q=diag([1e3, 1, 1e-6]);
+R=x(1);
+Q=diag([x(2), x(3), x(4)]); %Q=diag([1e3, 1, 1e-6]);
 %penalizacna matica, zosilnenie;
 [K,P]= dlqr(A,B,Q,R);
 
