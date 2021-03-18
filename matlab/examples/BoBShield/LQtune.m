@@ -10,6 +10,7 @@ A=dsystem.A;
 B=dsystem.B;
 C=dsystem.C;
 D=dsystem.D;
+%integrator
  A = [A, zeros(2, 1); -C, 1];
  B = [B; 0];
  C = [C, 0];
