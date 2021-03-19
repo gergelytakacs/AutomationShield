@@ -11,11 +11,9 @@ B=dsystem.B;
 C=dsystem.C;
 D=dsystem.D;
 %integrator
- AI = [A, zeros(2, 1); -C, 1];
- BI = [B; 0];
- CI = [C, 0];
- 
- 
+AI = [A, zeros(2, 1); -C, 1];
+BI = [B; 0];
+CI = [C, 0];
 
 % Penalizacne matice
 R=1E2;
