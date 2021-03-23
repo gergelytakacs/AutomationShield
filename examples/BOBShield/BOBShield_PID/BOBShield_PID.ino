@@ -24,17 +24,17 @@
 #include <SamplingServo.h>
 
 unsigned long Ts = 10;            // Sampling in milliseconds
-unsigned long k = 0;                // Sample index
-bool enable=false;                  // Flag for sampling 
+unsigned long k = 0;              // Sample index
+bool enable=false;                // Flag for sampling 
 
-float r = 0.0;            // Reference
+float r = 0.0;                    // Reference
 float R[]={30.0,50.0,8.0,65.0,15.0,40.0};;    // Reference trajectory
-int T = 1000;           // Section length
-int i = i;              // Section counter
-float y = 0.0;            // Output
-float u = 0.0;            // Input          
+int T = 1000;                     // Section length
+int i = i;                        // Section counter
+float y = 0.0;                    // Output
+float u = 0.0;                    // Input          
 
-#define KP 0.3                 // PID Kp
+#define KP 0.3                    // PID Kp
 #define TI 600.0                  // PID Ti
 #define TD 0.22                   // PID Td
 
@@ -68,18 +68,16 @@ void stepEnable(){              // ISR
   enable=true;                  // Change flag
 }
 
-// A signle algoritm step
 
-void step(){ 
-
-if (k % (T*i) == 0){        
+void step(){               // A single algorithm step
+if (k % (T*i) == 0){       // End of reference section 
   r = R[i];                // Set reference
-  i++;
+  i++;                     // Increment reference counter
 }
-                  
-y = BOBShield.sensorRead();           // Read sensor 
+// Measure, compute, actuate:                  
+y = BOBShield.sensorRead();              // Read sensor 
 u = PIDAbs.compute(r-y,-30,30,-10,10);   // PID
-BOBShield.actuatorWrite(u);           // Actuate
+BOBShield.actuatorWrite(u);              // Actuate
 
 Serial.print(r);            // Print reference
 Serial.print(", ");            
