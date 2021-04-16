@@ -1,4 +1,4 @@
-// PID example fot rhe MotoShield
+// PID example for the MotoShield
 
 #include "MotoShield.h"
 #include <Sampling.h>            // Include sampling
