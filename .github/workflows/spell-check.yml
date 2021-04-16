@@ -15,5 +15,5 @@ jobs:
         with:
           check_filenames: true
           check_hidden: true
-          ignore-words-list: ./etc/codespell-ignore-words-list.txt
-          skip-paths: ./src/lib
+          ignore-words-list: etc/codespell-ignore-words-list.txt
+          skip-paths: src/lib
