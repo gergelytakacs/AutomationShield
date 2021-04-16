@@ -31,11 +31,11 @@ Launch the `installMatlabAndSimulink.m` file from the root directory or the `ins
 
 ## Library usage
 
-This is a minimal summary for library usage. The harware library for a particular board is initialized by the board name followed by `begin` for example to initialize the OptoShield call:
+This is a minimal summary for library usage. The hardware library for a particular board is initialized by the board name followed by `begin` for example to initialize the OptoShield call:
 ```
 OptoShield.begin();
 ```
-The onboard sensor is read by calling the `sensorRead()` method, in case of the aformentioned OptoShield this would be 
+The onboard sensor is read by calling the `sensorRead()` method, in case of the aforementioned OptoShield this would be 
 ```
 y=OptoShield.sensorRead();
 ```
