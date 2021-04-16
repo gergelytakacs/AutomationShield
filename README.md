@@ -18,7 +18,7 @@ For those who wish to use Git, this repository contains submodules, therefore yo
 
 ### Arduino IDE
 
-Open the Arduino IDE, click on the *Sketch* menu, and find the *Include Library* option. This opens another sub-menu from which you shold select *Add .ZIP Library...* that will open the file browser. Locate the renamed library .zip file and click *Open*.
+Open the Arduino IDE, click on the *Sketch* menu, and find the *Include Library* option. This opens another sub-menu from which you should select *Add .ZIP Library...* that will open the file browser. Locate the renamed library .zip file and click *Open*.
 
 ### MATLAB
 

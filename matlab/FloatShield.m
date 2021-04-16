@@ -49,7 +49,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             pause(1)                                     % Wait for ball to stabilise
             sum = 0;                                     % Variable for summing up the readings
-            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 miliseconds
+            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 milliseconds
                 sum = sum + sensorReadDistance(FloatShieldObject);
                 pause(0.025)
             end
@@ -61,7 +61,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             pause(1)                                     % Wait for ball to stabilise
             sum = 0;                                     % Clear variable for summing up the readings
-            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 miliseconds
+            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 milliseconds
                 sum = sum + sensorReadDistance(FloatShieldObject);
                 pause(0.025)
             end

@@ -9,7 +9,7 @@
   the altitude of the permanent magnet. MPC control is implemented
   by using the muAO-MPC software, see MagnetoShield_Export_muAOMPC.m
   for the problem definition. The example allows teh user to select
-  wheter the reference altitude is given by the potentiometer or by 
+  whether the reference altitude is given by the potentiometer or by 
   a predetermined reference trajectory. Upload the code to your board
   and open the Serial Plotter tool in Arduino IDE.
 
@@ -38,7 +38,7 @@
 
 #define MANUAL 0                    // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
-unsigned long Ts = 5;                // Sampling period in miliseconds
+unsigned long Ts = 5;                // Sampling period in milliseconds
 unsigned long k = 0;                // Sample index
 bool nextStep = false;              // Flag for step function
 bool realTimeViolation = false;     // Flag for real-time sampling violation

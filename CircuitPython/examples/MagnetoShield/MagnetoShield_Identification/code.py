@@ -24,7 +24,7 @@
     - Adafruit Metro M4 Express (CircuitPython 5.3.1).
 
   If you have found any use of this code, please cite our work in your
-  academic publications, such as theses, conference articles or journal
+  academic publications, such as thesis, conference articles or journal
   papers. A list of publications connected to the AutomationShield
   project is available at:
   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -41,7 +41,7 @@
 import AutomationShield                         # Imports the AutomationShield module
 import MagnetoShield                            # Imports the MagnetoShield module for hardware functionality
 import Sampling                                 # Imports the Sampling module for pseudo-real time sampling
-import PIDAbs                                   # Imports the PIDAbs module for the absolute PID algoritm
+import PIDAbs                                   # Imports the PIDAbs module for the absolute PID algorithm
 import time
 
 from random import seed                         # Import seeding functionality

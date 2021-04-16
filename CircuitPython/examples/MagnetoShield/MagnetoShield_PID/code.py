@@ -7,7 +7,7 @@
 
   This example imports the sampling and PID control
   modules from the AutomationShield CircuitPython library.
-  You may select wheter the reference is given by the
+  You may select whether the reference is given by the
   potentiometer or you want to test a predetermined
   reference trajectory. Save the code to your board,
   including the other necessary modules and post-plot
@@ -25,7 +25,7 @@
   (4) Strict real-time not achievable
 
   If you have found any use of this code, please cite our work in your
-  academic publications, such as theses, conference articles or journal
+  academic publications, such as thesis, conference articles or journal
   papers. A list of publications connected to the AutomationShield
   project is available at:
   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -43,7 +43,7 @@
 
 import MagnetoShield                            # Imports the MagnetoShield module for hardware functionality
 import Sampling                                 # Imports the Sampling module for pseudo-real time sampling
-import PIDAbs                                   # Imports the PIDAbs module for the absolute PID algoritm
+import PIDAbs                                   # Imports the PIDAbs module for the absolute PID algorithm
 import time                                     # Imports the time module for delays
 
 MANUAL = False                                  # Reference by pot (True) or automatically (False)?

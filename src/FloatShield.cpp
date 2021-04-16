@@ -65,7 +65,7 @@ void FloatClass::calibrate(void) {                       // Board calibration
     delay(100);                                          // (This is because of varying time it takes for the ball to travel the first half of the tube)
   }
   delay(1000);                                           // Waits unil the ball reaches top and somewhat stabilises itself
-  for (int i = 0; i < 100; i++) {                        // Measures 100 values with sampling 25 miliseconds and calculates the average reading from those values
+  for (int i = 0; i < 100; i++) {                        // Measures 100 values with sampling 25 milliseconds and calculates the average reading from those values
     sum += sensorReadDistance();                         // (Simply using minimal value would be inconsistent because of shape of the ball combined with its ability to move horizontally in the tube)
     delay(25);
   }
@@ -77,7 +77,7 @@ void FloatClass::calibrate(void) {                       // Board calibration
     delay(100);                                          // (This is probably unecessary, because ball has no problem falling down, but for the sake of consistency)
   }
   delay(1000);
-  for (int i = 0; i < 100; i++) {                        // Measures 100 values with sampling 25 miliseconds and calculates the average reading from those values
+  for (int i = 0; i < 100; i++) {                        // Measures 100 values with sampling 25 milliseconds and calculates the average reading from those values
     sum += sensorReadDistance();                         // (Simply using maximal value would be inconsistent as in previous case)
     delay(25);
   }

@@ -5,7 +5,7 @@
 
   This example initialises the sampling and PID control
   subsystems from the AutomationShield library and allows user
-  to select wheter to use PRBS or APRBS signal for making small 
+  to select whether to use PRBS or APRBS signal for making small 
   changes in input value. Example stabilises the ball at selected
   position using PID control and then uses selected signal to cause
   small changes in the stabilised input, with the goal of monitoring
@@ -33,7 +33,7 @@ int prbs;                             // Variable for storing PRBS signal
 float aprbs;                          // Variable for storing APRBS signal
 #endif
 
-unsigned long Ts = 25;                // Sampling period in miliseconds
+unsigned long Ts = 25;                // Sampling period in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep = false;                // Flag for step function
 bool realTimeViolation = false;       // Flag for real-time sampling violation
