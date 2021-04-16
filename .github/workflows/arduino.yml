@@ -13,6 +13,8 @@ jobs:
       # This step makes the contents of the repository available to the workflow
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
 
       # For more information: https://github.com/arduino/compile-sketches#readme
       - name: Compile sketch
@@ -26,5 +28,4 @@ jobs:
           libraries: |
             # Install self as source
             - source-path: ./
-            - source-path: ./src/lib/
             - name: Servo
