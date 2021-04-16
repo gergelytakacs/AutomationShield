@@ -26,3 +26,4 @@ jobs:
           libraries: |
             # Install self as source
             - source-path: ./
+            - name: Servo
