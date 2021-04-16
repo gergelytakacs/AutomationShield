@@ -142,7 +142,7 @@ void BlowClass::begin(void) {
 Wire.begin();
   BlowShield.begin_config();
   BlowShield.readCoefficients();
-  BlowShield.readTemperature();             //necesary for t_fine
+  BlowShield.readTemperature();             //necessary for t_fine
 delay(5000);
 }
 
