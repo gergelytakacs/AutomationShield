@@ -40,7 +40,7 @@ public:
 	void revDirection();   // reverses the pre-set direction
 	float referenceRead();  // reads the value of the POT
 	float readVoltage();  // returns the value of the voltage drop through the R, value is in Volts
-	float readCurrent();  // returns the current draw ot the motor in mA
+	float readCurrent();  // returns the current draw to the motor in mA
 	float durationTime();  // returns the duration of one revolution in ms
 	float readRevolutions(int Time);  // returns the number of revolutions per minute according to the time revolution time in ms (good accuracy)
 
