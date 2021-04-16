@@ -17,7 +17,7 @@ jobs:
         run: git submodule update --init --recursive
 
       # For more information: https://github.com/arduino/compile-sketches#readme
-      - name: Compile sketch
+      - name: Build (Arduino)
         uses: arduino/compile-sketches@v1
         with:
           # The default is to compile for the Arduino Uno board. If you want to compile for other boards, use the `fqbn` input.
