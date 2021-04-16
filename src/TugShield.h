@@ -34,10 +34,10 @@
 class TugShieldClass 						// Class for the TugShield device
 {			
   public:
-    void begin();							// Begin metod
-    void calibration();						// Calibration metod
-	  void actuatorWrite(int servo_angle);	// Write value to servo metod
-	  float sensorRead();						// Read value from flexi metod
+    void begin();							// Begin method
+    void calibration();						// Calibration method
+	  void actuatorWrite(int servo_angle);	// Write value to servo method
+	  float sensorRead();						// Read value from flexi method
   private:   
 	  bool  _wasCalibrated; 					// Initializing the variable _wasCalibrated
 	  int   _sensorRead ;

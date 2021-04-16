@@ -12,7 +12,7 @@
   with the necessary module then use a serial terminal software
   or Matlab to acquire the dataset for later processing.
 
-  WARNING: Do not use "Mu" for data aquisition.
+  WARNING: Do not use "Mu" for data acquisition.
   WARNING: This is "soft real-time", the timing is not perfect,
            yet, it is possible to gather meaningful data for
            identification.

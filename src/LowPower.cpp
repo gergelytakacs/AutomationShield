@@ -41,7 +41,7 @@ void LowPowerClass::begin(void){
 
 /* Power down the MCU
  * SMCR = Sleep Mode Control Register
- * The appropiate power down mode is set by the SMx combination,
+ * The appropriate power down mode is set by the SMx combination,
  * then the sleep is enabled by the sleep enable bit.
  * This command just sets up and enables the power down mode,
  * execution must be realized by an inline assembler command,

@@ -28,7 +28,7 @@
 #define LINK_RPIN 0         //Potentiometer pin
 #define LINK_UPIN 9         //Servo pin
 
-#define ADXL345 0x53        //Define default addres for ADXL345 sensor
+#define ADXL345 0x53        //Define default address for ADXL345 sensor
 
 class LinkClass {                         //Creating class
   public:
@@ -41,7 +41,7 @@ class LinkClass {                         //Creating class
   private:
     void  ADXL_POWER_CTL();               //Set ADXL345 to measure mode
     void  ADXL345_BW_RATE();              //Set ADXL345 data and bandwidth rate
-    void  ADXL_DATA_FORMAT();             //ADXL345 output data formating
+    void  ADXL_DATA_FORMAT();             //ADXL345 output data formatting
     void  ADXL345_OFSZ();                 //Set offset to Z axis
     float ADXL345_DATAZ();                //Read Z accel
     int   _referenceRead;                 
@@ -72,7 +72,7 @@ void LinkClass::calibrate() {
   delay(500);
   _sensorBias = -(LinkShield.sensorBias(1000)/4);   // Calculate offset to LSB/g
   ADXL345_OFSZ();                                   
-  AutomationShield.serialPrint(" sucessful.\n");
+  AutomationShield.serialPrint(" successful.\n");
 }
 
 float LinkClass::sensorBias(int testLength) {

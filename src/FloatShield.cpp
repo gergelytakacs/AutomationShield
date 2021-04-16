@@ -85,7 +85,7 @@ void FloatClass::calibrate(void) {                       // Board calibration
   _range = _maxDistance - _minDistance;                  // Sets the range variable equal to the difference of the maximal and minimal distance
 
   _wasCalibrated = true;                                 // Sets the status of calibration to true
-  AutomationShield.serialPrint(" sucessful.\n");
+  AutomationShield.serialPrint(" successful.\n");
 }
 
 void FloatClass::actuatorWrite(float aPercent) {                                         // Write actuator

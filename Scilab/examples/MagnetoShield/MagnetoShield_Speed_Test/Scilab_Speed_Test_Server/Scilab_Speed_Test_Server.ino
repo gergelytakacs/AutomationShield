@@ -96,7 +96,7 @@ int encoder_3_int2 ;          // Pin used for encoder3 channel B : define from s
 int encoder_4_int2 ;          // Pin used for encoder4 channel B : define from scilab
 int encoder_5_int2 ;          // Pin used for encoder5 channel B : define from scilab
 int encoder_num, encoder_int2;
-int corresp[7] = {0, 2, 3, 21, 20, 19, 18}; //Correspondance beetween interrupt number and pin number, v5 added a dummy 0 as workaround for ascii 0 issue for scilab
+int corresp[7] = {0, 2, 3, 21, 20, 19, 18}; //Correspondence between interrupt number and pin number, v5 added a dummy 0 as workaround for ascii 0 issue for scilab
 
 //Generic counter
 volatile long int counter_0 = 0, counter_1 = 0, counter_2 = 0, counter_3 = 0, counter_4 = 0, counter_5 = 0;
@@ -733,8 +733,8 @@ if (val == 73) { //I -> Provisional I2C
             }
             Serial.print("OK"); // tell Scilab that motor s initialization finished
             // Cette commande sert à rien dans la toolbox de base,
-            // sauf si on prévoit d'ajouter des actions à l'init des moteurs
-            // par exemple chercher la position d'origine !
+            // sauf si on prévoit d'ajouter des actions à l'init des motors
+            // par example chercher la position d'origine !
           }
         }
       }

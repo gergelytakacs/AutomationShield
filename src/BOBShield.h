@@ -140,7 +140,7 @@ float BOBClass::sensorReadPerc(){
  return posperc;               //returns the ball distance in 0 - 100 %
  }
 
-// returns the corected value of sensor
+// returns the corrected value of sensor
 float BOBClass::sensorRead(){                       
 	if (calibrated == 1)   {                         // if calibration function was already processed (calibrated flag ==1)
  pos = sens.readRange();
