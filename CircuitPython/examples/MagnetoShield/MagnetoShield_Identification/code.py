@@ -10,7 +10,7 @@
   this input trajectory to create a rich signal suitable for
   system identification. Upload the code to your board along
   with the necessary module then use a serial terminal software
-  or Matlab to aquire the dataset for later processing.
+  or Matlab to acquire the dataset for later processing.
 
   WARNING: Do not use "Mu" for data aquisition.
   WARNING: This is "soft real-time", the timing is not perfect,

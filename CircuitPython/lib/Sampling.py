@@ -33,7 +33,7 @@ import time                                                 # Imports time funct
 class Settings_:
     def __init__(self):
         self.enable = False                                              # Flag for sampling
-        self.strictRealTime = False                                      # Not recommended. Pyhton is an interpreted language with less than ideal timekeeping
+        self.strictRealTime = False                                      # Not recommended. Python is an interpreted language with less than ideal timekeeping
         self.printTiming = False                                         # Sends real timing to plotter
         self.realTimeViolation = False                                   # Not recommended. Flag for real-time violations. Will not be active anyways.
         self.Tsampling = 0.0                                             # Sampling time

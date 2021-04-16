@@ -17,12 +17,12 @@
 
 #include "FloatShield.h"         // Include header file
 
-#ifdef VL53L0X_h                 // If library for distance sensor was sucessfully included
+#ifdef VL53L0X_h                 // If library for distance sensor was successfully included
 
 #if SHIELDRELEASE == 2           // For hardware release version 2  
   void hallPeriodCounter(void) {                                  // Interrupt routine on external interrupt pin 1
     FloatShield.pulseCount++;                                     // Increment the pulse counter
-    FloatShield.pulseMeasured = 1;                                // Set flag that pulse was sucessfully measured
+    FloatShield.pulseMeasured = 1;                                // Set flag that pulse was successfully measured
   }
 #endif
 
@@ -107,7 +107,7 @@ float FloatClass::referenceReadAltitude(void) {                                 
 }
 
 float FloatClass::sensorRead(void) {                                                                       // Sensor read
-  float readDistance = sensorReadDistance();                                                               // Reads the actual distance between ball and sensor in milimetres
+  float readDistance = sensorReadDistance();                                                               // Reads the actual distance between ball and sensor in millimetres
   _sensorPercent = AutomationShield.mapFloat(readDistance, _maxDistance, _minDistance, 0.0, 100.0);        // Remapps the distance based on minimal and maximal distances from calibration to the percentual altitude of the ball
   _sensorPercent = AutomationShield.constrainFloat(_sensorPercent, 0.0, 100.0);                            // Constrains the percentual altitude - safety precaution
   return _sensorPercent;                                                                                   // Returns the percentual altitude of the ball in the tube
@@ -117,11 +117,11 @@ float FloatClass::sensorReadAltitude(void) {                 // Sensor read alti
   _ballAltitude = sensorReadDistance();                      // Reads the current distance of the ball from sensor
   _ballAltitude = _maxDistance - _ballAltitude;              // Inverts the reading so the bottom position is 0
   _ballAltitude = constrain(_ballAltitude, 0, _maxDistance); // Prevents the reading to go below 0
-  return _ballAltitude;                                      // Returns the current altitude of the ball in milimetres
+  return _ballAltitude;                                      // Returns the current altitude of the ball in millimetres
 }
 
 float FloatClass::sensorReadDistance(void) {                                  // Sensor read distance
-  _sensorValue = (float)distanceSensor.readRangeContinuousMillimeters();      // Reads the distance between sensor and the ball in milimetres
+  _sensorValue = (float)distanceSensor.readRangeContinuousMillimeters();      // Reads the distance between sensor and the ball in millimetres
   return _sensorValue;                                                        // Returns the measured distance
 }
 
@@ -129,15 +129,15 @@ bool FloatClass::returnCalibrated(void) {                   // Returns calibrati
   return _wasCalibrated;
 }
 
-float FloatClass::returnMinDistance(void) {                 // Returns value of minimal distance measured by sensor in milimetres
+float FloatClass::returnMinDistance(void) {                 // Returns value of minimal distance measured by sensor in millimetres
   return _minDistance;
 }
 
-float FloatClass::returnMaxDistance(void) {                 // Returns value of maximal distance measured by sensor in milimetres
+float FloatClass::returnMaxDistance(void) {                 // Returns value of maximal distance measured by sensor in millimetres
   return _maxDistance;
 }
 
-float FloatClass::returnRange(void) {                       // Returns range of measured distances between minimal and maximal values in milimetres
+float FloatClass::returnRange(void) {                       // Returns range of measured distances between minimal and maximal values in millimetres
   return _range;
 }
 

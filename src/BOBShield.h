@@ -123,7 +123,7 @@ else if (deg>30) {
   deg=30;
 }
 
-degree = map(deg,30,-30,65,125);                   // maping inputs defined by user in degrees (-30 / 30) into values understandeable for servo (70 / 130)
+degree = map(deg,30,-30,65,125);                   // mapping inputs defined by user in degrees (-30 / 30) into values understandeable for servo (70 / 130)
 
 	myservo.write(degree);                         // write values for servo
 }

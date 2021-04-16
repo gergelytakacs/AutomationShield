@@ -9,7 +9,7 @@
   predetermined reference trajectory. Noise is injected to
   this input trajectory to create a rich signal. Upload the
   code to your board, then use a serial terminal software
-  or Matlab to aquire the dataset for later processing.
+  or Matlab to acquire the dataset for later processing.
 
   Tested with Arduino Uno, Arduino Due.
   Has not been functional with Arduino Zero.

@@ -17,7 +17,7 @@
 
 
 // Defining global variables
-  static int Bstate;                   // gobal variables for ISR + volatile static 
+  static int Bstate;                   // global variables for ISR + volatile static 
   static unsigned long counter;
 
 
@@ -31,7 +31,7 @@
    class MotoClass{
 public:
 	// Methods
-	static void begin(void);   // it has to be static because of the attachInterrupt() - initializes the pins, sets the ISR and also the initial valus of teh counter variable
+	static void begin(void);   // it has to be static because of the attachInterrupt() - initializes the pins, sets the ISR and also the initial valus of the counter variable
 	static void countTicks();   // ISR - Interrupt Service Routine
 	void motorON();    // switches on the motor at maximum speed (recommended)
 	void motorOFF();   // switches off the motor

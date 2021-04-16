@@ -32,7 +32,7 @@ class Settings_:
         self.Td = 0.0
         self.Ts = 0.0
         self.eSum = 0.0                  # Sum of the error for integral
-        self.e = [0.0, 0.0]              # List to stores curent and previous error
+        self.e = [0.0, 0.0]              # List to stores current and previous error
 
     def setKp(self,Kpin):            # Takes the proportional gain
         self.Kp = Kpin               # Stores the input argument in the global variable

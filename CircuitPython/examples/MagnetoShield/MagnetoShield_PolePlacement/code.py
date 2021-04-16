@@ -82,7 +82,7 @@ def fallbackSettings():                                 # Used later, comment ou
     global Ts, KP, TI, TD, R, T, DATA_OUTPUT            # Makes these global to be settable
     if (microcontroller.cpu.frequency/1000000 == 48):   # For the Adafruit Metro M0 @48 MHz override defaults
         Ts = int(7000)                                  # [ms] Sampling in microseconds, lower limit unknown for the M0 Express
-        K = [8.7355, -2773, -62.884, 22.922]            # Less agressive pole placement gaing to make it work (at least on some level)
+        K = [8.7355, -2773, -62.884, 22.922]            # Less aggresive pole placement gaing to make it work (at least on some level)
         R = [14.0, 14.0]                                # [mm] Desired reference trajectory (pre-set)
         T = int(2500)                                   # [steps] Experiment section length
         DATA_OUTPUT = False                             # Disable logging output

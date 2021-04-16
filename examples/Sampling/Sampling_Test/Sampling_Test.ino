@@ -30,7 +30,7 @@
 #define PIN 12                    // For oscilloscope test
 
 unsigned long int Ts = 2000000;   // Sampling in microseconds
-bool enable=false;                // Wheter the step should be launched
+bool enable=false;                // Whether the step should be launched
 
 // Just for measuring the timing
 unsigned long int curTime=0;      // Current time
