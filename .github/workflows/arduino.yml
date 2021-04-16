@@ -24,7 +24,7 @@ jobs:
           sketch-paths: |
             # Configure the action to search all folders under the root of the repository for sketches and compile them.
             # This is formatted as a YAML list, which makes it possible to have multiple sketch paths if needed.
-            - ./
+            - examples
           libraries: |
             # Install self as source
             - source-path: ./
