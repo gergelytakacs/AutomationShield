@@ -31,7 +31,7 @@ clear;close all;clc;
 load '../../../matlab/examples/MagnetoShield/MagnetoShield_Models_Greybox_SS';
 
 %% MagnetoShield - Pole-placement simulation and control initialization for Simulink
-Ts = 0.001;                   % Sampling of the Simulink simulation
+Ts = 0.0015;                   % Sampling of the Simulink simulation
 
 % Matrices extraction from model
 modeld=c2d(model,Ts);           % Discretized linear state-space model

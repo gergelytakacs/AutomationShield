@@ -33,7 +33,7 @@ load '../../../matlab/examples/MagnetoShield/MagnetoShield_Models_Greybox_SS';
 %% MagnetoShield - LQR simulation and control initialization for Simulink
 
 order = 'SISO';                 % SISO - position / SIMO - position & current
-Ts = 0.001;                    % Sampling of the Simulink simulation
+Ts = 0.0015;                    % Sampling of the Simulink simulation
 
 % Matrices extraction from model
 modeld=c2d(model,Ts);           % Discretized linear state-space model
@@ -56,13 +56,13 @@ if order == 'SISO'                  % Setup if just position is measured
     C = [1 0 0];
     D = 0;
     Q = diag([0.0001, 100, 100]);   % Penalty of the model for Kalman filter
-    R = 0.001;                     % Penalty of measurement for Kalman filter
+    R = diag(1.5815e-10);                     % Penalty of measurement for Kalman filter
     
 elseif order == 'SIMO'             % Setup if position and current are measured
     C = [1 0 0;0 0 1];
     D = [0;0];
     Q = diag([0.0001, 100, 80]);   % Penalty of the model for Kalman filter
-    R = [0.001, 0.01];             % Penalty of measurement for Kalman filter
+    R = diag([1.5815e-10,6.6217e-09]);             % Penalty of measurement for Kalman filter
 end
 
 %% Model properties, stability and responses
