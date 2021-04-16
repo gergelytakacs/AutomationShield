@@ -81,7 +81,7 @@ void LowPowerClass::disableADC(void){
 
 /* Set watchdog timer
  * WDTCSR = WatchDog Timer Control Register. Operations are strictly timed, see datasheet.
- * Watchog timer is actually pretty shitty with small timeouts. 16 ms is the smallest and can't do matches.
+ * Watchdog timer is actually pretty shitty with small timeouts. 16 ms is the smallest and can't do matches.
  */ 
 void LowPowerClass::setWatchDog(){
  WDTCSR  = (1 << WDCE) | (1 << WDE);                        // Set watchdog change enable (WDCE) bit, sets watchdog enable bit (WDE) in a timed sequence, meanwhile clears the rest
