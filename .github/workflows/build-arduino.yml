@@ -1,4 +1,4 @@
-name: Compile Sketch
+name: Build (Arduino)
 
 # The workflow will run on every push and pull request to the repository
 on:
