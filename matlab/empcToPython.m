@@ -14,7 +14,7 @@ global MPTOPTIONS
 %    The list of changes from the original are as follows:
 % 	 - Removed much of the diagnostic features.
 %    - Removed the evaluation function part and Simulink port.
-%    - Removed the possiblilty to use PWQ, this only handles PWA.
+%    - Removed the possibility to use PWQ, this only handles PWA.
 %    - Removed matrix export for the tie-breaking function.
 % 
 %    This code snippet has been altered for the needs of the 
@@ -88,7 +88,7 @@ header = {
 '    counterpart.'
 ''    
 '    The list of changes from the original are as follows:'
-'    - Removed the possiblilty to use PWQ, this only handles PWA.'
+'    - Removed the possibility to use PWQ, this only handles PWA.'
 '    - Removed matrix export for the tie-breaking function.'
 '' 
 '    Usage: this Python module is imported by the empc module'

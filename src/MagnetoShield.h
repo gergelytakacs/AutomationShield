@@ -72,7 +72,7 @@
 #if SHIELDRELEASE==1 || SHIELDRELEASE==2
 #define LOAD_HSAT	204							// [8-bit DAC] Upper saturation of the magnets before dropping
 #define IRF520_LSAT	170							// [8-bit DAC] Lower saturation of the IRF520
-#define IRF520_HSAT	220							// [8-bit DAC] Hight (upper) saturation of the IRF520
+#define IRF520_HSAT	220							// [8-bit DAC] Height (upper) saturation of the IRF520
 #endif
 
 #if SHIELDRELEASE == 1

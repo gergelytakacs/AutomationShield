@@ -18,7 +18,7 @@ global MPTOPTIONS
 %    prefer to use ROM instead of RAM.
 %    - Added PROGMEM functionality for the AVR architecture, and calling
 %    the necessary headers.
-%    - Removed the possiblilty to use PWQ, this only handles PWA.
+%    - Removed the possibility to use PWQ, this only handles PWA.
 %    - Removed matrix export for the tie-breaking function.
 % 
 %    This code snippet has been altered for the needs of the 
@@ -104,7 +104,7 @@ header = {
 '    prefer to use ROM instead of RAM.'
 '    - Added PROGMEM functionality for the AVR architecture, and calling'
 '    the necessary headers.'
-'    - Removed the possiblilty to use PWQ, this only handles PWA.'
+'    - Removed the possibility to use PWQ, this only handles PWA.'
 '    - Removed matrix export for the tie-breaking function.'
 '' 
 '    Usage: include alongside with the empcSequential.h header to your'

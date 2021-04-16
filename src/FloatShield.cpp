@@ -74,7 +74,7 @@ void FloatClass::calibrate(void) {                       // Board calibration
   sum = 0.0;
   actuatorWrite(0.0);                                    // Turns off the fan
   while (sensorReadDistance() < 300.0) {                 // Waits until the ball is at least in the lower third of the tube
-    delay(100);                                          // (This is probably unecessary, because ball has no problem falling down, but for the sake of consistency)
+    delay(100);                                          // (This is probably unnecessary, because ball has no problem falling down, but for the sake of consistency)
   }
   delay(1000);
   for (int i = 0; i < 100; i++) {                        // Measures 100 values with sampling 25 milliseconds and calculates the average reading from those values
