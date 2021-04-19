@@ -30,7 +30,7 @@
 #include <Sampling.h>                                 // Include sampling library
 
 #ifdef ARDUINO_ARCH_AVR
-  #include "AVR\ectrl.h"                                    // include EMPC matrices
+  #include "AVR/ectrl.h"                                    // include EMPC matrices
 #else
   #include "ectrl.h"
 #endif
