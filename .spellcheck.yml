@@ -6,7 +6,7 @@ matrix:
     lang: en
   dictionary:
     wordlists:
-    - .etc/codespell-ignore-words-list.txt
+    - etc/codespell-ignore-words-list.txt
     output: wordlist.dic
     encoding: utf-8
   pipeline:
