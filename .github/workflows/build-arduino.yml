@@ -29,8 +29,3 @@ jobs:
             # Install self as source
             - source-path: ./
             - name: Servo
-          enable-deltas-report: true
-      - uses: actions/upload-artifact@v2
-        with:
-            name: sketches-reports
-            path: sketches-reports
