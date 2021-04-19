@@ -1,4 +1,4 @@
-name: Spellcheck Action
+name: Spelling (Python)
 on: push
 
 jobs:
@@ -10,3 +10,6 @@ jobs:
     - uses: actions/checkout@master
     - uses: rojopolis/spellcheck-github-actions@0.13.0
       name: Spellcheck
+      sources:
+      - '**/*.py'
+      
