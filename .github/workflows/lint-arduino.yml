@@ -13,9 +13,6 @@ jobs:
       # This step makes the contents of the repository available to the workflow
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Checkout submodules
-        run: git submodule update --init --recursive
-
       - name: arduino/arduino-lint-action
         uses: arduino/arduino-lint-action@v1.0.0
         with:
