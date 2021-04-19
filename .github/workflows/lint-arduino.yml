@@ -16,5 +16,5 @@ jobs:
       - name: arduino/arduino-lint-action
         uses: arduino/arduino-lint-action@v1
         with:
-          compliance: permissive
+          compliance: specification
           project-type: all
