@@ -23,7 +23,8 @@
 #include <FloatShield.h>              // Include main library  
 #include <Sampling.h>                 // Include sampling library
 
-#define PRBS 0                        // Write 1 to use PRBS, 0 to use APRBS
+#define PRBS 1                        // Write 1 to use PRBS, 0 to use APRBS
+                                      // For APRBS use MEGA or larger, too large for UNO
 
 #if PRBS
 #include "prbsU.h"                    // Include PRBS sequence from .h file
