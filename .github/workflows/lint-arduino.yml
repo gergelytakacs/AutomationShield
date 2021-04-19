@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: arduino/arduino-lint-action
-        uses: arduino/arduino-lint-action@v1.0.0
+        uses: arduino/arduino-lint-action@v1
         with:
-          compliance: permissive
+          compliance: specification
           project-type: all
