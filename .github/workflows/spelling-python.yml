@@ -1,4 +1,4 @@
-name: Spell Check (Arduino)
+name: Spell Check (Python)
 on: push
 
 jobs:
