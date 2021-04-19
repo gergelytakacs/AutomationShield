@@ -106,7 +106,9 @@ void step() {                                      // Define step function
   X[3]=  (I-I0)/1000.0;                            // [A] Third state, current measurement  
   yp=y;
 
-  mpc_ctl_solve_problem(&ctl, X);                  // Calculate MPC system input
+ #if !(defined(ARDUINO_AVR_UNO))                   // Will not work for Uno, insufficient RAM!
+    mpc_ctl_solve_problem(&ctl, X);                 // Calculate MPC system input
+  #endif
   u = ctl.u_opt[0]+u0;                             // Save system input into input variable
   MagnetoShield.actuatorWrite(u);                  // Actuate
 
