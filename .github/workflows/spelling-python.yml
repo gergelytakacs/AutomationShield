@@ -1,4 +1,4 @@
-name: Spelling (Python)
+name: Spell Check (Arduino)
 on: push
 
 jobs:
@@ -10,6 +10,6 @@ jobs:
     - uses: actions/checkout@master
     - uses: rojopolis/spellcheck-github-actions@0.13.0
       name: Spellcheck
-      sources:
-      - '**/*.py'
+      with:
+        task_name: Python
       
