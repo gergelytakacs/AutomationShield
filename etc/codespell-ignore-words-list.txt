@@ -14,3 +14,15 @@ github
 http
 https
 www
+circuitpython
+mechatronics
+gc
+mem
+constrainfloat
+baseConstrain
+ok
+ma
+busio
+dac
+analogin
+analogio
