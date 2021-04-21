@@ -2,3 +2,15 @@ setts
 mata
 matc
 whos
+AutomationShield
+CicruitPython
+Gergely
+NonCommercial
+PID
+Takács
+automationshield
+gergelytakacs
+github
+http
+https
+www
