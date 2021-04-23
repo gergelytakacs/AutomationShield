@@ -8,7 +8,6 @@ Gergely
 NonCommercial
 PID
 Takács
-automationshield
 gergelytakacs
 github
 http
@@ -26,3 +25,10 @@ busio
 dac
 analogin
 analogio
+AnalogIn
+mA
+shorthands
+mV
+DRV
+LSB
+MCP
