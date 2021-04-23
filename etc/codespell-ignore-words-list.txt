@@ -105,3 +105,9 @@ py
 runtime
 uLab
 nano
+MSB
+datasheet
+pinout
+percentual
+ee
+ethz

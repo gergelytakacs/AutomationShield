@@ -119,7 +119,7 @@ def step():
                     i += 1                      # and increase section counter for next
 
     y = MagnetoShield.sensorRead()              # [mm] sensor read routine
-    u = PIDAbs.compute(-(r-y), 0.0, 10.0, -10.0, 10.0) #C ompute constrained absolute-form PID
+    u = PIDAbs.compute(-(r-y), 0.0, 10.0, -10.0, 10.0) #Compute constrained absolute-form PID
     MagnetoShield.actuatorWrite(u)              # [V] write input to actuator
     if DATA_OUTPUT:
         if PLOTTING_POST:                       # If we are plotting after the experiment
