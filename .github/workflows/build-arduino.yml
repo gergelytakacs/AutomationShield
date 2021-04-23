@@ -8,6 +8,11 @@ on:
 jobs:
   compile-sketch:
     runs-on: ubuntu-latest
+    
+    strategy:
+    matrix:
+    fqbn:
+      - arduino:avr:uno
 
     steps:
       # This step makes the contents of the repository available to the workflow
@@ -20,7 +25,7 @@ jobs:
       - name: Build (Arduino)
         uses: arduino/compile-sketches@v1
         with:
-          # The default is to compile for the Arduino Uno board. If you want to compile for other boards, use the `fqbn` input.
+          fqbn: ${{ matrix.fqbn }}
           sketch-paths: |
             # Configure the action to search all folders under the root of the repository for sketches and compile them.
             # This is formatted as a YAML list, which makes it possible to have multiple sketch paths if needed.
