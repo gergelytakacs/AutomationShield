@@ -111,3 +111,4 @@ pinout
 percentual
 ee
 ethz
+bytecode
