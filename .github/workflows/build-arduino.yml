@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
-    matrix:
-    fqbn:
-      - arduino:avr:uno
+      matrix:
+        fqbn:
+          - arduino:avr:uno
 
     steps:
       # This step makes the contents of the repository available to the workflow
