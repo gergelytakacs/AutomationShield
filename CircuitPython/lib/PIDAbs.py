@@ -49,7 +49,7 @@ class Settings_:
 Settings = Settings_()
 
 # Computes an absolute PID input
-def compute(err, saturationMin, saturationMax, antiWindupMin, antiWindupMax):           # Requires error, input saturation and intergral windup saturation                                                                      # Sets these as global variables
+def compute(err, saturationMin, saturationMax, antiWindupMin, antiWindupMax):           # Requires error, input saturation and integral windup saturation                                                                      # Sets these as global variables
     Settings.eSum = Settings.eSum + err                                                                   # Sum of errors for the integral (summation) part
     Settings.e[1] = err                                                                          # New error in position [1] (right)
     Settings.eSum = AutomationShield.constrainFloat((Settings.Kp * Settings.Ts / Settings.Ti )* Settings.eSum, antiWindupMin, antiWindupMax) / (Settings.Kp * Settings.Ts / Settings.Ti)        # Anti-windup by clamping

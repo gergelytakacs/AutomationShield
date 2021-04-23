@@ -100,7 +100,7 @@ header = {
 '  large. Moreover, the Python evaluation of the search function is'
 '  much slower than the C implementation. There are a couple of'
 '  possible but untried workarounds: (a) storing the lists as frozen'
-'  bytcode in the firmware, and (b) using uLab functionality instead'
+'  bytecode in the firmware, and (b) using uLab functionality instead'
 '  of lists and C-like element-by-element operations.'
 ''
 '  If you have found any use of this code, please cite our work in your'

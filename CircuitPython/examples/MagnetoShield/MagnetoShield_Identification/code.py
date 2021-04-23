@@ -120,7 +120,7 @@ def step():
 
     y = MagnetoShield.sensorRead()              # [mm] sensor read routine
     I = MagnetoShield.auxReadCurrent()          # [mA] Read current value
-    w = wBias-float(randint(0,wP))/100.0        # [V] Input noise, gaussian dist.
+    w = wBias-float(randint(0,wP))/100.0        # [V] Input noise, Gaussian dist.
     u = PIDAbs.compute(-(r-y), 0.0, 10.0, -10.0, 10.0) + w #Compute constrained absolute-form PID + noise
     u = AutomationShield.constrain(u, 0.0, 10.0)  # [V] contstrain to physically realizable data
     MagnetoShield.actuatorWrite(u)              # [V] write input to actuator

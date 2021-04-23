@@ -27,7 +27,7 @@
 import math                         # Imports math module for the logarithm operation in the calibration routine
 import time                         # Imports the time module that is needed to wait for transients in the calibration procedure
 import board                        # Imports the boars module defining pin locations and other hardware functions
-import busio                        # Imports the busio module defining I2C communicaiton for the DAC chip
+import busio                        # Imports the busio module defining I2C communication for the DAC chip
 from analogio import AnalogIn       # Imports AnalogIn from the analogio module defining analog input for the sensors
 import AutomationShield             # Imports the AutomationShield module for common functions and common constants
 
@@ -87,7 +87,7 @@ def adcToGauss(adc):
 
 # Reads sensor and returns the Hall sensor reading in Gauss
 def sensorReadGauss():
-    return adcToGauss(MAGNETO_YPIN.value)                              # [G] Takes a direct ADC reading, then changes this to gauss
+    return adcToGauss(MAGNETO_YPIN.value)                              # [G] Takes a direct ADC reading, then changes this to Gauss
 
 # Converts the magnetic flux reading from the Hall sensor
 # to distance measured from the bottom of the magnet
@@ -164,7 +164,7 @@ def calibration():                                                     # Calibra
     dacWrite(0)
 
     # Recalibrate distance based on these
-    global d_p2, d_p1, calibrated                                      # Define these as global, the Gauss to mmm function and others need it
+    global d_p2, d_p1, calibrated                                      # Define these as global, the Gauss to mm function and others need it
     d_p2 = math.log((EMAGNET_HEIGHT-MAGNET_LOW) / (EMAGNET_HEIGHT-MAGNET_HIGH)) / math.log(adcToGauss(minCalibrated) / adcToGauss(maxCalibrated))
     d_p1 = (EMAGNET_HEIGHT-MAGNET_HIGH) / (pow(adcToGauss(maxCalibrated), d_p2))
 
@@ -180,7 +180,7 @@ def actuatorWrite(u):                                                  # Just a 
 	actuatorWriteVoltage(u)                                            # Calls preferred routine
 
 # Writes input to actuator as desired voltage on magnet
-def actuatorWriteVoltage(u):                                           # Writes desiredvoltages to the magnet
+def actuatorWriteVoltage(u):                                           # Writes desired voltages to the magnet
 	dacIn = voltageToDac(u)							                   # Re-computes DAC levels according to Voltage
 	dacIn = AutomationShield.constrain(dacIn, 0 ,DACMAX)			   # Constrain input into acceptable range
 	dacWrite(dacIn)  	   											   # Writes to DAC

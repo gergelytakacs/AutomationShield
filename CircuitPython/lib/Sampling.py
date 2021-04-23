@@ -47,7 +47,7 @@ def begin(Ts):                                                       # Sampling 
     Settings.t_next = Settings.t_last + Settings.Tsampling           # Initialize next sample. The next sampling time is the current time + sampling
 
 # Checking if next sample is on
-def stepEnable():                                                    # Must run in an infinite loop (while True:) as it contiuously checks
+def stepEnable():                                                    # Must run in an infinite loop (while True:) as it continuously checks
     t = time.monotonic_ns()                                          # Check current time
     if (t >= Settings.t_next):                                       # If time has come
         if Settings.printTiming:                                     # If plotting a real timing is required
