@@ -19,6 +19,7 @@
 
 #include "Arduino.h"    //--including basic Arduino library
 
+
 //--defining pins for MotoShield
 #define MOTO_YPIN1      3       //--hallsensor pin channel 1
 #define MOTO_YPIN2      4      //--hallsensor pin channel 2 

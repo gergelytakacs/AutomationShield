@@ -24,20 +24,49 @@
 %   Attribution-NonCommercial 4.0 International License.
 % 
 %   Created by Gergely Takács. 
-%   Last update: 15.02.2018.
+%   Last updated by: Jakub Mihalík
+%   Last update: 12.10.2020.
   
 clc; clear all;                                 % Clears screen and all variables
 
 fixedInductance=0;                              % Fixed or distance dependent inductance?
                                                 % to mathematical model
-load ID_PID_4000us.mat                          % Load data file
-Ts=0.004;                                       % [s] Sampling
+load MagnetoShield_ID_Data.mat                  % Load data file
+Ts=0.003250;                                    % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output in meters
 u=result(:,2);                                  % [V] Input is closed loop + probe signal
 i=result(:,3)/1000;                             % [A] Current
 
+%% Parameters
+g  = 9.81;										% [m/s2] Gravitational acceleration		  
+m  = 0.945E-3;                                  % [kg] Magnet mass
+R  = 198.3;                                     % [Ohm] Solenoid resistance
+L  = 0.239;                                     % [H] Solenoid inductance
+Km = 0.0037;                                    % Magnetic constant for the mechanical part
+Ke = Km;                                        % Magnetic constant for the electrical part
+
+% Linearization points based on the experiment
+y0 = mean(y);                                   % [m] Output (position) linearization around setpoint
+u0 = mean(u);                                   % [V] Input linearization around setpoint
+i0 = mean(i);                                   % [A] Current linearization around setpoint
+
+% Exact linearization points based on the model
+% i0 = sqrt(g*m*y0^2/Km);                        % [A] Current linearization around setpoint
+% u0 = R*i0;                                     % [V] Input linearization around setpoint
+
+delta_y = y-y0;                                 % [m] Distance data adjusted by linearization points
+delta_i = i-i0;                                 % [A] Current data adjusted by linearization points
+delta_u = u-u0;                                 % [V] Voltage input data adjusted by linearization points
+
+% Initial parameters for generic linearized model
+alpha   = 2*(Km/m)*i0^2/y0^3;                   % Linearized parameter guess
+beta    = 2*(Km/m)*i0/y0^2;                     % Linearized parameter guess
+gamma   = 2*Ke*i0/(L*y0^2);                     % Linearized parameter guess
+delta   = R/L;                                  % Parameter guess
+epsilon = 1/L;                                  % Parameter gues
+
 %% System identification data object
-data = iddata([y i],u,Ts,'Name','Magnetic Levitation');    % Data file
+data = iddata([delta_y delta_i],delta_u,Ts,'Name','Magnetic Levitation');    % Data file
 data.InputName = 'Solenoid';                    % Input name: Solenoid voltage
 data.InputUnit =  'V';                          % Input unit
 data.OutputName{1} = 'Position';                % Output 1 name
@@ -47,26 +76,13 @@ data.OutputUnit{2} = 'A';                       % Output 2 unit
 data.Tstart = 0;                                % Starting time
 data.TimeUnit = 's';                            % Time unit
 data = data(100:end);                           % Discard the time when magnet is on ground, pick close to linearization point
-data=detrend(data);                             % Discard offset                               
-dataf = fft(data);                              % Frequency domain 
+data=detrend(data);                             % Discard offset, takes care of linearization too (if mean is taken as lin. point)
+dataf = fft(data);                              % Frequency domain 																		   
 
-%% Parameters
-m = 0.76E-3;                                    % [kg] Magnet mass
-R = 198.3;                                      % [Ohm] Solenoid resistance
-L = 0.239;                                      % [H] Solenoid inductance
-u0=mean(u);                                     % [V] Input linearization around setpoint
-y0=mean(y);                                     % [m] Output (position) linearization around setpoint
-Km=2E-6;                                        % Magnetic constant (rhough estimate)
-    
-% Initial parameters for linearized model
+% Initial states
 h0=data.y(1,1);                                 % Initial position estimate
 dh0=(data.y(2,1)-data.y(1,1))/Ts;               % Initial velocity estimate
-i0=data.y(1,2);                                 % Initial current estimate
-alpha=2*(Km/m)*u0^2/y0^3;                       % Linearized parameter guess
-beta=2*(Km/m)*u0/y0^2;                          % Linearized parameter guess
-gamma=2*Km*mean(i)/(L*y0^2);                    % Linearized parameter guess
-delta=R/L;                                      % Parameter guess
-epsilon=1/L;                                    % Parameter guess
+ii0=data.y(1,2);                                 % Initial current estimate
 
 %% Construct model
 if fixedInductance==1                           % Magnet inductance L fixed
@@ -78,7 +94,7 @@ elseif  fixedInductance==0                      % Magnet inductance L(y) distanc
 
     A=[0       1        0;                      % Dybamic matrix initial guess
        alpha   0       -beta
-       0       gamma   -delta];     
+       0      -gamma   -delta];     
 end
 
 B=[0; 0; epsilon];                              % Input matrix
@@ -86,7 +102,7 @@ C=[1 0 0;                                       % Output matrix
    0 0 1];                                      % Distance and current measured
 D=[0; 0];                                       % No feed-through                                            
 K = zeros(3,2);                                 % Disturbance
-x0=[h0; dh0; i0];                               % Initial condition
+x0=[h0; dh0; ii0];                               % Initial condition
 disp('Initial guess:')
 sys=idss(A,B,C,D,K,x0,0)                        % Construct state-space representation
 
@@ -118,20 +134,23 @@ Options.InitialState = 'estimate';              % Estimate initial condition
 %% Estimate and list parameters
 disp('Identified model:')
 model = ssest(dataf,sys,Options)                % Launch estimation procedure
-compare(dataf,model)                            % Compare data to model
+compare(dataf,model,1)                            % Compare data to model
 
 disp('---Parameter Comparison---')
 Ld=['L (measured): ',num2str(L),' [H],   L (model): ',num2str(1/model.b(3),3),' H'];
 disp(Ld)
 Rd=['R (measured): ',num2str(R),' [Ohm], R (model): ',num2str(-model.a(3,3)/model.b(3),3),' [Ohm]'];
 disp(Rd)
-if fixedInductance==0 
-   
-Ke=mean([model.a(2,1)*2*m*y0^3/u0^2 -(model.a(2,3)*2*m*y0^2)/u0]);
-Kstd=std([model.a(2,1)*2*m*y0^3/u0^2 -(model.a(2,3)*2*m*y0^2)/u0]);
-Kd=['K (guess): ',num2str(Km), ',    K (model,mean): ',num2str(Ke,1),' +/- ',num2str(Kstd,1)];
-disp(Kd)
-disp(['K (range): ',num2str([model.a(2,1)*2*m*y0^3/u0^2 -(model.a(2,3)*2*m*y0^2)/u0])])
-end
 
+if fixedInductance==0
+ Kmodel=([model.a(2,1)*m*y0^3/(2*i0^2) -(model.a(3,2)*L*y0^2)/(2*i0)]);
+ Kstd=std([model.a(2,1)*m*y0^3/(2*i0^2) -(model.a(3,2)*L*y0^2)/(2*i0)]);
+ Kdm=['Km (guess): ',num2str(Km), ',    Km (model): ',num2str(Kmodel(1))];
+ disp(Kdm)
+ Kde=['Ke (guess): ',num2str(Km), ',    Ke (model): ',num2str(Kmodel(2))];
+ disp(Kde)
+ end
+
+
+save('MagnetoShield_Models_Greybox_SS','model','y0','u0','i0','Ts')      % Save plant model (mm)
 

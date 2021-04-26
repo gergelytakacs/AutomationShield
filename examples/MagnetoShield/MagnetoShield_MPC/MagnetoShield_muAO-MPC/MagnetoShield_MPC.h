@@ -1,0 +1,7 @@
+#include "cmpc/fip_ops.c"
+#include "cmpc/mpc.c"
+#include "cmpc/mpc_const.c"
+#include "cmpc/mpc_inc.c"
+#include "cmpc/mpc_ref.c"
+#include "cmpc/mpc_stc.c"
+#include "cmpc/mtx_ops.c"

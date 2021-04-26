@@ -5,7 +5,7 @@
 
   This example initialises the sampling and PID control
   subsystems from the AutomationShield library and allows user
-  to select wheter the reference is given by the potentiometer
+  to select whether the reference is given by the potentiometer
   or by a predetermined reference trajectory. Upload the code to 
   your board and open the Serial Plotter tool in Arduino IDE.
 
@@ -23,7 +23,7 @@
 
 #define MANUAL 0                      // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
-unsigned long Ts = 25;                // Sampling period in miliseconds
+unsigned long Ts = 25;                // Sampling period in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep = false;                // Flag for step function
 bool realTimeViolation = false;       // Flag for real-time sampling violation

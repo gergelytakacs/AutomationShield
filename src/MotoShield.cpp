@@ -18,6 +18,7 @@
 #include "AutomationShield.h"
 #include "Sampling.h"
 
+
 void MotoShieldClass::_InterruptServiceRoutine(){ //--ISR for the incremental encoder
 	count++; 
 }

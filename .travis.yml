@@ -50,7 +50,23 @@ script:
  - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_Identification/FloatShield_Identification.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
- 
+ - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_LQ/FloatShield_LQ.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/FloatShield/FloatShield_MPC/FloatShield_MPC.ino
+
+#Due#
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_Identification/FloatShield_Identification.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_LQ/FloatShield_LQ.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/FloatShield/FloatShield_MPC/FloatShield_MPC.ino
+
+#Zero#
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/FloatShield/FloatShield_Identification/FloatShield_Identification.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/FloatShield/FloatShield_PID/FloatShield_PID.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/FloatShield/FloatShield_OpenLoop/FloatShield_OpenLoop.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/FloatShield/FloatShield_LQ/FloatShield_LQ.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/FloatShield/FloatShield_MPC/FloatShield_MPC.ino
+
 ### HeatShield ###
 #Uno#
  - arduino --verify --board arduino:avr:uno $PWD/examples/HeatShield/HeatShield_PID/HeatShield_PID.ino
@@ -68,23 +84,31 @@ script:
 
 ### MagnetoShield ###
 #Uno#
+ - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_LQ/MagnetoShield_LQ.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_PolePlacement/MagnetoShield_PolePlacement.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/MagnetoShield_Identification/MagnetoShield_Identification.ino
- - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_DistanceCalibrate/MagnetoShield_DistanceCalibrate.ino
  - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
- - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
+ - arduino --verify --board arduino:avr:uno $PWD/examples/MagnetoShield/Support/MagnetoShield_PowerCalibrate/MagnetoShield_PowerCalibrate.ino
 #Due#
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_MPC/MagnetoShield_MPC.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_LQ/MagnetoShield_LQ.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_PolePlacement/MagnetoShield_PolePlacement.ino
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/MagnetoShield_Identification/MagnetoShield_Identification.ino
- - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_DistanceCalibrate/MagnetoShield_DistanceCalibrate.ino
  - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
- - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
+ - arduino --verify --board arduino:sam:arduino_due_x $PWD/examples/MagnetoShield/Support/MagnetoShield_PowerCalibrate/MagnetoShield_PowerCalibrate.ino
 #Zero#
+#- arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_MPC/MagnetoShield_MPC.ino
+#- arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_LQ/MagnetoShield_LQ.ino
+#- arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_PolePlacement/MagnetoShield_PolePlacement.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_PID/MagnetoShield_PID.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/MagnetoShield_Identification/MagnetoShield_Identification.ino
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_Calibration/MagnetoShield_Calibration.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_DistanceCalibrate/MagnetoShield_DistanceCalibrate.ino
  - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_SelfTest/MagnetoShield_SelfTest.ino
- - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_IRF520Calibrate/MagnetoShield_IRF520Calibrate.ino
+ - arduino --verify --board arduino:samd:arduino_zero_native $PWD/examples/MagnetoShield/Support/MagnetoShield_PowerCalibrate/MagnetoShield_PowerCalibrate.ino
 
 ### MotoShield ###
 #Uno#
