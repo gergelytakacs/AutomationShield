@@ -7,7 +7,7 @@ y=result(:,1);
 u=result(:,2);
 I=result(:,3);
 
-% Prameters initinal value
+% Parameters initinal value
  K =    1e-08; % MagConstant
  m =    0.78 / 1000;                      % [kg] Mass, measured
  R =    198.0;                            % [Ohm] Resistance, measured

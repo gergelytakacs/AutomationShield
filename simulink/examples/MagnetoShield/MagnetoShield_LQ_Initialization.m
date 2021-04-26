@@ -1,5 +1,35 @@
+%   MAGNETOSHIELD LQR simulation and control initialization for Simulink
+%
+%   Code below is used as an initialization script for MagnetoShield system
+%   and default properties can be changed via this script.
+%   This example reads the linearized model of the MagnetoShield device,
+%   then expands it with an integrator and then computes LQ gain based on
+%   the states and input penalty vectors. Based on the dimension of the
+%   feedback signal is Kalman filter tuned too ('SISO' - feedbac just 
+%   position, 'SIMO' - feedbac current and position).
+%   Consequently are the model properties as stability, controlability,
+%   observability, step and impulse response evaluated and displayed. 
+%   In the case of 'SISO' feedback is root-locus plot shown too.
+%
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+%
+%   If you have found any use of this code, please cite our work in your
+%   academic publications, such as thesis, conference articles or journal
+%   papers. A list of publications connected to the AutomationShield
+%   project is available at: 
+%   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
+%
+%   Created by:       Jakub Mihalik
+%   Created on:       5.12.2020
+%   Last updated by:  Jakub Mihalik
+%   Last update on:   22.12.2020
+
 clear;close all;clc;
 load '../../../matlab/examples/MagnetoShield/MagnetoShield_Models_Greybox_SS';
+
 %% MagnetoShield - LQR simulation and control initialization for Simulink
 
 order = 'SISO';                 % SISO - position / SIMO - position & current

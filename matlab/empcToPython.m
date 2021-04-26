@@ -14,7 +14,7 @@ global MPTOPTIONS
 %    The list of changes from the original are as follows:
 % 	 - Removed much of the diagnostic features.
 %    - Removed the evaluation function part and Simulink port.
-%    - Removed the possiblilty to use PWQ, this only handles PWA.
+%    - Removed the possibility to use PWQ, this only handles PWA.
 %    - Removed matrix export for the tie-breaking function.
 % 
 %    This code snippet has been altered for the needs of the 
@@ -88,7 +88,7 @@ header = {
 '    counterpart.'
 ''    
 '    The list of changes from the original are as follows:'
-'    - Removed the possiblilty to use PWQ, this only handles PWA.'
+'    - Removed the possibility to use PWQ, this only handles PWA.'
 '    - Removed matrix export for the tie-breaking function.'
 '' 
 '    Usage: this Python module is imported by the empc module'
@@ -100,11 +100,11 @@ header = {
 '  large. Moreover, the Python evaluation of the search function is'
 '  much slower than the C implementation. There are a couple of'
 '  possible but untried workarounds: (a) storing the lists as frozen'
-'  bytcode in the firmware, and (b) using uLab functionality instead'
+'  bytecode in the firmware, and (b) using uLab functionality instead'
 '  of lists and C-like element-by-element operations.'
 ''
 '  If you have found any use of this code, please cite our work in your'
-'  academic publications, such as theses, conference articles or journal'
+'  academic publications, such as thesis, conference articles or journal'
 '  papers. A list of publications connected to the AutomationShield'
 '  project is available at:'
 '  https://github.com/gergelytakacs/AutomationShield/wiki/Publications'

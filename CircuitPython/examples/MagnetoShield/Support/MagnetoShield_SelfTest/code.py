@@ -8,7 +8,7 @@
   Tested with Adafruit Metro M4 Express.
 
   If you have found any use of this code, please cite our work in your
-  academic publications, such as theses, conference articles or journal
+  academic publications, such as thesis, conference articles or journal
   papers. A list of publications connected to the AutomationShield
   project is available at:
   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -28,7 +28,7 @@ import MagnetoShield                            # Imports the MagnetoShield modu
 import AutomationShield                         # Imports AutomationShield module for generic functionality
 import time                                     # Imports the time module for delays
 
-testFail = False                                # Flag to indicate wheter any of the tests failed
+testFail = False                                # Flag to indicate whether any of the tests failed
 
 print("")                                       # Just leave vertical spaces
 print("")                                       # Just leave vertical spaces

@@ -22,7 +22,7 @@ extern void mtx_add(real_t pmtxc[], const real_t pmtxa[],
 		const real_t pmtxb[], const uint32_t rows,
 		const uint32_t cols);
 
-/* matrix substraction: pmtxc = pmta - pmtxb.
+/* matrix subtraction: pmtxc = pmta - pmtxb.
  * pmta, pmtb, pmtc have size (rows x columns) */
 extern void mtx_substract(real_t pmtxc[], const real_t pmtxa[],
 		const real_t pmtxb[], const uint32_t rows,

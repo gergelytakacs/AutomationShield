@@ -3,7 +3,7 @@
 #include "Wire.h"
 
 void i2cwrite(byte address, byte command, uint16_t data) { // 16 bits in the form (0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4,D3,D2,D1,D0)
-  Wire.beginTransmission(address);  //adressing
+  Wire.beginTransmission(address);  //addressing
   Wire.write(command);                 // write dac(DAC and EEPROM is 0x60)
   uint8_t firstbyte = (data >> 4); //(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
   data = data << 12;        //(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0)
@@ -89,14 +89,14 @@ int dcm4_pin1, dcm4_pin2, dcm4_mode;
 /* Encoders initialisation */
 // volatile declare as those variables will change in interrupts
 volatile long int encoder_0_position = 0, encoder_1_position = 0, encoder_2_position = 0, encoder_3_position = 0, encoder_4_position = 0, encoder_5_position = 0;
-int encoder_0_int2 ;          // Pin used for encoder0 chanel B : define from scilab
-int encoder_1_int2 ;          // Pin used for encoder1 chanel B : define from scilab
-int encoder_2_int2 ;          // Pin used for encoder2 chanel B : define from scilab
-int encoder_3_int2 ;          // Pin used for encoder3 chanel B : define from scilab
-int encoder_4_int2 ;          // Pin used for encoder4 chanel B : define from scilab
-int encoder_5_int2 ;          // Pin used for encoder5 chanel B : define from scilab
+int encoder_0_int2 ;          // Pin used for encoder0 channel B : define from scilab
+int encoder_1_int2 ;          // Pin used for encoder1 channel B : define from scilab
+int encoder_2_int2 ;          // Pin used for encoder2 channel B : define from scilab
+int encoder_3_int2 ;          // Pin used for encoder3 channel B : define from scilab
+int encoder_4_int2 ;          // Pin used for encoder4 channel B : define from scilab
+int encoder_5_int2 ;          // Pin used for encoder5 channel B : define from scilab
 int encoder_num, encoder_int2;
-int corresp[7] = {0, 2, 3, 21, 20, 19, 18}; //Correspondance beetween interrupt number and pin number, v5 added a dummy 0 as workaround for ascii 0 issue for scilab
+int corresp[7] = {0, 2, 3, 21, 20, 19, 18}; //Correspondence between interrupt number and pin number, v5 added a dummy 0 as workaround for ascii 0 issue for scilab
 
 //Generic counter
 volatile long int counter_0 = 0, counter_1 = 0, counter_2 = 0, counter_3 = 0, counter_4 = 0, counter_5 = 0;
@@ -453,7 +453,7 @@ if (val == 73) { //I -> Provisional I2C
     if (val == 114) { //r = release counter
       while (Serial.available() == 0) {};      // Waiting char
       val = Serial.read();                     //reading next value = counter number
-      detachInterrupt(val);                    // Detach interrupt on chanel A of counter num=val
+      detachInterrupt(val);                    // Detach interrupt on channel A of counter num=val
       if (val == 0)       {
         counter_0 = 0; // Reset counter
       }
@@ -525,79 +525,79 @@ if (val == 73) { //I -> Provisional I2C
         encoder_0_position = 0;                           // Reset position
         if (mode == 4) {
           encoder_0_int2 = corresp[encoder_int2];         // Save pin of second interruption
-          attachInterrupt(encoder_num , encoder_change_m4_A0, CHANGE); // Attach interrupt on chanel A change
-          attachInterrupt(encoder_int2, encoder_change_m4_B0, CHANGE); // Attach interrupt on chanel B change
+          attachInterrupt(encoder_num , encoder_change_m4_A0, CHANGE); // Attach interrupt on channel A change
+          attachInterrupt(encoder_int2, encoder_change_m4_B0, CHANGE); // Attach interrupt on channel B change
         } else if (mode == 2) {
           encoder_0_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_0_change_m2, CHANGE); // Attach interrupt on chanel A change
+          attachInterrupt(encoder_num, encoder_0_change_m2, CHANGE); // Attach interrupt on channel A change
         } else if (mode == 1) {
           encoder_0_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_0_change_m1, RISING); // Attach interrupt on chanel A rising
+          attachInterrupt(encoder_num, encoder_0_change_m1, RISING); // Attach interrupt on channel A rising
         }
       } else if (encoder_num == 1) {                      //encoder INT1
         encoder_1_position = 0;                           // Reset position
         if (mode == 4) {
           encoder_1_int2 = corresp[encoder_int2];         // Save pin of second interruption
-          attachInterrupt(encoder_num , encoder_change_m4_A1, CHANGE); // Attach interrupt on chanel A change
-          attachInterrupt(encoder_int2, encoder_change_m4_B1, CHANGE); // Attach interrupt on chanel B change
+          attachInterrupt(encoder_num , encoder_change_m4_A1, CHANGE); // Attach interrupt on channel A change
+          attachInterrupt(encoder_int2, encoder_change_m4_B1, CHANGE); // Attach interrupt on channel B change
         } else if (mode == 2) {
           encoder_1_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_1_change_m2, CHANGE); // Attach interrupt on chanel A change
+          attachInterrupt(encoder_num, encoder_1_change_m2, CHANGE); // Attach interrupt on channel A change
         } else if (mode == 1) {
           encoder_1_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_1_change_m1, RISING); // Attach interrupt on chanel A rising
+          attachInterrupt(encoder_num, encoder_1_change_m1, RISING); // Attach interrupt on channel A rising
         }
       } else if (encoder_num == 2) {                      //encoder INT2
         encoder_2_position = 0;                           // Reset position
         if (mode == 4) {
           encoder_2_int2 = corresp[encoder_int2];         // Save pin of second interruption
-          attachInterrupt(encoder_num , encoder_change_m4_A2, CHANGE); // Attach interrupt on chanel A change
-          attachInterrupt(encoder_int2, encoder_change_m4_B2, CHANGE); // Attach interrupt on chanel B change
+          attachInterrupt(encoder_num , encoder_change_m4_A2, CHANGE); // Attach interrupt on channel A change
+          attachInterrupt(encoder_int2, encoder_change_m4_B2, CHANGE); // Attach interrupt on channel B change
         } else if (mode == 2) {
           encoder_2_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_2_change_m2, CHANGE); // Attach interrupt on chanel A change
+          attachInterrupt(encoder_num, encoder_2_change_m2, CHANGE); // Attach interrupt on channel A change
         } else if (mode == 1) {
           encoder_2_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_2_change_m1, RISING); // Attach interrupt on chanel A rising
+          attachInterrupt(encoder_num, encoder_2_change_m1, RISING); // Attach interrupt on channel A rising
         }
       } else if (encoder_num == 3) {                      //encoder INT3
         encoder_3_position = 0;                           // Reset position
         if (mode == 4) {
           encoder_3_int2 = corresp[encoder_int2];         // Save pin of second interruption
-          attachInterrupt(encoder_num , encoder_change_m4_A3, CHANGE); // Attach interrupt on chanel A change
-          attachInterrupt(encoder_int2, encoder_change_m4_B3, CHANGE); // Attach interrupt on chanel B change
+          attachInterrupt(encoder_num , encoder_change_m4_A3, CHANGE); // Attach interrupt on channel A change
+          attachInterrupt(encoder_int2, encoder_change_m4_B3, CHANGE); // Attach interrupt on channel B change
         } else if (mode == 2) {
           encoder_3_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_3_change_m2, CHANGE); // Attach interrupt on chanel A change
+          attachInterrupt(encoder_num, encoder_3_change_m2, CHANGE); // Attach interrupt on channel A change
         } else if (mode == 1) {
           encoder_3_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_3_change_m1, RISING); // Attach interrupt on chanel A rising
+          attachInterrupt(encoder_num, encoder_3_change_m1, RISING); // Attach interrupt on channel A rising
         }
       } else if (encoder_num == 4) {                      //encoder INT4
         encoder_4_position = 0;                           // Reset position
         if (mode == 4) {
           encoder_4_int2 = corresp[encoder_int2];         // Save pin of second interruption
-          attachInterrupt(encoder_num , encoder_change_m4_A4, CHANGE); // Attach interrupt on chanel A change
-          attachInterrupt(encoder_int2, encoder_change_m4_B4, CHANGE); // Attach interrupt on chanel B change
+          attachInterrupt(encoder_num , encoder_change_m4_A4, CHANGE); // Attach interrupt on channel A change
+          attachInterrupt(encoder_int2, encoder_change_m4_B4, CHANGE); // Attach interrupt on channel B change
         } else if (mode == 2) {
           encoder_4_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_4_change_m2, CHANGE); // Attach interrupt on chanel A change
+          attachInterrupt(encoder_num, encoder_4_change_m2, CHANGE); // Attach interrupt on channel A change
         } else if (mode == 1) {
           encoder_4_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_4_change_m1, RISING); // Attach interrupt on chanel A rising
+          attachInterrupt(encoder_num, encoder_4_change_m1, RISING); // Attach interrupt on channel A rising
         }
       } else if (encoder_num == 5) {                      //encoder INT5
         encoder_5_position = 0;                           // Reset position
         if (mode == 4) {
           encoder_5_int2 = corresp[encoder_int2];         // Save pin of second interruption
-          attachInterrupt(encoder_num , encoder_change_m4_A5, CHANGE); // Attach interrupt on chanel A change
-          attachInterrupt(encoder_int2, encoder_change_m4_B5, CHANGE); // Attach interrupt on chanel B change
+          attachInterrupt(encoder_num , encoder_change_m4_A5, CHANGE); // Attach interrupt on channel A change
+          attachInterrupt(encoder_int2, encoder_change_m4_B5, CHANGE); // Attach interrupt on channel B change
         } else if (mode == 2) {
           encoder_5_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_5_change_m2, CHANGE); // Attach interrupt on chanel A change
+          attachInterrupt(encoder_num, encoder_5_change_m2, CHANGE); // Attach interrupt on channel A change
         } else if (mode == 1) {
           encoder_5_int2 = encoder_int2;
-          attachInterrupt(encoder_num, encoder_5_change_m1, RISING); // Attach interrupt on chanel A rising
+          attachInterrupt(encoder_num, encoder_5_change_m1, RISING); // Attach interrupt on channel A rising
         }
       }
     }
@@ -628,7 +628,7 @@ if (val == 73) { //I -> Provisional I2C
     if (val == 114) { //r = release encoder
       while (Serial.available() == 0) {};               // Waiting char
       val = Serial.read();                              //reading next value = encoder number
-      detachInterrupt(val);                             // Detach interrupt on chanel A of encoder num=val
+      detachInterrupt(val);                             // Detach interrupt on channel A of encoder num=val
       if (val == 0)       {
         encoder_0_position = 0;  // Reset position
         encoder_0_int2 = -1;
@@ -655,7 +655,7 @@ if (val == 73) { //I -> Provisional I2C
       }
       while (Serial.available() == 0) {};               // Waiting char
       val = Serial.read();                              // reading next value = encoder number
-      detachInterrupt(val);                             // Detach interrupt on chanel B of encoder num=val (may be the same if mode=1 or 2)
+      detachInterrupt(val);                             // Detach interrupt on channel B of encoder num=val (may be the same if mode=1 or 2)
     }
     /* ASKING RESET POSITION OF AN ENCODER     */
     if (val == 122) { // z = encoder position to zero
@@ -733,8 +733,8 @@ if (val == 73) { //I -> Provisional I2C
             }
             Serial.print("OK"); // tell Scilab that motor s initialization finished
             // Cette commande sert à rien dans la toolbox de base,
-            // sauf si on prévoit d'ajouter des actions à l'init des moteurs
-            // par exemple chercher la position d'origine !
+            // sauf si on prévoit d'ajouter des actions à l'init des motors
+            // par example chercher la position d'origine !
           }
         }
       }

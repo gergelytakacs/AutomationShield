@@ -10,9 +10,9 @@
   this input trajectory to create a rich signal suitable for
   system identification. Upload the code to your board along
   with the necessary module then use a serial terminal software
-  or Matlab to aquire the dataset for later processing.
+  or Matlab to acquire the dataset for later processing.
 
-  WARNING: Do not use "Mu" for data aquisition.
+  WARNING: Do not use "Mu" for data acquisition.
   WARNING: This is "soft real-time", the timing is not perfect,
            yet, it is possible to gather meaningful data for
            identification.
@@ -24,7 +24,7 @@
     - Adafruit Metro M4 Express (CircuitPython 5.3.1).
 
   If you have found any use of this code, please cite our work in your
-  academic publications, such as theses, conference articles or journal
+  academic publications, such as thesis, conference articles or journal
   papers. A list of publications connected to the AutomationShield
   project is available at:
   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -41,7 +41,7 @@
 import AutomationShield                         # Imports the AutomationShield module
 import MagnetoShield                            # Imports the MagnetoShield module for hardware functionality
 import Sampling                                 # Imports the Sampling module for pseudo-real time sampling
-import PIDAbs                                   # Imports the PIDAbs module for the absolute PID algoritm
+import PIDAbs                                   # Imports the PIDAbs module for the absolute PID algorithm
 import time
 
 from random import seed                         # Import seeding functionality
@@ -120,9 +120,9 @@ def step():
 
     y = MagnetoShield.sensorRead()              # [mm] sensor read routine
     I = MagnetoShield.auxReadCurrent()          # [mA] Read current value
-    w = wBias-float(randint(0,wP))/100.0        # [V] Input noise, gaussian dist.
+    w = wBias-float(randint(0,wP))/100.0        # [V] Input noise, Gaussian dist.
     u = PIDAbs.compute(-(r-y), 0.0, 10.0, -10.0, 10.0) + w #Compute constrained absolute-form PID + noise
-    u = AutomationShield.constrain(u, 0.0, 10.0)  # [V] contstrain to physically realizable data
+    u = AutomationShield.constrain(u, 0.0, 10.0)  # [V] constrain to physically realizable data
     MagnetoShield.actuatorWrite(u)              # [V] write input to actuator
     if PLOTTING_POST:                           # If we are plotting after the experiment
         Ulog.append(u)                          # append input u to input vector

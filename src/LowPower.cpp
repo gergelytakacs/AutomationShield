@@ -41,7 +41,7 @@ void LowPowerClass::begin(void){
 
 /* Power down the MCU
  * SMCR = Sleep Mode Control Register
- * The appropiate power down mode is set by the SMx combination,
+ * The appropriate power down mode is set by the SMx combination,
  * then the sleep is enabled by the sleep enable bit.
  * This command just sets up and enables the power down mode,
  * execution must be realized by an inline assembler command,
@@ -81,7 +81,7 @@ void LowPowerClass::disableADC(void){
 
 /* Set watchdog timer
  * WDTCSR = WatchDog Timer Control Register. Operations are strictly timed, see datasheet.
- * Watchog timer is actually pretty shitty with small timeouts. 16 ms is the smallest and can't do matches.
+ * Watchdog timer is actually pretty shitty with small timeouts. 16 ms is the smallest and can't do matches.
  */ 
 void LowPowerClass::setWatchDog(){
  WDTCSR  = (1 << WDCE) | (1 << WDE);                        // Set watchdog change enable (WDCE) bit, sets watchdog enable bit (WDE) in a timed sequence, meanwhile clears the rest

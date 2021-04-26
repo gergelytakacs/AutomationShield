@@ -13,7 +13,7 @@
   real-time sampling. The example can output the estimated sample
   durations by uncommenting the SERIAL_OUT macro define. Please note
   that this will somewhat slow down the execution and you are 
-  unlikely to achive short samples.
+  unlikely to achieve short samples.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
@@ -30,7 +30,7 @@
 #define PIN 12                    // For oscilloscope test
 
 unsigned long int Ts = 2000000;   // Sampling in microseconds
-bool enable=false;                // Wheter the step should be launched
+bool enable=false;                // Whether the step should be launched
 
 // Just for measuring the timing
 unsigned long int curTime=0;      // Current time
