@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     strategy:
-      max-parallel: 6
+      max-parallel: 4
       matrix:
         fqbn:
           - arduino:avr:uno
