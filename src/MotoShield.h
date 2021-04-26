@@ -43,6 +43,7 @@ class MotoShieldClass{ //--creating a class for the MotoShield
 	void actuatorWrite(float);
 	void actuatorWriteVolt(float);
 	float referenceRead();
+  float sensorRead();//--Default sensor read method: sensorReadRPMPerc();
 	float sensorReadRPM();
 	float sensorReadRPMPerc();
   float sensorReadVoltage();

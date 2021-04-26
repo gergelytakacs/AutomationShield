@@ -28,7 +28,7 @@ void loop() {
 }
 
 void step() {
-  Serial.print(MotoShield.sensorReadRPMPerc()); //--Printing angular velocity in percents
+  Serial.print(MotoShield.sensorRead()); //--Printing angular velocity in percents
   Serial.print(", ");
   Serial.println(u); //--Printing Step (reference) value
 }

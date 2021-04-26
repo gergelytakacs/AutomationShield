@@ -101,6 +101,10 @@ float MotoShieldClass::sensorReadRPMPerc(){//--Sensing RPM in %
 return AutomationShield.constrainFloat(AutomationShield.mapFloat(counted, (float)minRPM, (float)maxRPM, 0.0, 100.0),0.0,100.0);
 }
 
+float MotoShieldClass::sensorRead(){//--Wrapper for default sensor read method
+return MotoShield.sensorReadRPMPerc();
+}
+
 float MotoShieldClass::sensorReadRPM(){//--Sensing RPM 
 	return (float)counted/14.0*_K;        //--14 is the number of ticks per one rotation
 }
