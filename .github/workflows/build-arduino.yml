@@ -14,6 +14,7 @@ jobs:
         fqbn:
           - arduino:avr:uno
           - arduino:avr:mega
+          - arduino:sam:arduino_due_x
 
     steps:
       # This step makes the contents of the repository available to the workflow
