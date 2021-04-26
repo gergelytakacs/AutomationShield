@@ -59,8 +59,17 @@ Servo myservo;
 // declaring PIN and initializing sensor library
 void LinkClass::begin() {
   myservo.attach(LINK_UPIN, 1000, 2000);    // Set Servo pin and PWM range
-  analogReference(EXTERNAL);                // Set reference voltage
-  Wire.begin();                             // Initialize I2C communication
+  #ifdef ARDUINO_ARCH_AVR
+  	Wire.begin();	// Starts the "Wire" library for I2C
+	analogReference(EXTERNAL); // Set reference voltage
+  #elif ARDUINO_ARCH_SAM
+	//analogReadResolution(12);
+	Wire1.begin(); // Initialize I2C communication
+  #elif ARDUINO_ARCH_SAMD
+        //analogReadResolution(12);
+	Wire.begin(); // Initialize I2C communication
+  #endif
+
   LinkShield.ADXL_POWER_CTL();
   LinkShield.ADXL_DATA_FORMAT();
   LinkShield.ADXL345_BW_RATE();
