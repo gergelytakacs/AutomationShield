@@ -51,7 +51,14 @@ void TugShieldClass::begin()
 {  												
     servo.attach(TUG_UPIN);						// Nastavenie pinu serva
 	  servo.write(SERVO_MAX);						// Nastavenie pozície serva na nulu
-    analogReference(EXTERNAL);					// Nastavenie externej analógovej refercie
+  #ifdef ARDUINO_ARCH_AVR
+	analogReference(EXTERNAL); // Set reference voltage
+  #elif ARDUINO_ARCH_SAM
+	//analogReadResolution(12);
+
+  #elif ARDUINO_ARCH_SAMD
+        //analogReadResolution(12);
+  #endif
 }
 
 // Kalibrácia
