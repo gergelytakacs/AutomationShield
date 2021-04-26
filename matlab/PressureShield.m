@@ -1,0 +1,48 @@
+%   PressureShield MATLAB API.
+%
+%   The script initializes the board, then reads the
+%   output, writes to the input and reads reference
+%   from the potentiometer.
+%
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+%
+%   Created by Martin Staron.
+%   Last update: 26.4.2021.
+
+classdef PressureShield < handle
+
+    properties(Access = public) 
+        arduino;
+    end
+
+    properties(Constant)
+        Pressure_RPIN = 'A0';          % BMP280 (Sensor)
+        Pressure_UPIN = 'D11';         % Pump (Actuator)
+    end
+
+    methods
+        function begin(PressureShieldObject)        
+            PressureShieldObject.arduino = arduino();
+            dev = device(PressureShieldObject.arduino,'I2CAddress','0x76');
+            BMP280Init(dev);
+            disp('PressureShield initialized.')
+        end
+        
+        function actuatorWrite(PressureShieldObject, percent)
+            writePWMDutyCycle(PressureShieldObject.arduino, PressureShieldObject.Pressure_UPIN, (percent/100));
+        end
+        
+        function reference = referenceRead(PressureShieldObject)
+            reference = readVoltage(PressureShieldObject.arduino,PressureShieldObject.Pressure_RPIN) * 100 / 5;
+        end
+        
+        function y = sensorRead(PressureShieldObject)
+            dev = device(PressureShieldObject.arduino,'I2CAddress','0x76');
+            y = BMP280(dev);       
+        end
+
+    end
+end
