@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 90.1 90.1" style="enable-background:new 0 0 90.1 90.1;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#010101;stroke-miterlimit:10;}
+	.st1{fill:#010101;}
+	.st2{font-family:'ArialMT';}
+	.st3{font-size:20px;}
+	.st4{stroke:#000000;stroke-miterlimit:10;}
+</style>
+<polyline id="XMLID_529_" class="st0" points="8.9,74.9 8.9,58.8 4.4,57.1 13.3,53.3 4.4,49.6 13.3,46.1 4.4,42.4 13.3,38.7 
+	4.4,35.1 13.3,31.4 4.4,27.7 8.9,25.9 8.9,9.8 "/>
+<ellipse id="XMLID_237_" class="st1" cx="8.9" cy="73.3" rx="2.1" ry="2"/>
+<ellipse id="XMLID_253_" class="st1" cx="8.9" cy="11.7" rx="2.1" ry="2"/>
+<text transform="matrix(1 0 0 1 54.4951 62.0832)" class="st2 st3">y(k)</text>
+<polygon class="st0" points="67.3,41.1 30,22.9 30,59.3 "/>
+<polyline class="st0" points="8.9,14.7 22.3,14.7 22.3,34 30,34 "/>
+<polyline class="st0" points="8.9,70.2 21.4,70.2 21.4,51.3 30,51.3 "/>
+<line class="st0" x1="34.6" y1="32.3" x2="34.6" y2="36.6"/>
+<line class="st0" x1="38.3" y1="34.4" x2="31.7" y2="34.4"/>
+<line class="st0" x1="33.3" y1="51.3" x2="38.3" y2="51.3"/>
+<polyline class="st4" points="66.9,41.1 66.6,41.1 73.1,41.1 "/>
+<ellipse id="XMLID_1_" class="st1" cx="73" cy="41.1" rx="1.6" ry="1.8"/>
+</svg>

@@ -15,7 +15,7 @@ void MotoClass::begin(void){ // begin function initializes the pins, sets the IS
 
   attachInterrupt(digitalPinToInterrupt(MOTO_C1), MotoShield.countTicks, FALLING);  // setting the interrupts, it reacts, when the edge is falling
 
-  counter = 0;             // setting the intial value of the variables
+  counter = 0;             // setting the initial value of the variables
 } // end of the begin() function
 
 void MotoClass::countTicks(){          // ISR - Interrupt Service Routine

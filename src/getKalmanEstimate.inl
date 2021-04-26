@@ -167,3 +167,42 @@ void getKalmanEstimate(float* stateVector, float systemInput, float measuredOutp
     stateVector[i] = xEstimate(i);                  // Save the "n" estimated states into output vecror with length "m" where m>=n.
   }
 }
+
+template <int n, int m, int l>                                      // Template function definition
+void getKalmanEstimate(BLA::Matrix<m, 1>& stateMatrix, float systemInput, BLA::Matrix<l, 1> measuredOutput, BLA::Matrix<n, n>& A, BLA::Matrix<n, 1>& B, BLA::Matrix<l, n>& C, BLA::Matrix<n, n>& Q, BLA::Matrix<l, l>& R, BLA::Matrix<n, 1>& xIC) {
+    static BLA::Matrix <n, 1> xEstimate;                       // State matrix
+    static BLA::Matrix <n, n> P;                               // Covariance matrix
+    static BLA::Matrix <n, n> I;                               // Eye matrix
+    static bool wasInitialised = false;                        // Boolean used to initialize static variables at the start
+
+    if (!wasInitialised) {                             // Initialise static variables
+        xEstimate = xIC;                               // Use first measured value as initial value of the corresponding state
+
+        P.Fill(0);                                       // Initialise covariance matrix with zeros
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    I(i, j) = 1.0;                             // Create eye matrix I
+                }
+                else {
+                    I(i, j) = 0.0;
+                }
+            }
+        }
+        wasInitialised = true;                           // Flag initialisation as complete
+    }
+
+    // Prediction
+    xEstimate = A * xEstimate + B * systemInput;                            // Calculate initial "a priori" state estimate
+    P = A * P * ~A + Q;                                                     // Calculate error covariance (variance of error in state estimate due to process noise)
+
+    // Update
+    BLA::Matrix<l, l> F = (C * P * ~C + R);
+    BLA::Matrix <n, l> K = (P * ~C) * F.Inverse();                    // Calculate the Kalman gain
+    xEstimate = xEstimate + K * (measuredOutput - (C * xEstimate));      // Update the state estimate - calculate corrected "a posteriori" state estimate
+    P = (I - K * C) * P;                                                    // Update error covariance matrix
+
+    for (int i = 0; i < n; i++) {
+        stateMatrix(i) = xEstimate(i);                  // Save the "n" estimated states into output vecror with length "m" where m>=n.
+    }
+}

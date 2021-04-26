@@ -28,7 +28,7 @@
 #define LINK_RPIN 0         //Potentiometer pin
 #define LINK_UPIN 9         //Servo pin
 
-#define ADXL345 0x53        //Define default addres for ADXL345 sensor
+#define ADXL345 0x53        //Define default address for ADXL345 sensor
 
 class LinkClass {                         //Creating class
   public:
@@ -41,7 +41,7 @@ class LinkClass {                         //Creating class
   private:
     void  ADXL_POWER_CTL();               //Set ADXL345 to measure mode
     void  ADXL345_BW_RATE();              //Set ADXL345 data and bandwidth rate
-    void  ADXL_DATA_FORMAT();             //ADXL345 output data formating
+    void  ADXL_DATA_FORMAT();             //ADXL345 output data formatting
     void  ADXL345_OFSZ();                 //Set offset to Z axis
     float ADXL345_DATAZ();                //Read Z accel
     int   _referenceRead;                 
@@ -59,8 +59,17 @@ Servo myservo;
 // declaring PIN and initializing sensor library
 void LinkClass::begin() {
   myservo.attach(LINK_UPIN, 1000, 2000);    // Set Servo pin and PWM range
-  analogReference(EXTERNAL);                // Set reference voltage
-  Wire.begin();                             // Initialize I2C communication
+  #ifdef ARDUINO_ARCH_AVR
+  	Wire.begin();	// Starts the "Wire" library for I2C
+	analogReference(EXTERNAL); // Set reference voltage
+  #elif ARDUINO_ARCH_SAM
+	//analogReadResolution(12);
+	Wire1.begin(); // Initialize I2C communication
+  #elif ARDUINO_ARCH_SAMD
+        //analogReadResolution(12);
+	Wire.begin(); // Initialize I2C communication
+  #endif
+
   LinkShield.ADXL_POWER_CTL();
   LinkShield.ADXL_DATA_FORMAT();
   LinkShield.ADXL345_BW_RATE();
@@ -72,7 +81,7 @@ void LinkClass::calibrate() {
   delay(500);
   _sensorBias = -(LinkShield.sensorBias(1000)/4);   // Calculate offset to LSB/g
   ADXL345_OFSZ();                                   
-  AutomationShield.serialPrint(" sucessful.\n");
+  AutomationShield.serialPrint(" successful.\n");
 }
 
 float LinkClass::sensorBias(int testLength) {

@@ -67,5 +67,5 @@ classdef PID < handle                      % PID class definition
                 error('Make sure that all parameters (Kp,Ti,Td,Ts) have been set.') % Throw error if all parameters have not been set
             end
         end       
-    end   % End of public methods definiton
+    end   % End of public methods definition
 end   % End of class definition

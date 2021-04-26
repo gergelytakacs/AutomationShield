@@ -103,7 +103,7 @@ while (1)                           % Infinite loop
 
     if (toc >= Ts * k)              % If its time for next sample
         if (toc >= Ts * (k + 1))    % Check if steps overlap
-            disp('Sampling violation has occured.')
+            disp('Sampling violation has occurred.')
             samplingViolation = 1   % Set sampling violation flag
             FloatShield.actuatorWrite(0)
             break                   % Stop program if they do overlap

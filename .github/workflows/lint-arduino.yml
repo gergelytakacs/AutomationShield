@@ -1,0 +1,20 @@
+name: Lint (Arduino)
+
+# The workflow will run on every push and pull request to the repository
+on:
+  - push
+  - pull_request
+
+jobs:
+  compile-sketch:
+    runs-on: ubuntu-latest
+
+    steps:
+      # This step makes the contents of the repository available to the workflow
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: arduino/arduino-lint-action
+        uses: arduino/arduino-lint-action@v1
+        with:
+          compliance: specification
+          project-type: all
