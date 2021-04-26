@@ -49,7 +49,7 @@ void stepEnable(){              // ISR
   enable=true;                  // Change flag
 }
 
-// A signle algoritm step
+// A single algorithm step
 void step(){ 
 
 if (k % (T*i) == 0){        

@@ -55,7 +55,7 @@ public:
             break;
         }
         
-        // Get measurement from sensor in milimetres and return the information as two bytes
+        // Get measurement from sensor in millimetres and return the information as two bytes
         case Pololu_VL53L0X_READ: {
             uint16_t milliMeter = distanceSensor->readRangeContinuousMillimeters();
             byte high = highByte(milliMeter);

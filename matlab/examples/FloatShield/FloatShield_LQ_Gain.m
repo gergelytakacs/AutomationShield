@@ -50,7 +50,7 @@ dh0 = (data.y(2, 1) - data.y(1, 1)) / Ts;   % Initial ball velocity estimate
 v0 = 0;                                     % Initial air velocity estimate
 
 %% State-space model identification settings
-% Unknonwn parameters
+% Unknown parameters
 alpha = 1 / tau;
 beta = 1 / tau2;
 gamma = k / tau;

@@ -90,7 +90,7 @@ switch model
 
     case 'linearSS'
     
-    % Unknonwn parameters
+    % Unknown parameters
     alpha = 1/tau;
     beta  = 1/tau2;
     gamma = k/tau;
