@@ -12,10 +12,10 @@ jobs:
     strategy:
       max-parallel: 6
       matrix:
-      fail-fast: false
         fqbn:
           - arduino:avr:uno
           - arduino:avr:mega
+      fail-fast: false
           
     steps:
       # This step makes the contents of the repository available to the workflow
