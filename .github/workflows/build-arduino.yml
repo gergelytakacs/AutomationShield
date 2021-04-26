@@ -15,8 +15,8 @@ jobs:
         fqbn:
           - arduino:avr:uno
           - arduino:avr:mega
-          - arduino:avr:leonardo
-          - arduino:avr:unowifi
+          #- arduino:avr:leonardo # Look at sampling for testing
+          #- arduino:avr:unowifi # Look at sampling for testing
           - arduino:sam:arduino_due_x
           - arduino:samd:arduino_zero_native
       fail-fast: false
