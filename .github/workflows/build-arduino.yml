@@ -16,6 +16,7 @@ jobs:
           - arduino:avr:uno
           - arduino:avr:mega
           - arduino:sam:arduino_due_x
+          - arduino:samd:zero
       fail-fast: false
           
     steps:
