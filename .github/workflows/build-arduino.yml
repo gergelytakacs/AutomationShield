@@ -12,6 +12,7 @@ jobs:
     strategy:
       max-parallel: 6
       matrix:
+      fail-fast: false
         fqbn:
           - arduino:avr:uno
           - arduino:avr:mega
