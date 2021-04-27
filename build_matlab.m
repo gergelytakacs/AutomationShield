@@ -1,5 +1,17 @@
 installMatlabAndSimulink
 
+
+
+supportpkg=matlabshared.supportpkg.getInstalled; % Query for installed support packages
+
+for i=1:length(supportpkg)
+    if strcmp(supportpkg(i).Name,'MATLAB Support Package for Arduino Hardware')
+        disp('Arduino package for MATLAB is installed.')
+    end
+    
+end
+
+
 % How do I differentiate between function and script?
 %% Examples
 cd matlab/examples/ % Move to examples folder
@@ -24,7 +36,8 @@ for i=1:length(shieldsList);
         catch ex
             exKnown = {
                 'MATLAB:serial:fopen:opfailed',         % Failed to open serial port
-                'MATLAB:hwsdk:general:boardNotDetected' % No hardware board
+                'MATLAB:hwsdk:general:boardNotDetected', % No hardware board
+                '' %This empty identificator is for the Hardware Support Package
                 };
             for i=1:length(exKnown) % For the length of known exceptions (missing hardware)
                 knownID = 0;        % Assume it is an unknown error
@@ -32,7 +45,6 @@ for i=1:length(shieldsList);
             end
             if ~knownID
                 ex
-                scr
                 fail_function;
             end
         end
