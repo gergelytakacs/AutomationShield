@@ -72,7 +72,7 @@ class BlowClass {           // Class for BlowShield device
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
     float sensorRead(void);                                      // Sensor read - returns the pressure in percentual range 0.0-100.0
     
-    // Sensor public funcions
+    // Sensor public functions
     void readCoefficients();
     void begin_config();
     void measure_config();

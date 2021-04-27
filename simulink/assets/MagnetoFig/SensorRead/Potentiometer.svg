@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="1190.551px" height="841.891px" viewBox="0 0 1190.551 841.891" enable-background="new 0 0 1190.551 841.891"
+	 xml:space="preserve">
+<polyline id="XMLID_529_" fill="none" stroke="#010101" stroke-width="2" stroke-miterlimit="10" points="537.703,745.268 
+	537.703,571.278 489.06,552.569 585.41,512.345 489.06,472.122 585.41,433.769 489.06,393.546 585.41,353.322 489.06,314.969 
+	585.41,274.745 489.06,234.521 537.703,214.878 537.703,40.886 "/>
+<circle id="XMLID_237_" fill="#010101" cx="537.703" cy="745.268" r="23.386"/>
+<circle id="XMLID_253_" fill="#010101" cx="537.703" cy="40.886" r="23.386"/>
+<g>
+	<g>
+		<polyline fill="none" stroke="#010101" stroke-width="2" stroke-miterlimit="10" points="943.68,540.408 703.274,540.408 
+			403,272.874 		"/>
+		<g>
+			<polygon fill="#010101" points="418.902,269.133 372.131,245.747 400.194,289.712 			"/>
+		</g>
+	</g>
+</g>
+<circle id="XMLID_1_" fill="#010101" cx="941.81" cy="539.473" r="23.386"/>
+<text transform="matrix(1 0 0 1 743.3337 494.8318)" font-family="'ArialMT'" font-size="120">r(k)</text>
+</svg>

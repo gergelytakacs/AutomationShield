@@ -8,7 +8,7 @@
 %   identical in all of them. However, the faster DUE produces the same
 %   speed as the bottleneck is not processor performance, but
 %   communication. The script just tests reading the analog input and
-%   sending data to the I2C bus wihtout attempting feedback control, as
+%   sending data to the I2C bus without attempting feedback control, as
 %   these are the most essential operations required for control.
 %
 %   This code is part of the AutomationShield hardware and software
@@ -17,7 +17,7 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   If you have found any use of this code, please cite our work in your
-%   academic publications, such as theses, conference articles or journal
+%   academic publications, such as thesis, conference articles or journal
 %   papers. A list of publications connected to the AutomationShield
 %   project is available at: 
 %   https://github.com/gergelytakacs/AutomationShield/wiki/Publications

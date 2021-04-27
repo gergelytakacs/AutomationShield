@@ -1,4 +1,4 @@
-% MagnetoShield data aquisition from experiment
+% MagnetoShield data acquisition from experiment
 
 l=3000;                         % Experiment section length
 lngth=5*l;                      % PID

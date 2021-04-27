@@ -57,7 +57,7 @@ struct mpc_fgm {
 real_t *u_0;  /**< Initial guess for the optimal control sequence. */
 real_t *gxoL;  /**< Gradient vector over Lipschitz for the current system state. */
 real_t *groL;  /**< Non-zero reference component of gradient vector component over Lipschitz constant. */
-uint32_t *j_in;  /**< Maximun number of internal loop (FGM) iterations .*/
+uint32_t *j_in;  /**< Maximum number of internal loop (FGM) iterations .*/
 const real_t *HoL;  /**< Hessian matrix of QP over Lipschitz constant. */
 const real_t *GoL;  /**< Linear term matrix of the QP, over Lipschitz constant. */
 const real_t *Bh_T;  /**< Extended input matrix (used for reference tracking). */

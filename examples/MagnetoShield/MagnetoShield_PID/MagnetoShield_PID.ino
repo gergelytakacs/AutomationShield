@@ -5,7 +5,7 @@
   
   This example initializes the sampling and PID control 
   subsystems from the AutomationShield library. You may
-  select wheter the reference is given by the potentiometer
+  select whether the reference is given by the potentiometer
   or you want to test a predetermined reference trajectory. 
   Upload the code to your board, then open the Serial
   Plotter function in your Arduino IDE. 
@@ -100,7 +100,7 @@ void stepEnable(){                      // ISR
   enable=true;                          // Change flag
 }
 
-// A single algoritm step
+// A single algorithm step
 void step(){ 
 
 // Reference source

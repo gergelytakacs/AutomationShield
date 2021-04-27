@@ -23,11 +23,11 @@
 #include <FloatShield.h>              // Including the FloatShield library
 #include <Sampling.h>                 // Include sampling library
 
-unsigned long Ts = 25;                // Sampling period in miliseconds
+unsigned long Ts = 25;                // Sampling period in milliseconds
 bool nextStep = false;                // Flag for step function
 
 void setup() {                        // Setup - runs only once
-    Serial.begin(250000);             // Begin serial comunication
+    Serial.begin(250000);             // Begin serial communication
     
     FloatShield.begin();              // Initialise FloatShield
     FloatShield.calibrate();          // Calibrate FloatShield
