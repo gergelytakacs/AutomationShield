@@ -1,5 +1,5 @@
 /*
-  MotoShield API exaple - Open loop.
+  MotoShield API example - Open loop.
 
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more

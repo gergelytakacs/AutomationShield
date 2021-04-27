@@ -115,7 +115,7 @@ classdef MotoShield < handle %-class definition
                 end
             end
         end %-end of while loop
-        end %- end of funciton
+        end %- end of function
         
         function rpm = sensorReadRPM(MotoShieldObject) %-sensing RPM # proper nomenclature
         rpm = readSpeed(MotoShieldObject.encoder);

@@ -36,11 +36,11 @@ PID.setParameters(Kp, Ti, Td, Ts);  %-Setting PID constants
 tic                                          %-Start measuring time
 while (1)     %-Loop
         if (toc >= Ts * k)                            %-If its time for next sample
-            stepEnable = 1;                             %-Next step premission
+            stepEnable = 1;                             %-Next step permission
         end
     if (stepEnable)                          %-Start algorithm if stepEnabled
         if(Manual == 0)             %-AUTOMATIC mode 
-        if (mod(k, T*i) == 1)                %-Moving trough trajectory values
+        if (mod(k, T*i) == 1)                %-Moving through trajectory values
             i = i + 1;                       
             if (i > length(R))               %-If trajectory ended
                 MotoShield.actuatorWrite(0.0); %-Disable Motor
