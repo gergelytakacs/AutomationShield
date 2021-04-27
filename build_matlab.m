@@ -1,12 +1,55 @@
 installMatlabAndSimulink
 
+% How do I differentiate between function and script?
 %% Examples
 cd matlab/examples/ % Move to examples folder
 
-cd MagnetoShield
-MagnetoShield_LQ_Simulation
+% Search trhough each Hardware category individually
 
-%folders = dir(**/*.m);
+%shieldsList = {'HeatShield', 'OptoShield'}
+% Forgets shieldsList:(((
 
-%Testing an error just for fun
-asdadas
+shieldsList = {'HeatShield'};
+
+
+% Try skips the rest of the file, so it is not checking any hardware tests
+for i=1:length(shieldsList);
+    cd(shieldsList{i})
+    for i=1:length(listDir())
+        dirContents=listDir();
+        scr = dirContents(i).name(1:end-2);
+        try
+            pause('off')
+            run(scr) % All scripts, sans the file extensions
+        catch ex
+            exKnown = {
+                'MATLAB:serial:fopen:opfailed',         % Failed to open serial port
+                'MATLAB:hwsdk:general:boardNotDetected' % No hardware board
+                };
+            for i=1:length(exKnown) % For the length of known exceptions (missing hardware)
+                knownID = 0;        % Assume it is an unknown error
+                knownID = knownID+strcmp(ex.identifier,exKnown{i});
+            end
+            if ~knownID
+                ex
+                scr
+                fail_function;
+            end
+        end
+    end
+    cd ..
+end
+
+
+function result = fail_function
+    disp('Test failed');
+    result = 1; 
+end
+
+function out = listDir
+persistent dirContents
+    dirContents=dir('**/*.m');
+    out = dirContents;
+end   
+
+

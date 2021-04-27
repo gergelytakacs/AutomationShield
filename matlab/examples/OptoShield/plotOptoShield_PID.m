@@ -1,4 +1,4 @@
-%result=readExperiment(6*100,'COM22',9600);
+result=readExperiment(6*100,'COM22',9600);
 save result result
 
 plot(result)
