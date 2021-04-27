@@ -19,6 +19,7 @@
 
 #include "Arduino.h"    //--including basic Arduino library
 
+
 //--defining pins for MotoShield
 #define MOTO_YPIN1      3       //--hallsensor pin channel 1
 #define MOTO_YPIN2      4      //--hallsensor pin channel 2 
@@ -43,6 +44,7 @@ class MotoShieldClass{ //--creating a class for the MotoShield
 	void actuatorWrite(float);
 	void actuatorWriteVolt(float);
 	float referenceRead();
+  float sensorRead();//--Default sensor read method: sensorReadRPMPerc();
 	float sensorReadRPM();
 	float sensorReadRPMPerc();
   float sensorReadVoltage();

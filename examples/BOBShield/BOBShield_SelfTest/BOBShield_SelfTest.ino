@@ -2,7 +2,7 @@
   BoBShield calibration experiment
 
   This example initializes the PID control
-  subsystems from the AutomationShield library, wich
+  subsystems from the AutomationShield library, which
   is included in BOBShield library and starts a
   predetermined reference trajectory for the heating block
   temperature.
@@ -19,7 +19,7 @@
   Created by Gergely Takács.
   Last update: 19.11.2018.
 */
-#include <BOBShield.h>                // Includes all the neccesary libraries nad hardware components
+#include <BOBShield.h>                // Includes all the necessary libraries nad hardware components
 #include <SamplingServo.h>            // Include special Sampling running on timmer 2
 
   void wait() {

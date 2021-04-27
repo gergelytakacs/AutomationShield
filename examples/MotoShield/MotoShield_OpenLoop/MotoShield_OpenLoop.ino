@@ -20,7 +20,7 @@ void setup() {
 void loop() {
   r = MotoShield.referenceRead(); //--Reading potentiometers (reference) value in percents
   MotoShield.actuatorWrite(r); //--Defining potentiometers value as input
-  Serial.print(MotoShield.sensorReadRPMPerc()); //--Printing angular velocity in percents to serial monitor
+  Serial.print(MotoShield.sensorRead()); //--Printing angular velocity in percents to serial monitor
   Serial.print(" ");
   Serial.println(r); //--Printing potentiometers value to serial monitor
 }

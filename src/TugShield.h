@@ -34,10 +34,10 @@
 class TugShieldClass 						// Class for the TugShield device
 {			
   public:
-    void begin();							// Begin metod
-    void calibration();						// Calibration metod
-	  void actuatorWrite(int servo_angle);	// Write value to servo metod
-	  float sensorRead();						// Read value from flexi metod
+    void begin();							// Begin method
+    void calibration();						// Calibration method
+	  void actuatorWrite(int servo_angle);	// Write value to servo method
+	  float sensorRead();						// Read value from flexi method
   private:   
 	  bool  _wasCalibrated; 					// Initializing the variable _wasCalibrated
 	  int   _sensorRead ;
@@ -51,7 +51,14 @@ void TugShieldClass::begin()
 {  												
     servo.attach(TUG_UPIN);						// Nastavenie pinu serva
 	  servo.write(SERVO_MAX);						// Nastavenie pozície serva na nulu
-    analogReference(EXTERNAL);					// Nastavenie externej analógovej refercie
+  #ifdef ARDUINO_ARCH_AVR
+	analogReference(EXTERNAL); // Set reference voltage
+  #elif ARDUINO_ARCH_SAM
+	//analogReadResolution(12);
+
+  #elif ARDUINO_ARCH_SAMD
+        //analogReadResolution(12);
+  #endif
 }
 
 // Kalibrácia

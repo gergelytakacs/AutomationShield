@@ -582,7 +582,7 @@ bool VL53L0X::setVcselPulsePeriod(vcselPeriodType type, uint8_t period_pclks)
   // using the new VCSEL period.
   //
   // For the MSRC timeout, the same applies - this timeout being
-  // dependant on the pre-range vcsel period."
+  // dependent on the pre-range vcsel period."
 
 
   if (type == VcselPeriodPreRange)

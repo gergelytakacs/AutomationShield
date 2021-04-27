@@ -1,5 +1,7 @@
+
 /*
   MotoShield PID control example.
+
 
     The following code is an example of MotoShield API in use with
     two modes of reference value setting. For PID computation, 
@@ -64,7 +66,7 @@ void step(){ //--Algorith ran once per sample
   }
   k++;                              //--Increment
 #endif
-y = MotoShield.sensorReadRPMPerc();     //--Sensing angular velocity in percent
+y = MotoShield.sensorRead();     //--Sensing angular velocity in percent
 u = PIDAbs.compute(r-y,0,100,0,100);   //--PID computation
 MotoShield.actuatorWrite(u);          //--Actuation
 Serial.print(r);            //--Printing reference
