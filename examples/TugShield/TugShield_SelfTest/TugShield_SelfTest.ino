@@ -16,7 +16,7 @@
   Last update: 6.5.2019.
 */
 
-#include <TugShield.h>             // Include the library
+#include "TugShield.h"             // Include the library
 
 float y = 0.0;                    // Output
 int i = 0;                        // Section counter
