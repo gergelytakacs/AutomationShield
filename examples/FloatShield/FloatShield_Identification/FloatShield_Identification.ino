@@ -44,6 +44,20 @@ float stabilisedPower;                // Variable for storing stabilised value o
 float stabilisationAltitude = 60;     // Altitude where the ball should be stabilised (range 0-320mm)
 float powerSpan = 1.5;                // Span +/- from stabilised value of power [%]
 
+#if SHIELDRELEASE == 1
+  #define KP 0.25           // PID Kp constant
+  #define TI 5              // PID Ti constant
+  #define TD 0.01           // PID Td constant
+#elif SHIELDRELEASE == 2
+  #define KP 0.01           // PID Kp constant
+  #define TI 2              // PID Ti constant
+  #define TD 0.01           // PID Td constant
+  #elif SHIELDRELEASE == 4
+  #define KP 0.15           // PID Kp constant
+  #define TI 3              // PID Ti constant
+  #define TD 0.1           // PID Td constant
+#endif
+
 void setup() {                         // Setup - runs only once
     Serial.begin(250000);              // Begin serial communication
 
@@ -52,9 +66,9 @@ void setup() {                         // Setup - runs only once
 
     Sampling.period(Ts*1000);          // Set sampling period in microseconds
 
-    PIDAbs.setKp(0.25);                      // Set Proportional constant
-    PIDAbs.setTi(5);                         // Set Integral constant
-    PIDAbs.setTd(0.01);                      // Set Derivative constant
+    PIDAbs.setKp(KP);                      // Set Proportional constant
+    PIDAbs.setTi(TI);                         // Set Integral constant
+    PIDAbs.setTd(TD);                      // Set Derivative constant
     PIDAbs.setTs(Sampling.samplingPeriod);   // Set sampling period for PID
 
     int stabilisationCounter=0;            // Counter to ensure that ball has been stabilised    

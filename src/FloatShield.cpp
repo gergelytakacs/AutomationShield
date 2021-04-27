@@ -75,7 +75,7 @@ void FloatClass::calibrate(void) {                       // Board calibration
 
   sum = 0.0;
   actuatorWrite(0.0);                                    // Turns off the fan
-  while (sensorReadDistance() < 300.0) {                 // Waits until the ball is at least in the lower third of the tube
+  while (sensorReadDistance() < 250.0) {                 // Waits until the ball is at least in the lower third of the tube
     delay(100);                                          // (This is probably unecessary, because ball has no problem falling down, but for the sake of consistency)
   }
   delay(1000);
