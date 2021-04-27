@@ -123,5 +123,9 @@ classdef MotoShield < handle %-class definition
         function rpmPerc = sensorReadRPMPerc(MotoShieldObject) %-sensing RPM in percents # constrained
         rpmPerc = constrain(map(readSpeed(MotoShieldObject.encoder),MotoShieldObject.minRPM,MotoShieldObject.maxRPM,0,100),0,100);
         end
+        function rpmPerc = sensorRead(MotoShieldObject) %-wrapper for default SensorRead method
+        rpmPerc = sensorReadRPMPerc(MotoShieldObject);
+        end
+        
     end
 end

@@ -16,7 +16,7 @@ clc
 
 Manual = 0; %-Defining reference Mode # MANUAL / AUTO
 MotoShield = MotoShield;        %-Creating MotoShield object
-MotoShield.begin('COM4','UNO'); %-Initialize MotoShield
+MotoShield.begin('COM3','UNO'); %-Initialize MotoShield
 MotoShield.calibration()         %-Calibration
 PID = PID;                        %-Creating PID object
 
@@ -52,7 +52,7 @@ while (1)     %-Loop
         if(Manual == 1)                 %-MANUAL mode
             r = MotoShield.referenceRead(); %-Read reference from potentiometer
         end
-        y = MotoShield.sensorReadRPMPerc();       %-Sense RPM
+        y = MotoShield.sensorRead();       %-Sense RPM
         u = PID.compute(r-y, 0, 100, 0, 100);  %-computing Actuating Signal
         MotoShield.actuatorWrite(u);          %-Actuate
         response(k, :) = [r, y, u];            %-Storing data
@@ -62,4 +62,4 @@ while (1)     %-Loop
 end
 save response response                            %-Saving data in response.mat file
 disp('The example finished its trajectory. Results have been saved to "response.mat" file.')
-plotPIDResponse('response.mat',1)                 %-Plot data from response.mat
+plotPIDResponse('response.mat')                 %-Plot data from response.mat
