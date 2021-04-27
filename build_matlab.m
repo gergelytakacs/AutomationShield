@@ -1,14 +1,17 @@
 installMatlabAndSimulink
 
-
-
 supportpkg=matlabshared.supportpkg.getInstalled; % Query for installed support packages
-
 for i=1:length(supportpkg)
-    if strcmp(supportpkg(i).Name,'MATLAB Support Package for Arduino Hardware')
-        disp('Arduino package for MATLAB is installed.')
+    pkgMATLAB = 0;
+    pkgSimulink = 0;
+    pkgMATLAB = pkgMATLAB + strcmp(supportpkg(i).Name,'MATLAB Support Package for Arduino Hardware')
+    pkgpSimulink = pkgSimulink + strcmp(supportpkg(i).Name,'Simulink Support Package for Arduino Hardware')
+    if ~pkgMATLAB
+        disp('WARNING! Arduino HW package for MATLAB not found. Open Add-Ons > Get Hardware Support Packages.')
     end
-    
+    if ~pkgSimulink
+        disp('WARNING! Arduino HW package for Simulink not found. Open Add-Ons > Get Hardware Support Packages.')
+    end
 end
 
 
@@ -17,9 +20,8 @@ end
 cd matlab/examples/ % Move to examples folder
 
 % Search trhough each Hardware category individually
-
 %shieldsList = {'HeatShield', 'OptoShield'}
-% Forgets shieldsList:(((
+% Forgets shieldsList:((( Gaaaah.
 
 shieldsList = {'HeatShield'};
 
