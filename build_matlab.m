@@ -1,5 +1,6 @@
 installMatlabAndSimulink
 
+
 supportpkg=matlabshared.supportpkg.getInstalled; % Query for installed support packages
 for i=1:length(supportpkg)
     pkgMATLAB = 0;
@@ -46,6 +47,7 @@ for i=1:length(shieldsList);
                 knownID = knownID+strcmp(ex.identifier,exKnown{i});
             end
             if ~knownID
+                %rethrow(ex)
                 ex
                 fail_function;
             end
@@ -55,9 +57,9 @@ for i=1:length(shieldsList);
 end
 
 
-function result = fail_function
+function fail_function
     disp('Test failed');
-    result = 1; 
+    error('Will this fail the CI process?')
 end
 
 function out = listDir
