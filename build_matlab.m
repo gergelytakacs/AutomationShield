@@ -49,6 +49,7 @@ for i=1:length(shieldsList);
             end
             if ~knownID
                 ex
+                rethrow(ex)
                 fail_function;
                 testFailed = 1;
             end
@@ -57,6 +58,7 @@ for i=1:length(shieldsList);
     cd ..
 end
 
+% %The testfailed flag gets forgotten.
 if testFailed
     error(''); % Try-catch will prevent MATALAB from throwing an overall error. This fails the CI process.
 end
