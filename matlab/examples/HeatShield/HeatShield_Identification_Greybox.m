@@ -20,8 +20,6 @@
 
 clc; clear;
 
-brsakfnkjfn()
-
 % result=readExperiment(8100,'COM22',9600);
 % save resultID result
 
