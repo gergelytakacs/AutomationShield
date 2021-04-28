@@ -15,6 +15,7 @@ for i=1:length(supportpkg)
     end
 end
 
+testFailed = 0;  % Flag to tell if test has failed
 
 % How do I differentiate between function and script?
 %% Examples
@@ -38,28 +39,31 @@ for i=1:length(shieldsList);
             run(scr) % All scripts, sans the file extensions
         catch ex
             exKnown = {
-                'MATLAB:serial:fopen:opfailed',         % Failed to open serial port
-                'MATLAB:hwsdk:general:boardNotDetected', % No hardware board
-                '' %This empty identificator is for the Hardware Support Package
+                'MATLAB:serial:fopen:opfailed',                            % Failed to open serial port
+                'MATLAB:hwsdk:general:boardNotDetected',                   % No hardware board
+                ''                                                         % This empty identificator is for the Hardware Support Package
                 };
             for i=1:length(exKnown) % For the length of known exceptions (missing hardware)
                 knownID = 0;        % Assume it is an unknown error
                 knownID = knownID+strcmp(ex.identifier,exKnown{i});
             end
             if ~knownID
-                %rethrow(ex)
                 ex
                 fail_function;
+                testFailed = 1;
             end
         end
     end
     cd ..
 end
 
+if testFailed
+    error(''); % Try-catch will prevent MATALAB from throwing an overall error. This fails the CI process.
+end
+
 
 function fail_function
-    disp('Test failed');
-   % error('Will this fail the CI process?') % Yes
+    disp('Test failed'); %Don't use error() otherwise it throws an error in the CI
 end
 
 function out = listDir
