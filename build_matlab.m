@@ -59,7 +59,7 @@ end
 
 function fail_function
     disp('Test failed');
-    error('Will this fail the CI process?')
+   % error('Will this fail the CI process?') % Yes
 end
 
 function out = listDir
