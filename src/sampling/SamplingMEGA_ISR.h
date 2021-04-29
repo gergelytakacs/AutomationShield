@@ -10,7 +10,7 @@
   Last update: 3.6.2019.
 */
 
-ISR(TIMER5_COMPA_vect)
+ISR(TIMER2_COMPA_vect)
 {
  if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
   (Sampling.getInterruptCallback())();      // Start the interrupt callback
