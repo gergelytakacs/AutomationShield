@@ -285,7 +285,7 @@ SamplingServo::SamplingClass::SamplingClass(){
 }
 
 void SamplingServo::SamplingClass::period(unsigned long microseconds){
-  #ifdef ARDUINO_AVR_UNO
+  #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))
  	 // for Arduino Uno use Timer2 to stay compatible with the Servo library  
     noInterrupts();                             // disable all interrupts
 	
@@ -300,20 +300,20 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds){
 	  
 	interrupts();             		              // enable all interrupts
 	
-	#elif ARDUINO_AVR_MEGA2560 
- 	 // for Arduino Mega2560 use Timer5
+/*	#elif ARDUINO_AVR_MEGA2560 
+ 	 // for Arduino Mega2560 use Timer2
 
     noInterrupts();                             // disable all interrupts
-	TCCR5A = 0;                                 // clear register
-    TCCR5B = 0;                                 // clear register
-    TCNT5  = 0;                                 // clear register
+	TCCR2A = 0;                                 // clear register
+    TCCR2B = 0;                                 // clear register
+    TCNT2  = 0;                                 // clear register
        
-    TCCR5B |= (1 << WGM52);                     // CTC mode       
-    TIMSK5 |= (1 << OCIE5A);                    // enable timer compare interrupt
+    TCCR2B |= (1 << WGM22);                     // CTC mode       
+    TIMSK2 |= (1 << OCIE2A);                    // enable timer compare interrupt
 
     setSamplingPeriod(microseconds);
    		
-	interrupts();             		             // enable all interrupts
+	interrupts();             		             // enable all interrupts */
     	
   #elif ARDUINO_SAMD_ZERO
   // For Arduino Zero
@@ -371,7 +371,7 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds){
 bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds){
   const unsigned long cycles = microseconds * cpuFrequency;
 
-  #ifdef ARDUINO_AVR_UNO    
+#if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))   
 	  // For AVR-based boards, e.g. Uno   
 	  if (cycles < timerResolution){		                   // max. 16 us, error 62.5 ns 
 		  TCCR2B |= (0 << CS22) | (0 << CS21) | (1 << CS20); // no prescaling
@@ -423,37 +423,37 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
       fireResolution = 10000;                            // resolution in us
 		}	
     
- #elif ARDUINO_AVR_MEGA2560 
+ /*#elif ARDUINO_AVR_MEGA2560 
 	  // For AVR-based board - Mega, run on timer 5
   	if (cycles < timerResolution){                        // max. 4096 us, 62.5 ns 
-		  TCCR5B |= (0 << CS52) | (0 << CS51) | (1 << CS50); // no prescaling
-		  OCR5A = cycles-1;                                   // compare match register
+		  TCCR2B |= (0 << CS22) | (0 << CS21) | (1 << CS20); // no prescaling
+		  OCR2A = cycles-1;                                   // compare match register
 	  }
 	  else if(cycles < timerResolution * 8){                // max. 32768 us, 0.5 us 
-		  TCCR5B |= (0 << CS52) | (1 << CS51) | (0 << CS50);  // 8 prescaler 
-		  OCR5A = (cycles/8)-1;                               // compare match register
+		  TCCR2B |= (0 << CS22) | (1 << CS21) | (0 << CS20);  // 8 prescaler 
+		  OCR2A = (cycles/8)-1;                               // compare match register
 	  }
 	  else if(cycles < timerResolution * 64){               // max. 262.144 ms, 4 us 
-		  TCCR5B |= (0 << CS52) | (1 << CS51) | (1 << CS50);  // 64 prescaler 
-		  OCR5A = (cycles/64)-1;                              // compare match register
+		  TCCR2B |= (0 << CS22) | (1 << CS21) | (1 << CS20);  // 64 prescaler 
+		  OCR2A = (cycles/64)-1;                              // compare match register
 	  }
 	  else if(cycles < timerResolution * 256){              // max. 1.048576 s, 16 us 
-		  TCCR5B |= (1 << CS52) | (0 << CS51) | (0 << CS50);  // 256 prescaler 
-		  OCR5A = (cycles/256)-1;                             // compare match register
+		  TCCR2B |= (1 << CS22) | (0 << CS21) | (0 << CS20);  // 256 prescaler 
+		  OCR2A = (cycles/256)-1;                             // compare match register
 	  }
 	  else if(cycles < timerResolution * 1024){             // max. 4.194304 s, 64 us 
-		  TCCR5B |= (1 << CS52) | (0 << CS51) | (1 << CS50); // 1024 prescaler 
-		  OCR5A = (cycles/1024)-1;                            // compare match register
+		  TCCR2B |= (1 << CS22) | (0 << CS21) | (1 << CS20); // 1024 prescaler 
+		  OCR2A = (cycles/1024)-1;                            // compare match register
 	  }
     
 	  else if(cycles >= timerResolution * 1024){
-      TCCR5B |= (0 << CS52) | (1 << CS51) | (0 << CS50);  // 8 prescaler 
-      OCR5A = (COMPARE_10MS)-1;                           // compare match register to 10 ms
+      TCCR2B |= (0 << CS22) | (1 << CS21) | (0 << CS20);  // 8 prescaler 
+      OCR2A = (COMPARE_10MS)-1;                           // compare match register to 10 ms
       fireFlag = 1;                                       // repeat firing
       fireResolution = 10000;                             // resolution in us
 	  }
    
-	
+	*/
 #elif (defined(ARDUINO_SAMD_ZERO) || defined (ADAFRUIT_METRO_M4_EXPRESS))   // For SAMD21G boards, e.g. Zero
     // Up to 1.3653 ms with 20.8 ns resolution
     if (cycles < timerResolution){

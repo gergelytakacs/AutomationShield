@@ -66,10 +66,10 @@ class SamplingClass{
     static void defaultInterrupt();
     p_to_void_func interruptCallback;    
 
-    #ifdef ARDUINO_AVR_UNO 	
+    #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560)) 	
 	  // Default: Timer1
 	  const unsigned long timerResolution = 65536; 		 // AVR Timer 5 is 16bit            
-	  const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz*/
+	  const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz
       // For Timer 2 (Servo)
 	  #define CYCLES_100MS   16000000                    // CPU cycles @ 16 MHz for 100 ms
       #define CYCLES_1S     160000000                    // CPU cycles @ 16 MHz for 1 s
@@ -78,27 +78,28 @@ class SamplingClass{
       #define COMPARE_10MS        156                    // Compare @ 16 MHz, prescaler 1024, for 10 ms
       // For Timer 1 (No servo)
       #define COMPARE_10MS_16B    20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
-	  
+	
+/*	
     #elif ARDUINO_AVR_MEGA2560
       // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned long timerResolution = 65536; 		 // AVR Timer 5 is 16bit            
-      const unsigned char cpuFrequency = 16; 			 // CPU frequency in micro Hertz*/
+      const unsigned char cpuFrequency = 16; 			 // CPU frequency in mega Hertz
 	  #define COMPARE_10MS        20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
-	  
+	  */
     #elif ARDUINO_SAMD_ZERO
 	  // Default: Timer5 in both cases (No servo and servo)
 	  const unsigned long timerResolution = 65536;     			// Configured to 16bit  
-	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (48 for Zero)
+	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in mega Hertz (48 for Zero)
 	  #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
 	  
 	#elif ADAFRUIT_METRO_M4_EXPRESS
        const unsigned long timerResolution = 65536;     		 // Configured to 16bit  
-	   const unsigned char cpuFrequency = 48;	                 // Clock bus frequency (not CPU) in micro Hertz
+	   const unsigned char cpuFrequency = 48;	                 // Clock bus frequency (not CPU) in mega Hertz
 	   #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
 	   
     #elif ARDUINO_ARCH_SAM
       // Default: Timer5 in both cases (No servo and servo)
-	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
+	  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in mega Hertz (84 for Due)
 	  
     #else
 		  #error "Architecture not supported."
@@ -143,26 +144,26 @@ class SamplingClass{
     #ifdef ARDUINO_AVR_UNO 	
 		  // Default: Timer2
 		  const unsigned long timerResolution = 256; 						 // AVR Timer 2 is 8bit            
-		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz
+		  const unsigned char cpuFrequency = 16; 							   // CPU frequency in mega Hertz
       
     #elif ARDUINO_AVR_MEGA2560
-      // Default: Timer5
-	      const unsigned long timerResolution = 65536; 					 // AVR Timer 5 is 16bit            
-    	  const unsigned char cpuFrequency = 16; 							   // CPU frequency in micro Hertz*/
+      // Default: Timer2
+	      const unsigned long timerResolution = 256; 					 // AVR Timer 2 is 8bit            
+    	  const unsigned char cpuFrequency = 16; 							   // CPU frequency in mega Hertz
      
     #elif ARDUINO_SAMD_ZERO
 		  // Default TC5 
 		  const unsigned long timerResolution = 65536;     			  // Configured to 16bit  
-		  const unsigned char cpuFrequency = 48;	                 // CPU frequency in micro Hertz (48 for Zero)
+		  const unsigned char cpuFrequency = 48;	                 // CPU frequency in mega Hertz (48 for Zero)
 		  #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
 		  
 	#elif ADAFRUIT_METRO_M4_EXPRESS
 		  const unsigned long timerResolution = 65536;     		     // Configured to 16bit  
-		  const unsigned char cpuFrequency = 48;	                 // Clock bus frequency (not CPU) in micro Hertz
+		  const unsigned char cpuFrequency = 48;	                 // Clock bus frequency (not CPU) in mega Hertz
 		  #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
 	
     #elif ARDUINO_ARCH_SAM
-		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in micro Hertz (84 for Due)
+		  const unsigned char cpuFrequency = VARIANT_MCK/1000000;	// CPU frequency in mega Hertz (84 for Due)
     #else
 		  #error "Architecture not supported."
     #endif
