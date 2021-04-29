@@ -47,4 +47,3 @@ model_nlarx= nlarx(data,[1 1 0],'linear');      % Identify nonlinear arx
 compare(data, model_process, model_nlarx)       % Compare data
 
 save HeatShield_Models_Blackbox.mat model_process model_nlarx
-
