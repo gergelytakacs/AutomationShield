@@ -16,11 +16,9 @@
 */
 #ifndef MOTOSHIELD_H_ //--don't define if its already defined
 #define MOTOSHIELD_H_
-
 #include "Arduino.h"    //--including basic Arduino library
 #include "AutomationShield.h"
 #include"Sampling.h"
-
 //--defining pins for MotoShield
 #define MOTO_YPIN1      3       //--hallsensor pin channel 1
 #define MOTO_YPIN2      4      //--hallsensor pin channel 2 
@@ -64,7 +62,6 @@ class MotoShieldClass{ //--creating a class for the MotoShield
 volatile uint16_t MotoShieldClass::count; //--initializing static variables
 volatile uint16_t MotoShieldClass::counted;
 volatile bool MotoShieldClass::stepEnable; 
-
 MotoShieldClass MotoShield; //--Creating an object in MotoShieldClass 
 
 // Sets the direction motor - clockwise if input parameter is true
@@ -81,7 +78,6 @@ void MotoShieldClass::setDirection(bool direction = true) { //--default directio
 }
 
 void MotoShieldClass::begin(float _Ts = 50.0){ //--default sample duration Ts=50 millis
-
   pinMode(MOTO_UPIN, OUTPUT); 
   pinMode(MOTO_DIR_PIN1,OUTPUT);
   pinMode(MOTO_DIR_PIN2,OUTPUT); 
