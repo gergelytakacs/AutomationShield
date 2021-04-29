@@ -1,6 +1,6 @@
 %   Initialiyation for non-linear alternative model simulation
 %
-%   This script is udes as initialiyation script for non-linear model
+%   This script is used as initialization script for non-linear model
 %   simulations and experiments. The 'Ts' defines sampling period.
 %   The script also provides values of parameters suitable for non-linear
 %   model. Values are based on the identification results of the linear

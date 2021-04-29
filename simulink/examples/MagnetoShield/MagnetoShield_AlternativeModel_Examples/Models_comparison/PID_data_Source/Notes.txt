@@ -1,0 +1,7 @@
+This program has been used for validation activities to find out
+whitch one of the proposed models in the MagnetoShiel project is
+more suitable for the system.
+Program uses PID regulator to collect data for comparison of the 
+models.
+Used sampling period is Ts=0.0015 s
+Experiment has been executed on Arduino DUE board.
