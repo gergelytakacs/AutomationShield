@@ -181,7 +181,7 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
     
 	  else if(cycles >= timerResolution * 1024){
       TCCR5B |= (0 << CS52) | (1 << CS51) | (0 << CS50);  // 8 prescaler 
-      OCR5A = (COMPARE_10MS)-1;                           // compare match register to 10 ms
+      OCR5A = (COMPARE_10MS_16B)-1;                           // compare match register to 10 ms
       fireFlag = 1;                                       // repeat firing
       fireResolution = 10000;                             // resolution in us
 	  }
