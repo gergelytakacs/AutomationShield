@@ -112,8 +112,3 @@ plot(t(1:end-1),U);                                             % Plot inputs
 grid on                                                         % Allow grid
 xlabel('Time (s)')                                              % X axis label
 ylabel('Input (V)')                                             % Y axis label
-
-
-
-
-

@@ -153,4 +153,3 @@ if fixedInductance==0
 
 
 save('MagnetoShield_Models_Greybox_SS','model','y0','u0','i0','Ts')      % Save plant model (mm)
-

@@ -50,6 +50,3 @@ Options.DisturbanceModel= 'estimate';
 
 model=greyest(dataf,sys,Options)
 compare(dataf,model)
-
-
-

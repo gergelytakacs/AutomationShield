@@ -185,7 +185,3 @@ printSSMatrix(modeld.c, 'C')
 printSSMatrix(Q_Kalman, 'Q_Kalman')
 printSSMatrix(R_Kalman, 'R_Kalman')
 printSSMatrix(K, 'K')
-
-
-
-

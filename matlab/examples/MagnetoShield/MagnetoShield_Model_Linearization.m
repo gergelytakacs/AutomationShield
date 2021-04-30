@@ -37,5 +37,3 @@ J = jacobian([dx1 dx2 dx3],[x1 x2 x3]);
 A = subs(J,x,x0)
 % Matrix B of the linear SS system
 B = [diff(dx1,u);diff(dx2,u);diff(dx3,u)]
-
-

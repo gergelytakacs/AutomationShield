@@ -167,5 +167,3 @@ end
 fprintf('%s', '};');
 fprintf('\n');
 end
-
-

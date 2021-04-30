@@ -57,11 +57,3 @@ Options.InitialState = 'estimate';              % Estimate initial condition
 model = greyest(dataf,sys,Options)
 
 compare(dataf,model)
-
-
-
-
-
-
-
-
