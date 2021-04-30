@@ -1,4 +1,4 @@
-clc; clear all;                                 % Clears screen and all variables
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 load('MagnetoShield_ID_Data');
 Ts=0.003250;                                    % [s] Sampling

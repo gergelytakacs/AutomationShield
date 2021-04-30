@@ -9,7 +9,7 @@
 % 
 %   Created by Martin Gulan and Gergely Takács. 
 
-clc; clear; close all;
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Data preprocessing
 load resultID.mat                               % Read identificaiton results

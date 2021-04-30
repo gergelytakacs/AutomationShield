@@ -29,8 +29,7 @@
 %   Created by Gergely Takács. 
 %   Last update: 25.09.2019.
   
-clc; clear all;                                 % Clears screen and all variables
-close all;                                      % Closes all figures
+startScript;                                    % Clears screen and variables, except allows CI testing
 load ID_PID_4000us.mat                          % Load data file
 Ts=0.004;                                       % [s] Sampling
 y=result(:,1)/1000;                             % [m] Output (position)

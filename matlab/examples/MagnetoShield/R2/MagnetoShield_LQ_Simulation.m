@@ -1,4 +1,4 @@
-clc; clear; close all;                                          % Close and clear all
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
 

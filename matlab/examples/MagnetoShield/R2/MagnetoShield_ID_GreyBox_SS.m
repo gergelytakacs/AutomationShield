@@ -26,7 +26,7 @@
 %   Created by Gergely Takács. 
 %   Last update: 15.02.2018.
   
-clc; clear all;                                 % Clears screen and all variables
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 fixedInductance=0;                              % Fixed or distance dependent inductance?
                                                 % to mathematical model
