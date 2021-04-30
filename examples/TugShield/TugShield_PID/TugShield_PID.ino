@@ -65,7 +65,7 @@ void stepEnable(){              // ISR
   nextStep=true;                  // Change flag
 }
 
-// A signle algoritm step
+// A single algorithm step
 
 void step(){ 
 
