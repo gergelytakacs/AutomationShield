@@ -29,8 +29,7 @@
 %   Created by Gergely Takács. 
 %   Last update: 7.9.2020.
   
-clc; clear all;                                 % Clears screen and all variables
-close all;                                      % Closes all figures
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 load MagnetoShield_ID_Data.mat                          % Load data file
 Ts=0.00325;                                       % [s] Sampling

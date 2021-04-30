@@ -19,7 +19,7 @@
 %   Created on: 27.1.2020
 %   Last update: 27.1.2020.  
 
-clc; clear;                                    % Clear screen and memory 
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Data preprocessing
 load resultID.mat                              % Read identificaiton results
@@ -53,4 +53,3 @@ c=sys.Numerator(1)/(-omega^2)                 % Actuator constant
 compare(sys,dataS)                            % Comparison of data to model
 xlabel('Time')                                % X axis label
 ylabel('Accel. y(t) ms^{-2}')                 % Y axis label
-

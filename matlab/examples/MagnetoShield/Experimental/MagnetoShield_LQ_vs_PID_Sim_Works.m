@@ -1,4 +1,4 @@
-clc; clear; close all;                                          % Close and clear all
+startScript;                                    % Clears screen and variables, except allows CI testing
 clear PID
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
 load MagnetoShield_PID_Data
@@ -112,8 +112,3 @@ plot(t(1:end-1),U);                                             % Plot inputs
 grid on                                                         % Allow grid
 xlabel('Time (s)')                                              % X axis label
 ylabel('Input (V)')                                             % Y axis label
-
-
-
-
-

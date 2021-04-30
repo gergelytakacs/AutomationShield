@@ -18,7 +18,7 @@
 %   Created by Gergely Takács. 
 %   Last update: 18.10.2018.
 
-clc; clear;
+startScript;                                    % Clears screen and variables, except allows CI testing   
 
 % result=readExperiment(8100,'COM22',9600);
 % save resultID result

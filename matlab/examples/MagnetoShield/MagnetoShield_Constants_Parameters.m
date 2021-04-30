@@ -23,7 +23,7 @@
 %   Last updated by:  Jakub Mihalik
 %   Last update on:   22.12.2020
 
-clear all; clc;
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 % CONSTANTS AND DIMENSIONS
 l_coil = (12.6-2.14)/1000;  % Height of the coil [m]

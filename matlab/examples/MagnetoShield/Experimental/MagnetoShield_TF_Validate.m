@@ -1,4 +1,4 @@
-clc; clear; 
+startScript;                                    % Clears screen and variables, except allows CI testing 
 load MagnetoShield_Models_Greybox_TF
 load MagnetoShield_PID_Data
 

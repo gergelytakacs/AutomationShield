@@ -1,4 +1,5 @@
-clear all; close all; clc;
+startScript;                            % Clears screen and variables, except allows CI testing              
+
 %define LQR
 Ts=0.01;
 load('mymodel.mat')
@@ -69,4 +70,3 @@ subplot(212)
 plot(t,U,'r');
 title('Priebeh vstupnej veliciny U')
 xlabel('Cas t (s)')
-

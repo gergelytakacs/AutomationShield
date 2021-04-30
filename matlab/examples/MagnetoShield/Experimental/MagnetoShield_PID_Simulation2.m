@@ -1,4 +1,4 @@
-clc; clear; close all;                                          % Close and clear all
+startScript;                                    % Clears screen and variables, except allows CI testing
 clear diffeq PID                                                % Clears persistent variables in diffeq
 
 load MagnetoShield_Models_Greybox_TF                            % Include linearized state-space model

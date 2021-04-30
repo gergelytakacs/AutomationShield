@@ -30,7 +30,7 @@
 %  Learn more about pole placement at 
 %  http://ctms.engin.umich.edu/CTMS/index.php?example=Introduction&section=ControlStateSpace
 
-clc; clear; close all;                                          % Close and clear all
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
 
@@ -185,7 +185,3 @@ printSSMatrix(modeld.c, 'C')
 printSSMatrix(Q_Kalman, 'Q_Kalman')
 printSSMatrix(R_Kalman, 'R_Kalman')
 printSSMatrix(K, 'K')
-
-
-
-
