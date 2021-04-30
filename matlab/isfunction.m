@@ -9,7 +9,7 @@ end
 result = false;
 % Count the number of lines
 while ~feof(fid) && ~result
-    str = fgetl(fid)
+    str = fgetl(fid);
     trimmed_str = strtrim(str);
     if ~isempty(str)
         if ~isempty(trimmed_str) && ~strcmp(trimmed_str(1), '%')

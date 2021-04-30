@@ -15,8 +15,11 @@
 % 
 %   Created by Gergely Takács. 
 %   Last update: 17.10.2018.
-  
-clc; clear all;                         % Clears screen and all variables
+
+if ~exist('CI_Testing','var')           % Unless it is a CI test
+    clc                                 % Clears screen
+end
+clear;                                  % Clears all variables                
 
 HeatShield=HeatShield;                  % Construct object from class
 HeatShield.begin();                     % Initialize shield

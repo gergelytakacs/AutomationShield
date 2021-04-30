@@ -18,7 +18,10 @@
 %   Created by Gergely Takács. 
 %   Last update: 18.10.2018.
 
-clc; clear;
+if ~exist('CI_Testing','var')           % Unless it is a CI test
+    clc                                 % Clears screen
+end
+clear;                                  % Clears all variables   
 
 % result=readExperiment(8100,'COM22',9600);
 % save resultID result

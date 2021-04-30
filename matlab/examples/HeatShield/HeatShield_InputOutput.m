@@ -15,7 +15,11 @@
 %   Created by Gergely Takács. 
 %   Last update: 17.10.2018.
   
-clc; clear;
+if ~exist('CI_Testing','var')
+    clc
+end
+
+clear;
 
 HeatShield=HeatShield;  % Construct object from class
 HeatShield.begin();     % Initialize shield

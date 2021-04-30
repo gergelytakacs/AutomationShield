@@ -18,7 +18,12 @@
 %   Created by Gergely Takács. 
 %   Last update: 19.10.2018.                            
 
-clc; clear;
+if ~exist('CI_Testing','var')
+    clc
+end
+
+clear;
+
 % result=readExperiment(8100,'COM22',9600);
 % save resultID result
 
