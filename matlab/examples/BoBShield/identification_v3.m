@@ -1,5 +1,5 @@
 
-clc; clear; close all;
+startScript;                            % Clears screen and variables, except allows CI testing              
 
 %% Data preprocessing
 %load data from experiment

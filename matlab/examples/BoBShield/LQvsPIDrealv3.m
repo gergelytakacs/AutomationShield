@@ -1,4 +1,5 @@
-clear all; close all; clc;
+startScript;                            % Clears screen and variables, except allows CI testing              
+
 %define LQR
 Ts=0.01;
 load('myModel.mat')

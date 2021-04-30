@@ -1,4 +1,4 @@
-clear all; close all; clc;
+startScript;                            % Clears screen and variables, except allows CI testing              
 %get data
 load('dataPidAll.mat')
 u=dataAll(:,3);
@@ -77,5 +77,3 @@ set(gcf, 'Units', 'centimeters', 'Position', [0, 2, width, height], 'PaperUnits'
 saveas(gcf,fname,'epsc')
 saveas(gcf,fname,'jpeg')
 print(gcf,fname,'-depsc');
-
-

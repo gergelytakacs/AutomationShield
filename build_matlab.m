@@ -18,33 +18,24 @@ if ~pkgSimulink
        disp('WARNING! Arduino HW package for Simulink not found. Open Add-Ons > Get Hardware Support Packages.')
 end
 
-testFailed = 0;  % Flag to tell if test has failed
+testFailedCI = 0;               % Flag to tell if any test has failed
+cd matlab/examples/             % Move to examples folder
 
-
-% How do I differentiate between function and script?
-%% Examples
-cd matlab/examples/ % Move to examples folder
-
-% Search trhough each Hardware category individually
-%exampleList = {'HeatShield', 'OptoShield'}
-% Forgets exampleList:((( Gaaaah.
-
-% if ~exist(CI_Testing,'var')
-%     clc
-% end
-
-
-% Starts HeatShield_ODE! Trying to run a function as a script.
-testScripts()
-
-
-function testScripts()
-persistent exampleList
 
 exampleList = {'OptoShield','HeatShield','LinkShield','MotoShield'};
 
+exampleList = {'BoBShield'};
 
-% Try skips the rest of the file, so it is not checking any hardware tests
+testScripts(exampleList)                   % Finds and tests all scripts, excludes exceptions caused by lack of hardware packages or physical hardware
+
+if testFailedCI
+    error('+++++++++++ At least one of the tests failed! +++++++++++ '); % Try-catch will prevent MATALAB from throwing an overall error. This fails the CI process.%end
+else
+    disp('+++++++++++ All tests passed. +++++++++++ '); 
+end
+
+function testScripts(exampleList)
+
 for i=1:length(exampleList);
     cd(exampleList{i})
     for i=1:length(listDir())
@@ -58,24 +49,21 @@ for i=1:length(exampleList);
                 fprintf(['*** Testing "',scr])
                 fprintf(['"...'])
                 run(scr) % All scripts, sans the file extensions
-            catch ex
-                exKnown = {
+            catch exceptionCI
+                exceptionCIKnown = {
                     'MATLAB:serial:fopen:opfailed',                            % Failed to open serial port
                     'MATLAB:hwsdk:general:boardNotDetected',                   % No hardware board
                     'MATLAB:hwsdk:general:invalidAddressPCMac'                 % Has HW extension, but no such address
                     ''                                                         % This empty identificator is for the Hardware Support Package
                     };
                 knownID = 0;        % Assume it is an unknown error
-                for i=1:length(exKnown) % For the length of known exceptions (missing hardware)
+                for i=1:length(exceptionCIKnown) % For the length of known exceptions (missing hardware)
                     
-                    knownID = knownID+strcmp(ex.identifier,exKnown{i});
+                    knownID = knownID+strcmp(exceptionCI.identifier,exceptionCIKnown{i});
                 end
                 if ~knownID
-                    fprintf('FAIL.\n')
-                    ex
-                    rethrow(ex)
-                    fail_function;
-                    testFailed = 1;
+                    testFailedCI = 1;
+                    failFunctionCI(exceptionCI);
                 else
                     fprintf(' WARNING: Not fully tested! ')
                 end
@@ -86,22 +74,19 @@ for i=1:length(exampleList);
     cd .. % Switch to next directory
 end
 end
-% %The testfailed flag gets forgotten!!!!!!
-%if testFailed
- %   error(''); % Try-catch will prevent MATALAB from throwing an overall error. This fails the CI process.
-%end
 
-% Should list what was tested fully and what was partially.
-
-
-function fail_function
-disp('Test failed'); %Don't use error() otherwise it throws an error in the CI
+function failFunctionCI(exceptionCI)
+    fprintf('FAIL.\n')
+    exceptionCI
+    %rethrow(exceptionCI) % Only if you want to stop CI instantly on the first
+    %error.
 end
 
+
 function out = listDir
-persistent dirContents
-dirContents=dir('**/*.m');
-out = dirContents;
+    persistent dirContents
+    dirContents=dir('**/*.m');
+    out = dirContents;
 end
 
 
