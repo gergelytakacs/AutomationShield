@@ -1,6 +1,12 @@
 clc;
 clear;
 
+% TO DO
+% Move this to some special folder, let's not leave it in root
+% isfunction bums out if there are trailing empty lines, check that
+% There is a bunch of exceptions in the real CI, yet the process is not
+% stopped!
+% There are exceptions for "windowstyle docked" because there is no display
 installMatlabAndSimulink
 
 pkgMATLAB = 0;
