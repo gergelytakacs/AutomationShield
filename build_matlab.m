@@ -3,19 +3,20 @@ clear;
 
 installMatlabAndSimulink
 
+pkgMATLAB = 0;
+pkgSimulink = 0;
 supportpkg=matlabshared.supportpkg.getInstalled; % Query for installed support packages
 for i=1:length(supportpkg)
-    pkgMATLAB = 0;
-    pkgSimulink = 0;
+
     pkgMATLAB = pkgMATLAB + strcmp(supportpkg(i).Name,'MATLAB Support Package for Arduino Hardware');
     pkgpSimulink = pkgSimulink + strcmp(supportpkg(i).Name,'Simulink Support Package for Arduino Hardware');
 end
-    if ~pkgMATLAB
-        disp('WARNING! Arduino HW package for MATLAB not found. Open Add-Ons > Get Hardware Support Packages.')
-    end
-    if ~pkgSimulink
-        disp('WARNING! Arduino HW package for Simulink not found. Open Add-Ons > Get Hardware Support Packages.')
-    end
+if ~pkgMATLAB
+       disp('WARNING! Arduino HW package for MATLAB not found. Open Add-Ons > Get Hardware Support Packages.')
+end
+if ~pkgSimulink
+       disp('WARNING! Arduino HW package for Simulink not found. Open Add-Ons > Get Hardware Support Packages.')
+end
 
 testFailed = 0;  % Flag to tell if test has failed
 
