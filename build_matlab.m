@@ -25,8 +25,8 @@ testFailed = 0;  % Flag to tell if test has failed
 cd matlab/examples/ % Move to examples folder
 
 % Search trhough each Hardware category individually
-%shieldsList = {'HeatShield', 'OptoShield'}
-% Forgets shieldsList:((( Gaaaah.
+%exampleList = {'HeatShield', 'OptoShield'}
+% Forgets exampleList:((( Gaaaah.
 
 % if ~exist(CI_Testing,'var')
 %     clc
@@ -38,14 +38,14 @@ testScripts()
 
 
 function testScripts()
-persistent shieldsList
+persistent exampleList
 
-shieldsList = {'OptoShield','HeatShield'};
+exampleList = {'OptoShield','HeatShield','LinkShield','MotoShield'};
 
 
 % Try skips the rest of the file, so it is not checking any hardware tests
-for i=1:length(shieldsList);
-    cd(shieldsList{i})
+for i=1:length(exampleList);
+    cd(exampleList{i})
     for i=1:length(listDir())
         dirContents=listDir();
         file = dirContents(i).name; %Full file name with extension
@@ -61,6 +61,7 @@ for i=1:length(shieldsList);
                 exKnown = {
                     'MATLAB:serial:fopen:opfailed',                            % Failed to open serial port
                     'MATLAB:hwsdk:general:boardNotDetected',                   % No hardware board
+                    'MATLAB:hwsdk:general:invalidAddressPCMac'                 % Has HW extension, but no such address
                     ''                                                         % This empty identificator is for the Hardware Support Package
                     };
                 knownID = 0;        % Assume it is an unknown error

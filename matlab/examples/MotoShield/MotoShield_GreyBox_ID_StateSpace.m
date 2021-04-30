@@ -9,7 +9,7 @@
 % 
 %   Created by Gergely Takács and Ján Boldocký. 
 
-clc; clear; close all;
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Data preprocessing
 load aprbsResult.mat                               %_Load data

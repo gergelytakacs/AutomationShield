@@ -16,10 +16,7 @@
 %   Created by Gergely Takács. 
 %   Last update: 17.10.2018.
 
-if ~exist('CI_Testing','var')           % Unless it is a CI test
-    clc                                 % Clears screen
-end
-clear;                                  % Clears all variables                
+startScript;                            % Clears screen and variables, except allows CI testing              
 
 HeatShield=HeatShield;                  % Construct object from class
 HeatShield.begin();                     % Initialize shield

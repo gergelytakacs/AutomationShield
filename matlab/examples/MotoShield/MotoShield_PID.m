@@ -10,9 +10,8 @@
 %   Attribution-NonCommercial 4.0 International License.
 % 
 %   Created by Gergely Takács and Ján Boldocký.
-clear
-close all
-clc 
+
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 Manual = 0; %-Defining reference Mode # MANUAL / AUTO
 MotoShield = MotoShield;        %-Creating MotoShield object
