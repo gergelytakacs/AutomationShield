@@ -1,5 +1,5 @@
 
-clc; clear; close all;
+startScript;                            % Clears screen and variables, except allows CI testing              
 %% Choose the type of grey-box model to identify
 %model = 'nonlinear';                            % Nonlinear state-space model
 model = 'linearSS';                             % Linear state-space model
@@ -227,4 +227,3 @@ return
 save BobShield_GreyboxModel_Nonlinear.mat model      
 save BobShield_GreyboxModel_LinearSS model
 save BobShield_GreyboxModel_LinearTF model
-

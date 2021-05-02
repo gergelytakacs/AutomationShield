@@ -16,7 +16,7 @@
 %   Created by Peter Chmurciak.
 %   Last update: 24.4.2020.
 
-clc; clear; close all;            % Clears command window, variables and opened figures
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 FloatShield = FloatShield;        % Create FloatShield object from FloatShield class
 FloatShield.begin('COM4', 'UNO'); % Initialise shield with used Port and Board type

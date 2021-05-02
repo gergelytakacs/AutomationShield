@@ -12,9 +12,7 @@
 %   Created by Martin Gulan, Gergely Takács and Peter Chmurèiak.
 %   Last update: 24.4.2020.
 
-clc;
-clear;
-close all;
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Data preprocessing
 load resultID.mat                               % Read identification results

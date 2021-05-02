@@ -1,4 +1,4 @@
-close all; clear all; clc;
+startScript;                            % Clears screen and variables, except allows CI testing              
 Ts=0.01;
 load('myModel.mat')
 csystem=ss(model.A,model.B,model.C,model.D);

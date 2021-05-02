@@ -19,8 +19,7 @@
 %   Created on: 27.1.2020
 %   Last update: 27.1.2020.  
 
-
-clc; clear;                                    % Clear screen and memory
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Set up problem 
 
@@ -54,4 +53,3 @@ isstable(cl)                                  % Stability test
 
 step(90*sys,90*cl,15)                         % 90 deg step for 15 sec.
 legend('Open','Closed');                      % Labels
-

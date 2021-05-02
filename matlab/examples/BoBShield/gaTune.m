@@ -1,5 +1,4 @@
-clc;
-clear;
+startScript;                            % Clears screen and variables, except allows CI testing              
 
 % Optimizer construction
 
