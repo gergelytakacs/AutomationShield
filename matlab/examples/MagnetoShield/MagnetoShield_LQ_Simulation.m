@@ -26,7 +26,7 @@
 %   Last update on:   24.9.2020
 
 
-clc; clear; close all;                                          % Close and clear all
+startScript;                                    % Clears screen and variables, except allows CI testings
 
 load MagnetoShield_Models_Greybox_SS                            % Include linearized state-space model
 
@@ -164,7 +164,3 @@ printSSMatrix(modeld.c, 'C')
 printSSMatrix(Q_Kalman, 'Q_Kalman')
 printSSMatrix(R_Kalman, 'R_Kalman')
 printSSMatrix(K, 'K')
-
-
-
-

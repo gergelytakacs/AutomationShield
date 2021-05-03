@@ -17,9 +17,7 @@
 %   Created on:  23.9.2020
 %   Last update: 23.9.2020
 
-clc;
-clear;
-
+startScript;                                    % Clears screen and variables, except allows CI testing
 load MagnetoShield_Models_Greybox_SS
 
 dt = 0.005;                                                      % [s] Sample time for discretization

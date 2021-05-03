@@ -3,7 +3,7 @@
 % Please read http://ctms.engin.umich.edu/CTMS/index.php?example=Introduction&section=ControlRootLocus 
 % for more details.
 
-clc; clear; close all;                                          % Close and clear all
+startScript;                                    % Clears screen and variables, except allows CI testing
 load MagnetoShield_Models_Greybox_TF                            % Include linearized state-space model
 
 

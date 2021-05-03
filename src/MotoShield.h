@@ -1,86 +1,163 @@
-#ifndef MotoShield_h
-#define MotoShield_h
+/*
+  API for the MotoShield didactic hardware.
 
+  The file is a part of the application programmers interface for
+  the MotoShield didactic device for control engineering.
+  The MotoShield includes a DC Motor with Hall incremental encoder
+  and current measuring periphery.
+
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+
+  Created by Ján Boldocký.
+  Last update: 23.4.2020.
+*/
+#ifndef MOTOSHIELD_H_ //--don't define if its already defined
+#define MOTOSHIELD_H_
+#include "Arduino.h"    //--including basic Arduino library
 #include "AutomationShield.h"
+#include"Sampling.h"
+//--defining pins for MotoShield
+#define MOTO_YPIN1      3       //--hallsensor pin channel 1
+#define MOTO_YPIN2      4      //--hallsensor pin channel 2 
+#define MOTO_UPIN       5     //--PWM ~pin for the Motor
+#define MOTO_DIR_PIN1   6    //--direction pin1 for H-bridge
+#define MOTO_DIR_PIN2   7   //--direction pin2 for H-bridge
+#define MOTO_RPIN       A4  //--analog pin for potentiometer reference
+#define MOTO_YV1		A0     //--analog pin for voltage before shunt resistor
+#define MOTO_YV2		A1    //--analog pin for voltage after shunt resistor
+#define MOTO_YAMP1		A2   //--analog pin for output from differential OpAmp
+#define MOTO_YAMP2		A3  //--analog pin for output from non-inverting OpAmp
 
-// Defining the hardware pins
-#define MOTO_C1    3  // 1st channel of the Hall sensor
-#define MOTO_C2    4  // 2nd channel of the Hall sensor 
-#define MOTO_UPIN  5  // EN1
-#define MOTO_IN1   6  // IN1
-#define MOTO_IN2   7  // IN2
-#define MOTO_RPIN  4  // Reference (potentiometer)
-#define MOTO_Vout2 3  // output of the 2nd opamp (non-inverting)
-#define MOTO_Vout1 2  // output of the 1st opamp (subtractor)
-#define MOTO_U1    1  // U1 from the resistor - for measuring the voltage drop
-#define MOTO_U2    0  // U2 from the resistor - for measuring the voltage drop
+//--defining constants
+#define AMP_GAIN		2.96  //--Gain of non-inverting OpAmp
+#define SHUNT			10.0 //--resistance of shunt resistor
 
+class MotoShieldClass{ //--creating a class for the MotoShield
+  public:
+  	void setDirection(bool);
+	void begin(float);
+	void calibration();
+	void actuatorWrite(float);
+	void actuatorWriteVolt(float);
+	float referenceRead();
+  	float sensorRead();//--Default sensor read method: sensorReadRPMPerc();
+	float sensorReadRPM();
+	float sensorReadRPMPerc();
+  	float sensorReadVoltage();
+	float sensorReadVoltageAmp1();
+	float sensorReadVoltageAmp2();
+	float sensorReadCurrent();
+	uint32_t minRPM, minDuty, maxRPM; //--calibration variables
+	float minVolt;
+	static volatile uint16_t count; //--counting pulses of hall sensor encoder
+  	static volatile uint16_t counted; //--memorizing number of pulses per sample
+    	static volatile bool stepEnable; //--auxiliary variable # simplifies the creation of examples
+  private:
+	float _K; //--number of samples in one minute
+};
 
-// Defining global variables
-  static int Bstate;                   // global variables for ISR + volatile static 
-  static unsigned long counter;
+volatile uint16_t MotoShieldClass::count; //--initializing static variables
+volatile uint16_t MotoShieldClass::counted;
+volatile bool MotoShieldClass::stepEnable; 
+MotoShieldClass MotoShield; //--Creating an object in MotoShieldClass 
 
+// Sets the direction motor - clockwise if input parameter is true
+//                          - counterclockwise if input parameter is false
+void MotoShieldClass::setDirection(bool direction = true) { //--default direction - clockwise
+  if (direction) {   //--clockwise      
+    digitalWrite(MOTO_DIR_PIN1, 0);
+    digitalWrite(MOTO_DIR_PIN2, 1);
+  }
+  else {             //--counter-clockwise 
+    digitalWrite(MOTO_DIR_PIN1, 1);
+    digitalWrite(MOTO_DIR_PIN2, 0);
+  }
+}
 
+void MotoShieldClass::begin(float _Ts = 50.0){ //--default sample duration Ts=50 millis
+  pinMode(MOTO_UPIN, OUTPUT); 
+  pinMode(MOTO_DIR_PIN1,OUTPUT);
+  pinMode(MOTO_DIR_PIN2,OUTPUT); 
+  pinMode(MOTO_YPIN1, INPUT);   
+  pinMode(MOTO_YPIN2, INPUT); //--initialize hardware pins
+  pinMode(MOTO_RPIN, INPUT);
+  pinMode(MOTO_YV1, INPUT);
+  pinMode(MOTO_YV2, INPUT);
+  pinMode(MOTO_YAMP1, INPUT);
+  pinMode(MOTO_YAMP2, INPUT);
+  setDirection(true);              //--making setDirection() method non-mandatory
+  Sampling.period(_Ts*1000.0); //--defining sample duration in millisec
+  _K=60000.0/_Ts;                 //--minute to millisec / sample duration
+  Sampling.interrupt([]{counted = count;count = 0;stepEnable = true;});//--attaching sampling ISR
+  attachInterrupt(digitalPinToInterrupt(MOTO_YPIN1),[]{count++;}, CHANGE);//--attaching ISR for incremental encoder # mode-FALLING
+}
 
-/* 
-  Our hall sensor has 7 pole-pairs. I set the trigger mode as FALLING, which means, that the counter's value increases by one every time when the signal drops from high state to low. 
-   One rotation of the back shaft takes 7counts. The ratio between the shafts is 380:1 , it means, that 1 rotation of the main shaft takes 380 rotations of the back shaft. During one 
-   rotation of the main shaft the counter's value reaches 7*380 = 2660.
-   */
+float MotoShieldClass::referenceRead() {//--Reads potentiometers reference value and returns it in percentage
+  return AutomationShield.mapFloat((float)analogRead(MOTO_RPIN), 0.0, 1023.0, 0.0, 100.0);
+}
 
-   class MotoClass{
-public:
-	// Methods
-	static void begin(void);   // it has to be static because of the attachInterrupt() - initializes the pins, sets the ISR and also the initial valus of the counter variable
-	static void countTicks();   // ISR - Interrupt Service Routine
-	void motorON();    // switches on the motor at maximum speed (recommended)
-	void motorOFF();   // switches off the motor
-	void setMotorSpeed(float value);   // sets the speed of the motor, input value 0-100 (%)
-	void setDirection(bool dir);   // sets the direction, input values: true - counter clockwise, false - clockwise
-	void revDirection();   // reverses the pre-set direction
-	float referenceRead();  // reads the value of the POT
-	float readVoltage();  // returns the value of the voltage drop through the R, value is in Volts
-	float readCurrent();  // returns the current draw to the motor in mA
-	float durationTime();  // returns the duration of one revolution in ms
-	float readRevolutions(int Time);  // returns the number of revolutions per minute according to the time revolution time in ms (good accuracy)
+void MotoShieldClass::actuatorWrite(float percentValue) {//--duty cycle for the Motor, determining angular velocity
+  if(percentValue < minDuty && percentValue != 0) percentValue = minDuty; //--When input is 0, motor is disabled
+  analogWrite(MOTO_UPIN, AutomationShield.percToPwm(percentValue));
+}
 
-private:
-	float convertedValue;
-	float _referenceRead;
-	float referenceValue;
-	float ADCR1;
-	float ADCR2;
-	float ADCU;
-	float V;
-	float I;
-	bool  dir;
-	int Direction;
-	int cValue;
-	int rev;
-	unsigned long t;
-	unsigned long revTime;
-	unsigned long count;
-	unsigned long durTime;
-	unsigned long prevTime;
-	unsigned long previousCount;
-	float Revolutions;
-	float percentage;
-	float maxRev;
-	float Compare;
-	float value;
-	float rValue;
-	unsigned long Count;
-	unsigned long prevC;
-	int h;
-	float constant;
-	float REV;
-	int Time;
+void MotoShieldClass::actuatorWriteVolt(float voltageValue){ //--Expects Root Mean Square Voltage value as input  
+  if(voltageValue < minVolt != 0) voltageValue = minVolt; 
+  analogWrite(MOTO_UPIN,sq(voltageValue)*255.0/sq(AREF)); //--Convert Urms -> PWM duty 8-bit
+}
+  
+//--sensing minimal duty cycle for motor to spin
+//--sensing RPM at maximal PWM and at minimal PWM
+void MotoShieldClass::calibration(){
+  actuatorWrite(100);
+  delay(1000); //--delay for motor to reach maximal angular velocity
+  maxRPM = counted; //--sensing max RPM
+  actuatorWrite(0); //--disabling the motor
+  delay(500); //--delay for motor to stop spinning
+  int i = 15; //--initial PWM in %, presumed potentionally minimal
+  do{   //--infinite loop
+      actuatorWrite(i);
+      delay(300); //--delay for motor to spin at least one revolution
+      if(counted >= 4){ //--condition for detecting motor motion  
+          delay(1000);//--delay for motor to reach minimal angular velocity
+        minDuty = i; //--minimal duty cycle in %
+          minRPM = counted;//--sensing minimal RPM
+          minVolt = AREF * sqrt(minDuty/100.0); //--Calculate minimal voltage for Motor to spin
+        actuatorWrite(0);//--disabling the motor
+          break; //--end of the loop
+       }
+      i++; //--incrementing duty cycle variable by 1
+  }while(1);
+}
 
-	// Private constants
-	 float k;
-	 int   R;
-}; // end of the MotoClass
+float MotoShieldClass::sensorReadRPMPerc(){//--Sensing RPM in %
+return AutomationShield.constrainFloat(AutomationShield.mapFloat(counted, (float)minRPM, (float)maxRPM, 0.0, 100.0),0.0,100.0);
+}
 
-extern MotoClass MotoShield; // declare external instance
+float MotoShieldClass::sensorRead(){//--Wrapper for default sensor read method
+return MotoShield.sensorReadRPMPerc();
+}
 
-#endif 
+float MotoShieldClass::sensorReadRPM(){//--Sensing RPM 
+  return (float)counted/14.0*_K;        //--14 is the number of ticks per one rotation
+}
+
+float MotoShieldClass::sensorReadVoltage() {//--Voltage drop after the shunt(10ohm) resistor
+  return fabs((analogRead(MOTO_YV2)-analogRead(MOTO_YV1))*5.0/1023.0);
+}
+
+float MotoShieldClass::sensorReadVoltageAmp1() {//--Output from differential OpAmp in Volts
+  return analogRead(MOTO_YAMP1)*5.0/1023.0; 
+}
+
+float MotoShieldClass::sensorReadVoltageAmp2() {     //--Output from non-inverting OpAmp in Volt
+  return analogRead(MOTO_YAMP2)*5.0/1023.0/AMP_GAIN;//--Gain of OpAmp is 2.96 
+}
+
+float MotoShieldClass::sensorReadCurrent() {//--Current draw [mA] calculation based on non-inverting OpAmp output - Ohms law
+  return MotoShield.sensorReadVoltageAmp2()/SHUNT*1000.0;//--R represents 10ohms - shunt resistor # 1000 - conversion to mA
+}
+#endif

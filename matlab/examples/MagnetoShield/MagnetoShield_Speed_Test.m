@@ -27,9 +27,7 @@
 %   Last updated by:  Gergely Takács
 %   Last update on:   29.10.2020
 
-clc                                                                 % Clears screen
-clear all                                                           % Clears variables
-
+startScript;                                    % Clears screen and variables, except allows CI testing
 no_samples = 500;                                                   % Desired number of samples
 platfrm = 'Due';                                                    % 'Uno', 'Due', etc.
 

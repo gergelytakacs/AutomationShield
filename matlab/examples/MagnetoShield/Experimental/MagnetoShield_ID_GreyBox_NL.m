@@ -1,5 +1,4 @@
-clc;
-clear;
+startScript;                                    % Clears screen and variables, except allows CI testing
 %% Non-linear model estimation
 
 load('IDExperiment1');

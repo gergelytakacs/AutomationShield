@@ -13,7 +13,7 @@
 
 %plotOptoShield_Step
 load resultID
-Ts=0.005
+Ts=0.005;
 Y=resultID(:,1);
 U=resultID(:,2);
 
