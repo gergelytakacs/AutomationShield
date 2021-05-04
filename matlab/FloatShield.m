@@ -50,7 +50,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             pause(1)                                     % Wait for ball to stabilise
             sum = 0;                                     % Variable for summing up the readings
-            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 miliseconds
+            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 milliseconds
                 sum = sum + sensorReadDistance(FloatShieldObject);
                 pause(0.025)
             end
@@ -62,7 +62,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             pause(1)                                     % Wait for ball to stabilise
             sum = 0;                                     % Clear variable for summing up the readings
-            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 miliseconds
+            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 milliseconds
                 sum = sum + sensorReadDistance(FloatShieldObject);
                 pause(0.025)
             end
@@ -71,7 +71,7 @@ classdef FloatShield < handle             % FloatShield class definition
         end
 
         function actuatorWrite(FloatShieldObject, percent)                                                    % Actuator write function - for controlling fan speed
-            coercedInput = constrain(percent, 0, 100);                                                        % Coerce the iput value
+            coercedInput = constrain(percent, 0, 100);                                                        % Coerce the input value
             writePWMDutyCycle(FloatShieldObject.arduino, FloatShieldObject.FLOAT_UPIN, (coercedInput / 100)); % Set the PWM duty cycle based on the user input
         end
 

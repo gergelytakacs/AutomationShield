@@ -9,7 +9,7 @@
 % 
 %   Created by Martin Gulan and Gergely Takács. 
 
-clc; clear; close all;
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Data preprocessing
 load resultID.mat                               % Read identificaiton results
@@ -90,7 +90,7 @@ switch model
 
     case 'linearSS'
     
-    % Unknonwn parameters
+    % Unknown parameters
     alpha = 1/tau;
     beta  = 1/tau2;
     gamma = k/tau;

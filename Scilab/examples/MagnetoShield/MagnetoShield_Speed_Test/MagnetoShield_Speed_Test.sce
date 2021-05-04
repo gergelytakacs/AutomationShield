@@ -9,7 +9,7 @@
    device. Scilab will also require the "serial" package. If you don't have this
    installed, call atomsInstall("serial"), then load the macros.
    The script just tests reading the analog input and sending data to the I2C 
-   bus wihtout attempting feedback control, as these are the most essential 
+   bus without attempting feedback control, as these are the most essential 
    operations required for control. The functionality of the I2C part has not
    been tested, the script assumes that using the same serial communication
    logic, it would take to write 4 characters to the serial port at each 
@@ -23,7 +23,7 @@
    Attribution-NonCommercial 4.0 International License.
 
    If you have found any use of this code, please cite our work in your
-   academic publications, such as theses, conference articles or journal
+   academic publications, such as thesis, conference articles or journal
    papers. A list of publications connected to the AutomationShield
    project is available at: 
    https://github.com/gergelytakacs/AutomationShield/wiki/Publications

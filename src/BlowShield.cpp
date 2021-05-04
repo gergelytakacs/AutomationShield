@@ -17,7 +17,7 @@
 
 // Sensor library
 
-void BlowClass::readCoefficients() {                   // read calibration coeficient
+void BlowClass::readCoefficients() {                   // read calibration coefficient
   dig_T1 = ((uint16_t)((BlowShield.readRegister(BMP280_DIG_T1_MSB_REG) << 8) + BlowShield.readRegister(BMP280_DIG_T1_LSB_REG)));
   dig_T2 = ((int16_t)((BlowShield.readRegister(BMP280_DIG_T2_MSB_REG) << 8) + BlowShield.readRegister(BMP280_DIG_T2_LSB_REG)));
   dig_T3 = ((int16_t)((BlowShield.readRegister(BMP280_DIG_T3_MSB_REG) << 8) + BlowShield.readRegister(BMP280_DIG_T3_LSB_REG)));
@@ -142,7 +142,7 @@ void BlowClass::begin(void) {
 Wire.begin();
   BlowShield.begin_config();
   BlowShield.readCoefficients();
-  BlowShield.readTemperature();             //necesary for t_fine
+  BlowShield.readTemperature();             //necessary for t_fine
 delay(5000);
 }
 

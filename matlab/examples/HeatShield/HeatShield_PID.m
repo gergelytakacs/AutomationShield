@@ -6,7 +6,7 @@
 %   This example initializes the HeatShield device, then
 %   requests a step change of reference to 40 C. A pre/determined
 %   reference trajectory is divided according to total experiment
-%   length. The input to the cartridge is caluclated by an absolute
+%   length. The input to the cartridge is calculated by an absolute
 %   discrete PID controller in its ideal form. The inputs are saturated,
 %   no integral windup handling is provided. The example plots the live
 %   response. When the experiment is over, the data is saved to a file.
@@ -18,8 +18,8 @@
 % 
 %   Created by Gergely Takács. 
 %   Last update: 18.07.2019.
-  
-clc; clear all;                             % Clears screen and all variables
+
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 HeatShield=HeatShield;                      % Construct object from class
 HeatShield.begin();                         % Initialize shield

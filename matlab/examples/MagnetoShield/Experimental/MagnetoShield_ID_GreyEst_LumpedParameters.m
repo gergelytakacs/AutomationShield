@@ -1,7 +1,6 @@
 
   
-clc; clear all;                                 % Clears screen and all variables
-
+startScript;                                    % Clears screen and variables, except allows CI testing
 fixedInductance=0;                              % Fixed or distance dependent inductance?
                                                 % to mathematical model
 load('MagnetoShield_ID_Data');
@@ -58,11 +57,3 @@ Options.InitialState = 'estimate';              % Estimate initial condition
 model = greyest(dataf,sys,Options)
 
 compare(dataf,model)
-
-
-
-
-
-
-
-

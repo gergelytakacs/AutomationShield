@@ -16,7 +16,7 @@
 //   Attribution-NonCommercial 4.0 International License.
 //
 //   If you have found any use of this code, please cite our work in your
-//   academic publications, such as theses, conference articles or journal
+//   academic publications, such as thesis, conference articles or journal
 //   papers. A list of publications connected to the AutomationShield
 //   project is available at: 
 //   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -32,7 +32,7 @@
 
 #define MANUAL 0
 #define USE_KALMAN_FILTER 0           // Use Kalman filter. Kalman filtering only works if ARDUINO_ARCH_SAM = 1 (e.g. Arduino DUE)
-#define USE_DIFFERENTIATION 1         // Use differentiation to claculate speed
+#define USE_DIFFERENTIATION 1         // Use differentiation to calculate speed
 float R[]={14.0,13.0,14.0,15.0,14.0}; // Reference trajectory (pre-set)
   
 unsigned long k = 0;                  // Sample index

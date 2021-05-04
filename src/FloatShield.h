@@ -46,7 +46,7 @@
   #define FLOAT_AVPIN A1            // Pin for reading actuator voltage
 #endif
 
-#ifdef VL53L0X_h                    // If library for distance sensor was sucessfully included
+#ifdef VL53L0X_h                    // If library for distance sensor was successfully included
 
 class FloatClass {                                               // Class for FloatShield device
   public:
@@ -57,18 +57,18 @@ class FloatClass {                                               // Class for Fl
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
     float referenceReadAltitude(void);                           // Reference read altitude - returns potentiometer position in calibrated altitude range 0.0-324.0 (mm)
     float sensorRead(void);                                      // Sensor read - returns the altitude of the ball in tube in percentual range 0.0(ball is on the fan)-100.0(ball is on the tube ceiling)
-    float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in milimetres
-    float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in milimetres
+    float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in millimetres
+    float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in millimetres
     bool returnCalibrated(void);                                 // Returns calibration status, true if sensor was calibrated
-    float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
-    float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
-    float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
+    float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in millimetres
+    float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in millimetres
+    float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in millimetres
     #include "getGainLQ.inl"                                     // Include template function for calculating K gain for LQ control applications
     #include "getKalmanEstimate.inl"                             // Include template function for estimating internal states of linear SISO system (Kalman filter)
 #if SHIELDRELEASE == 2
     void actuatorWriteRPM(float);                                // Write actuator RPM - function takes input 0.0-17000.0 (RPM) and sets fan speed accordingly
     volatile unsigned int pulseCount;                            // Variable for storing the amount of pulses that were measured within set time interval
-    volatile bool pulseMeasured;                                 // Variable for storing information if pulse was sucessfully measured
+    volatile bool pulseMeasured;                                 // Variable for storing information if pulse was successfully measured
     void setSamplingPeriod(float);                               // Sets the sampling period used for accurate RPM calculation (default 25ms)
     float sensorReadRPM(void);                                   // Returns fan RPM calculated from hall sensor signal
 #elif  SHIELDRELEASE == 4                                  
@@ -77,15 +77,15 @@ class FloatClass {                                               // Class for Fl
 #endif
 
   private:
-    float _minDistance;                  // Variable for storing minimal distance measured by sensor in milimetres
-    float _maxDistance;                  // Variable for storing maximal distance measured by sensor in milimetres
-    float _range;                        // Variable for storing range of measured distances by sensor in milimetres
+    float _minDistance;                  // Variable for storing minimal distance measured by sensor in millimetres
+    float _maxDistance;                  // Variable for storing maximal distance measured by sensor in millimetres
+    float _range;                        // Variable for storing range of measured distances by sensor in millimetres
     bool _wasCalibrated;                 // Variable for storing calibration status
     float _referenceValue;               // Variable for storing potentiometer runner position as analog value 0.0-1023.0
     float _referencePercent;             // Variable for storing potentiometer runner position as percentual range 0.0-100.0
-    float _sensorValue;                  // Variable for storing measured distance by sensor in milimetres
+    float _sensorValue;                  // Variable for storing measured distance by sensor in millimetres
     float _sensorPercent;                // Variable for percentual altitude of the ball in the tube 0.0-100.0
-    float _ballAltitude;                 // Variable for altitude of the ball in tube in milimetres
+    float _ballAltitude;                 // Variable for altitude of the ball in tube in millimetres
 #if SHIELDRELEASE == 2
     float _rpm;                                                          // Variable for storing current value of fan rotations per minute
     float _samplingPeriod = 25.0;                                        // Variable for storing sampling period in milliseconds used for accurate RPM calculation (default 25ms)

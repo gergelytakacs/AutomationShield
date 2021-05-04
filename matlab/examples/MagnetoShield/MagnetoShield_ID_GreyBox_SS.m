@@ -27,7 +27,7 @@
 %   Last updated by: Jakub Mihalík
 %   Last update: 12.10.2020.
   
-clc; clear all;                                 % Clears screen and all variables
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 fixedInductance=0;                              % Fixed or distance dependent inductance?
                                                 % to mathematical model
@@ -152,5 +152,4 @@ if fixedInductance==0
  end
 
 
-save MagnetoShield_Models_Greybox_SS model      % Save plant model (mm)
-
+save('MagnetoShield_Models_Greybox_SS','model','y0','u0','i0','Ts')      % Save plant model (mm)

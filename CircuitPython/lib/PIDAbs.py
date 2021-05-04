@@ -11,7 +11,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   If you have found any use of this code, please cite our work in your
-  academic publications, such as theses, conference articles or journal
+  academic publications, such as thesis, conference articles or journal
   papers. A list of publications connected to the AutomationShield
   project is available at:
   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -32,7 +32,7 @@ class Settings_:
         self.Td = 0.0
         self.Ts = 0.0
         self.eSum = 0.0                  # Sum of the error for integral
-        self.e = [0.0, 0.0]              # List to stores curent and previous error
+        self.e = [0.0, 0.0]              # List to stores current and previous error
 
     def setKp(self,Kpin):            # Takes the proportional gain
         self.Kp = Kpin               # Stores the input argument in the global variable
@@ -49,7 +49,7 @@ class Settings_:
 Settings = Settings_()
 
 # Computes an absolute PID input
-def compute(err, saturationMin, saturationMax, antiWindupMin, antiWindupMax):           # Requres error, input saturation and intergral windup saturation                                                                      # Sets these as global variables
+def compute(err, saturationMin, saturationMax, antiWindupMin, antiWindupMax):           # Requires error, input saturation and integral windup saturation                                                                      # Sets these as global variables
     Settings.eSum = Settings.eSum + err                                                                   # Sum of errors for the integral (summation) part
     Settings.e[1] = err                                                                          # New error in position [1] (right)
     Settings.eSum = AutomationShield.constrainFloat((Settings.Kp * Settings.Ts / Settings.Ti )* Settings.eSum, antiWindupMin, antiWindupMax) / (Settings.Kp * Settings.Ts / Settings.Ti)        # Anti-windup by clamping

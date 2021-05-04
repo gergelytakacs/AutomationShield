@@ -11,7 +11,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   If you have found any use of this code, please cite our work in your
-  academic publications, such as theses, conference articles or journal
+  academic publications, such as thesis, conference articles or journal
   papers. A list of publications connected to the AutomationShield
   project is available at:
   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -31,7 +31,7 @@ ADCREF = 3.3                                # ADC reference voltage is only 3.3 
 ADCRES = const(65536)                       # Analog resolution of the Metro M4 is 16 bits
 ARES3V3 = ADCREF / ADCRES                   # Voltage per analog resolution level
 
-def mapFloat(x, in_min, in_max, out_min, out_max):                                      # same as Arudino map() but with floating point numbers
+def mapFloat(x, in_min, in_max, out_min, out_max):                                      # same as Arduino map() but with floating point numbers
     return ((x - in_min) * (out_max - out_min)) / ((in_max - in_min) + out_min)         # linear mapping, same as Arduino map()
 
 def baseConstrain(x, xmin, xmax):           # A simple constrain function, that can be called in constrain() and constrainFloat() to keep the similarity between the Arduino code
