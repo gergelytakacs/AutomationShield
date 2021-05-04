@@ -93,8 +93,8 @@ class FloatClass {                                               // Class for Fl
     float _pulseCountToRPM = 15000.0 / (_samplingPeriod * _nOfSamples);  // Variable for storing constant used to calculate RPM from number of pulses (default 100)
 #endif
 #if SHIELDRELEASE == 4
-    float _actuatorVoltage;               // Varaible for storing voltage measured at the output pin to actuator
-    float _actuatorVoltageADC;            // Varaible for storing RAW voltage measured at the output pin to actuator 0.0-1023.0
+    float _actuatorVoltage;               // Variable for storing voltage measured at the output pin to actuator
+    float _actuatorVoltageADC;            // Variable for storing RAW voltage measured at the output pin to actuator 0.0-1023.0
 #endif
 };
 
