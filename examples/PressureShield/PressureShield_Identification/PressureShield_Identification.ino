@@ -17,7 +17,7 @@
   Last update: 2.12.2020.
 */
 
-#include "PressureShield.h"     // Include the library
+#include <PressureShield.h>     // Include the library
 #include <Sampling.h>            // Include sampling
 
 #include "aprbsU.h"                    // Include aprbs sequence from .h file
@@ -57,15 +57,15 @@ void stepEnable(){              // ISR
   enable=true;                  // Change flag
 }
 
-// A signle algoritm step
+// A single algorithm step
 void step(){ 
 
- if(k>7200) {                                // If at end of trajectory
+ if(k>7200) {                                // If at end
         PressureShield.actuatorWrite(0.0);   // Turn off
         while(1);                            // Stop program execution
     } else {                                 // Otherwise
         
-      u=pgm_read_word(&aprbsU[k]); // Progress in trajectory from .h file
+      u=pgm_read_word(&aprbsU[k]); // Progress in pressure from .h file
     }
                   
 y = PressureShield.sensorRead();           // Read sensor 

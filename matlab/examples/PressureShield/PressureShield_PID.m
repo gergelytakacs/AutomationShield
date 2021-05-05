@@ -5,7 +5,7 @@
 %
 %   This example initializes the PressureShield device, then
 %   requests a step change of reference to 50 hPa. 
-%   The input to the pump is caluclated by an absolute
+%   The input to the pump is calculated by an absolute
 %   discrete PID controller in its ideal form. The inputs are saturated,
 %   no integral windup handling is provided. The example plots the live
 %   response. When the experiment is over, the data is saved to a file.

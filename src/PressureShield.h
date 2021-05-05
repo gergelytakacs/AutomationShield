@@ -77,7 +77,7 @@ class PressureClass {           // Class for PressureShield device
    // #include <getGainLQ.inl>                                     // Include template function for calculating K gain for LQ control applications
     #include <getKalmanEstimate.inl>                             // Include template function for estimating internal states of linear SISO system (Kalman filter)
     
-    // Sensor public funcions
+    // Sensor public functions
     void readCoefficients();
     void begin_config();
     void measure_config();
