@@ -17,7 +17,7 @@
 */
 
 #include "TugShield.h"             // Include the library
-#include "SamplingServo.h"         // Include sampling subsystem
+
 
 unsigned long Ts = 10;             // Sampling in milliseconds
 unsigned long k = 0;               // Sample index
