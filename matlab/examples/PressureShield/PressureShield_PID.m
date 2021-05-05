@@ -30,11 +30,11 @@ Td = 0.01;                                  % PID Derivative time constant
 umin = 0;                                   % Minimum input
 umax = 100;                                 % Maximum input
 
-R=[50 30 60 20 98];                         % [HPa] Overpressure closed-loop reference
-Ts = 1;                                     % [s] Sampling period
-runTime = 50;                               % [s] Total runtime
+R=[50 30 60 20 78];                         % [HPa] Overpressure closed-loop reference
+Ts = 0.01;                                     % [s] Sampling period
+runTime = 30;                               % [s] Total runtime
 
-secLength = (runTime/Ts)/length(R);         % Length of a reference trajectory section
+secLength = 100;         % Length of a reference trajectory section
 stepEnable = 0;                             % Algorithm step flag
 k = 1;                                      % Algorithm step counter
 j = 1;                                      % Reference section counter
@@ -53,26 +53,29 @@ while(1)                                             % Infinite loop
      % Pick reference
         if (mod(k,secLength*j)==0);         % If time for new reference 
             j=j+1;                          % Next reference section
+            if (j == 6)
+                j = 1;
+            end
             r=R(j);                         % Pick new reference    
         end
         
      % Compute PID
-        e = r-y                                                 % [HPa] Reference
+        e = r-y;                                                 % [HPa] Reference
         eSum = eSum+e;                                          % Integral
-        eSum = constrain((Kp*Ts/Ti)*eSum,umin,umax)/(Kp*Ts/Ti)  
+        eSum = constrain((Kp*Ts/Ti)*eSum,umin,umax)/(Kp*Ts/Ti);  
         u = double(Kp*(e+(Ts/Ti)*eSum+(Td/Ts)*(e-ep))); % PID 
         ep = e;                                                 % Data store
-        u = constrain(u,umin,umax)                              % Input saturation
+        u = constrain(u,umin,umax);                              % Input saturation
         
      % Write to hardware
         PressureShield.actuatorWrite(u);    % [%] Power
         response(k,:) = [r y u];            % Store results
-        plotLive(response(k,:));            % Live plot
+        %plotLive(response(k,:));            % Live plot
       
         k = k+1;                            % Next sample no.
         stepEnable = 0;                     % Disable step.
     end                                     % Step end
-    if (toc>=Ts*k)                          % If its time
+    if (toc<runTime)                          % If its time
         stepEnable = 1;                     % Enable the step
     elseif (toc>=runTime)                   % Experiment over
         PressureShield.actuatorWrite(0);    % Input off
@@ -81,3 +84,4 @@ while(1)                                             % Infinite loop
 end
 
 save response response                      % Data file with response
+plot(response)

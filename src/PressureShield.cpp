@@ -3,14 +3,15 @@
   The file is a part of the application programmers interface for
   the PressureShield didactic tool for control engineering and
   mechatronics education. The goal of this particular shield is 
-  to obtain and keep the required value of pressure in the vessel 
+  to obtain and keep the required value of pressure in the container 
   despite its leakage.Arduino shield.
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Martin Staroň, Anna Vargová, Eva Vargová and Martin Vričan.
-  Last update: 24.6.2020.
+  Created by Martin Staron, Anna Vargova and Martin Vrican.
+  Last update by Martin Staron
+  Last update: 5.5.2021.
 */
 
 #include "PressureShield.h"                      // Include header file
@@ -144,7 +145,7 @@ void PressureClass::begin(void) {
 Wire.begin();
   PressureShield.begin_config();
   PressureShield.readCoefficients();
-  PressureShield.readTemperature();       //potrebne pre t_fine
+  PressureShield.readTemperature();       //needed for t_fine
 delay(5000);
 }
 

@@ -10,12 +10,13 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   Created by Martin Staron.
-%   Last update: 26.4.2021.
+%   Last update: 4.5.2021.
 
 classdef PressureShield < handle
 
     properties(Access = public) 
         arduino;
+        dev;
     end
 
     properties(Constant)
@@ -26,8 +27,8 @@ classdef PressureShield < handle
     methods
         function begin(PressureShieldObject)        
             PressureShieldObject.arduino = arduino();
-            dev = device(PressureShieldObject.arduino,'I2CAddress','0x76');
-            BMP280Init(dev);
+            PressureShieldObject.dev = device(PressureShieldObject.arduino,'I2CAddress','0x76');
+            BMP280Init(PressureShieldObject.dev);
             disp('PressureShield initialized.')
         end
         
@@ -40,8 +41,7 @@ classdef PressureShield < handle
         end
         
         function y = sensorRead(PressureShieldObject)
-            dev = device(PressureShieldObject.arduino,'I2CAddress','0x76');
-            y = BMP280(dev);       
+            y = BMP280(PressureShieldObject.dev);       
         end
 
     end

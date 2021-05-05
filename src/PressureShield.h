@@ -3,14 +3,15 @@
   The file is a part of the application programmers interface for
   the PressureShield didactic tool for control engineering and
   mechatronics education. The goal of this particular shield is 
-  to obtain and keep the required value of pressure in the vessel 
+  to obtain and keep the required value of pressure in the container 
   despite its leakage.Arduino shield.
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Martin Staroň, Anna Vargová, Eva Vargová and Martin Vričan.
-  Last update: 24.6.2020.
+  Created by Martin Staron, Anna Vargova and Martin Vrican.
+  Last update by Martin Staron
+  Last update: 5.5.2021.
 */
 #ifndef PRESSURESHIELD_H_             // Include guard
 #define PRESSURESHIELD_H_
@@ -18,6 +19,7 @@
 #include <AutomationShield.h>      // Include the main library
 #include <Wire.h>                  // Include the I2C protocol library
 #include <Arduino.h>
+#include <lib/BasicLinearAlgebra/BasicLinearAlgebra.h>
 
 // Sensor definitions
 
@@ -54,7 +56,7 @@
 #endif
 
 
-// Defining pins used by the FloatShield board
+// Defining pins used by the PressureShield board
 #if SHIELDRELEASE == 1
   #define PRESSURE_UPIN 11              // Pump (Actuator)
   #define PRESSURE_RPIN A0              // Potentiometer runner (Reference)
@@ -72,6 +74,8 @@ class PressureClass {           // Class for PressureShield device
     void actuatorWrite(float);                                   // Write actuator - function takes input 0.0-100.0 and sets pump speed accordingly
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
     float sensorRead(void);                                      // Sensor read - returns the pressure in percentual range 0.0-100.0
+   // #include <getGainLQ.inl>                                     // Include template function for calculating K gain for LQ control applications
+    #include <getKalmanEstimate.inl>                             // Include template function for estimating internal states of linear SISO system (Kalman filter)
     
     // Sensor public funcions
     void readCoefficients();
@@ -82,9 +86,9 @@ class PressureClass {           // Class for PressureShield device
 
   private:
     // PressureShield private 
-    float _minPressure;                  // Variable for storing minimal distance measured by sensor in milimetres
-    float _maxPressure;                  // Variable for storing maximal distance measured by sensor in milimetres
-    float _sensorPercent;                // Variable for percentual altitude of the ball in the tube 0.0-100.0
+    float _minPressure;                  // Variable for storing minimal pressure measured by sensor in hPa
+    float _maxPressure;                  // Variable for storing maximal pressure measured by sensor in hPa
+    float _sensorPercent;                // Variable for percentual pressure in container 0.0-100.0
     bool _wasCalibrated;                 // Variable for storing calibration status
     
     // Sensor private
@@ -111,7 +115,7 @@ class PressureClass {           // Class for PressureShield device
     };
 
 
-    extern PressureClass PressureShield;           // Creation of external FloatClass object
+    extern PressureClass PressureShield;           // Creation of external PressureClass object
 
     
 #endif                                   // End of guard
