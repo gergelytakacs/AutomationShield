@@ -13,8 +13,8 @@
   Last update: 13.5.2019.
 */
 
-#ifndef TUGSHIELD_H_			// Include guard
-#define TUGSHIELD_H_			
+#ifndef TUGSHIELD_H			// Include guard
+#define TUGSHIELD_H			
 
 #include "Arduino.h"			// Required Arduino API in libraries
 #include "AutomationShield.h"
