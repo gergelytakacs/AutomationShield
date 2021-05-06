@@ -15,8 +15,8 @@
   Last update: 4.4.2020.
 */
 
-#ifndef FLOATSHIELD_H_             // Include guard
-#define FLOATSHIELD_H_
+#ifndef FLOATSHIELD_H             // Include guard
+#define FLOATSHIELD_H
 
 #include "AutomationShield.h"      // Include the main library
 #include <Wire.h>                  // Include the I2C protocol library
