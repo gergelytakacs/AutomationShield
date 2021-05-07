@@ -13,4 +13,16 @@ function installForMATLAB()
     addpath(genpath(thisdir));
     savepath
     disp('AutomationShield MATLAB API added to MATLAB path.')
+    if ~exist('tbxmanager','dir') % If the tbxmanager is not installed (checks directory)
+        disp('AutomationShield MATLAB API added to MATLAB path.')
+        mkdir('tbxmanager')
+        cd tbxmanager
+        urlwrite('http://www.tbxmanager.com/tbxmanager.m', 'tbxmanager.m');
+        tbxmanager
+        savepath
+        tbxmanager install mpt mptdoc cddmex fourier glpkmex hysdel lcp yalmip sedumi espresso
+        tbxmanager restorepath
+        mpt_init
+        cd ..
+    end
 end
