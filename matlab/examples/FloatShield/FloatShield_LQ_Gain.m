@@ -172,7 +172,9 @@ velFromEstimate = [diff(yEstimated), 0] ./ Ts;
 
 %% Plot test results
 % Plot figures as tabs in separate window
+if ~exist('CI_Testing','var') %If the script is not running on CI
 set(0,'DefaultFigureWindowStyle','docked');
+end
 
 % Plot the fit of model with data
 figure
