@@ -15,4 +15,3 @@ savepath
 disp('AutomationShield MATLAB API added to MATLAB path.')
 installMPT3; % Comment this line if you don't want to use the explicit MPC examples
 end
-end

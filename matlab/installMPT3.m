@@ -40,3 +40,4 @@ if ~exist('tbxmanager','dir') % If the tbxmanager is not installed (checks direc
     tbxmanager restorepath
     mpt_init
     cd ..
+end
