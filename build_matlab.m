@@ -7,6 +7,7 @@ clear;
 % There is a bunch of exceptions in the real CI, yet the process is not
 % stopped!
 % There are exceptions for "windowstyle docked" because there is no display
+% Magnetoshield requires MPT
 installMatlabAndSimulink
 
 pkgMATLAB = 0;
@@ -27,8 +28,9 @@ end
 testFailedCI = 0;               % Flag to tell if any test has failed
 cd matlab/examples/             % Move to examples folder
 
+%BOB? MAGNETO?
+exampleList = {'OptoShield','HeatShield','LinkShield','MotoShield','FloatShield'};
 
-exampleList = {'OptoShield','HeatShield','LinkShield','MotoShield','BoBShield','FloatShield','MagnetoShield'};
 testScripts(exampleList)                   % Finds and tests all scripts, excludes exceptions caused by lack of hardware packages or physical hardware
 
 if testFailedCI
@@ -48,8 +50,9 @@ for i=1:length(exampleList);
         if ~isfunction(file)
             try
                 pause('off')
+                warning('off')
                 CI_Testing = 'true'; %Passed to scripts to turn off clearing screen
-                fprintf(['*** Testing "',scr])
+                fprintf(['************************ Testing "',scr])
                 fprintf(['"...'])
                 run(scr) % All scripts, sans the file extensions
             catch exceptionCI
@@ -71,7 +74,7 @@ for i=1:length(exampleList);
                     fprintf(' WARNING: Not fully tested! ')
                 end
             end
-            fprintf('PASS.\n')
+            fprintf('************************ PASS.\n')
         end
     end
     cd .. % Switch to next directory
@@ -79,9 +82,9 @@ end
 end
 
 function failFunctionCI(exceptionCI)
-    fprintf('FAIL.\n')
+    fprintf('************************ FAIL.\n')
     exceptionCI
-    %rethrow(exceptionCI) % Only if you want to stop CI instantly on the first
+    rethrow(exceptionCI) % Only if you want to stop CI instantly on the first
     %error.
 end
 
