@@ -1,14 +1,14 @@
 startScript;                            % Clears screen and variables, except allows CI testing              
 
 Ts=0.01;
-load('myModel.mat')
-csystem=ss(model.A,model.B,model.C,model.D);
-%2nd order linear gray model, with no disturbance model, input in radians
-dsystem=c2d(csystem,Ts,'zoh');
-A=dsystem.A;
-B=dsystem.B;
-C=dsystem.C;
-D=dsystem.D;
+% load('myModel.mat')
+% csystem=ss(model.A,model.B,model.C,model.D);
+% %2nd order linear gray model, with no disturbance model, input in radians
+% dsystem=c2d(csystem,Ts,'zoh');
+% A=dsystem.A;
+% B=dsystem.B;
+% C=dsystem.C;
+% D=dsystem.D;
 
 
 %model from ..../SynologyDrive/Publications/EDUCON%202021%20BOBShield/Reading/modeling/Bolivar-Baez_2014.pdf
@@ -35,7 +35,7 @@ Q=eye(5);
 %penalizacna matica, zosilnenie;
 [K,P]= dlqr(A,B,Q,R);
 
-load('PID_ver2\dataPidAll.mat')
+load('PID_ver2/dataPidAll.mat')
 Um=dataAll(:,3);
 Ym=dataAll(:,2);
 Ref=dataAll(:,1); %reference
