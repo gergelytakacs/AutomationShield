@@ -20,7 +20,7 @@ function installForMATLAB()
         urlwrite('http://www.tbxmanager.com/tbxmanager.m', 'tbxmanager.m');
         tbxmanager
         savepath
-        tbxmanager install mpt mptdoc cddmex fourier glpkmex hysdel lcp yalmip sedumi espresso
+        tbxmanager install mpt mptdoc cddmex fourier glpkmex hysdel lcp sedumi espresso
         tbxmanager restorepath
         mpt_init
         cd ..
