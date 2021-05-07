@@ -108,7 +108,6 @@ header = {
 '  papers. A list of publications connected to the AutomationShield'
 '  project is available at:'
 '  https://github.com/gergelytakacs/AutomationShield/wiki/Publications'
-'
 '  This code is part of the AutomationShield hardware and software'
 '  ecosystem. Visit http://www.automationshield.com for more'
 '  details. This code is licensed under a Creative Commons'
