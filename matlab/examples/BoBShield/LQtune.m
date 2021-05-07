@@ -1,3 +1,4 @@
+function [R, X, U] = LQtune(x)
 %define LQR
 Ts=0.01;
 load('mymodel.mat')
@@ -64,18 +65,24 @@ for k=1:N
 %       end;
 %       
     XI = XI + (R(k)-Y(k)); % Integracia chyby
+    
+    Rout = R;
+    Xout = X;
+    Uout = U;
 end
 
 
+% 
+% figure(1)
+% subplot(211)
+% %plot(t,Xr(1,:),'b',t,Y2,'r',t,Y3,'g')
+% plot(t,R,'b',t,Y,'r')
+% title('Priebeh výstupu Y')
+% 
+% xlabel('Cas t (s)')
+% subplot(212)
+% plot(t,U,'r');
+% title('Priebeh vstupnej veliciny U')
+% xlabel('Cas t (s)')
 
-figure(1)
-subplot(211)
-%plot(t,Xr(1,:),'b',t,Y2,'r',t,Y3,'g')
-plot(t,R,'b',t,Y,'r')
-title('Priebeh výstupu Y')
-
-xlabel('Cas t (s)')
-subplot(212)
-plot(t,U,'r');
-title('Priebeh vstupnej veliciny U')
-xlabel('Cas t (s)')
+end
