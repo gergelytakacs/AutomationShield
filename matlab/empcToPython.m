@@ -26,7 +26,7 @@ global MPTOPTIONS
 % 
 %    Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) 
 %    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    
-%    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)
+%    Adapted for MCU use by Gergely Takacs in 2020 (gergely.takacs@stuba.sk)
 
  
 obj = obj.optimizer;            % Extract optimizer from object
