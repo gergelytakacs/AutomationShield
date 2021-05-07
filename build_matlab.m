@@ -30,7 +30,7 @@ cd matlab/examples/             % Move to examples folder
 
 %BOB? MAGNETO?
 %exampleList = {'OptoShield','HeatShield','LinkShield','MotoShield','FloatShield','MagnetoShield','BoBShield'};
-exampleList = {'BoBShield'}
+exampleList = {'PressureShield'}
 testScripts(exampleList)                   % Finds and tests all scripts, excludes exceptions caused by lack of hardware packages or physical hardware
 
 if testFailedCI
