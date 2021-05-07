@@ -40,7 +40,7 @@ if ~exist('tbxmanager','dir') % If the tbxmanager is not installed (checks direc
     fclose(fid);
     
     S = readlines('tbxmanager.m');
-    S{line} = 'Disabled for headless run.';    %file says -1 change it to 31419
+    S{line} = '% !!!Disabled for headless run.';    %file says -1 change it to 31419
     [fid, msg] = fopen('tbxmanager.m', 'w');
     if fid < 1;
         error('could not write output file because "%s"', msg);
