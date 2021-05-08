@@ -13,8 +13,8 @@
   Last update by Martin Staron
   Last update: 5.5.2021.
 */
-#ifndef PRESSURESHIELD_H_             // Include guard
-#define PRESSURESHIELD_H_
+#ifndef PRESSURESHIELD_H             // Include guard
+#define PRESSURESHIELD_H
 
 #include <AutomationShield.h>      // Include the main library
 #include <Wire.h>                  // Include the I2C protocol library

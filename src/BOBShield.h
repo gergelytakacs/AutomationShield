@@ -1,5 +1,5 @@
-#ifndef BOBSHIELD_H_
-#define BOBSHIELD_H_
+#ifndef BOBSHIELD_H
+#define BOBSHIELD_H
 
 #include <Wire.h>
 #include <Arduino.h>

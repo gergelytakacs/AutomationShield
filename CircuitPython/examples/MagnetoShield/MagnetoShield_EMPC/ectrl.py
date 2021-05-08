@@ -8,7 +8,7 @@
     in the MPT3.
 
     The following C code has been slightly adapted to perform microcontroller
-    architecutre-specific changes for AVR and ARM Cortex-A devices.
+    architecture-specific changes for AVR and ARM Cortex-A devices.
 
     The list of changes from the original are as follows:
     - Changed "static" modifiers to "const" so microcontrollers will

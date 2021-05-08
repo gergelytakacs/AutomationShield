@@ -26,11 +26,11 @@
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM51 Timer:   Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 29.4.2021.
+  Last update: 29.4.2021 by Martin Vrican
 */
 
-#ifndef SAMPLING_H_
-#define SAMPLING_H_
+#ifndef SAMPLINGCORE_H
+#define SAMPLINGCORE_H
 
 #include "Arduino.h"
 

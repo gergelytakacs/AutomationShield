@@ -14,8 +14,8 @@
   Last update: 28.09.2018.
 */
 
-#ifndef OPTOSHIELD_H_                // Include guard
-#define OPTOSHIELD_H_
+#ifndef OPTOSHIELD_H                // Include guard
+#define OPTOSHIELD_H
 
 #include "AutomationShield.h"        // Include the main library
 

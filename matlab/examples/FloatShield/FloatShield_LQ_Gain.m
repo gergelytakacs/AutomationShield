@@ -172,7 +172,9 @@ velFromEstimate = [diff(yEstimated), 0] ./ Ts;
 
 %% Plot test results
 % Plot figures as tabs in separate window
-set(0,'DefaultFigureWindowStyle','docked');
+if ~exist('CI_Testing','var') %If the script is not running on CI
+    set(0,'DefaultFigureWindowStyle','docked');
+end
 
 % Plot the fit of model with data
 figure
@@ -235,7 +237,9 @@ title('Air velocity estimated by Kalman filter')
 grid on
 
 % Plot figures normally
-set(0,'DefaultFigureWindowStyle','normal');
+if ~exist('CI_Testing','var') %If the script is not running on CI
+    set(0,'DefaultFigureWindowStyle','normal');
+end
 
 return % Comment this line out if the model is satisfactory for Arduino
 

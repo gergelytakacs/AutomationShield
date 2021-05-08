@@ -24,7 +24,7 @@ Q=diag([1e3, 1, 1e-6]);
 
 K 
 %load measurede data
-load('PID_ver2\dataPidAll.mat')
+load('dataPidAll.mat')
 Um=dataAll(:,3);
 Ym=dataAll(:,2);
 Ref=dataAll(:,1); %reference

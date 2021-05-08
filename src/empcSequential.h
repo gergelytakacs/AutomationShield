@@ -29,6 +29,8 @@
    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)
 */ 
 
+#ifndef EMPCSEQUENTIAL_H                     //Include guard
+#define EMPCSEQUENTIAL_H
 
 /* main evaluation function using sequential search */
 void empcSequential( float *X, float *U){
@@ -99,3 +101,5 @@ void empcSequential( float *X, float *U){
     }	
 	#endif	
 }
+
+#endif

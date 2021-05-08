@@ -30,7 +30,8 @@ classdef FloatShield < handle             % FloatShield class definition
 
     methods(Access = public)                                                            % Public class functions
 
-        function begin(FloatShieldObject, aPort, aBoard)                                % Initialisation function
+        function begin(FloatShieldObject, aPort, aBoard) % Initialisation function
+            controlledFailCI(); %Bums out for CI earlier than below!
             listOfLibraries = listArduinoLibraries();                                   % List of available arduino libraries
             libraryIsPresent = sum(ismember(listOfLibraries,'Pololu/Pololu_VL53L0X'));  % Check if required library is present
             if ~libraryIsPresent                                                        % If not, throw an error

@@ -23,19 +23,19 @@ TET=toc;
 
 
 x
-fval
-exitflag
-output
+Fval
+exitFlag
+Output
 
 
 
 %options.InitialPopulationRange = [-1 0; 1 2]; e.g. defines a range
 %options.FunctionTolerance.  % Function tolerance for stopping
 
-
-
-x
-Fval
-exot
-Output.generation
-SEED = Output.rngstate.State;
+% 
+% 
+% x
+% Fval
+% exot
+% Output.generation
+% SEED = Output.rngstate.State;

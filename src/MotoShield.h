@@ -14,8 +14,8 @@
   Created by Ján Boldocký.
   Last update: 23.4.2020.
 */
-#ifndef MOTOSHIELD_H_ //--don't define if its already defined
-#define MOTOSHIELD_H_
+#ifndef MOTOSHIELD_H //--don't define if its already defined
+#define MOTOSHIELD_H
 #include "Arduino.h"    //--including basic Arduino library
 #include "AutomationShield.h"
 #include"Sampling.h"
