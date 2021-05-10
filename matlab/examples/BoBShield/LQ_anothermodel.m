@@ -34,8 +34,7 @@ Q=eye(5);
 %Q=diag([1e8, 0, 1]); %Q=diag([1e3, 1, 1e-6]);
 %penalizacna matica, zosilnenie;
 [K,P]= dlqr(A,B,Q,R);
-
-load('PID_ver2\dataPidAll.mat')
+load('dataPidAll.mat')
 Um=dataAll(:,3);
 Ym=dataAll(:,2);
 Ref=dataAll(:,1); %reference

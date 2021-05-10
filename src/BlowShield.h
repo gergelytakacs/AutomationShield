@@ -12,8 +12,8 @@
   Created by Martin Staroň, Anna Vargová, Eva Vargová and Martin Vričan.
   Last update: 24.6.2020.
 */
-#ifndef BLOWSHIELD_H_             // Include guard
-#define BLOWSHIELD_H_
+#ifndef BLOWSHIELD_H             // Include guard
+#define BLOWSHIELD_H
 
 #include <AutomationShield.h>      // Include the main library
 #include <Wire.h>                  // Include the I2C protocol library

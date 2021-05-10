@@ -32,7 +32,7 @@ Takács
 al
 analogin
 analogio
-architecutre
+architecture
 automationshield
 automationshield
 baseConstrain

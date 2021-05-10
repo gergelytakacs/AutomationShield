@@ -13,7 +13,7 @@ matrix:
   - pyspelling.filters.python:
     comments: true
     docstrings: true
-    group_comments: false
+    group_comments: true
     decode_escapes: true
     strings: false
     string_types: fu

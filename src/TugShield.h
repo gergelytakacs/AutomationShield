@@ -13,8 +13,8 @@
   Last update: 5.5.2021.
 */
 
-#ifndef TUGSHIELD_H_			// Include guard
-#define TUGSHIELD_H_			
+#ifndef TUGSHIELD_H			// Include guard
+#define TUGSHIELD_H			
 
 #include <Arduino.h>                
 #include <Servo.h>
