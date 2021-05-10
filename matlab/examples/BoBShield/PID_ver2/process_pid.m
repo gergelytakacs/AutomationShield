@@ -1,3 +1,4 @@
+function process_pid()
 startScript;                            % Clears screen and variables, except allows CI testing              
 %get data
 load('dataPidAll.mat')
@@ -72,7 +73,7 @@ set(gcf, 'PaperUnits', 'centimeters');
 set(gcf, 'PaperSize', [4 6]);
 
 set(gcf, 'Units', 'centimeters', 'Position', [0, 2, width, height], 'PaperUnits', 'centimeters', 'PaperSize', [width, height])
-
+end
 %%
 saveas(gcf,fname,'epsc')
 saveas(gcf,fname,'jpeg')

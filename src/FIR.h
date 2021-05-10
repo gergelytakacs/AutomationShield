@@ -21,8 +21,8 @@
 // - N is the filter order
 // - B is an array containing filter coefficints b(0), b(1), b(2), ..., b(N-1)
 
-#ifndef FIR_H_
-#define FIR_H_
+#ifndef FIR_H
+#define FIR_H
 
  class FIR{ 
 	public:
