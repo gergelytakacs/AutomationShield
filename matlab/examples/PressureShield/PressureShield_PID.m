@@ -18,21 +18,21 @@
 %   Created by Martin Staron.
 %   Last update: 26.4.2021.
   
-clc; clear all; close all;                            
+startScript;                          
 
 PressureShield = PressureShield;            % Construct object from class
 PressureShield.begin();                     % Initialize shield
 
-Kp = 3;                                     % PID Gain
+Kp = 0.9;                                     % PID Gain
 Ti = 1;                                     % PID Integral time constant
-Td = 0.01;                                  % PID Derivative time constant
+Td = 0.1;                                  % PID Derivative time constant
                                    
 umin = 0;                                   % Minimum input
 umax = 100;                                 % Maximum input
 
-R=[50 30 60 20 78];                         % [HPa] Overpressure closed-loop reference
-Ts = 0.01;                                     % [s] Sampling period
-runTime = 30;                               % [s] Total runtime
+R=[60 40 70 50 80];                         % [HPa] Overpressure closed-loop reference
+Ts = 0.1;                                     % [s] Sampling period
+runTime = 75;                               % [s] Total runtime
 
 secLength = 100;         % Length of a reference trajectory section
 stepEnable = 0;                             % Algorithm step flag

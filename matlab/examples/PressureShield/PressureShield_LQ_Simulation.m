@@ -1,4 +1,4 @@
-clear all; close all; clc;
+startScript;
 
 Ts=0.01;        %sampling period
 
@@ -18,7 +18,7 @@ D=dsystem.D
  
 %penalization matrices
 R=100000;
-Q=diag([0.001 0.01 10]);
+Q=diag([10 10 7]);
 
 [K, P]= dlqr(AI,BI,Q,R);    %LQ gain calculation
 
@@ -50,7 +50,7 @@ for k=1:N
     Y(:,k)=C*X(:,k);
     XI = XI + (R(k)-Y(k)); 
 end
-
+K
 figure(1)
 subplot(211)
 
