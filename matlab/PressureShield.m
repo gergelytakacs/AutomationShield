@@ -33,7 +33,8 @@ classdef PressureShield < handle
         end
         
         function actuatorWrite(PressureShieldObject, percent)
-            writePWMDutyCycle(PressureShieldObject.arduino, PressureShieldObject.Pressure_UPIN, (percent/100));
+            input = single(percent);
+            writePWMDutyCycle(PressureShieldObject.arduino, PressureShieldObject.Pressure_UPIN, (input/100));
         end
         
         function reference = referenceRead(PressureShieldObject)

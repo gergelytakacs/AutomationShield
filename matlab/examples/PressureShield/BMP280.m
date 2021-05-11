@@ -11,12 +11,9 @@
 
 function y = BMP280(dev)
 persistent i;
-global dig_T1 dig_T2 dig_T3 dig_P1 dig_P2 dig_P3 dig_P4 dig_P5 dig_P6 dig_P7 dig_P8 dig_P9 adc_t t_fine;
-if (isempty(i))
-    i = 1
-end
+global dig_P7 dig_P8 dig_P9 adc_t t_fine var1x var2x;
         
-if (i==1)
+if (isempty(i))
    
             UT_MSB = readRegister(dev,'FA','uint8');
             UT_LSB = readRegister(dev,'FB','uint8');
@@ -116,7 +113,14 @@ if (i==1)
             var_2 = (((adc_t)/131072-(dig_T1)/8192)*((adc_t)/131072-(dig_T1)/8192))*(dig_T3);
             t_fine = var_1 + var_2;
 
-            i=2
+            i=1;
+            
+            var1 = (t_fine/2)-64000;
+            var2 = var1*var1*dig_P6/32768;
+            var2 = var2+var1*dig_P5*2;
+            var2x = (var2/4)+(dig_P4*65536);       
+            var1 = (dig_P3*var1*var1/524288+dig_P2*var1)/524288;
+            var1x = (1+var1/32768)*dig_P1;
 end       
 
             UP_MSB = readRegister(dev,'F7','uint8');
@@ -129,14 +133,8 @@ end
             bitsP = [UP_MSBbit UP_LSBbit UP_XLSBbit];
             adc_p = bi2de(bitsP,'left-msb');
             
-            var1 = (t_fine/2)-64000;
-            var2 = var1*var1*dig_P6/32768;
-            var2 = var2+var1*dig_P5*2;
-            var2 = (var2/4)+(dig_P4*65536);       
-            var1 = (dig_P3*var1*var1/524288+dig_P2*var1)/524288;
-            var1 = (1+var1/32768)*dig_P1;
             p = 1048576-adc_p;
-            p = (p-(var2/4096))*6250/var1;
+            p = (p-(var2x/4096))*6250/var1x;
             var1 = dig_P9*p*p/2147483648;
             var2 = p*dig_P8/32768;
             y = int32((p+(var1+var2+dig_P7)/16));
