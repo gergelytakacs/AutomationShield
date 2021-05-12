@@ -17,6 +17,7 @@
 */
 
 #include "TugShield.h"             // Include the library
+#include "SamplingServo.h"
 
 float y = 0.0;                    // Output
 int i = 0;                        // Section counter

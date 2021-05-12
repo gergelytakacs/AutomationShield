@@ -19,7 +19,6 @@
 #include <Arduino.h>                
 #include <Servo.h>
 #include "AutomationShield.h"
-#include "Sampling.h"
 #include "PID.h"
 #include "PIDAbs.h"
 #include "PIDInc.h"
