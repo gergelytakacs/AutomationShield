@@ -1,6 +1,7 @@
+function [R, X, U] = LQtune(x)
 %define LQR
 Ts=0.01;
-load('mymodel.mat')
+load('myModel.mat')
 csystem=ss(model.A,model.B,model.C,model.D);
 %ssest, so sumom alebo bez, ale rovnako v simulacii ako v modeli. 
 %fok vagy radian? 
@@ -23,7 +24,7 @@ Q=diag([ x(2), x(3), x(4)]);
 [K,P]= dlqr(AI,BI,Q,R);
  
 %load measurede data
-load('PID_ver2\dataPidAll.mat')
+load('dataPidAll.mat')
 Um=dataAll(:,3);
 Ym=dataAll(:,2);
 Ref=dataAll(:,1); %reference
@@ -64,18 +65,24 @@ for k=1:N
 %       end;
 %       
     XI = XI + (R(k)-Y(k)); % Integracia chyby
+    
+    Rout = R;
+    Xout = X;
+    Uout = U;
 end
 
 
+% 
+% figure(1)
+% subplot(211)
+% %plot(t,Xr(1,:),'b',t,Y2,'r',t,Y3,'g')
+% plot(t,R,'b',t,Y,'r')
+% title('Priebeh výstupu Y')
+% 
+% xlabel('Cas t (s)')
+% subplot(212)
+% plot(t,U,'r');
+% title('Priebeh vstupnej veliciny U')
+% xlabel('Cas t (s)')
 
-figure(1)
-subplot(211)
-%plot(t,Xr(1,:),'b',t,Y2,'r',t,Y3,'g')
-plot(t,R,'b',t,Y,'r')
-title('Priebeh výstupu Y')
-
-xlabel('Cas t (s)')
-subplot(212)
-plot(t,U,'r');
-title('Priebeh vstupnej veliciny U')
-xlabel('Cas t (s)')
+end
