@@ -36,7 +36,8 @@ classdef TugShield < handle
 
     methods
         function begin(TugShieldObject,aPort, aBoard)                                     % Initialization function
-            listOfLibraries = listArduinoLibraries();                       % List of available arduino libraries
+            controlledFailCI(); %Bums out for CI earlier than below!
+            listOfLibraries = listArduinoLibraries();                          
             libraryIsPresent = sum(ismember(listOfLibraries,'Servo'));      % Check if required library is present
             if ~libraryIsPresent                                            % If not, throw an error
                 error('Servo library was not detected by MATLAB! Use listArduinoLibraries() command to verify its presence.')                
