@@ -1,6 +1,6 @@
 clc; clear;
 
-libNames={'AutomationShield','FloatLibrary','HeatLibrary','OptoLibrary'};
+libNames={'AutomationShield','FloatLibrary','HeatLibrary','OptoLibrary','TugLibrary'};
 exNames={'OptoShield_InputsOutputs','OptoShield_PID_Control','OptoShield_Pulse_Identification','HeatShield_ID_Test','HeatShield_InputsOutputs','HeatShield_PID','HeatShield_PID_Simulate'};
 versions=[];
 

@@ -1,12 +1,10 @@
-%   TugShield closed-loop PID response example
+%   TugShield Identification example
 %
-%   PID feedback control of flex sensor in the TugShield.
+%   Flex sensor feedback in the TugShield.
 %
-%   This example initialises and calibrates the board then lifts
-%   the ball off the ground and starts PID control using predefined
-%   reference trajectory. At the end of trajectory the results
-%   are stored in 'responsePID.mat' file and are shown on the figure
-%   on the screen.
+%   This example initialises and calibrates the board then set 
+%   servo to 8 diferent position and watch the response of flexi
+%   senzor.
 %
 %   This code is part of the AutomationShield hardware and software
 %   ecosystem. Visit http://www.automationshield.com for more
@@ -21,7 +19,6 @@ startScript;
 TugShield = TugShield;          % Create TugShield object from TugShield class
 TugShield.begin('COM5', 'UNO'); % Initialise shield with used Port and Board type
 TugShield.calibrate();          % Calibrate TugShield
-PID = PID;                      % Create PID object from PID class
 
 Ts = 0.05;                        % Sampling period in seconds
 k = 1;                            % Algorithm step counter
@@ -29,13 +26,8 @@ nextStep = 0;                     % Algorithm step flag
 samplingViolation = 0;            % Sampling violation flag
 
 R = [20, 50, 15, 90, 60, 120, 75, 180, 40, 80]; % Reference trajectory
-T = 40;                                     % Section length
+T = 40;                                         % Section length
 n = length(R);
-
-Kp = 0.25;                          % PID Gain
-Ti = 5.0;                           % PID Integral time constant
-Td = 0.01;                          % PID Derivative time constant
-PID.setParameters(Kp, Ti, Td, Ts);  % Feed the constants to PID object 
 
 tic                                          % Start measuring time
 while (1)                                    % Infinite loop
@@ -46,12 +38,10 @@ while (1)                                    % Infinite loop
                 TugShield.actuatorWrite(0.0);
                 break                        % Stop the program execution
             end
-            r = R(i);                        % Progress in trajectory  
+            u = R(i);                        % Progress in trajectory  
         end
         y = TugShield.sensorRead();            % Read ball position
-        u = PID.compute(r-y, 0, 100, 0, 100);  % Compute PID response
-        TugShield.actuatorWrite(u);            % Actuate
-        response(k, :) = [r, y, u];            % Store results
+        response(k, :) = [u, y];               % Store results
         k = k + 1;                             % Increment step counter
         nextStep = 0;                          % Disable step flag
     end                                        % Step end
@@ -71,3 +61,5 @@ response = response(1:k-1, :);                    % Remove unused space
 save responsePID response                         % Save results in responsePID.mat file
 disp('The example finished its trajectory. Results have been saved to "responsePID.mat" file.')
 plotResults('responsePID.mat')                    % Plot results from responsePID.mat file
+
+

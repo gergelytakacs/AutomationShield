@@ -20,8 +20,8 @@
   Last update: 6.5.2019.
 */
 
-#include "TugShield.h"              // Include the library
-#include "SamplingServo.h"               // Include sampling subsystem
+#include "TugShield.h"                  // Include the library
+#include "SamplingServo.h"              // Include sampling subsystem
 
 unsigned long Ts = 5;               // Sampling in milliseconds
 unsigned long k = 0;                // Sample index
@@ -57,13 +57,13 @@ void setup() {
 // Main loop launches a single step at each enable time
 void loop() {
   if (nextStep) {               // If ISR enables
-    step();                 // Algorithm step
-    nextStep=false;               // Then disable
+    step();                     // Algorithm step
+    nextStep=false;             // Then disable
   }  
 }
 
 void stepEnable(){              // ISR 
-  nextStep=true;                  // Change flag
+  nextStep=true;                // Change flag
 }
 
 // A single algorithm step
@@ -77,14 +77,14 @@ if (k % (T*i) == 0){
                   
 
 u = PIDAbs.compute(r-y,0,180,0,100);   // PID
-TugShield.actuatorWrite((int)u);           // Actuate
-y = TugShield.sensorRead();           // Read sensor 
+TugShield.actuatorWrite((int)u);       // Actuate
+y = TugShield.sensorRead();            // Read sensor 
 
 Serial.print(r);            // Print reference
 Serial.print(", ");            
 Serial.print(y);            // Print output  
 Serial.print(", ");
-Serial.println(u);            // Print input
-k++;                  // Increment k
+Serial.println(u);          // Print input
+k++;                        // Increment k
 
 }

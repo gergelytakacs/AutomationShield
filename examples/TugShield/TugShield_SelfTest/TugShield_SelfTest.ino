@@ -13,7 +13,7 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
   Created by Eva Vargova and Gergely Takacs. 
-  Last update: 6.5.2019.
+  Last update: 16.5.2021.
 */
 
 #include "TugShield.h"             // Include the library
@@ -28,33 +28,33 @@ void setup()
   TugShield.begin();               // Define hardware pins
   TugShield.calibration();         // Initialize and calibrate board
   delay(100);
-  Serial.println("Testovanie flexi snímača...poloha serva: 0 ");
+  Serial.println("Flex sensor test...servo position: 0");
   TugShield.actuatorWrite(0);
   delay(500);
   y = TugShield.sensorRead();
   if (y >= 0.0 && y <= 15.0)
   {
-    Serial.println(" V poriadku.");
+    Serial.println("The values of flex sensor are OK");
     Serial.println(y);
   }
   else 
   {
-    Serial.println(" Nevyhovuje.");
+    Serial.println("The values of flex sensor are NOK");
     Serial.println(y);
   }
   delay(1000);
-  Serial.println("Testovanie flexi snímača...poloha serva: 180");
+  Serial.println("Flex sensor test...servo position: 180");
   TugShield.actuatorWrite(180);
   delay(500);
   y = TugShield.sensorRead();
   if (y >= 85.0 && y <= 100.0) 
   {
-    Serial.println(" V poriadku.");
+    Serial.println("The values of flex sensor are OK");
     Serial.println(y);
   }
   else 
   {
-    Serial.println(" Nevyhovuje.");
+    Serial.println("The values of flex sensor are NOK");
     Serial.println(y);
   }
 }
