@@ -68,9 +68,6 @@ if (MS==1) {                                    // If Automatic mode is active
   PressureShield.getKalmanEstimate(X, u, y, A, B, C, Q_Kalman, R_Kalman);    // Estimate internal states X
   X(2) = X(2) + (Xr(0) - X(0) - Xr(0)*0.35);
   u = -(K * (X - Xr))(0);                                                    // Calculate LQ system input
-  if (u <= 0){
-    u = 0;
-  }
   PressureShield.actuatorWrite(u);                                           // Actuate
   
  Serial.print(Xr(0));       // Print reference
