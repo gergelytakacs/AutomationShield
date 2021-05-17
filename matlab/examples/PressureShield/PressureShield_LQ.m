@@ -28,8 +28,8 @@ nextStep = 0;                       % Algorithm step flag
 samplingViolation = 0;              % Sampling violation flag
 init = PressureShield.sensorRead();
 
-Ref = [50 55 60 45 35 30 40 50 55 65]; % Reference overpressure in hPa
-T = 320;                            % Section length
+Ref = [50 70 40 60 80 60 30 70 60 50]; % Reference overpressure in hPa
+T = 160;                            % Section length
 i = 0;                              % Section counter
 response = zeros(length(Ref)*T, 3); % Preallocate output variable
 
@@ -70,14 +70,13 @@ while (1)                           % Infinite loop
         PressureShield.actuatorWrite(u);           % Actuate
 
         X(1:2) = estimateKalmanState(u, y, matA, matB, matC, Q_kalman, R_kalman);
-        X(3) = X(3) + (Xr(1) - X(1) - Xr(1)*0.35);     
+        X(3) = X(3) + (Xr(1) - X(1) - Xr(1)*0.36);     
         response(k, :) = [Xr(1), y, u];         % Store results
         k = k + 1;                              % Increment step counter
         nextStep = 0;                           % Disable step flag
     end                                         % Step end
     
-            if (toc>=1600)
-            disp('Sampling violation has occured.')
+            if (toc>=800)
              samplingViolation = 1   % Set sampling violation flag            
              PressureShield.actuatorWrite(0);
              break                   % Stop program if they do overlap
@@ -85,5 +84,5 @@ while (1)                           % Infinite loop
         nextStep = 1;               % Enable step flag
 end
 response = response(1:k-1, :);      % Remove unused space
-save responseLQ response            % Save results in responseLQ.mat file
+save responseLQ response           % Save results in responseLQ.mat file
 plotResults('responseLQ.mat')       % Plot results from responseLQ.mat file

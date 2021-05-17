@@ -5,7 +5,7 @@ Ts=0.01;        %sampling period
 load('Reference.mat')  
 load('BlackBoxModel.mat')
 
-dsystem=dsys6;
+dsystem=disSystem2;
 A=dsystem.A;
 B=dsystem.B;
 C=dsystem.C;
@@ -17,8 +17,8 @@ D=dsystem.D
  CI = [C, 0];
  
 %penalization matrices
-R=100000;
-Q=diag([10 10 7]);
+R=100;
+Q=diag([1 10 0.01]);
 
 [K, P]= dlqr(AI,BI,Q,R);    %LQ gain calculation
 
