@@ -55,7 +55,7 @@ void TugShieldClass::begin()
 {  												
     servo.attach(TUG_UPIN);						// Servo pin setting
 	servo.write(SERVO_MIN_FLEX);				// Set the servo position to zero
-	analogReference(EXTERNAL);	
+
 }
 
 // Calibration
