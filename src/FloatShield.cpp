@@ -19,7 +19,6 @@
 
 #ifdef VL53L0X_h                 // If library for distance sensor was successfully included
 
-
 #if SHIELDRELEASE == 2           // For hardware release version 2  
   void hallPeriodCounter(void) {                                  // Interrupt routine on external interrupt pin 1
     FloatShield.pulseCount++;                                     // Increment the pulse counter
