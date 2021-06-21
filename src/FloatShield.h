@@ -58,12 +58,12 @@ class FloatClass {                                               // Class for Fl
     float referenceReadAltitude(void);                           // Reference read altitude - returns potentiometer position in calibrated altitude range 0.0-324.0 (mm)
     float sensorRead(void);                                      // Sensor read - returns the altitude of the ball in tube in percentual range 0.0(ball is on the fan)-100.0(ball is on the tube ceiling)
 <<<<<<< HEAD
-    float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in milimetres
-    float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in milimetres
+    float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in millimetres
+    float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in millimetres
     bool wasCalibrated(void);                                    // Returns calibration status, true if sensor was calibrated
-    float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
-    float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
-    float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
+    float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in millimetres
+    float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in millimetres
+    float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in millimetres
 =======
     float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in millimetres
     float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in millimetres

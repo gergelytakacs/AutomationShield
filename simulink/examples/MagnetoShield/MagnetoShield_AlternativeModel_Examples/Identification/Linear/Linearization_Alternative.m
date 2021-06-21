@@ -1,6 +1,6 @@
 %   MAGNETOSHIELD Linearization "Alternative"
 %
-%   This example shows a symbolic linearization preocess of the non-linear 
+%   This example shows a symbolic linearization process of the non-linear 
 %   "alternative" model described by differential equations [dx1 dx2 dx3]'.
 %   It results in LTI statespace model represented by symbolic matrices A 
 %   and B.
