@@ -197,7 +197,7 @@ static void mdlSetDefaultPortDimensionInfo(SimStruct *S)
 
 /* Function: mdlInitializeSampleTimes =========================================
  * Abstract:
- *    Specifiy  the sample time.
+ *    Specify  the sample time.
  */
 static void mdlInitializeSampleTimes(SimStruct *S)
 {

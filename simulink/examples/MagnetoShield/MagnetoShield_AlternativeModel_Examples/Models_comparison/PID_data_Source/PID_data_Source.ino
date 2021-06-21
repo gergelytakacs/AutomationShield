@@ -69,7 +69,7 @@ void stepEnable(){                      // ISR
   enable=true;                          // Change flag
 }
 
-// A single algoritm step
+// A single algorithm step
 void step(){ 
 
 // Reference source

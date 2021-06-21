@@ -1,6 +1,6 @@
 %   Comparison of two designed models of MagnetoShield
 %
-%   This script is used as comparison of two designed consepts, how to
+%   This script is used as comparison of two designed concepts, how to
 %   think about MagnetoShield in the terms of a linear state-space model.
 %   It compares "Alternative model", what is a concept based on Jakub
 %   Mihalik's final thesis with the "original model" proposed in the

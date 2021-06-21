@@ -4,7 +4,7 @@
 %   and default properties can be changed via this script.
 %   This example reads the linearized alternative model of the MagnetoShield 
 %   device, then expands it with an integrator and then computes 
-%   Pole-placement gain based on choosen poles. For computation the 
+%   Pole-placement gain based on chosen poles. For computation the 
 %   Ackermann's formula was used. For estimation of the states is used 
 %   Luenberger's observerand suitable form of Ackermann's formula was 
 %   applied as well. Consequently are the model properties as stability, 
@@ -48,14 +48,14 @@ sysi = ss(Ai,Bi,Ci,Di,Ts);
 
 % Poles-placement of the observer
 polesL = [0.003 0.0006715 0.00003715];
-p = poly(polesL);                           % polynomial coeficients
+p = poly(polesL);                           % polynomial coefficients
 I = eye(size(A));
 phy = p(4)*I+p(3)*A+p(2)*A^2+A^3;           % characteristic polynomial
 L = phy*inv([C; C*A; C*A^2])*[0 0 1]';      % Ackermann's formula for gain L
 
 % Pole-placement of the poles of the augmented system
 polesK = [0.9291 0.906 0.8353 0.945];        
-p = poly(polesK);                               % polynomial coeficients
+p = poly(polesK);                               % polynomial coefficients
 I = eye(size(Ai));
 phy = p(5)*I+p(4)*Ai+p(3)*Ai^2+p(2)*Ai^3+Ai^4;  % characteristic polynomial
 K = [0 0 0 1]*inv([Bi Ai*Bi Ai^2*Bi Ai^3*Bi])*phy % Ackermann's formula for gain K

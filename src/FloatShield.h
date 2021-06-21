@@ -12,8 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács, Peter Chmurčiak and Erik Mikuláš.
-  Last update: 6.21.2021.
-
+  Last update: 2.12.2020.
 */
 
 #ifndef FLOATSHIELD_H             // Include guard
@@ -58,13 +57,21 @@ class FloatClass {                                               // Class for Fl
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
     float referenceReadAltitude(void);                           // Reference read altitude - returns potentiometer position in calibrated altitude range 0.0-324.0 (mm)
     float sensorRead(void);                                      // Sensor read - returns the altitude of the ball in tube in percentual range 0.0(ball is on the fan)-100.0(ball is on the tube ceiling)
+<<<<<<< HEAD
+    float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in milimetres
+    float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in milimetres
+    bool wasCalibrated(void);                                    // Returns calibration status, true if sensor was calibrated
+    float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in milimetres
+    float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in milimetres
+    float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in milimetres
+=======
     float sensorReadAltitude(void);                              // Sensor read altitude - returns the altitude of the ball in tube in millimetres
     float sensorReadDistance(void);                              // Sensor read distance - returns raw reading of distance between sensor and ball in millimetres
     bool returnCalibrated(void);                                 // Returns calibration status, true if sensor was calibrated
     float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in millimetres
     float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in millimetres
     float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in millimetres
-
+>>>>>>> master
     #include "getGainLQ.inl"                                     // Include template function for calculating K gain for LQ control applications
     #include "getKalmanEstimate.inl"                             // Include template function for estimating internal states of linear SISO system (Kalman filter)
 #if SHIELDRELEASE == 2

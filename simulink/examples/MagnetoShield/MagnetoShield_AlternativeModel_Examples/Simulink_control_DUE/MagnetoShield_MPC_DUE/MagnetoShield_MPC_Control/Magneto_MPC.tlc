@@ -12,7 +12,7 @@
 %%   (under Simulink Coder) in the "Inlining S-Functions"
 %%   chapter under the section and subsection:
 %%     "Writing Block Target Files to Inline S-Functions",
-%%        "Function-Based or Wrappered Code".
+%%        "Function-Based or Wrapped Code".
 %%
 %implements  Magneto_MPC "C"
 %% Function: BlockTypeSetup ===================================================

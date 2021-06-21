@@ -31,7 +31,7 @@
 #define MPT_TS 0.003000		/* sample time */
 #include "simstruc.h"			/*Header where different routines are defined */
 
-#include "ectrl.c" /*inclusion of the evalution algorithm */
+#include "ectrl.c" /*inclusion of the evaluation algorithm */
 
 
 
