@@ -37,8 +37,10 @@ void FloatClass::begin(void) {                                      // Board ini
     analogReference(EXTERNAL);                                      // Use external analog reference
   #endif
 #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards
+  analogReadResolution(12);
   Wire1.begin();                                                    // Use Wire1 object
 #elif ARDUINO_ARCH_SAMD                                             // For SAMD architecture boards
+  analogReadResolution(12);
   Wire.begin();                                                     // Use Wire object
 #endif
   distanceSensor.setTimeout(1000);                                  // Set sensor timeout to 1 second
@@ -48,7 +50,7 @@ void FloatClass::begin(void) {                                      // Board ini
   distanceSensor.setMeasurementTimingBudget(20000);                 // Setting high-speed mode for laser sensor
   distanceSensor.startContinuous();                                 // Setting continuous mode for laser sensor
   _minDistance = 17.0;                                              // Initializing min,max variables by approximate values so the functions can be used even without calibration but with lower precision
-  _maxDistance = 341.0;
+  _maxDistance = 271.0;
   _range = _maxDistance - _minDistance;
   _wasCalibrated = false;
 
@@ -75,7 +77,7 @@ void FloatClass::calibrate(void) {                       // Board calibration
 
   sum = 0.0;
   actuatorWrite(0.0);                                    // Turns off the fan
-  while (sensorReadDistance() < 250.0) {                 // Waits until the ball is at least in the lower third of the tube
+  while (sensorReadDistance() < 240.0) {                 // Waits until the ball is at least in the lower third of the tube
     delay(100);                                          // (This is probably unnecessary, because ball has no problem falling down, but for the sake of consistency)
   }
   delay(1000);

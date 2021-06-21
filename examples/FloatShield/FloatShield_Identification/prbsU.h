@@ -8,7 +8,7 @@
 
 #include <avr/pgmspace.h>
 #define prbsU_length 7200
-const PROGMEM int prbsU[prbsU_length]={-1,
+const PROGMEM float prbsU[prbsU_length]={-1,
  -1,
  -1,
  -1,

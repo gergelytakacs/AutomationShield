@@ -28,7 +28,7 @@
 
 #if PRBS
 #include "prbsU.h"                    // Include PRBS sequence from .h file
-int prbs;                             // Variable for storing PRBS signal
+float prbs;                             // Variable for storing PRBS signal
 #else
 #include "aprbsU.h"                   // Include APRBS sequence from .h file
 float aprbs;                          // Variable for storing APRBS signal
@@ -42,8 +42,8 @@ float y = 0.0;                        // Output (Current ball altitude)
 float u = 0.0;                        // Input (Fan power)
 
 float stabilisedPower;                // Variable for storing stabilised value of power [%]
-float stabilisationAltitude = 60;     // Altitude where the ball should be stabilised (range 0-320mm)
-float powerSpan = 1.5;                // Span +/- from stabilised value of power [%]
+float stabilisationAltitude = 150;     // Altitude where the ball should be stabilised (range 0-320mm)
+float powerSpan = 6;                // Span +/- from stabilised value of power [%]
 
 #if SHIELDRELEASE == 1
   #define KP 0.25           // PID Kp constant
@@ -54,9 +54,9 @@ float powerSpan = 1.5;                // Span +/- from stabilised value of power
   #define TI 2              // PID Ti constant
   #define TD 0.01           // PID Td constant
   #elif SHIELDRELEASE == 4
-  #define KP 0.15           // PID Kp constant
+  #define KP 0.25           // PID Kp constant
   #define TI 3              // PID Ti constant
-  #define TD 0.1           // PID Td constant
+  #define TD 0.01           // PID Td constant
 #endif
 
 void setup() {                         // Setup - runs only once
@@ -76,7 +76,7 @@ void setup() {                         // Setup - runs only once
 
     while(1) {                                                               // Use PID control to stabilise the ball
         y = FloatShield.sensorReadAltitude();                                // Read sensor altitude
-        u = PIDAbs.compute(stabilisationAltitude-y,30,100,30,100);           // PID
+        u = PIDAbs.compute(stabilisationAltitude-y,10,100,10,100);           // PID
         FloatShield.actuatorWrite(u);                                        // Actuate
         if(y >= stabilisationAltitude-2.5 && y <= stabilisationAltitude+2.5) {   // If the ball is near the wanted altitude
             stabilisationCounter++;                                          // Increment counter
@@ -114,7 +114,7 @@ void step() {                               // Define step function
         FloatShield.actuatorWrite(0.0);      // Turn off the fan
         while(1);                            // Stop program execution
     } else {                                 // Otherwise
-        prbs = pgm_read_word(&prbsU[k]);
+        prbs = pgm_read_float_near(&prbsU[k]);
         u = stabilisedPower+prbs*powerSpan;  // Progress in trajectory
     }
 #else
@@ -124,8 +124,7 @@ void step() {                               // Define step function
     } else {                                 // Otherwise
         aprbs = pgm_read_float_near(&aprbsU[k]);
         u = stabilisedPower+aprbs*powerSpan; // Progress in trajectory
-    }
-#endif
+    } 
 
     y = FloatShield.sensorReadAltitude();   // Read sensor
     FloatShield.actuatorWrite(u);           // Actuate
