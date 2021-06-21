@@ -54,7 +54,7 @@ phy = p(4)*I+p(3)*A+p(2)*A^2+A^3;           % characteristic polynomial
 L = phy*inv([C; C*A; C*A^2])*[0 0 1]';      % Ackermann's formula for gain L
 
 % Pole-placement of the poles of the augmented system
-polesK = [0.9891 0.926 0.8353 0.985];        
+polesK = [0.9291 0.906 0.8353 0.945];        
 p = poly(polesK);                               % polynomial coeficients
 I = eye(size(Ai));
 phy = p(5)*I+p(4)*Ai+p(3)*Ai^2+p(2)*Ai^3+Ai^4;  % characteristic polynomial
