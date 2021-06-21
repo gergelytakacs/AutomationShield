@@ -15,8 +15,8 @@
   Last update: 20.5.2020.
 */
 
-#ifndef LINKSHIELD_H_                     //Include guard
-#define LINKSHIELD_H_
+#ifndef LINKSHIELD_H                     //Include guard
+#define LINKSHIELD_H
 
 //include necessary libraries
 #include <Wire.h>                        

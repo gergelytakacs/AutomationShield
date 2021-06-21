@@ -23,8 +23,8 @@
 */
 
 
-#ifndef LOWPOWER_H_                     //Include guard
-#define LOWPOWER_H_
+#ifndef LOWPOWER_H                     //Include guard
+#define LOWPOWER_H
 
 #include <Arduino.h>
 #include <AutomationShield.h>

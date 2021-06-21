@@ -2,7 +2,7 @@ startScript;                            % Clears screen and variables, except al
 
 %define LQR
 Ts=0.01;
-load('mymodel.mat')
+load('myModel.mat')
 csystem=ss(model.A,model.B,model.C,model.D);
 %ssest, so sumom alebo bez, ale rovnako v simulacii ako v modeli. 
 %fok vagy radian? 
@@ -23,7 +23,7 @@ Q=diag([ 1E2, 1, 1]);
 [K,P]= dlqr(AI,BI,Q,R);
  
 %load measurede data
-load('PID_ver2\dataPidAll.mat')
+load('dataPidAll.mat')
 Um=dataAll(:,3);
 Ym=dataAll(:,2);
 Ref=dataAll(:,1); %reference

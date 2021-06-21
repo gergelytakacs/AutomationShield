@@ -15,6 +15,11 @@ options.InitialMeshSize = 1; % Default is 1;
 options.ScaleMesh=true; % Default, if problem is badly scaled
 opts.AccelerateMesh = false; % Only recommended for smooth problems
 
+if exist('CI_Testing','var') % If its only a CI test
+    options.MaxTime = 10; %[s] Just do a pro-forma computation
+end
+
+
 fun = @objfun;
 tic
 [x,fval,exitflag,output] = patternsearch(fun,x0,[],[],[],[],lb,ub,[],options)
