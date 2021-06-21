@@ -26,7 +26,7 @@
 function printBLAMatrix(varargin)
 % Check if at least two input arguments were provided
 if nargin < 2
-    error('Not enough input argumets provided. Function expects at least two arguments - printBLAMatrix(matrix,''matrixName'').')
+    error('Not enough input arguments provided. Function expects at least two arguments - printBLAMatrix(matrix,''matrixName'').')
 end
 
 % Check whether even or odd number of input arguments were provided 
