@@ -1,5 +1,8 @@
-# This script is used to generate files containing C code for FloatShield Arduino IDE MPC example
-import muaompc  # Import muaompc module (http://ifatwww.et.uni-magdeburg.de/syst/muAO-MPC/)
+# MPC problem definition file for muaOMPC in Python
+# Visit www.automationshield.com for more information.
+# ========================================================
+
+import muaompc 	 # Import muaompc module
 
 # Note: the "numpy" module is required to run this script
 mpc = muaompc.ltidt.setup_mpc_problem('model_parameters')  # Load model parameters from the specified file

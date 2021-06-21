@@ -1,4 +1,7 @@
-# This file contains parameters of the linearised state-space model of the FloatShield system
+# MPC problem definition file for muaOMPC in Python
+# Visit www.automationshield.com for more information.
+# ========================================================
+
 dt = 0.025        # Sampling period
 N = 2             # Prediction horizon
 # Discretized state-space matrix A
