@@ -125,7 +125,7 @@ void step() {                               // Define step function
         aprbs = pgm_read_float_near(&aprbsU[k]);
         u = stabilisedPower+aprbs*powerSpan; // Progress in trajectory
     } 
-
+#endif
     y = FloatShield.sensorReadAltitude();   // Read sensor
     FloatShield.actuatorWrite(u);           // Actuate
 
