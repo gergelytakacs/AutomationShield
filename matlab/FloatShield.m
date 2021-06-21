@@ -30,7 +30,8 @@ classdef FloatShield < handle             % FloatShield class definition
 
     methods(Access = public)                                                            % Public class functions
 
-        function begin(FloatShieldObject, aPort, aBoard)                                % Initialisation function
+        function begin(FloatShieldObject, aPort, aBoard) % Initialisation function
+            controlledFailCI(); %Bums out for CI earlier than below!
             listOfLibraries = listArduinoLibraries();                                   % List of available arduino libraries
             libraryIsPresent = sum(ismember(listOfLibraries,'Pololu/Pololu_VL53L0X'));  % Check if required library is present
             if ~libraryIsPresent                                                        % If not, throw an error
@@ -38,6 +39,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             FloatShieldObject.arduino = arduino(aPort, aBoard, 'Libraries', 'Pololu/Pololu_VL53L0X')  % Initialising object for arduino board
             FloatShieldObject.laserSensor = addon(FloatShieldObject.arduino, 'Pololu/Pololu_VL53L0X') % Initialising object for laser sensor
+            FloatShieldObject.dac = device(FloatShieldObject.arduino,'I2CAddress',62,'bus',busno,'bitrate',400000);
             beginSensor(FloatShieldObject.laserSensor)                                                % Initialising laser sensor
             disp('FloatShield initialized.')
         end
@@ -49,7 +51,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             pause(1)                                     % Wait for ball to stabilise
             sum = 0;                                     % Variable for summing up the readings
-            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 miliseconds
+            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 milliseconds
                 sum = sum + sensorReadDistance(FloatShieldObject);
                 pause(0.025)
             end
@@ -61,7 +63,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             pause(1)                                     % Wait for ball to stabilise
             sum = 0;                                     % Clear variable for summing up the readings
-            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 miliseconds
+            for i = 1:100                                % Sum one hundred sensor readings with sampling period 5 milliseconds
                 sum = sum + sensorReadDistance(FloatShieldObject);
                 pause(0.025)
             end
@@ -70,7 +72,7 @@ classdef FloatShield < handle             % FloatShield class definition
         end
 
         function actuatorWrite(FloatShieldObject, percent)                                                    % Actuator write function - for controlling fan speed
-            coercedInput = constrain(percent, 0, 100);                                                        % Coerce the iput value
+            coercedInput = constrain(percent, 0, 100);                                                        % Coerce the input value
             writePWMDutyCycle(FloatShieldObject.arduino, FloatShieldObject.FLOAT_UPIN, (coercedInput / 100)); % Set the PWM duty cycle based on the user input
         end
 

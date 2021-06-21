@@ -54,7 +54,7 @@ void stepEnable(){                   // ISR
   enable=true;                       // Change flag
 }
 
-// A single algoritm step
+// A single algorithm step
 void step(){ 
 
  if(k>7200) {                     // If at end of trajectory

@@ -1,5 +1,5 @@
-#ifndef PIDABS_H_
-#define PIDABS_H_
+#ifndef PIDABS_H
+#define PIDABS_H
 
 #include "PID.h"
 

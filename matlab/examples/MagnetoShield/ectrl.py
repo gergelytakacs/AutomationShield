@@ -1,21 +1,21 @@
 """
     MATRICES FOR EXPLICIT MPC POLYTOPES AND CORRESPONDING PWA LAWS
 
- 	  The automatically generated set of matrices have been adapted from 
+ 	The automatically generated set of matrices have been adapted from 
     the C code auto-generation routine of the Multi-Parametric Toolbox 3 
     MPT3) of Kvasnica et al. for  MATLAB. Please see http://www.mpt3.org 
     for more information. Please see the original "toC.m" for more details
     in the MPT3.
 
     The following C code has been slightly adapted to perform microcontroller
-    architecutre-specific changes for AVR and ARM Cortex-A devices.
+    architecture-specific changes for AVR and ARM Cortex-A devices.
 
     The list of changes from the original are as follows:
     - Changed "static" modifiers to "const" so microcontrollers will
     prefer to use ROM instead of RAM.
     - Added PROGMEM functionality for the AVR architecture, and calling
     the necessary headers.
-    - Removed the possiblilty to use PWQ, this only handles PWA.
+    - Removed the possibility to use PWQ, this only handles PWA.
     - Removed matrix export for the tie-breaking function.
 
     Usage: include alongside with the empcSequential.h header to your
@@ -27,8 +27,8 @@
 
 
     Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) 
-    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    
-    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)
+    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)
+    Adapted for MCU use by Gergely Takacs in 2020 (gergely.takacs@stuba.sk)
 """
 
 MPT_NR = 17
@@ -261,4 +261,3 @@ MPT_G = [
 -4.62340000000000e+00,	2.44840527062965e+00,	-2.55452580515119e+06,	1.35279544172938e+06,	-2.22366580804131e+00,	
 5.37660000000000e+00,	2.55452580515119e+06,	5.37660000000000e+00,	1.28461139314128e+09,	5.37660000000000e+00,	
 -4.62340000000000e+00,	5.37660000000000e+00,	-2.55452580515119e+06,	5.37660000000000e+00 ]
-

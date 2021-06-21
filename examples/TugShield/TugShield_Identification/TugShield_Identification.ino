@@ -16,8 +16,8 @@
   Last update: 6.5.2019.
 */
 
-#include <TugShield.h>             // Include the library
-#include <SamplingServo.h>         // Include sampling subsystem
+#include "TugShield.h"                // Include the library
+#include "SamplingServo.h"            // Include sampling
 
 unsigned long Ts = 10;             // Sampling in milliseconds
 unsigned long k = 0;               // Sample index
@@ -33,14 +33,14 @@ void setup() {
   Serial.begin(9600);               // Initialize serial
   TugShield.begin();               // Define hardware pins
   TugShield.calibration();
-  Sampling.period(Ts * 1000);   // Sampling init.
+  Sampling.period(Ts * 1000);     // Sampling init.
   Sampling.interrupt(stepEnable); // Interrupt fcn.
 }
 
 // Main loop launches a single step at each enable time
 void loop() {
-  if (enable) {               // If ISR enables
-    step();                 // Algorithm step
+  if (enable) {                 // If ISR enables
+    step();                     // Algorithm step
     enable=false;               // Then disable
   }  
 }
@@ -49,11 +49,11 @@ void stepEnable(){              // ISR
   enable=true;                  // Change flag
 }
 
-// A signle algoritm step
+// A single algorithm step
 void step(){ 
 
 if (k % (T*i) == 0){        
-  u = U[i];                // Set reference
+  u = U[i];                   // Set reference
   i++;
 }
 
@@ -61,8 +61,8 @@ TugShield.actuatorWrite(u);           // Actuate
 y = TugShield.sensorRead();           // Read sensor 
 
    
-Serial.print(y);            // Print output  
+Serial.print(y);              // Print output  
 Serial.print(" ");
 Serial.println(u);            // Print input
-k++;                  // Increment k
+k++;                          // Increment k
 }

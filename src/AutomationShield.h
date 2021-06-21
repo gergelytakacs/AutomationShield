@@ -7,12 +7,12 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Tak�cs, Tibor Konkoly, G�bor Penzinger
+  Created by Gergely Takacs, Tibor Konkoly, Gabor Penzinger
   Last update: 31.09.2018.
 */
 
-#ifndef AUTOMATIONSHIELD_H_  // Include guard - prevents multiple header inclusions
-#define AUTOMATIONSHIELD_H_  // If not already there, include
+#ifndef AUTOMATIONSHIELD_H  // Include guard - prevents multiple header inclusions
+#define AUTOMATIONSHIELD_H  // If not already there, include
 
 #if (ARDUINO >= 100)  // Libraries don't include this, normal Arduino sketches do
  #include "Arduino.h" // For new Arduino IDE
@@ -28,9 +28,9 @@
 // Common definitions
 #ifdef ARDUINO_ARCH_AVR                     // Chip uses 10-bit ADC
 
-	#define ADCREF 1023.0					// 10-bit resolution for AD convertor
+	#define ADCREF 1023.0					// 10-bit resolution for AD converter
 #elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM // Chip uses 12-bit ADC
-	#define ADCREF 4095.0					// 12-bit resolution for AD convertor
+	#define ADCREF 4095.0					// 12-bit resolution for AD converter
 #endif
 
 #define AREF 5.0                              // ADC reference voltage for 5 V logic

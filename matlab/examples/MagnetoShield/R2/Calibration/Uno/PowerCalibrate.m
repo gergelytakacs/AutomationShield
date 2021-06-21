@@ -1,4 +1,4 @@
-% MagnetoShield data aquisition from experiment
+% MagnetoShield data acquisition from experiment
 
 
 if isfile('PowerCal.mat')                       % Does this file exist

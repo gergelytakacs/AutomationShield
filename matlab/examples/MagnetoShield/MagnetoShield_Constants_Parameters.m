@@ -13,7 +13,7 @@
 %   Attribution-NonCommercial 4.0 International License.
 %
 %   If you have found any use of this code, please cite our work in your
-%   academic publications, such as theses, conference articles or journal
+%   academic publications, such as thesis, conference articles or journal
 %   papers. A list of publications connected to the AutomationShield
 %   project is available at: 
 %   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -23,7 +23,7 @@
 %   Last updated by:  Jakub Mihalik
 %   Last update on:   22.12.2020
 
-clear all; clc;
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 % CONSTANTS AND DIMENSIONS
 l_coil = (12.6-2.14)/1000;  % Height of the coil [m]

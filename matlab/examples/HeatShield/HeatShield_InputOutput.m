@@ -15,7 +15,7 @@
 %   Created by Gergely Takács. 
 %   Last update: 17.10.2018.
   
-clc; clear;
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 HeatShield=HeatShield;  % Construct object from class
 HeatShield.begin();     % Initialize shield

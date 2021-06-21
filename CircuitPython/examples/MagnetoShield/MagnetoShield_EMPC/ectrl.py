@@ -8,14 +8,14 @@
     in the MPT3.
 
     The following C code has been slightly adapted to perform microcontroller
-    architecutre-specific changes for AVR and ARM Cortex-A devices.
+    architecture-specific changes for AVR and ARM Cortex-A devices.
 
     The list of changes from the original are as follows:
     - Changed "static" modifiers to "const" so microcontrollers will
     prefer to use ROM instead of RAM.
     - Added PROGMEM functionality for the AVR architecture, and calling
     the necessary headers.
-    - Removed the possiblilty to use PWQ, this only handles PWA.
+    - Removed the possibility to use PWQ, this only handles PWA.
     - Removed matrix export for the tie-breaking function.
 
     Usage: include alongside with the empcSequential.h header to your

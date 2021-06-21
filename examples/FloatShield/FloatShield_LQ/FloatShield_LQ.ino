@@ -8,7 +8,7 @@
   the AutomationShield library and then with estimates states
   by Kalman filtering and implements a linear quadratic (LQ)
   control of the ball altitude. It allows the user to select
-  wheter the reference altitude is given by the onboard
+  whether the reference altitude is given by the onboard
   potentiometer or by a predetermined reference
   trajectory. Upload the code to your board and open the
   Serial Plotter tool in Arduino IDE.

@@ -1,0 +1,43 @@
+name: Build (Arduino)
+
+# The workflow will run on every push and pull request to the repository
+on:
+  - push
+  - pull_request
+
+jobs:
+  compile-sketch:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      max-parallel: 6
+      matrix:
+        fqbn:
+          - arduino:avr:uno
+          - arduino:avr:mega
+          #- arduino:avr:leonardo # Look at sampling for testing
+          #- arduino:avr:unowifi # Look at sampling for testing
+          - arduino:sam:arduino_due_x
+          - arduino:samd:arduino_zero_native
+      fail-fast: false
+          
+    steps:
+      # This step makes the contents of the repository available to the workflow
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+
+      # For more information: https://github.com/arduino/compile-sketches#readme
+      - name: Build (Arduino)
+        uses: arduino/compile-sketches@v1
+        with:
+          fqbn: ${{ matrix.fqbn }}
+          sketch-paths: |
+            # Configure the action to search all folders under the root of the repository for sketches and compile them.
+            # This is formatted as a YAML list, which makes it possible to have multiple sketch paths if needed.
+            - examples
+          libraries: |
+            # Install self as source
+            - source-path: ./
+            - name: Servo

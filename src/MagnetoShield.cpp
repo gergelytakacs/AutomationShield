@@ -58,7 +58,7 @@ void MagnetoShieldClass::dacWrite(uint8_t DAClevel){
 #elif SHIELDRELEASE == 3 || SHIELDRELEASE == 4
 void MagnetoShieldClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4,D3,D2,D1,D0)
 	#ifdef ARDUINO_ARCH_AVR
-		Wire.beginTransmission(MCP4725); 					//adressing
+		Wire.beginTransmission(MCP4725); 					//addressing
 	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
 	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
 	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
@@ -67,7 +67,7 @@ void MagnetoShieldClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,
 	    Wire.write(secndbyte); //last 4 LSB's
 	    Wire.endTransmission();
 	#elif ARDUINO_ARCH_SAM
-		Wire1.beginTransmission(MCP4725); 					//adressing
+		Wire1.beginTransmission(MCP4725); 					//addressing
 	    Wire1.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
 	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
 	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
@@ -76,7 +76,7 @@ void MagnetoShieldClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,
 	    Wire1.write(secndbyte); //last 4 LSB's
 	    Wire1.endTransmission();
 	#elif ARDUINO_ARCH_SAMD
-		Wire.beginTransmission(MCP4725); 					//adressing
+		Wire.beginTransmission(MCP4725); 					//addressing
 	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
 	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
 	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 

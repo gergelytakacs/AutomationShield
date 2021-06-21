@@ -11,6 +11,8 @@
   Last update: 3.6.2019.
 */
 
+#ifndef SAMPLINGSAMD_ISR_H
+#define SAMPLINGSAMD_ISR_H
 
 void TC5_Handler (void) {
  if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
@@ -28,3 +30,4 @@ void TC5_Handler (void) {
    TC5->COUNT16.INTFLAG.bit.MC0 = 1;        //Clear the interrupt 
  }
 }
+#endif

@@ -26,7 +26,7 @@
 %   Created by Gergely Takács. 
 %   Last update: 15.02.2018.
   
-clc; clear all;                                 % Clears screen and all variables
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 fixedInductance=0;                              % Fixed or distance dependent inductance?
                                                 % to mathematical model
@@ -133,5 +133,3 @@ Kd=['K (guess): ',num2str(Km), ',    K (model,mean): ',num2str(Ke,1),' +/- ',num
 disp(Kd)
 disp(['K (range): ',num2str([model.a(2,1)*2*m*y0^3/u0^2 -(model.a(2,3)*2*m*y0^2)/u0])])
 end
-
-

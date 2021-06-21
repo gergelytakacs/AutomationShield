@@ -17,7 +17,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   If you have found any use of this code, please cite our work in your
-  academic publications, such as theses, conference articles or journal
+  academic publications, such as thesis, conference articles or journal
   papers. A list of publications connected to the AutomationShield
   project is available at:
   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
@@ -33,7 +33,7 @@ import time                                                 # Imports time funct
 class Settings_:
     def __init__(self):
         self.enable = False                                              # Flag for sampling
-        self.strictRealTime = False                                      # Not recommended. Pyhton is an interpreted language with less than ideal timekeeping
+        self.strictRealTime = False                                      # Not recommended. Python is an interpreted language with less than ideal timekeeping
         self.printTiming = False                                         # Sends real timing to plotter
         self.realTimeViolation = False                                   # Not recommended. Flag for real-time violations. Will not be active anyways.
         self.Tsampling = 0.0                                             # Sampling time
@@ -47,7 +47,7 @@ def begin(Ts):                                                       # Sampling 
     Settings.t_next = Settings.t_last + Settings.Tsampling           # Initialize next sample. The next sampling time is the current time + sampling
 
 # Checking if next sample is on
-def stepEnable():                                                    # Must run in an infinite loop (while True:) as it contiuously checks
+def stepEnable():                                                    # Must run in an infinite loop (while True:) as it continuously checks
     t = time.monotonic_ns()                                          # Check current time
     if (t >= Settings.t_next):                                       # If time has come
         if Settings.printTiming:                                     # If plotting a real timing is required

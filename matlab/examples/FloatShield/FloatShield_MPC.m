@@ -17,7 +17,7 @@
 %   Created by Peter Chmurciak.
 %   Last update: 24.4.2020.
 
-clc;clear;close all;        % Clears command window, variables and opened figures
+startScript;                                    % Clears screen and variables, except allows CI testing
 clear estimateKalmanState;  % Clears persistent variables in estimate function
 
 FloatShield = FloatShield;          % Create FloatShield object from FloatShield class
@@ -56,9 +56,9 @@ Np = 2;                         % Prediction horizon
 % Get final state penalisation matrix P
 [K, P] = dlqr(matAhat, matBhat, Q, R);
 % Get Hessian, Gradient and F matrices of cost function
-[H, G, F] = getCostFunctionMPC(matAhat, matBhat, Np, Q, R, P); 
+[H, G, F] = calculateCostFunctionMPC(matAhat, matBhat, Np, Q, R, P); 
 % Set input constraints onto the system
-[Ac, b0] = setConstraintsMPC(uL, uU, Np); 
+[Ac, b0] = applyConstraintsMPC(uL, uU, Np); 
 
 H = (H + H') / 2;                           % Create symmetric Hessian matrix
 opt = optimoptions('quadprog', 'Display', 'none');  % Turn off display
@@ -103,7 +103,7 @@ while (1)                           % Infinite loop
 
     if (toc >= Ts * k)              % If its time for next sample
         if (toc >= Ts * (k + 1))    % Check if steps overlap
-            disp('Sampling violation has occured.')
+            disp('Sampling violation has occurred.')
             samplingViolation = 1   % Set sampling violation flag
             FloatShield.actuatorWrite(0)
             break                   % Stop program if they do overlap

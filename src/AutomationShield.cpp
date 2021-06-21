@@ -17,7 +17,7 @@
 #include "AutomationShield.h"
 #include "Arduino.h"
 
-float AutomationShieldClass::mapFloat(float x, float in_min, float in_max, float out_min, float out_max) // same as Arudino map() but with floating point numbers
+float AutomationShieldClass::mapFloat(float x, float in_min, float in_max, float out_min, float out_max) // same as Arduino map() but with floating point numbers
 {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min; // linear mapping, same as Arduino map()
 }
