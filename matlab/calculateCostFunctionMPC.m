@@ -3,7 +3,7 @@
 %    the linear state-space matrices, horizon and penalisation matrices.
 % 
 %    Usage:
-%    [H, G, F] = getCostFunctionMPC(A, B, np, Q, R, P);
+%    [H, G, F] = calculateCostFunctionMPC(A, B, np, Q, R, P);
 %
 %    Where A,B are linear state-space matrices, np is prediction horizon,
 %    and Q,R,P are penalisation matrices of states, input and final state
@@ -25,7 +25,7 @@
 %    Created by Peter Chmurciak
 %    Last update: 24.4.2020
 
-function [H, G, F] = getCostFunctionMPC(A, B, np, Q, R, P)
+function [H, G, F] = calculateCostFunctionMPC(A, B, np, Q, R, P)
 [nx, nu] = size(B);         % Get system dimensions
 
 % Get prediction matrix M

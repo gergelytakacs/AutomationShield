@@ -12,7 +12,8 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács, Peter Chmurčiak and Erik Mikuláš.
-  Last update: 2.12.2020.
+  Last update: 6.21.2021.
+
 */
 
 #ifndef FLOATSHIELD_H             // Include guard
@@ -63,6 +64,7 @@ class FloatClass {                                               // Class for Fl
     float returnMinDistance(void);                               // Returns value of minimal distance measured by sensor in millimetres
     float returnMaxDistance(void);                               // Returns value of maximal distance measured by sensor in millimetres
     float returnRange(void);                                     // Returns range of measured distances between minimal and maximal values in millimetres
+
     #include "getGainLQ.inl"                                     // Include template function for calculating K gain for LQ control applications
     #include "getKalmanEstimate.inl"                             // Include template function for estimating internal states of linear SISO system (Kalman filter)
 #if SHIELDRELEASE == 2

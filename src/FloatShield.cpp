@@ -12,7 +12,8 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács, Peter Chmurčiak and Erik Mikuláš.
-  Last update: 2.12.2020.
+  Last update: 6.21.2021.
+
 */
 
 #include "FloatShield.h"         // Include header file
@@ -124,7 +125,6 @@ void FloatClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D1
 }
 
 float FloatClass::actuatorReadVoltage(void) {                                                     //measure the actual voltage at the actuator
-
   _actuatorVoltageADC = (float)analogRead(FLOAT_AVPIN);                                           // read the ADC value
   _actuatorVoltage = 4.0 * AutomationShield.mapFloat(_actuatorVoltageADC, 0.0, ADCREF, 0.0, 3.3); // calculate the Voltage form ADC value
   return _actuatorVoltage;
@@ -132,7 +132,6 @@ float FloatClass::actuatorReadVoltage(void) {                                   
 #endif
 
 void FloatClass::actuatorWrite(float aPercent) {
-  
   #if SHIELDRELEASE == 1 || SHIELDRELEASE == 2 || SHIELDRELEASE == 3                     // Write actuator
   float mappedValue = AutomationShield.mapFloat(aPercent, 0.0, 100.0, 0.0, 255.0);       // Takes the float type percentual value 0.0-100.0 and remapps it to range 0.0-255.0
   mappedValue = AutomationShield.constrainFloat(mappedValue, 0.0, 255.0);                // Constrains the remapped value to fit the range 0.0-255.0 - safety precaution
