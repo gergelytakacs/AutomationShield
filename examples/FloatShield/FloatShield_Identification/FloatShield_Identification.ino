@@ -23,12 +23,12 @@
 #include <FloatShield.h>              // Include main library  
 #include <Sampling.h>                 // Include sampling library
 
-#define PRBS 1                        // Write 1 to use PRBS, 0 to use APRBS
+#define PRBS 0                        // Write 1 to use PRBS, 0 to use APRBS
                                       // For APRBS use MEGA or larger, too large for UNO
 
 #if PRBS
 #include "prbsU.h"                    // Include PRBS sequence from .h file
-int prbs;                             // Variable for storing PRBS signal
+float prbs;                             // Variable for storing PRBS signal
 #else
 #include "aprbsU.h"                   // Include APRBS sequence from .h file
 float aprbs;                          // Variable for storing APRBS signal
@@ -42,8 +42,22 @@ float y = 0.0;                        // Output (Current ball altitude)
 float u = 0.0;                        // Input (Fan power)
 
 float stabilisedPower;                // Variable for storing stabilised value of power [%]
-float stabilisationAltitude = 60;     // Altitude where the ball should be stabilised (range 0-320mm)
-float powerSpan = 1.5;                // Span +/- from stabilised value of power [%]
+float stabilisationAltitude = 150;     // Altitude where the ball should be stabilised (range 0-320mm)
+float powerSpan = 6;                // Span +/- from stabilised value of power [%]
+
+#if SHIELDRELEASE == 1
+  #define KP 0.25           // PID Kp constant
+  #define TI 5              // PID Ti constant
+  #define TD 0.01           // PID Td constant
+#elif SHIELDRELEASE == 2
+  #define KP 0.01           // PID Kp constant
+  #define TI 2              // PID Ti constant
+  #define TD 0.01           // PID Td constant
+  #elif SHIELDRELEASE == 4
+  #define KP 0.25           // PID Kp constant
+  #define TI 3              // PID Ti constant
+  #define TD 0.01           // PID Td constant
+#endif
 
 void setup() {                         // Setup - runs only once
     Serial.begin(250000);              // Begin serial communication
@@ -53,16 +67,16 @@ void setup() {                         // Setup - runs only once
 
     Sampling.period(Ts*1000);          // Set sampling period in microseconds
 
-    PIDAbs.setKp(0.25);                      // Set Proportional constant
-    PIDAbs.setTi(5);                         // Set Integral constant
-    PIDAbs.setTd(0.01);                      // Set Derivative constant
+    PIDAbs.setKp(KP);                      // Set Proportional constant
+    PIDAbs.setTi(TI);                         // Set Integral constant
+    PIDAbs.setTd(TD);                      // Set Derivative constant
     PIDAbs.setTs(Sampling.samplingPeriod);   // Set sampling period for PID
 
     int stabilisationCounter=0;            // Counter to ensure that ball has been stabilised    
 
     while(1) {                                                               // Use PID control to stabilise the ball
         y = FloatShield.sensorReadAltitude();                                // Read sensor altitude
-        u = PIDAbs.compute(stabilisationAltitude-y,30,100,30,100);           // PID
+        u = PIDAbs.compute(stabilisationAltitude-y,10,100,10,100);           // PID
         FloatShield.actuatorWrite(u);                                        // Actuate
         if(y >= stabilisationAltitude-2.5 && y <= stabilisationAltitude+2.5) {   // If the ball is near the wanted altitude
             stabilisationCounter++;                                          // Increment counter
@@ -100,7 +114,7 @@ void step() {                               // Define step function
         FloatShield.actuatorWrite(0.0);      // Turn off the fan
         while(1);                            // Stop program execution
     } else {                                 // Otherwise
-        prbs = pgm_read_word(&prbsU[k]);
+        prbs = pgm_read_float_near(&prbsU[k]);
         u = stabilisedPower+prbs*powerSpan;  // Progress in trajectory
     }
 #else
@@ -110,9 +124,8 @@ void step() {                               // Define step function
     } else {                                 // Otherwise
         aprbs = pgm_read_float_near(&aprbsU[k]);
         u = stabilisedPower+aprbs*powerSpan; // Progress in trajectory
-    }
+    } 
 #endif
-
     y = FloatShield.sensorReadAltitude();   // Read sensor
     FloatShield.actuatorWrite(u);           // Actuate
 
