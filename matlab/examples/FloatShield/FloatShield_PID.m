@@ -16,7 +16,7 @@
 %   Created by Peter Chmurciak.
 %   Last update: 24.4.2020.
 
-clc; clear; close all;            % Clears command window, variables and opened figures
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 FloatShield = FloatShield;        % Create FloatShield object from FloatShield class
 FloatShield.begin('COM4', 'UNO'); % Initialise shield with used Port and Board type
@@ -70,7 +70,7 @@ while (1)                                    % Infinite loop
     
     if (toc >= Ts * k)                            % If its time for next sample
         if (toc >= Ts * (k + 1))                  % Check if steps overlap
-            disp('Sampling violation has occured.')
+            disp('Sampling violation has occurred.')
             samplingViolation = 1                 % Set sampling violation flag            
             FloatShield.actuatorWrite(0);             
             break                                 % Stop program if they do overlap
@@ -78,6 +78,7 @@ while (1)                                    % Infinite loop
         nextStep = 1;                             % Enable step flag
     end
 end
+
 response = response(1:k-1, :);                    % Remove unused space
 save responsePID response                         % Save results in responsePID.mat file
 disp('The example finished its trajectory. Results have been saved to "responsePID.mat" file.')

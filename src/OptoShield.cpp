@@ -25,7 +25,7 @@ void OptoClass::calibration(){
 	Serial.println("Calibration is running...");
   # endif
   delay(LDRDELAY);             		    // Wait LDR to settle
-  _minVal = analogRead(OPTO_YPIN);      // Read minimal value
+  _minVal = analogRead(OPTO_YPIN);       // Read minimal value
 
   analogWrite(OPTO_UPIN,255);     		// Send maximal value
   delay(LDRDELAY);					    // Wait to settle

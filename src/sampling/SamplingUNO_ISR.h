@@ -1,7 +1,7 @@
 /*
   ISR for handling the interrupt-driven sampling for 
   real-time control on the Arduino Uno. The "UNO_ISR_VECT" macro
-  is defined on the outside, depending wheter the Servo library
+  is defined on the outside, depending whether the Servo library
   is used or not.
   
   This code is part of the AutomationShield hardware and software
@@ -11,6 +11,9 @@
   Gergely Takacs, 2019
   Last update: 3.6.2019.
 */
+
+#ifndef SAMPLINGUNO_ISR_H
+#define SAMPLINGUNO_ISR_H
 
 ISR(UNO_ISR_VECT)
 {
@@ -25,3 +28,4 @@ ISR(UNO_ISR_VECT)
   } 
  }
 }
+#endif

@@ -18,7 +18,8 @@
 %   Created by Gergely Takács. 
 %   Last update: 19.10.2018.                            
 
-clc; clear;
+startScript;                                    % Clears screen and variables, except allows CI testing
+
 % result=readExperiment(8100,'COM22',9600);
 % save resultID result
 
@@ -47,4 +48,3 @@ model_nlarx= nlarx(data,[1 1 0],'linear');      % Identify nonlinear arx
 compare(data, model_process, model_nlarx)       % Compare data
 
 save HeatShield_Models_Blackbox.mat model_process model_nlarx
-

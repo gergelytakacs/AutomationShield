@@ -1,73 +1,77 @@
-// PID example fot rhe MotoShield
 
-#include "MotoShield.h"
-#include <Sampling.h>            // Include sampling
+/*
+  MotoShield PID control example.
 
-unsigned long Ts = 10; // sampling time in milliseconds
 
-bool enable=false; // flag for the sampling function
+    The following code is an example of MotoShield API in use with
+    two modes of reference value setting. For PID computation, 
+    PID control library has been used.
 
-// variables for the PID
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
 
-float r = 0.00;
-float y = 0.00;
-float u = 0.00;
-float error = 0.00;
+  Created by Ján Boldocký.
+  Last update: 23.4.2020.
+*/
+#include <MotoShield.h>     //--Include API
+#include <PIDAbs.h>        //--Include PID control lib
+
+#define TS 40.0            //--Defining Sample period in milliseconds
+#define AUTO 1           //--Defining reference Mode # MANUAL / AUTO
+
+#define KP 0.000001          //--PID Kp constant
+#define TI 0.0003           //--PID Ti constant
+#define TD 0.001           //--PID Td constant
+
+float r = 0.0;            //--Reference
+float R[]={40.0,70.0,50.0,85.0,35.0,60.0};  //--Input trajectory
+float y = 0.0;           //--Output
+float u = 0.0;          //--Input      
+
+unsigned int k = 0;                //--Sample index
+int T = 80;              //--Section length
+int i = 0;               //--Section counter
 
 
 void setup() {
-  
-  Serial.begin(9600);
-  
-  MotoShield.begin(); // defining hardware pins
-  MotoShield.setDirection(true); // setting the motor direction
-  
-  MotoShield.setMotorSpeed(100); // calibration
-  delay(1000);
-  
-  Sampling.period(Ts * 1000);  // initialize the sampling function, input is the sampling time in microseconds
-  Sampling.interrupt(stepEnable); // setting the interrupts, the input is the ISR function
-
- // setting the PID constants
- PIDAbs.setKp(0.007);
- PIDAbs.setTi(0.015);
- PIDAbs.setTd(0.0002);
- PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
-}// end of the setup
-
-void loop() {
-
-  if (enable) {
-    step();
-    enable=false;
-    
-  }  
-
-} // end of the loop
-
-
-void stepEnable(){  // ISR
-  enable=true;
+ Serial.begin(2000000);               //--Initialize serial communication # 2 Mbaud
+ MotoShield.begin(TS);               //--Initialize MotoShield
+ MotoShield.calibration();          //--Calibration
+ PIDAbs.setKp(KP);    //--PID constants
+ PIDAbs.setTi(TI); 
+ PIDAbs.setTd(TD); 
+ PIDAbs.setTs(TS); //--Defining sampling period
+ Serial.println("r, y, u"); //--Print header
 }
 
-void step(){ // we have to put our code here
-  
-  
-
-r = MotoShield.referenceRead();  // reading the reference value of the potentiometer
-float variable = MotoShield.readRevolutions(50);    // reading RPM of the motor
-
-y = AutomationShield.mapFloat(variable,0.00,25.00,0.00,100.00); //converting the RPM of the motor into %
-
-error = r - y; 
-
- u = PIDAbs.compute(error,0,100,0,100);
-
-MotoShield.setMotorSpeed(u);
-
-Serial.print(r);
-Serial.print(" ");
-Serial.print(y);
-Serial.print(" ");
+void loop() {
+  if (MotoShield.stepEnable) {      //--Running the algorithm once every sample
+    step();               
+    MotoShield.stepEnable=false;  //--Setting the flag to false # built-in ISR sets flag to true at the end of each sample
+  }  
+}
+void step(){ //--Algorith ran once per sample
+#if !AUTO
+  r = MotoShield.referenceRead();          //--Sensing Pot reference
+#else AUTO
+  if(i >= sizeof(R)/sizeof(float)){ //--If trajectory ended
+    MotoShield.actuatorWrite(0.0); //--Stop the Motor
+    while(true); //--End of program execution
+  }
+  if (k % (T*i) == 0){ //--Moving through trajectory values    
+   r = R[i];        
+    i++;             //--Change input value after defined amount of samples
+  }
+  k++;                              //--Increment
+#endif
+y = MotoShield.sensorRead();     //--Sensing angular velocity in percent
+u = PIDAbs.compute(r-y,0,100,0,100);   //--PID computation
+MotoShield.actuatorWrite(u);          //--Actuation
+Serial.print(r);            //--Printing reference
+Serial.print(", ");            
+Serial.print(y);        //--Printing output
+Serial.print(", ");
 Serial.println(u);
 }

@@ -27,6 +27,9 @@
   Last update: 3.6.2019.
 */
 
+#ifndef SAMPLING_H                     //Include guard
+#define SAMPLING_H
+
 SamplingNoServo::SamplingClass Sampling;
 
 #ifdef ARDUINO_AVR_UNO
@@ -47,4 +50,6 @@ void TC5_Handler(void){
 
 #else
   #error "Architecture not supported."
+#endif
+
 #endif

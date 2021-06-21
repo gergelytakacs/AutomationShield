@@ -7,12 +7,12 @@
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-  Created by Gergely Tak�cs, Tibor Konkoly, G�bor Penzinger
+  Created by Gergely Takacs, Tibor Konkoly, Gabor Penzinger
   Last update: 31.09.2018.
 */
 
-#ifndef AUTOMATIONSHIELD_H_  // Include guard - prevents multiple header inclusions
-#define AUTOMATIONSHIELD_H_  // If not already there, include
+#ifndef AUTOMATIONSHIELD_H  // Include guard - prevents multiple header inclusions
+#define AUTOMATIONSHIELD_H  // If not already there, include
 
 #if (ARDUINO >= 100)  // Libraries don't include this, normal Arduino sketches do
  #include "Arduino.h" // For new Arduino IDE
@@ -28,9 +28,9 @@
 // Common definitions
 #ifdef ARDUINO_ARCH_AVR                     // Chip uses 10-bit ADC
 
-	#define ADCREF 1023.0					// 10-bit resolution for AD convertor
+	#define ADCREF 1023.0					// 10-bit resolution for AD converter
 #elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM // Chip uses 12-bit ADC
-	#define ADCREF 4095.0					// 12-bit resolution for AD convertor
+	#define ADCREF 4095.0					// 12-bit resolution for AD converter
 #endif
 
 #define AREF 5.0                              // ADC reference voltage for 5 V logic
@@ -45,13 +45,28 @@
 
 // class(es) .h part of the library
  class AutomationShieldClass{   
-  public:    
+ public:    
     float mapFloat(float x, float in_min, float in_max, float out_min, float out_max);
     void error(const char *str);
-    void serialPrint(const char *str);
     float constrainFloat(float x, float min_x, float max_x); 
     byte percToPwm(float perc); 
+	float quality(float, char *method); 															// Quality metric for feedback control input
+	
+	// Printing functions
+    void serialPrint(const char *str); 														// Should be renamed to diagnostic printLowHigh
+	void print(float, float, float);
+	void printLowHigh(char *named, float low, float high, char *unit, short int precision); // Prints a single line for range measurements in an ordered form
+	void printSeparator(char); 																// Prints a line of dashes, 60 characters wide, then a new line.
+	void printLowHighFirst(void); 															// Creates a header for displaying numeric ranges with a label and unit
+	bool printTestResults(char *text,float value, float low, float high);	 				// Evaluates and prints if a number fits into a range	
+
+
+  private:
+	float qualityVal;																		// Variable to store quality at all times
 }; // end of the class
+
+
+
 
 extern AutomationShieldClass AutomationShield; // Declare external instance
 
