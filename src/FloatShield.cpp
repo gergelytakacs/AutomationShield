@@ -123,10 +123,10 @@ void FloatClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D1
 	#endif
 }
 
-float FloatClass::actuatorReadVoltage(void) {
+float FloatClass::actuatorReadVoltage(void) {                                                     //measure the actual voltage at the actuator
 
-  _actuatorVoltageADC = (float)analogRead(FLOAT_AVPIN);
-  _actuatorVoltage = 4.0 * AutomationShield.mapFloat(_actuatorVoltageADC, 0.0, ADCREF, 0.0, 3.3);
+  _actuatorVoltageADC = (float)analogRead(FLOAT_AVPIN);                                           // read the ADC value
+  _actuatorVoltage = 4.0 * AutomationShield.mapFloat(_actuatorVoltageADC, 0.0, ADCREF, 0.0, 3.3); // calcualte the Voltage form ADC value
   return _actuatorVoltage;
 }
 #endif
