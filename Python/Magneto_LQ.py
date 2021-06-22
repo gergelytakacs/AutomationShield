@@ -39,6 +39,7 @@ x3_max = 60.0e-3 - i0
 print('ra')
 print(ra)
 
+
 # State-space model definition
 A = np.array([[0, 1, 0], [2132.16759667712, 0, -243.618066600915], [0, -16.8436441136086, -618.268173743509]])
 B = np.array([[0], [0], [2.83867770431028]])
@@ -78,7 +79,9 @@ print('Rlq')
 print(Rlq)
 
 
+
 Xlq = linalg.solve_discrete_are(Ai, Bi, Qlq, Rlq)   # solve the Riccatti equation
+
 
 Klq = dot(inv(multi_dot([Bi.T, Xlq, Bi])+Rlq), multi_dot([Bi.T, Xlq, Ai]))  # compute the LQR gain
 
@@ -129,8 +132,8 @@ for k in range(1, n):
     Y[1, [k]] = (X[2, [k-1]] + i0) * 1e3
 
 
-# Plot results
 
+# Plot results
 fig = plt.figure()
 
 plt.subplot(3, 1, 1)
