@@ -27,7 +27,7 @@
 
 #include <BOBShield.h>              // Include API for BobShield  
 #include <SamplingServo.h>
-#include <BasicLinearAlgebra.h>
+#include "lib/BasicLinearAlgebra/BasicLinearAlgebra.h">
 #include <getKalmanEstimate.inl>
 #include <getGainLQ.inl>
 
