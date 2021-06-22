@@ -24,7 +24,7 @@ TET=toc;
 
 x
 Fval
-exitflag
+%exitflag
 output
 
 
