@@ -2,7 +2,7 @@ startScript;                            % Clears screen and variables, except al
 
 %define LQR
 Ts=0.01;
-load('mymodel.mat')
+load('myModel.mat')
 csystem=ss(model.A,model.B,model.C,model.D);
 dsystem=c2d(csystem,Ts,'zoh');
 A=dsystem.A;
