@@ -2,7 +2,7 @@ clear, clc
 %define LQR
 Ts=0.01;
 load('mymodel.mat')%load model
-%create state-space model + continous to discrete
+%create state-space model + continuous to discrete
 csystem=ss(model.A,model.B,model.C,model.D);
 dsystem=c2d(csystem,Ts,'zoh');
 %assign matrices from the model
