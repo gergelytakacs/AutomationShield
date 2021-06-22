@@ -1,7 +1,7 @@
 clear, clc
 %define LQR
 Ts=0.01;
-load('mymodel.mat')%load model
+load('myModel.mat')%load model
 %create state-space model + continuous to discrete
 csystem=ss(model.A,model.B,model.C,model.D);
 dsystem=c2d(csystem,Ts,'zoh');
@@ -35,7 +35,7 @@ Ac = [eye(np);
      -eye(np)];
 b = ones(np*2,1)*umax;
 %load measurede data - just to load my reference
-load('PID_ver2\dataPidAll.mat')
+load('dataPidAll.mat')
 Ref=dataAll(:,1); %reference
 Ref=Ref(500:5500)';
 
