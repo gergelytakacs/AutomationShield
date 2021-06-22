@@ -34,8 +34,8 @@ Fval
 
 
 
-x
-Fval
-exot
-Output.generation
-SEED = Output.rngstate.State;
+% x
+% Fval
+% exot
+% Output.generation
+% SEED = Output.rngstate.State;
