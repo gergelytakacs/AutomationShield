@@ -23,6 +23,7 @@
 
 #define MANUAL 0                      // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)
 
+
 unsigned long Ts = 25;                // Sampling period in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep = false;                // Flag for step function
@@ -32,6 +33,7 @@ float r = 0.0;                                                    // Reference (
 float R[] = {65.0,50.0,35.0,45.0,60.0,75.0,55.0,40.0,20.0,30.0};  // Reference trajectory
 float y = 0.0;                                                    // Output (Current ball altitude)
 float u = 0.0;                                                    // Input (Fan power)
+float uv= 0.0;                                                    // Input (Fan Voltage)
 
 int T = 2400;             // Section length
 int i = 0;                // Section counter
@@ -44,6 +46,10 @@ int i = 0;                // Section counter
   #define KP 0.01           // PID Kp constant
   #define TI 2              // PID Ti constant
   #define TD 0.01           // PID Td constant
+  #elif SHIELDRELEASE == 4
+  #define KP 0.15           // PID Kp constant
+  #define TI 3              // PID Ti constant
+  #define TD 0.1           // PID Td constant
 #endif
 
 void setup() {                         // Setup - runs only once
@@ -70,6 +76,8 @@ void setup() {                         // Setup - runs only once
           u = PIDAbs.compute(r-y,30,100,30,100);  // PID
         #elif SHIELDRELEASE == 2
           u = PIDAbs.compute(r-y,40,100,40,100);  // PID
+        #elif SHIELDRELEASE == 4
+          u = PIDAbs.compute(r-y,10,100,10,100);  // PID
         #endif
         FloatShield.actuatorWrite(u);           // Actuate
         if(y >= r*2/3) {                        // If the ball is getting close to reference
@@ -112,11 +120,14 @@ void step() {                               // Define step function
     y = FloatShield.sensorRead();         // Read sensor
     u = PIDAbs.compute(r-y,0,100,0,100);  // PID
     FloatShield.actuatorWrite(u);         // Actuate
+    uv = FloatShield.actuatorReadVoltage(); // Read actuator voltage
 
     Serial.print(r);           // Print reference
-    Serial.print(" ");
+    Serial.print(", ");
     Serial.print(y);           // Print output
-    Serial.print(" ");
-    Serial.println(u);         // Print input
+    Serial.print(", ");
+    Serial.print(u);         // Print input
+    Serial.print(", ");
+    Serial.println(uv);         // Print actuator voltage
     k++;                       // Increment index
 }

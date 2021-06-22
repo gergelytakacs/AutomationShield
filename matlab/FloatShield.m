@@ -30,7 +30,8 @@ classdef FloatShield < handle             % FloatShield class definition
 
     methods(Access = public)                                                            % Public class functions
 
-        function begin(FloatShieldObject, aPort, aBoard)                                % Initialisation function
+        function begin(FloatShieldObject, aPort, aBoard) % Initialisation function
+            controlledFailCI(); %Bums out for CI earlier than below!
             listOfLibraries = listArduinoLibraries();                                   % List of available arduino libraries
             libraryIsPresent = sum(ismember(listOfLibraries,'Pololu/Pololu_VL53L0X'));  % Check if required library is present
             if ~libraryIsPresent                                                        % If not, throw an error
@@ -38,6 +39,7 @@ classdef FloatShield < handle             % FloatShield class definition
             end
             FloatShieldObject.arduino = arduino(aPort, aBoard, 'Libraries', 'Pololu/Pololu_VL53L0X')  % Initialising object for arduino board
             FloatShieldObject.laserSensor = addon(FloatShieldObject.arduino, 'Pololu/Pololu_VL53L0X') % Initialising object for laser sensor
+            FloatShieldObject.dac = device(FloatShieldObject.arduino,'I2CAddress',62,'bus',busno,'bitrate',400000);
             beginSensor(FloatShieldObject.laserSensor)                                                % Initialising laser sensor
             disp('FloatShield initialized.')
         end

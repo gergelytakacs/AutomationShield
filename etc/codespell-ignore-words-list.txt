@@ -1,3 +1,15 @@
+arange
+np
+discretization
+Ricatti
+LQR
+xI
+plt
+xlabel
+linewidth
+theses
+muaompc
+Discretized
 AVR
 Adafruit
 AnalogIn
@@ -32,7 +44,7 @@ Takács
 al
 analogin
 analogio
-architecutre
+architecture
 automationshield
 automationshield
 baseConstrain
@@ -112,3 +124,4 @@ percentual
 ee
 ethz
 bytecode
+FloatShield

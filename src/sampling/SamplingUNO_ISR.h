@@ -12,6 +12,9 @@
   Last update: 3.6.2019.
 */
 
+#ifndef SAMPLINGUNO_ISR_H
+#define SAMPLINGUNO_ISR_H
+
 ISR(UNO_ISR_VECT)
 {
  if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
@@ -25,3 +28,4 @@ ISR(UNO_ISR_VECT)
   } 
  }
 }
+#endif

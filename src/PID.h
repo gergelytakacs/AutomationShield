@@ -1,5 +1,5 @@
-#ifndef PID_H_
-#define PID_H_
+#ifndef PID_H
+#define PID_H
 
 #include "sampling/SamplingCore.h"
 

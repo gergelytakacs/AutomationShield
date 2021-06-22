@@ -26,7 +26,7 @@ global MPTOPTIONS
 % 
 %    Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) 
 %    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    
-%    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)
+%    Adapted for MCU use by Gergely Takacs in 2020 (gergely.takacs@stuba.sk)
 
  
 obj = obj.optimizer;            % Extract optimizer from object
@@ -108,7 +108,6 @@ header = {
 '  papers. A list of publications connected to the AutomationShield'
 '  project is available at:'
 '  https://github.com/gergelytakacs/AutomationShield/wiki/Publications'
-'
 '  This code is part of the AutomationShield hardware and software'
 '  ecosystem. Visit http://www.automationshield.com for more'
 '  details. This code is licensed under a Creative Commons'
@@ -117,7 +116,7 @@ header = {
 ''
 '    Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) '
 '    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    '
-'    Adapted for to Python by Gergely Takács in 2020 (gergely.takacs@stuba.sk)'
+'    Adapted for to Python by Gergely Takacs in 2020 (gergely.takacs@stuba.sk)'
 '"""'
 ''
 };
