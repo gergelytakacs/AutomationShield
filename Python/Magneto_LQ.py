@@ -80,7 +80,7 @@ print(Rlq)
 
 
 
-Xlq = linalg.solve_discrete_are(Ai, Bi, Qlq, Rlq)   # solve the Riccatti equation
+Xlq = linalg.solve_discrete_are(Ai, Bi, Qlq, Rlq)   # solve the Ricatti equation
 
 
 Klq = dot(inv(multi_dot([Bi.T, Xlq, Bi])+Rlq), multi_dot([Bi.T, Xlq, Ai]))  # compute the LQR gain
