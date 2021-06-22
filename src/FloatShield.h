@@ -12,8 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács, Peter Chmurčiak and Erik Mikuláš.
-  Last update: 6.21.2021.
-
+  Last update: 2.12.2020.
 */
 
 #ifndef FLOATSHIELD_H             // Include guard
