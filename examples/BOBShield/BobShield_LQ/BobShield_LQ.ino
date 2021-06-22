@@ -9,7 +9,7 @@
   the AutomationShield library and then with estimates states
   by Kalman filtering and implements a linear quadratic (LQ)
   control of the ball altitude. It allows the user to select
-  wheter the reference altitude is given by the onboard
+  whether the reference altitude is given by the onboard
   potentiometer or by a predetermined reference
   trajectory. Upload the code to your board and open the
   Serial Plotter tool in Arduino IDE.
@@ -68,7 +68,7 @@ void setup() { // Setup - runs only once
   BOBShield.begin();               // Define hardware pins (with no sensor troubleshooting) 
   //BOBShield.initialize(); //only the sensor, including some troubleshooting
   BOBShield.calibration();
-  BOBShield.actuatorWrite(0.0); //should be included in callibration
+  BOBShield.actuatorWrite(0.0); //should be included in calibration
 
   // Initialize sampling function
   Sampling.period(Ts * 1000);   // Sampling init.
@@ -99,7 +99,7 @@ void loop() {
 void step(){ // Define step function
  if (i > (sizeof(R) / sizeof(R[0]))) {       // If at end of trajectory
 
-    // Serial.println("End");                //only for debuging  
+    // Serial.println("End");                //only for debugging  
     while (1);                                // Stop program execution
   } 
   else if (k % (T * i) == 0) {              // If at the end of section
