@@ -22,7 +22,7 @@ Q=diag([ 1E2, 1, 1]);
 [K,P]= dlqr(AI,BI,Q,R);
  
 %load measurede data
-load('PID_ver2\dataPidAll.mat')
+load('dataPidAll.mat')
 Um=dataAll(:,3);
 Ym=dataAll(:,2);
 Ref=dataAll(:,1); %reference
