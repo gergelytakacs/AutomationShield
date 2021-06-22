@@ -9,7 +9,7 @@ lb = [eps      eps   eps       eps]';  % Initial guess
 
 
 options = optimoptions('ga','PlotFcn', {@gaplotbestf, @gaplotstopping, @gaplotbestindiv,});
-options.PopulationSize = 200; % 50 for <5 variables, 200 otherwise
+options.PopulationSize = 50; % 50 for <5 variables, 200 otherwise
 options.MaxGenerations=600;  %100 x number of decision variables
 options.MaxStallGenerations=100; %Stalling 100 default
 %options.InitialPopulationMatrix = final_pop;
@@ -23,7 +23,7 @@ TET=toc;
 
 
 x
-fval
+Fval
 exitflag
 output
 

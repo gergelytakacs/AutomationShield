@@ -22,6 +22,8 @@ class BOBClass {
     float sensorReadPerc();
     float sensorRead();
     int degree;
+	float deg2rad(float u);
+	float rad2deg(float u);
     void actuatorWrite(float fdeg);
 	
   private:
@@ -156,5 +158,15 @@ Serial.print("pos :"); Serial.print(pos);Serial.print(" ");
     # endif
 return ballPos;
 }
+
+  float BOBClass::deg2rad(float u){
+    u=u*(3.14/180.0);
+    return u;
+    }
+
+    float BOBClass::rad2deg(float u){
+    u=u*(180.0/3.14);
+    return u;
+    }
 
 BOBClass BOBShield;
