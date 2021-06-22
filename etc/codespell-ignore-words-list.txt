@@ -1,7 +1,7 @@
 arange
 np
 discretization
-Riccati
+Ricatti
 LQR
 xI
 plt
