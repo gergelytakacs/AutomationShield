@@ -5,7 +5,7 @@
   
   This example initializes the sampling subsystem 
   from the AutomationShield library and starts a 
-  loop where you can manualy control the angle 
+  loop where you can manually control the angle 
   of the tube by turning on board potentiometer. 
   
   Upload the code to your board, then open the Serial
