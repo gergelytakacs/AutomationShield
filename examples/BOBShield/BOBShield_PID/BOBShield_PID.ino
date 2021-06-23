@@ -51,6 +51,7 @@ void setup() {
   
   // Initialize and calibrate board
   BOBShield.begin();               // Define hardware pins
+  BOBShield.zeroCompensation = 0; // tune this parameter in Open-loop example if the tube is not in level while actuatorWrite(0)
   BOBShield.initialize();
   BOBShield.calibration();
   

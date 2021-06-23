@@ -10,6 +10,7 @@
 #define BOB_RPIN 0
 #define BOB_UPIN 9
 #define MIN_CALIBRATED_DEFAULT 7
+#define ZERO_COMPENSATION 0
 
 
 class BOBClass {
@@ -25,6 +26,7 @@ class BOBClass {
 	float deg2rad(float u);
 	float rad2deg(float u);
     void actuatorWrite(float fdeg);
+    float zeroCompensation = 0;
 	
   private:
       float _referenceRead;
@@ -127,7 +129,7 @@ else if (deg>30) {
 
 degree = map(deg,30,-30,65,125);                   // mapping inputs defined by user in degrees (-30 / 30) into values understandeable for servo (70 / 130)
 
-	myservo.write(degree);                         // write values for servo
+	myservo.write(degree + zeroCompensation);                         // write values for servo
 }
 
 //values from sensor in % - for possible future use

@@ -23,22 +23,23 @@ int aprbs2;                             // Variable for storing APRBS signal
 //int aprbs4;                             // Variable for storing APRBS signal
 
 
-unsigned long Ts = 14;            // Sampling in milliseconds
+unsigned long Ts = 14;              // Sampling in milliseconds
 unsigned long k = 0;                // Sample index
 bool enable=false;                  // Flag for sampling 
 
-float y = 0.0;            // Output
-int u = 0;            // Input (open-loop)
-int T = 1;              // Section length (appr. '/.+2 s)
-int i = 0;              // Section counter
+float y = 0.0;           // Output
+int u = 0;               // Input (open-loop)
+int T = 1;               // Section length (appr. '/.+2 s)
+int i = 0;               // Section counter
 
 void setup() {
 
  Serial.begin(115200);                // Initialize serial
  BOBShield.begin();                   // Define hardware pins
+ BOBShield.zeroCompensation = 10;     // tune this parameter in Open-loop example if the tube is not in level while actuatorWrite(0)
  BOBShield.initialize();              // Check if Adafruit VL6180 sensor is available
- BOBShield.calibration();              // Initialize sampling function
-  Sampling.period(Ts *1000);         // Sampling init.
+ BOBShield.calibration();             // Initialize sampling function
+  Sampling.period(Ts *1000);          // Sampling init.
   Sampling.interrupt(stepEnable);     // Interrupt fcn.
 }
 
