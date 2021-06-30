@@ -1,6 +1,6 @@
 function releaseManagement()
 
-currVer='R2019a' %Currently supported Simulink version
+currVer='R2019a'; %Currently supported Simulink version
 
 % Add to path
 thisdir=pwd;
@@ -22,7 +22,7 @@ for i=1:length(libNames)
     versions{i}=info.ReleaseName;
     disp([libNames{i},': ',versions{i}])    
 end
-allVersions=versions
+allVersions=versions;
 versions=[];
 
 disp('')
@@ -44,9 +44,12 @@ for i=1:length(exampleList);
         info = Simulink.MDLInfo(scr);
         versions{i}=info.ReleaseName;
         disp([scr,': ',versions{i}])  
+        if (~strcmp(versions{i},currVer))
+        disp(['*** Not compatible:,' dirContents(i).name])
+        end
     end
-    allVersions=[{allVersions},{versions}];
     cd .. % Switch to next directory
+    allVersions=[allVersions, versions];
 end
 cd ..
 
