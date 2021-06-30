@@ -25,9 +25,9 @@ Q=diag([1 0.001 1]);
 
 [K, P] = dlqr(AI, BI, Q, R);
 % Get Hessian, Gradient and F matrices of cost function
-[H, G, F] = ucelovafunkcia(AI, BI, Np, Q, R, P); 
+[H, G, F]=getCostFunctionMPC(AI, BI, Np, Q, R, P); 
 % Set input constraints onto the system
-[Ac, b0] = obmedzenia(uL, uU, Np); 
+[Ac, b0]=setConstraintsMPC(uL, uU, Np);
 
 H = (H + H') / 2;            % Create symmetric Hessian matrix
 opt = optimoptions('quadprog', 'Display', 'none');  % Turn off display
@@ -58,10 +58,14 @@ plot(X(1,:))
 hold on
 plot(Ref)
 axis([0,3000,0,100])
-ylabel('Pretlak (hPa)')
-xlabel('Vzorka')
+ylabel('Overpressure (hPa)')
+xlabel('Sample')
+legend('Output','Reference')
+title('Output Y')
+
 subplot(2,1,2)
 plot(U)
 axis([0,3000,0,100])
 ylabel('PMW (%)')
-xlabel('Vzorka')
+xlabel('Sample')
+title('Input U')
