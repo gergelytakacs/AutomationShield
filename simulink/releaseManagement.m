@@ -2,6 +2,11 @@ function releaseManagement()
 
 currVer='R2019a' %Currently supported Simulink version
 
+% Add to path
+thisdir=pwd;
+addpath(genpath(thisdir));
+savepath
+    
 libNames={'AutomationShield','FloatLibrary','HeatLibrary','OptoLibrary','TugLibrary','MagnetoLibrary','PressureLibrary','MotoLibrary'};
 exampleList={'OptoShield','HeatShield','FloatShield','TugShield','PressureShield','MotoShield','MagnetoShield'};
 versions=[];
