@@ -22,6 +22,7 @@ for i=1:length(libNames)
     versions{i}=info.ReleaseName;
     disp([libNames{i},': ',versions{i}])    
 end
+allVersions=versions
 versions=[];
 
 disp('')
@@ -44,6 +45,7 @@ for i=1:length(exampleList);
         versions{i}=info.ReleaseName;
         disp([scr,': ',versions{i}])  
     end
+    allVersions=[{allVersions},{versions}];
     cd .. % Switch to next directory
 end
 cd ..
@@ -53,7 +55,7 @@ disp('=======================')
 disp('')
 
 
-if all(strcmp(versions(:),currVer))
+if all(strcmp(allVersions(:),currVer))
     disp(['Current Simulink API and example version: ',currVer])
 else
     error(['Error! At least one library or example is other than ',currVer])
@@ -62,7 +64,7 @@ end
 
 
 
-if all(strcmp(versions(:),versions{1}))
+if all(strcmp(allVersions(:),versions{1}))
     disp('All library modules and examples are saved in the same Simulink version.')
 else
     disp('Warning! Not all modules and examples are saved in the same Simulink version!')
