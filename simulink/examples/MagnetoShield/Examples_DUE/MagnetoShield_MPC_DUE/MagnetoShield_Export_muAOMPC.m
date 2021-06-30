@@ -26,7 +26,6 @@ load '../../../../../matlab/examples/MagnetoShield/MagnetoShield_Models_Greybox_
 dt = 0.003;                                                      % [s] Sample time for discretization
 N  = 7;                                                         % [steps] Target horizon
 
-u0= 4.6234;                                                     % [V] Input linearization
 umin = 0-u0;                                                    % [V] minimal input voltage
 umax = 10-u0;                                                   % [V] maximal input voltage
 

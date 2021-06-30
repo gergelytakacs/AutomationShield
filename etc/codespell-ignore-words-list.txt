@@ -1,3 +1,15 @@
+arange
+np
+discretization
+Ricatti
+LQR
+xI
+plt
+xlabel
+linewidth
+theses
+muaompc
+Discretized
 AVR
 Adafruit
 AnalogIn
@@ -112,3 +124,4 @@ percentual
 ee
 ethz
 bytecode
+FloatShield

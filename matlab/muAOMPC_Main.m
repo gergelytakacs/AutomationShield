@@ -29,7 +29,7 @@ function muAOMPC_Main(fileName)
     fprintf(filehandle, '\n');
     fprintf(filehandle, ['mpc = muaompc.ltidt.setup_mpc_problem("',fileName,'")']);
     fprintf(filehandle, '\n');
-    fprintf(filehandle, ['mpc.generate_c_files(numeric="float32")']);
+    fprintf(filehandle, ['mpc.generate_c_files(numeric="float32",singledir=True)']);
     fclose(filehandle);
 
     disp(['MPC problem main file for muAOMPC is: "', fileName, '.py".'])

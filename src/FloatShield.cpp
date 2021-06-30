@@ -11,8 +11,9 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by Gergely Takács and Peter Chmurčiak.
-  Last update: 11.3.2020.
+  Created by Gergely Takács, Peter Chmurčiak and Erik Mikuláš.
+  Last update: 6.21.2021.
+
 */
 
 #include "FloatShield.h"         // Include header file
@@ -32,12 +33,14 @@ void FloatClass::begin(void) {                                      // Board ini
     Wire.begin();                                                   // Use Wire object
   #if SHIELDRELEASE == 1                                            // For shield version 1
     analogReference(DEFAULT);                                       // Use default analog reference
-  #elif SHIELDRELEASE == 2                                          // For shield version 2
+  #elif SHIELDRELEASE == 2 || SHIELDRELEASE == 4                                          // For shield version 2
     analogReference(EXTERNAL);                                      // Use external analog reference
   #endif
 #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards
+  analogReadResolution(12);
   Wire1.begin();                                                    // Use Wire1 object
 #elif ARDUINO_ARCH_SAMD                                             // For SAMD architecture boards
+  analogReadResolution(12);
   Wire.begin();                                                     // Use Wire object
 #endif
   distanceSensor.setTimeout(1000);                                  // Set sensor timeout to 1 second
@@ -47,13 +50,14 @@ void FloatClass::begin(void) {                                      // Board ini
   distanceSensor.setMeasurementTimingBudget(20000);                 // Setting high-speed mode for laser sensor
   distanceSensor.startContinuous();                                 // Setting continuous mode for laser sensor
   _minDistance = 17.0;                                              // Initializing min,max variables by approximate values so the functions can be used even without calibration but with lower precision
-  _maxDistance = 341.0;
+  _maxDistance = 271.0;
   _range = _maxDistance - _minDistance;
   _wasCalibrated = false;
 
 #if SHIELDRELEASE == 2          // For hardware release version 2                            
   attachInterrupt(digitalPinToInterrupt(FLOAT_YPIN), hallPeriodCounter, CHANGE); // Attach interrupt routine to external interrupt pin 1. Trigger at both rising and falling edge of signal
 #endif
+
   AutomationShield.serialPrint(" successful.\n");
 }
 
@@ -73,7 +77,7 @@ void FloatClass::calibrate(void) {                       // Board calibration
 
   sum = 0.0;
   actuatorWrite(0.0);                                    // Turns off the fan
-  while (sensorReadDistance() < 300.0) {                 // Waits until the ball is at least in the lower third of the tube
+  while (sensorReadDistance() < 240.0) {                 // Waits until the ball is at least in the lower third of the tube
     delay(100);                                          // (This is probably unnecessary, because ball has no problem falling down, but for the sake of consistency)
   }
   delay(1000);
@@ -88,21 +92,67 @@ void FloatClass::calibrate(void) {                       // Board calibration
   AutomationShield.serialPrint(" successful.\n");
 }
 
-void FloatClass::actuatorWrite(float aPercent) {                                         // Write actuator
+#if SHIELDRELEASE == 4
+void FloatClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4,D3,D2,D1,D0)
+	#ifdef ARDUINO_ARCH_AVR
+		Wire.beginTransmission(MCP4725); 					//addressing
+	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
+	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
+	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
+	    uint8_t secndbyte=(DAClevel>>8);					//(0,0,0,0,0,0,0,0,D3,D2,D1,D0,0,0,0,0) of which only the 8 LSB's survive.
+	    Wire.write(firstbyte); //first 8 MSB's
+	    Wire.write(secndbyte); //last 4 LSB's
+	    Wire.endTransmission();
+	#elif ARDUINO_ARCH_SAM
+		Wire1.beginTransmission(MCP4725); 					//addressing
+	    Wire1.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
+	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
+	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
+	    uint8_t secndbyte=(DAClevel>>8);					//(0,0,0,0,0,0,0,0,D3,D2,D1,D0,0,0,0,0) of which only the 8 LSB's survive.
+	    Wire1.write(firstbyte); //first 8 MSB's
+	    Wire1.write(secndbyte); //last 4 LSB's
+	    Wire1.endTransmission();
+	#elif ARDUINO_ARCH_SAMD
+		Wire.beginTransmission(MCP4725); 					//addressing
+	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
+	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
+	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
+	    uint8_t secndbyte=(DAClevel>>8);					//(0,0,0,0,0,0,0,0,D3,D2,D1,D0,0,0,0,0) of which only the 8 LSB's survive.
+	    Wire.write(firstbyte); //first 8 MSB's
+	    Wire.write(secndbyte); //last 4 LSB's
+	    Wire.endTransmission();
+	#endif
+}
+
+float FloatClass::actuatorReadVoltage(void) {                                                     //measure the actual voltage at the actuator
+  _actuatorVoltageADC = (float)analogRead(FLOAT_AVPIN);                                           // read the ADC value
+  _actuatorVoltage = 4.0 * AutomationShield.mapFloat(_actuatorVoltageADC, 0.0, ADCREF, 0.0, 3.3); // calculate the Voltage form ADC value
+  return _actuatorVoltage;
+}
+#endif
+
+void FloatClass::actuatorWrite(float aPercent) {
+  #if SHIELDRELEASE == 1 || SHIELDRELEASE == 2 || SHIELDRELEASE == 3                     // Write actuator
   float mappedValue = AutomationShield.mapFloat(aPercent, 0.0, 100.0, 0.0, 255.0);       // Takes the float type percentual value 0.0-100.0 and remapps it to range 0.0-255.0
   mappedValue = AutomationShield.constrainFloat(mappedValue, 0.0, 255.0);                // Constrains the remapped value to fit the range 0.0-255.0 - safety precaution
-  analogWrite(FLOAT_UPIN, (int)mappedValue);                                             // Sets the fan speed using the constrained value
+  analogWrite(FLOAT_UPIN, (int)mappedValue);
+
+  #elif SHIELDRELEASE == 4
+  float mappedValue = AutomationShield.mapFloat(aPercent, 0.0, 100.0, 0.0, 4095.0);       // Takes the float type percentual value 0.0-100.0 and remapps it to range 0.0-255.0
+  mappedValue = AutomationShield.constrainFloat(mappedValue, 0.0, 4095.0);                // Constrains the remapped value to fit the range 0.0-255.0 - safety precaution
+  dacWrite((int)mappedValue);                                              // Sets the fan speed using the constrained value
+  #endif                                            
 }
 
 float FloatClass::referenceRead(void) {                                                      // Reference read
   _referenceValue = (float)analogRead(FLOAT_RPIN);                                           // Reads the actual analog value of potentiometer runner
-  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
+  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, ADCREF, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
   return _referencePercent;                                                                  // Returns the percentual position of potentiometer runner
 }
 
 float FloatClass::referenceReadAltitude(void) {                                                             // Reference read
   _referenceValue = (float)analogRead(FLOAT_RPIN);                                                          // Reads the actual analog value of potentiometer runner
-  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, 1023.0, 0.0, _range);                 // Remapps the analog value from original range 0.0-1023 to calibrated altitude range 0.0-324.0 (mm)
+  _referencePercent = AutomationShield.mapFloat(_referenceValue, 0.0, ADCREF, 0.0, _range);                 // Remapps the analog value from original range 0.0-1023 to calibrated altitude range 0.0-324.0 (mm)
   return _referencePercent;                                                                                 // Returns the altitude proportional to position of potentiometer runner
 }
 

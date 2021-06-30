@@ -2,7 +2,7 @@
 %    state-space system matrices used in linear MPC.
 %
 %    Usage:
-%    [Ac, b0, B0] = setConstraintsMPC(uL, uU, xL, xU, np, A, B);
+%    [Ac, b0, B0] = applyConstraintsMPC(uL, uU, xL, xU, np, A, B);
 %
 %    Where uL,uU are values of lower and upper boundaries on input and 
 %    xL,xU are are values of lower and upper boundaries on states, 
@@ -10,10 +10,10 @@
 %
 %    Depending on the number of inputs to the function also only input
 %    constraints can be applied:
-%    [Ac, b0] = setConstraintsMPC(uL, uU, np);
+%    [Ac, b0] = applyConstraintsMPC(uL, uU, np);
 % 
 %    Or only state constraints can be applied:
-%    [Ac, b0, B0] = setConstraintsMPC(xL, xU, np, A, B);
+%    [Ac, b0, B0] = applyConstraintsMPC(xL, xU, np, A, B);
 % 
 %    This code is part of the AutomationShield hardware and software
 %    ecosystem. Visit http://www.automationshield.com for more
@@ -28,7 +28,7 @@
 %    Created by Peter Chmurciak
 %    Last update: 24.4.2020
 
-function [Ac, b0, B0] = setConstraintsMPC(p1, p2, p3, p4, p5, p6, p7)
+function [Ac, b0, B0] = applyConstraintsMPC(p1, p2, p3, p4, p5, p6, p7)
 switch nargin
     case 3  % Only input constraints
             % [Ac, b0] = setConstraintsMPC(uL, uU, np);

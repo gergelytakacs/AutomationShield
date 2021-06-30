@@ -1,0 +1,3 @@
+The Data has been captured during an experiment with use of LQR with Ts=0.00325 s.
+The model used for LQR design is "MagnetoShield_Models_Greybox_SS" from matla/examples/MagnetoShield section.
+Use of LQR for capturing data for identification has been convenient because of better performance of the regulator in comparison to PID.

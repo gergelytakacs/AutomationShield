@@ -42,7 +42,7 @@ g  = 9.81;										% [m/s2] Gravitational acceleration
 m  = 0.945E-3;                                  % [kg] Magnet mass
 R  = 198.3;                                     % [Ohm] Solenoid resistance
 L  = 0.239;                                     % [H] Solenoid inductance
-Km = 0.0037;                                    % Magnetic constant for the mechanical part
+Km = 3.333e-06;                     % Magnetic constant for the mechanical part
 Ke = Km;                                        % Magnetic constant for the electrical part
 
 % Linearization points based on the experiment
