@@ -59,8 +59,8 @@ runTime = 1000;
 % Get final state penalisation matrix P
 [K, P] = dlqr(matAhat, matBhat, Q, R);
 % Get Hessian and Gradient matrices of cost function
-[H,G]=getCostFunctionMPC(matAhat,matBhat,np,Q,R,P); 
-[Ac b0]=setConstraintsMPC(uL,uU,np);  
+[H,G]=calculateCostFunctionMPC(matAhat,matBhat,np,Q,R,P); 
+[Ac b0]=applyConstraintsMPC(uL,uU,np);  
 
 H = (H + H') / 2;                  
 opt = optimoptions('quadprog', 'Display', 'none'); 

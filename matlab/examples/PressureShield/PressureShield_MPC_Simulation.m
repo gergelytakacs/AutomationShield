@@ -25,9 +25,9 @@ Q=diag([1 0.001 1]);
 
 [K, P] = dlqr(AI, BI, Q, R);
 % Get Hessian, Gradient and F matrices of cost function
-[H, G, F]=getCostFunctionMPC(AI, BI, Np, Q, R, P); 
+[H, G, F]=calculateCostFunctionMPC(AI, BI, Np, Q, R, P); 
 % Set input constraints onto the system
-[Ac, b0]=setConstraintsMPC(uL, uU, Np);
+[Ac, b0]=applyConstraintsMPC(uL, uU, Np);
 
 H = (H + H') / 2;            % Create symmetric Hessian matrix
 opt = optimoptions('quadprog', 'Display', 'none');  % Turn off display

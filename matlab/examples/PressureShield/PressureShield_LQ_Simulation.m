@@ -1,7 +1,5 @@
 startScript;
 
-Ts=0.01;        %sampling period
-
 load('Reference.mat')  
 load('BlackBoxModel.mat')
 
@@ -9,7 +7,7 @@ dsystem=disSystem2;
 A=dsystem.A;
 B=dsystem.B;
 C=dsystem.C;
-D=dsystem.D
+D=dsystem.D;
 
 %integrator
  AI = [A, zeros(2, 1); -C, 1];
@@ -20,10 +18,10 @@ D=dsystem.D
 R=100;
 Q=diag([1 10 0.01]);
 
-[K, P]= dlqr(AI,BI,Q,R);    %LQ gain calculation
+[K, P] = dlqr(AI,BI,Q,R)    %LQ gain calculation
 
 Ref=Reference; 
-Ref=Ref(1:1500)';
+Ref=Ref(1:3000)';
  
 N=length(Ref);
 t=1:N;
@@ -50,7 +48,7 @@ for k=1:N
     Y(:,k)=C*X(:,k);
     XI = XI + (R(k)-Y(k)); 
 end
-K
+
 figure(1)
 subplot(211)
 
