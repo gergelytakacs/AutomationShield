@@ -13,7 +13,7 @@
 #ifndef SAMPLINGMEGA_ISR_H
 #define SAMPLINGMEGA_ISR_H
 
-ISR(TIMER2_COMPA_vect)
+ISR(MEGA_ISR_VECT)
 {
  if (!Sampling.fireFlag){                   // If not over the maximal resolution of the counter
   (Sampling.getInterruptCallback())();      // Start the interrupt callback
