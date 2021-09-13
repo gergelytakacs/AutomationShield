@@ -124,13 +124,13 @@ void setup() {
   float actPart = FloatShield.actuatorReadVoltage();
   AutomationShield.printTestResults("Motor voltage at 70% input...",actPart, 7.5, 7.9);
   testFail = testFail || AutomationShield.printTestResults("Motor voltage at 70% input...",actPart, 7.5, 7.9);
-  AutomationShield.printTestResults("Fan at 70% power...",motSeventy, 200.0, 300.0);
-  testFail = testFail || AutomationShield.printTestResults("Fan at 70% power...",motSeventy, 200.0, 300.0);
+  AutomationShield.printTestResults("Fan 70% power...",motSeventy, 200.0, 300.0);
+  testFail = testFail || AutomationShield.printTestResults("Fan 70% power...",motSeventy, 200.0, 300.0);
   FloatShield.actuatorWrite(0.0);
   
 // PID??? -----------------------------------------
 
-  Serial.print("Running PID control routine...  ");
+  Serial.print("Running PID routine...  ");
   Serial.print("\t\t\t");                // print tab characters
 
   
