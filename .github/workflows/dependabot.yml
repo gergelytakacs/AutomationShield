@@ -10,4 +10,3 @@ updates:
     # Check for updates once a week
     schedule:
       interval: "weekly"
-    on: push
