@@ -55,7 +55,9 @@ void setup() {
   FloatShield.actuatorWrite(0.0); 
   
 // Reference potentiometer test ----------------------------
+#ifdef ARDUINO_ARCH_AVR
   analogReference(EXTERNAL); // Setting external reference for analog components
+#endif
   Serial.print("Turn pot to 0%!  ");
   Serial.print("\t\t\t");                // print tab characters
   delay(5000);
