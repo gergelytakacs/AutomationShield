@@ -15,8 +15,8 @@ jobs:
         with:
          ignore-words-list: etc/codespell-ignore-words-list.txt
         #skip-paths: src/lib #not necessary since submodules are not pulled in
-      
-      - name: Spell Check Python (w/ PySpelling) 
-        uses: rojopolis/spellcheck-github-actions@0.13.0
+
+      - name: Spell Check Python (w/ PySpelling)
+        uses: rojopolis/spellcheck-github-actions@0.19.0
         with:
          task_name: Python
