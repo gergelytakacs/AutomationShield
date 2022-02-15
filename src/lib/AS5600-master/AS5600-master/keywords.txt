@@ -1,0 +1,7 @@
+AS5600	KEYWORD1
+
+getPosition	KEYWORD2
+getAngle	KEYWORD2
+getStatus	KEYWORD2
+getGain		KEYWORD2
+getMagnitude	KEYWORD2
