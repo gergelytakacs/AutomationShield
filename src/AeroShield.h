@@ -34,7 +34,6 @@
 
 
 class AeroShield{		    	                       // Class for the AeroShield device
-
  public:
     AeroShield(void);
     float begin(bool isDetected);                                      // Board initialisation - initialisation of pin modes and variables                             
@@ -50,7 +49,6 @@ class AeroShield{		    	                       // Class for the AeroShield devic
 
 
  private:
-
     int ang;                                           // Variable for angle reading in degrees 
     float startangle;                                  // Variable for storing zero angle position 
     float referenceValue;                              // Variable for potentiometer value in percent
@@ -58,7 +56,7 @@ class AeroShield{		    	                       // Class for the AeroShield devic
     float correction1= 4.1220;						   // Correction for measuring current 
     float correction2= 0.33;						   // Correction for measuring current 
     int repeatTimes= 100;						  	   // Number of repeats for current mean measuring 
-    float voltageReference= 5.0;					   // Volatage reference in Volts 
+    float voltageReference= 5.0;					   // Voltage reference in Volts 
     float ShuntRes= 0.1;						   	   // Value of shunt resistor in Ohms 
     float current;						  			   // Variable for storing current value in Amps 
     float voltageValue;						  		   // Auxiliary variable
@@ -69,7 +67,6 @@ class AeroShield{		    	                       // Class for the AeroShield devic
     int readOneByte(int in_adr);								   // AS5600 one bite communication
     word readTwoBytes(int in_adr_hi, int in_adr_lo); 			   // AS5600 two bites communication
    
-    
 };
 
 #endif

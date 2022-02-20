@@ -62,13 +62,12 @@ float AeroShield::convertRawAngleToDegrees(word newAngle) {        // Function f
 
 
 float AeroShield::calibration(word RawAngle) {                     // Calibration 
-
   AutomationShield.serialPrint("Calibration running...\n");             // Print info 
   startangle=0;                                                         // Zero out Variable(precaution)
   analogWrite(AERO_UPIN,50);                                            // Power the actuator, swing the pendulum 
   delay(250);                                                           // Wait for 0.25s 
   analogWrite(AERO_UPIN,0);                                             // Actuator powered off, pendulum goes to zero position
-  delay(4000);                                                          // Wait for pendulum to stop oscilating 
+  delay(4000);                                                          // Wait for pendulum to stop oscillating 
   
   startangle = RawAngle;                                                // Save the value of zero pozition in raw format 
   analogWrite(AERO_UPIN,0);                                             // Actuator powered off(precaution)
@@ -113,7 +112,6 @@ float AeroShield::currentMeasure(void){                                         
   current= 0;                                                                              // Zero out current value        
   voltageValue= 0;                                                                         // Zero out voltage value  
   return currentMean;                                                                      // Return mean current value 
-
 }
 
 word AeroShield::getRawAngle()                                                             // Function for getting raw pendulum angle data 0-4096
