@@ -23,15 +23,12 @@
 #include <Wire.h>                // Include I2C protocol library
 #include "Arduino.h"			       // Required Arduino API in libraries
 
-
 // Defining pins used by the AeroShield 
 #define AERO_RPIN A3             // Input from potentiometer
 #define VOLTAGE_SENSOR_PIN A2            // Input pin for measuring Vout
 #define AERO_UPIN 5              // Motor (Actuator)
 #define AERO_SR 0.1              // Shunt resistor value (in ohms)
 #define VOLTAGE_REF 5.0 	       // Voltage reference for current measurement
-
-
 
 class AeroShield{		    	                       // Class for the AeroShield device
  public:
@@ -46,7 +43,6 @@ class AeroShield{		    	                       // Class for the AeroShield devic
     int detectMagnet();								   // AS5600 detect magnet 
     int getMagnetStrength();						   // AS5600 magnet strength
     word getRawAngle();								   // AS5600 angle value 
-
 
  private:
     int ang;                                           // Variable for angle reading in degrees 
@@ -66,7 +62,6 @@ class AeroShield{		    	                       // Class for the AeroShield devic
     int _raw_ang_lo;								   // AS5600 communication variable 
     int readOneByte(int in_adr);								   // AS5600 one bite communication
     word readTwoBytes(int in_adr_hi, int in_adr_lo); 			   // AS5600 two bites communication
-   
 };
 
 #endif
