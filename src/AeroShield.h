@@ -126,7 +126,7 @@ class AeroShield{		    	                           // Class for the AeroShield d
     float correction1= 4.1220;						      // Correction for measuring current 
     float correction2= 0.33;						         // Correction for measuring current 
     int repeatTimes= 100;						  	         // Number of repeats for current mean measuring 
-    float voltageReference= 5.0;					         // Volatage reference in Volts 
+    float voltageReference= 5.0;					         // Voltage reference in Volts 
     float ShuntRes= 0.1;						   	      // Value of shunt resistor in Ohms 
     float current;						  			         // Variable for storing current value in Amps 
     float voltageValue;						  		         // Auxiliary variable

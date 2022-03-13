@@ -264,7 +264,7 @@ float AeroShield::calibration(word RawAngle) {                          // Calib
   analogWrite(AERO_UPIN,50);                                            // Power the actuator, swing the pendulum 
   delay(250);                                                           // Wait for 0.25s 
   analogWrite(AERO_UPIN,0);                                             // Actuator powered off, pendulum goes to zero position
-  delay(4000);                                                          // Wait for pendulum to stop oscilating 
+  delay(4000);                                                          // Wait for pendulum to stop oscillating 
   
   startangle = RawAngle;                                                // Save the value of zero pozition in raw format 
   analogWrite(AERO_UPIN,0);                                             // Actuator powered off(precaution)
