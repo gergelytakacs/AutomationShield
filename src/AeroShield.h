@@ -24,7 +24,6 @@
 #include <Arduino.h>			 // Required Arduino API in libraries
 
 // Defining pins used by the AeroShield 
-
 #define AERO_RPIN A3             // Input from potentiometer
 #define VOLTAGE_SENSOR_PIN A2    // Input pin for measuring Vout
 #define AERO_UPIN 5              // Motor (Actuator)
@@ -60,7 +59,6 @@ class AeroClass{		    	                           // Class for the AeroShield de
     int readOneByte(int in_adr);								// AS5600 one byte communication
     word readTwoBytes(int in_adr_hi, int in_adr_lo);  // AS5600 two bytes communication 
 };
-
 extern AeroClass AeroShield; 
 
 #endif
