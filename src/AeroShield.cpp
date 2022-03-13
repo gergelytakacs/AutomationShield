@@ -14,7 +14,6 @@
   Last update: 02.03.2022.
 */
 
-
 #include "AeroShield.h"         // Include header file
 
 // Initializes hardware pins
@@ -28,8 +27,6 @@ float AeroClass::begin(bool isDetected){                             // Board in
   #elif ARDUINO_ARCH_SAMD                                             // For SAMD architecture boards
     Wire.begin();                                                     // Use Wire object
   #endif
-  
-  
         if(isDetected == 0 ){                                           // If magnet not detected go on
     while(1){                                                           // Go forever until magnet detected 
         if(isDetected == 1 ){                                           // If magnet detected
@@ -43,13 +40,11 @@ float AeroClass::begin(bool isDetected){                             // Board in
   }       
 } 
 
-
 float AeroClass::convertRawAngleToDegrees(word newAngle) {             // Function for converting raw angle(0-4096) to degrees(0-360°) 
   float retVal = newAngle * 0.087;                                      // 360°/4096=0.087° times the raw value
   ang = retVal;                               
   return ang;                                                           // Return angle value in degrees 
 }
-
 
 float AeroClass::calibration(word RawAngle) {                          // Calibration 
   AutomationShield.serialPrint("Calibration running...\n");             // Print info 
@@ -57,8 +52,7 @@ float AeroClass::calibration(word RawAngle) {                          // Calibr
   analogWrite(AERO_UPIN,50);                                            // Power the actuator, swing the pendulum 
   delay(250);                                                           // Wait for 0.25s 
   analogWrite(AERO_UPIN,0);                                             // Actuator powered off, pendulum goes to zero position
-  delay(4000);                                                          // Wait for pendulum to stop oscilating 
-  
+  delay(4000);                                                          // Wait for pendulum to stop oscillating 
   startangle = RawAngle;                                                // Save the value of zero pozition in raw format 
   analogWrite(AERO_UPIN,0);                                             // Actuator powered off(precaution)
     for(int i=0;i<3;i++){                                               // Simple sound indication of successful calibration 3 beeps
@@ -71,7 +65,6 @@ float AeroClass::calibration(word RawAngle) {                          // Calibr
   AutomationShield.serialPrint("Calibration done");
     return startangle;                                                  // Return start angle
 }
-
 
   float AeroClass::referenceRead(void) {                                                  // Reference read
   referencePercent = AutomationShield.mapFloat(analogRead(AERO_RPIN), 0.0, 1024.0, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
@@ -88,27 +81,22 @@ float AeroClass::currentMeasure(void){                                          
   for(int i=0 ; i<repeatTimes ; i++){                                                      // Function for callculating mean current value 
      voltageValue= analogRead(VOLTAGE_SENSOR_PIN);                                         // Read a value from the INA169 
      voltageValue= (voltageValue * voltageReference) / 1024;                               // Remap the ADC value into a voltage number (5V reference)
-     current= current + correction1-(voltageValue / (10 * ShuntRes));                      // Equation given by the INA169 datasheet to
-                                                                                           // determine the current flowing through ShuntRes. RL = 10k
+     current= current + correction1-(voltageValue / (10 * ShuntRes));                      // Equation given by the INA169 datasheet to                                                                                    // determine the current flowing through ShuntRes. RL = 10k
      }                                                                                     // Is = (Vout x 1k) / (RS x RL)
-
    float currentMean= current/repeatTimes;                                                 // Callculating mean current value 
    currentMean= currentMean-correction2;                                                   // Small correction of current value(determined by multimeter)
    if(currentMean < 0.000){                                                                // Correction for occasional bug causing the value to be negative. 
       currentMean= 0.000;                                                                  // When it so happens, zero out the value. 
       }
-
   current= 0;                                                                              // Zero out current value        
   voltageValue= 0;                                                                         // Zero out voltage value  
   return currentMean;                                                                      // Return mean current value 
-
 }
 
 word AeroClass::getRawAngle()                                                             // Function for getting raw pendulum angle data 0-4096
 {
   return readTwoBytes(_raw_ang_hi, _raw_ang_lo);                                           // Another function for communication with senzor, called from this library 
 }
-
 
 int AeroClass::detectMagnet()                                                             // Function for detecting presence of magnet 
 {
@@ -118,10 +106,8 @@ int AeroClass::detectMagnet()                                                   
 
   if (magStatus & 0x20)
     retVal = 1;
-
   return retVal;                                                                           // Return value 
 }
-
 
 int AeroClass::getMagnetStrength()                 // Function for getting the strength of magnet 
 {
@@ -141,7 +127,6 @@ int AeroClass::getMagnetStrength()                 // Function for getting the s
   return retVal;                                    // Return value 
 }
 
-
 int AeroClass::readOneByte(int in_adr)             // Function for communicating with the senzor using 1 Byte 
 {
   int retVal = -1;
@@ -155,7 +140,6 @@ int AeroClass::readOneByte(int in_adr)             // Function for communicating
 
   return retVal;                                    // Return stored bits 
 }
-
 
 word AeroClass::readTwoBytes(int in_adr_hi, int in_adr_lo)          // Function for communicating with the senzor using 2 Bytes 
 {

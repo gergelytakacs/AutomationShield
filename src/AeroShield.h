@@ -17,21 +17,17 @@
 // Defining c++ library used by the AeroShield 
 #ifndef AEROSHIELD_H			       // Include guard
 #define AEROSHIELD_H	
-		
 
 // Defining libraries used by the AeroShield 
 #include "AutomationShield.h"    // Include the main library
 #include <Wire.h>                // Include I2C protocol library
 #include <Arduino.h>			 // Required Arduino API in libraries
 
-
 // Defining pins used by the AeroShield 
 
 #define AERO_RPIN A3             // Input from potentiometer
 #define VOLTAGE_SENSOR_PIN A2    // Input pin for measuring Vout
 #define AERO_UPIN 5              // Motor (Actuator)
-
-
 
 class AeroClass{		    	                           // Class for the AeroShield device
 
@@ -46,9 +42,7 @@ class AeroClass{		    	                           // Class for the AeroShield de
     int getMagnetStrength();						         // AS5600 magnet strength
     word getRawAngle();								         // AS5600 angle value 
 
-
  private:
-
     int ang;                                          // Variable for angle reading in degrees 
     float startangle;                                 // Variable for storing zero angle position 
     float referenceValue;                             // Variable for potentiometer value in percent
@@ -56,7 +50,7 @@ class AeroClass{		    	                           // Class for the AeroShield de
     float correction1= 4.1220;						      // Correction for measuring current 
     float correction2= 0.33;						         // Correction for measuring current 
     int repeatTimes= 100;						  	         // Number of repeats for current mean measuring 
-    float voltageReference= 5.0;					         // Volatage reference in Volts 
+    float voltageReference= 5.0;					         // Voltage reference in Volts 
     float ShuntRes= 0.1;						   	      // Value of shunt resistor in Ohms 
     float current;						  			         // Variable for storing current value in Amps 
     float voltageValue;						  		         // Auxiliary variable
@@ -65,10 +59,7 @@ class AeroClass{		    	                           // Class for the AeroShield de
     int _raw_ang_hi = 0x0c;								   // AS5600 communication variable 
     int _raw_ang_lo = 0x0d;								   // AS5600 communication variable 
     int readOneByte(int in_adr);								// AS5600 one byte communication
-    word readTwoBytes(int in_adr_hi, int in_adr_lo);  // AS5600 two bytes communication
-    
-   
-    
+    word readTwoBytes(int in_adr_hi, int in_adr_lo);  // AS5600 two bytes communication 
 };
 
 extern AeroClass AeroShield; 
