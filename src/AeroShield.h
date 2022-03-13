@@ -30,7 +30,6 @@
 #define AERO_UPIN 5              // Motor (Actuator)
 
 class AeroClass{		    	                           // Class for the AeroShield device
-
  public:
     float begin(bool isDetected);                     // Board initialisation - initialisation of pin modes and variables                             
     void actuatorWrite(float PotPercent);             // Write actuator - function takes input 0.0-100.0% and sets motor speed accordingly
