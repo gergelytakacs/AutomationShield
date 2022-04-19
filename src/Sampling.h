@@ -37,6 +37,7 @@ SamplingNoServo::SamplingClass Sampling;
 	#include "sampling/SamplingUNO_ISR.h"
 
 #elif ARDUINO_AVR_MEGA2560
+  #define MEGA_ISR_VECT TIMER5_COMPA_vect
 	#include "sampling/SamplingMEGA_ISR.h"
     
 #elif (defined(ARDUINO_SAMD_ZERO) || defined(ADAFRUIT_METRO_M4_EXPRESS))

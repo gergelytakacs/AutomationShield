@@ -35,7 +35,7 @@ float y = 0.0;                                                    // Output (Cur
 float u = 0.0;                                                    // Input (Fan power)
 float uv= 0.0;                                                    // Input (Fan Voltage)
 
-int T = 2400;             // Section length
+int T = 1000;            // Section length
 int i = 0;                // Section counter
 
 #if SHIELDRELEASE == 1

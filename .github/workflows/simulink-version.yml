@@ -1,8 +1,8 @@
-name: Build (MATLAB)
+name: Simulink Version
 on: [push]
 jobs:
   my-job:
-    name: Run MATLAB Tests and Generate Artifacts
+    name: Simulink Release Check
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -12,4 +12,4 @@ jobs:
       - name: Run script
         uses: matlab-actions/run-command@v1.0.1
         with:
-          command: build_matlab
+          command: cd simulink; releaseManagement(); 
