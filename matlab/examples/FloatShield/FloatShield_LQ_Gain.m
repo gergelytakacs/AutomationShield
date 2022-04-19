@@ -15,11 +15,11 @@
 startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Data preprocessing
-load resultID.mat                               % Read identification results
+load APRBS_R4_2.mat                              % Read identification results
 
 Ts = 0.025;                                     % Sampling period
 data = iddata(y, u, Ts, 'Name', 'Experiment');  % Create identification data object
-data = data(4530:5151);                         % Select a relatively stable segment
+data = data(600:2000);                         % Select a relatively stable segment
 
 data = detrend(data);               % Remove offset and linear trends
 data.InputName = 'Fan Power';       % Input name
@@ -30,7 +30,7 @@ data.Tstart = 0;                    % Starting time
 data.TimeUnit = 's';                % Time unit
 
 %% Initial guess of model parameters
-m = 0.00384;        % [kg] Weight of the ball
+m = 0.003;        % [kg] Weight of the ball
 r = 0.015;          % [m] Radius of the ball
 cd = 0.47;          % [-] Drag coefficient
 ro = 1.23;          % [kg/m3] Density of air
@@ -80,12 +80,12 @@ sys = idss(A, B, C, D, K, x0, 0);
 
 % Mark the free parameters
 sys.Structure.A.Free = [0, 0, 0; ...
-                        0, 0, 0; ...
+                        0, 1, 1; ...
                         0, 0, 1];
 
 sys.Structure.B.Free = [0; ...
-                        0; ...
-                        1];
+                        1; ...
+                        0];
 
 sys.Structure.C.Free = false;
 sys.Structure.D.Free = false;
@@ -131,7 +131,7 @@ matChat = [matC, 0];
 
 % Set Q,R penalisation matrices
 matQhat = diag([1, 1, 1e7, 1e2]);
-matRhat = 1e7;
+matRhat = 3e8;
 
 % Calculate LQ gain that includes integrator state
 matKhat = dlqr(matAhat, matBhat, matQhat, matRhat);
@@ -241,7 +241,7 @@ if ~exist('CI_Testing','var') %If the script is not running on CI
     set(0,'DefaultFigureWindowStyle','normal');
 end
 
-return % Comment this line out if the model is satisfactory for Arduino
+%return % Comment this line out if the model is satisfactory for Arduino
 
 %% Print matrices in specific format to be used in Arduino example
 disp(' ')

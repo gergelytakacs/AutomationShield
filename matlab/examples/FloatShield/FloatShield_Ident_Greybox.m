@@ -9,14 +9,14 @@
 %
 %   Created by Martin Gulan, Gergely Takacs and Peter Chmurciak.
 
-startScript;                                    % Clears screen and variables, except allows CI testing
+%startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Data preprocessing
-load resultID.mat                               % Read identificaiton results
+load APRBS_R4_2.mat                               % Read identificaiton results
 
 Ts = 0.025;                                     % Sampling period
 data = iddata(y, u, Ts, 'Name', 'Experiment');  % Create identification data object
-data = data(4530:5151);                         % Select a relatively stable segment
+data = data(600:2000);                         % Select a relatively stable segment
 
 data = detrend(data);               % Remove offset and linear trends
 data.InputName = 'Fan Power';       % Input name
@@ -27,8 +27,8 @@ data.Tstart = 0;                    % Starting time
 data.TimeUnit = 's';                % Time unit
 
 %% Initial guess of model parameters
-m = 0.00384;        % [kg] Weight of the ball
-r = 0.03;           % [m] Radius of the ball
+m = 0.003;        % [kg] Weight of the ball
+r = 0.015;           % [m] Radius of the ball
 cd = 0.74;          % [-] Drag coefficient
 ro = 1.23;          % [kg/m3] Density of air
 % A = pi*r^2;       % [m2] Exposed area of the ball; circle's...
@@ -44,8 +44,8 @@ dh0 = (data.y(2, 1) - data.y(1, 1)) / Ts;   % Initial ball velocity estimate
 v0 = 0;                                     % Initial airspeed estimate
 
 %% Choose the type of grey-box model to identify
-model = 'nonlinear';                        % Nonlinear state-space model
-% model = 'linearSS';                       % Linear state-space model
+% model = 'nonlinear';                        % Nonlinear state-space model
+model = 'linearSS';                       % Linear state-space model
 % model = 'linearTF';                       % Linear transfer function
 
 switch model
@@ -164,7 +164,9 @@ model                   % List model parameters
 grid on                 % Turn on grid
 
 return
+
 % Save results
+
 save FloatShield_GreyboxModel_Nonlinear.mat model
-save FloatShield_GreyboxModel_LinearSS model
-save FloatShield_GreyboxModel_LinearTF model
+save FloatShield_GreyboxModel_LinearSS.mat model
+save FloatShield_GreyboxModel_LinearTF.mat model
