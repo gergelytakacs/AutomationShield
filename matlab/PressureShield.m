@@ -20,7 +20,7 @@ classdef PressureShield < handle
     end
 
     properties(Constant)
-        Pressure_RPIN = 'A0';          % BMP280 (Sensor)
+        Pressure_RPIN = 'A0';          % Potentiometer (Reference)
         Pressure_UPIN = 'D11';         % Pump (Actuator)
     end
 
