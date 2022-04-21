@@ -23,7 +23,7 @@ Q=diag([1 10 0.01]);
 [K, P]= dlqr(AI,BI,Q,R);    %LQ gain calculation
 
 Ref=Reference; 
-Ref=Ref(1:1500)';
+Ref=Ref(1:3000)';
  
 N=length(Ref);
 t=1:N;
