@@ -9,14 +9,8 @@ lb = [eps      eps   eps       eps]';  % Initial guess
 
 
 options = optimoptions('ga','PlotFcn', {@gaplotbestf, @gaplotstopping, @gaplotbestindiv,});
-options.PopulationSize = 200; % 50 for <5 variables, 200 otherwise
+options.PopulationSize = 50; % 50 for <5 variables, 200 otherwise
 options.MaxGenerations=600;  %100 x number of decision variables
-
-if exist('CI_Testing','var') % If its only a CI test
-    options.PopulationSize = 10;
-    options.MaxGenerations=1; % Just do a pro-forma computation
-end
-
 options.MaxStallGenerations=100; %Stalling 100 default
 %options.InitialPopulationMatrix = final_pop;
 fun = @objfun;
@@ -30,16 +24,16 @@ TET=toc;
 
 x
 Fval
-exitFlag
-Output
+%exitflag
+%output
 
 
 
 %options.InitialPopulationRange = [-1 0; 1 2]; e.g. defines a range
 %options.FunctionTolerance.  % Function tolerance for stopping
 
-% 
-% 
+
+
 % x
 % Fval
 % exot

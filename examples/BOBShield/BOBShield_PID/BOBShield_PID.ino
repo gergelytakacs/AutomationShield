@@ -19,7 +19,7 @@
   Created by Gergely Takács. 
   Last update: 10.2.2021.
 */
-
+#define SHIELDRELEASE 2
 #include <BOBShield.h>
 #include <SamplingServo.h>
 
@@ -36,15 +36,22 @@ float y = 0.0;            // Output
 float u = 0.0;            // Input          
 
 
-#define KP 0.3                    // PID Kp
+#if SHIELDRELEASE == 1
+  #define KP 0.3                  // PID Kp
 #define TI 600.0                  // PID Ti
 #define TD 0.22                   // PID Td
+#elif SHIELDRELEASE == 2
+  #define KP 0.01                 // PID Kp 
+  #define TI 2                    // PID Ti 
+  #define TD 0.01                 // PID Td 
+#endif
 
 void setup() {
   Serial.begin(115200);               // Initialize serial
   
   // Initialize and calibrate board
   BOBShield.begin();               // Define hardware pins
+  BOBShield.zeroCompensation = 0; // tune this parameter in Open-loop example if the tube is not in level while actuatorWrite(0)
   BOBShield.initialize();
   BOBShield.calibration();
   

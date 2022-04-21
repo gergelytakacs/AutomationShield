@@ -1,4 +1,3 @@
-
 startScript;                            % Clears screen and variables, except allows CI testing              
 %% Choose the type of grey-box model to identify
 %model = 'nonlinear';                            % Nonlinear state-space model
