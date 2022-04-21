@@ -11,17 +11,19 @@
 #include "AeroShield.h"               // Include main library  
 #include <Sampling.h>                 // Include sampling library
 
-#define MANUAL 0                     // Choose manual reference using potentiometer (1)  automatic reference trajectory (0) 
+#define MANUAL 0                      // Choose manual reference using potentiometer (1)  automatic reference trajectory (0) 
+#define KP 1.7                        // PID Kp constant
+#define TI 3.8                        // PID Ti constant
+#define TD 0.25                       // PID Td constant
+
+float startangle=0;           //  Variable for storing 0° angle in raw format
+float lastangle=0;            //  Variable needed for mapping of the pendulum's angle
+float pendulumAngle;          //  Variable used for storing the actual angle of the pendulum in degrees
 
 unsigned long Ts = 3;                 // Sampling period in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep = false;                // Flag for step function
 bool realTimeViolation = false;       // Flag for real-time sampling violation
-
-float startangle=0;           //  Variable for storing 0° angle in raw format
-float lastangle=0;            //  Variable needed for mapping of the pendulum's angle
-float pendulumAngle;          //  Variable used for storing the actual angle of the pendulum in degrees
-float pendulumAnglePercent;   //  Variable used for storing the actual angle of the pendulum in %
 
 int i=i;                      // Section counter
 int T=1000;                    // Section length in ms
@@ -30,41 +32,24 @@ float r=0.0;                  // Reference (Wanted pendulum angle)
 float y = 0.0;                // Output (Current pendulum angle)
 float u = 0.0;                // Input (motor power)
 
-  #define KP 1.7           // PID Kp constant
-  #define TI 3.8           // PID Ti constant
-  #define TD 0.25            // PID Td constant
-
 void setup() {                                                  //  Setup - runs only once
   Serial.begin(250000);                                         //  Begin serial communication
-  pinMode(5,OUTPUT);                                            //  Initialise pin 5 as output for the motor 
   AeroShield.begin(AeroShield.detectMagnet());                  //  Initialise AeroShield board
   startangle = AeroShield.calibration(AeroShield.getRawAngle());   //  Calibrate AeroShield board + store the 0° value of the pendulum
   lastangle=startangle+1024;                                    //  Callculation of second angle needed for map function
-    Sampling.period(Ts*1000);              // Set sampling period in microseconds
-    PIDAbs.setKp(KP);                      // Set Proportional constant
-    PIDAbs.setTi(TI);                      // Set Integral constant
-    PIDAbs.setTd(TD);                      // Set Derivative constant
-    PIDAbs.setTs(Sampling.samplingPeriod); // Set sampling period for PID
-    
-#if MANUAL                                      // If Manual mode is active
-        r = AeroShield.referenceRead();         // Read reference from potentiometer
-#else                                           // If Automatic mode is active
-        r = R[0];                               // Reference set to first point in trajectory
-        
-#endif
-        pendulumAngle= AutomationShield.mapFloat(AeroShield.getRawAngle(),startangle,lastangle,0.00,90.00);   //  mapping the pendulum angle 
-        y= AutomationShield.mapFloat(pendulumAngle,0.00,61.0,0.00,100.00);      //  mapping the pendulum angle to % value  
-        u = PIDAbs.compute(r-y,0,100,0,100);    // PID
-        
-        AeroShield.actuatorWrite(u);            // Actuate
-
-        delay(Ts);                              // Wait before repeating the loop
-    
-    Sampling.interrupt(stepEnable);             // Set interrupt function
+  Sampling.period(Ts*1000);              // Set sampling period in miliseconds
+  PIDAbs.setKp(KP);                      // Set Proportional constant
+  PIDAbs.setTi(TI);                      // Set Integral constant
+  PIDAbs.setTd(TD);                      // Set Derivative constant
+  PIDAbs.setTs(Sampling.samplingPeriod); // Set sampling period for PID
+  Sampling.interrupt(stepEnable);        // Set interrupt function
 }
 
 void loop() {
-
+      if(pendulumAngle>120){
+      AeroShield.actuatorWrite(0);
+      while(1);
+      } 
       if (nextStep) {               // If ISR enables step flag
         step();                     // Run step function
         nextStep = false;           // Disable step flag
@@ -81,8 +66,8 @@ analogWrite(5,0);                                      // Turn off the motor
     nextStep = true;                                   // Enable step flag
 }
 
-
 void step() {                              // Define step function
+
 #if MANUAL                                 // If Manual mode is active
     r = AeroShield.referenceRead();        // Read reference from potentiometer
 #else                                      // If Automatic mode is active
@@ -94,11 +79,9 @@ void step() {                              // Define step function
         i++;                               // Increment section counter
     }
 #endif
-    pendulumAngle= AutomationShield.mapFloat(AeroShield.getRawAngle(),startangle,lastangle,0.00,90.00); //  mapping the pendulum angle
-    y= AutomationShield.mapFloat(pendulumAngle,0.00,61.0,0.00,100.00);                  //  mapping the pendulum angle into % value
+    y= AutomationShield.mapFloat(AeroShield.getRawAngle(),startangle,lastangle,0.00,100.00);                  //  mapping the pendulum angle into % value
     u = PIDAbs.compute(r-y,0,100,0,100);  // PID
     AeroShield.actuatorWrite(u);          // Actuate
-
 
     Serial.print(r);           // Print reference
     Serial.print(", ");

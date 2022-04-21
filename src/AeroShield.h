@@ -42,7 +42,7 @@ class AeroClass{		    	                           // Class for the AeroShield de
 
  private:
     int ang;                                          // Variable for angle reading in degrees 
-    float startangle;                                 // Variable for storing zero angle position 
+    float startAngle;                                 // Variable for storing zero angle position 
     float referenceValue;                             // Variable for potentiometer value in percent
     float referencePercent;                           // Percentual value of potentiometer 
     float correction1= 4.1220;						      // Correction for measuring current 

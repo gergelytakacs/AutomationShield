@@ -48,12 +48,12 @@ float AeroClass::convertRawAngleToDegrees(word newAngle) {             // Functi
 
 float AeroClass::calibration(word RawAngle) {                          // Calibration 
   AutomationShield.serialPrint("Calibration running...\n");             // Print info 
-  startangle=0;                                                         // Zero out Variable(precaution)
+  startAngle=0;                                                         // Zero out Variable(precaution)
   analogWrite(AERO_UPIN,50);                                            // Power the actuator, swing the pendulum 
   delay(250);                                                           // Wait for 0.25s 
   analogWrite(AERO_UPIN,0);                                             // Actuator powered off, pendulum goes to zero position
   delay(4000);                                                          // Wait for pendulum to stop oscillating 
-  startangle = RawAngle;                                                // Save the value of zero pozition in raw format 
+  startAngle = RawAngle;                                                // Save the value of zero pozition in raw format 
   analogWrite(AERO_UPIN,0);                                             // Actuator powered off(precaution)
     for(int i=0;i<3;i++){                                               // Simple sound indication of successful calibration 3 beeps
       analogWrite(AERO_UPIN,1);                                         // Actuator powereded just a bit so the rotor doesn't turn just beep 
@@ -63,7 +63,7 @@ float AeroClass::calibration(word RawAngle) {                          // Calibr
       }
 
   AutomationShield.serialPrint("Calibration done");
-    return startangle;                                                  // Return start angle
+    return startAngle;                                                  // Return start angle
 }
 
   float AeroClass::referenceRead(void) {                                                  // Reference read

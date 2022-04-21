@@ -26,6 +26,11 @@ void setup() {                // Setup - runs only once
 
 void loop() {
   
+if(pendulumAngle>120){
+  AeroShield.actuatorWrite(0);
+  while(1);
+  }
+  
 pendulumAngle= AutomationShield.mapFloat(AeroShield.getRawAngle(),startangle,lastangle,0.00,90.00);    //  mapping the pendulum angle 
 Serial.print("pendulum angle is: ");
 Serial.print(pendulumAngle);      //  Printing the mapped angle value
