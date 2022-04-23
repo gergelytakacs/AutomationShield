@@ -1,10 +1,22 @@
 /*
-  This code is part of the AutomationShield hardware and software
+  AeroShield closed-loop PID response example
+  PID feedback control for the aeropendulum.
+  
+  This example initializes the sampling and PID control 
+  subsystems from the AutomationShield library. You may
+  select whether the reference is given by the potentiometer
+  or you want to test a predetermined reference trajectory. 
+  Upload the code to your board, then open the Serial
+  Plotter function in your Arduino IDE. 
+  
+  Tested with Arduino Uno,
+  
+   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by 
+  Created by  
   1ast update: 13.03.2022.
 */
 
@@ -37,7 +49,7 @@ void setup() {                                                  //  Setup - runs
   AeroShield.begin(AeroShield.detectMagnet());                  //  Initialise AeroShield board
   startangle = AeroShield.calibration(AeroShield.getRawAngle());   //  Calibrate AeroShield board + store the 0° value of the pendulum
   lastangle=startangle+1024;                                    //  Callculation of second angle needed for map function
-  Sampling.period(Ts*1000);              // Set sampling period in miliseconds
+  Sampling.period(Ts*1000);              // Set sampling period in milliseconds
   PIDAbs.setKp(KP);                      // Set Proportional constant
   PIDAbs.setTi(TI);                      // Set Integral constant
   PIDAbs.setTd(TD);                      // Set Derivative constant
