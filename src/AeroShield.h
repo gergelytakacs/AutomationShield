@@ -30,7 +30,7 @@
 
 class AeroClass{		    	                           // Class for the AeroShield device
  public:
-    float begin(bool isDetected);                     // Board initialisation - initialisation of pin modes and variables                             
+    float begin(void);                     // Board initialisation - initialisation of pin modes and variables                             
     void actuatorWrite(float PotPercent);             // Write actuator - function takes input 0.0-100.0% and sets motor speed accordingly
     float calibration(word RawAngle);                 // Board calibration - finding out the 0° value in raw format 
     float convertRawAngleToDegrees(word newAngle);    // Convert raw angle from hall senzor to degrees
