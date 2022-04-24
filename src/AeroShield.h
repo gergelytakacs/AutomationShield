@@ -3,15 +3,16 @@
   
   The file is a part of the application programming interface for
   the AeroShield didactic tool for control engineering and 
-  mechatronics education.
+  mechatronics education. The AeroShield implements an air-based,
+  pendulum angle positioning experiment on an Arduino microcontroller.
   
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
 
-  Created by .... 
-  Last update: 02.03.2022.
+  Created by Peter Tibenský
+  Last update: 24.02.2022.
 */
 
 // Defining c++ library used by the AeroShield 
