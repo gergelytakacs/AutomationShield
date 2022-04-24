@@ -17,7 +17,8 @@
 #include "AeroShield.h"         // Include header file
 
 // Initializes hardware pins
-float AeroClass::begin(bool isDetected){                             // Board initialisation
+float AeroClass::begin(void){                             // Board initialisation
+    bool isDetected = AeroShield.detectMagnet();
     pinMode(AERO_UPIN,OUTPUT);  		                                  // Actuator pin
 
   #ifdef ARDUINO_ARCH_AVR                                             // For AVR architecture boards
