@@ -28,8 +28,8 @@
 #define TI 3.8                        // PID Ti constant
 #define TD 0.25                       // PID Td constant
 
-float startangle=0;           //  Variable for storing 0° angle in raw format
-float lastangle=0;            //  Variable needed for mapping of the pendulum's angle
+float startAngle=0;           //  Variable for storing 0° angle in raw format
+float lastAngle=0;            //  Variable needed for mapping of the pendulum's angle
 float pendulumAngle;          //  Variable used for storing the actual angle of the pendulum in degrees
 
 unsigned long Ts = 3;                 // Sampling period in milliseconds
@@ -47,8 +47,8 @@ float u = 0.0;                // Input (motor power)
 void setup() {                                                  //  Setup - runs only once
   Serial.begin(250000);                                         //  Begin serial communication
   AeroShield.begin(AeroShield.detectMagnet());                  //  Initialise AeroShield board
-  startangle = AeroShield.calibration(AeroShield.getRawAngle());   //  Calibrate AeroShield board + store the 0° value of the pendulum
-  lastangle=startangle+1024;                                    //  Callculation of second angle needed for map function
+  startAngle = AeroShield.calibration(AeroShield.getRawAngle());   //  Calibrate AeroShield board + store the 0° value of the pendulum
+  lastAngle=startAngle+1024;                                    //  Callculation of second angle needed for map function
   Sampling.period(Ts*1000);              // Set sampling period in milliseconds
   PIDAbs.setKp(KP);                      // Set Proportional constant
   PIDAbs.setTi(TI);                      // Set Integral constant
@@ -91,7 +91,7 @@ void step() {                              // Define step function
         i++;                               // Increment section counter
     }
 #endif
-    y= AutomationShield.mapFloat(AeroShield.getRawAngle(),startangle,lastangle,0.00,100.00);                  //  mapping the pendulum angle into % value
+    y= AutomationShield.mapFloat(AeroShield.getRawAngle(),startAngle,lastAngle,0.00,100.00);                  //  mapping the pendulum angle into % value
     u = PIDAbs.compute(r-y,0,100,0,100);  // PID
     AeroShield.actuatorWrite(u);          // Actuate
 
