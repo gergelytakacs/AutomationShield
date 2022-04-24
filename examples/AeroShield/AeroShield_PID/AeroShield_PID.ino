@@ -1,11 +1,23 @@
 /*
+  AeroShield closed-loop PID response example
+  
+  PID feedback control of pendulum angle of the AeroShield.
+  
+  This example initialises the sampling and PID control
+  subsystems from the AutomationShield library and allows user
+  to select whether the reference is given by the potentiometer
+  or by a predetermined reference trajectory. Upload the code to 
+  your board and open the Serial Plotter tool in Arduino IDE.
+  
+  Tested on Arduino UNO Rev3 and Mega 2560 Rev3. 
+  
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-
-  Created by 
-  1ast update: 13.03.2022.
+  
+  Created by Peter Tibenský.
+  Last update: 24.4.2022.
 */
 
 #include "AeroShield.h"               // Include main library  
