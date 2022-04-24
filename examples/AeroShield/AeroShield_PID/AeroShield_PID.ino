@@ -9,9 +9,9 @@
   Upload the code to your board, then open the Serial
   Plotter function in your Arduino IDE. 
   
-  Tested with Arduino Uno,
+  Tested with Arduino Uno Rev3, Mega 2560 Rev3. 
   
-   This code is part of the AutomationShield hardware and software
+  This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
@@ -49,7 +49,7 @@ float u = 0.0;                // Input (motor power)
 
 void setup() {                                                  //  Setup - runs only once
   Serial.begin(250000);                                         //  Begin serial communication
-  AeroShield.begin(AeroShield.detectMagnet());                  //  Initialise AeroShield board
+  AeroShield.begin();                  //  Initialise AeroShield board
   startAngle = AeroShield.calibration(AeroShield.getRawAngle());   //  Calibrate AeroShield board + store the 0° value of the pendulum
   lastAngle=startAngle+1024;                                    //  Callculation of second angle needed for map function
   Sampling.period(Ts*1000);              // Set sampling period in milliseconds
