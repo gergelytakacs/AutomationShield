@@ -1,11 +1,24 @@
 /*
+  AeroShield Open Loop
+  
+  Performs continuous sensor readings with manual motor speed control.
+  
+  The example initializes the AeroShield and performs
+  calibration. Then it reads the current position
+  of the potentiometer and sets the motor speed accordingly.
+  
+  The current position of the potentiometer and current
+  angle of the pendulum is periodically (with specified
+  sampling period) sent out through the serial communication,
+  and can be displayed using Serial Plotter tool of Arduino IDE.
+  
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
-
-  Created by 
-  1ast update: 13.03.2022.
+  
+  Created by Peter Tibenský.
+  Last update: 24.2.2022.
 */
 
 #include "AeroShield.h"           //  Include main library
