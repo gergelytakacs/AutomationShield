@@ -37,7 +37,7 @@ void setup() {                                                  //  Setup - runs
   AeroShield.begin();                  //  Initialise AeroShield board
   startAngle = AeroShield.calibration(AeroShield.getRawAngle());   //  Calibrate AeroShield board + store the 0° value of the pendulum
   lastAngle=startAngle+1024;                                    //  Callculation of second angle needed for map function
-  Sampling.period(Ts*1000);              // Set sampling period in miliseconds
+  Sampling.period(Ts*1000);              // Set sampling period in milliseconds
   PIDAbs.setKp(KP);                      // Set Proportional constant
   PIDAbs.setTi(TI);                      // Set Integral constant
   PIDAbs.setTd(TD);                      // Set Derivative constant
