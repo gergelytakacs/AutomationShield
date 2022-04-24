@@ -35,7 +35,6 @@ bool realTimeViolation = false;       // Flag for real-time sampling violation
 float startAngle=0;           //  Variable for storing 0° angle in raw format
 float lastAngle=0;            //  Variable needed for mapping of the pendulum's angle
 float pendulumAngle;          //  Variable used for storing the actual angle of the pendulum in degrees
-float pendulumAnglePercent;   //  Variable used for storing the actual angle of the pendulum in %
 
 int i=i;                      // Section counter
 int T=1000;                    // Section length in milliseconds
