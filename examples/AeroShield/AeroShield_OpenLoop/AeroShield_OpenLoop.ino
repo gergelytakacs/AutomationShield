@@ -10,18 +10,18 @@
 
 #include "AeroShield.h"           //  Include main library
 
-  float startangle=0;           //  Variable for storing 0° angle in raw format
-  float lastangle=0;            //  Variable needed for mapping of the angle
+  float startAngle=0;           //  Variable for storing 0° angle in raw format
+  float lastAngle=0;            //  Variable needed for mapping of the angle
   float pendulumAngle;          //  Variable used for storing the actual angle of the pendulum
   float referencePercent;       //  Variable for potentiometer value in %
-  float CurrentMean;
+  float currentMean;
  
 void setup() {                // Setup - runs only once
 
   Serial.begin(115200);       // Begin serial communication
   AeroShield.begin(AeroShield.detectMagnet());         // Initialise AeroShield board
-  startangle = AeroShield.calibration(AeroShield.getRawAngle());   //  Calibrate AeroShield board + store the 0° value of the pendulum
-  lastangle=startangle+1024;      //  Callculation of second angle needed for map function
+  startAngle = AeroShield.calibration(AeroShield.getRawAngle());   //  Calibrate AeroShield board + store the 0° value of the pendulum
+  lastAngle=startAngle+1024;      //  Callculation of second angle needed for map function
 }
 
 void loop() {
@@ -31,20 +31,15 @@ if(pendulumAngle>120){
   while(1);
   }
   
-pendulumAngle= AutomationShield.mapFloat(AeroShield.getRawAngle(),startangle,lastangle,0.00,90.00);    //  mapping the pendulum angle 
-Serial.print("pendulum angle is: ");
-Serial.print(pendulumAngle);      //  Printing the mapped angle value
-Serial.print("° || ");
-
+pendulumAngle= AutomationShield.mapFloat(AeroShield.getRawAngle(),startAngle,lastAngle,0.00,90.00);    //  mapping the pendulum angle 
 referencePercent= AeroShield.referenceRead();   //  Function for mapping the potentiometer input
-Serial.print("pot value is: ");
-Serial.print(referencePercent);    // Printing potentiometer value in %
-Serial.print("% || ");
-
 AeroShield.actuatorWrite(referencePercent);     //  Actuate
+currentMean= AeroShield.currentMeasure();       //  Read current drawn by motor 
+  
+Serial.print(pendulumAngle);      //  Printing the mapped angle value
+Serial.print(", ");
+Serial.print(referencePercent);    // Printing potentiometer value in %
+Serial.print(", ");
+Serial.println(currentMean);    // Printing current value in A
 
-CurrentMean= AeroShield.currentMeasure();
-Serial.print("current value is: ");
-Serial.print(CurrentMean);    // Printing current value in A
-Serial.println("A || ");
 }
