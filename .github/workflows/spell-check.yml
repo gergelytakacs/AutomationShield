@@ -17,6 +17,6 @@ jobs:
         #skip-paths: src/lib #not necessary since submodules are not pulled in
 
       - name: Spell Check Python (w/ PySpelling)
-        uses: rojopolis/spellcheck-github-actions@0.23.0
+        uses: rojopolis/spellcheck-github-actions@0.23.2
         with:
          task_name: Python
