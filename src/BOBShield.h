@@ -21,6 +21,7 @@ class BOBClass {
     float referenceRead();		                 	  // Read reference pot in %
     float sensorReadPerc();
     float sensorRead();
+    float filterSensorRead();
     int degree;
     void actuatorWrite(float fdeg);
 	
@@ -37,6 +38,20 @@ class BOBClass {
       float minimum ;
       float maximum ;
       float deg;
+      int p1;
+      int p2;
+      int p3;
+      int p4;
+      int p5;
+      int k;  
+      int i;
+      int v1=0;
+      int v2=0;
+      int v3=0;
+      int v4=0;
+      int v5=0;
+      float average;
+
   };
 #endif
 
@@ -73,10 +88,10 @@ void BOBClass::calibration()
 	BOBShield.actuatorWrite(-30);					// Tilt beam to the minimum so the ball falls towards the sensor
 	delay(1000);					   	        	// Wait for things to settle
 	for (int i=1; i<=100; i++) {	    			// Perform 100 measurements
-		calmeasure = sens.readRange(); 			    // Measure
-		if (calmeasure < minCalibrated){ 			// If lower than already
-			minCalibrated = calmeasure; 			// Save new minimum
-		}
+		
+
+    calmeasure = calmeasure + sens.readRange(); 			    // Measure
+		minCalibrated = calmeasure / i;             //average from the maesurment
 			
 		delay(10);                                  // Measure for one second
 	}
@@ -84,10 +99,8 @@ void BOBClass::calibration()
 	BOBShield.actuatorWrite(30);					// Tilt beam to the maximum so the ball falls towards the sensor
 	delay(1000);					   	        	// Wait for things to settle
 	for (int i=1; i<=100; i++) {	    			// Perform 100 measurements
-		calmeasure = sens.readRange(); 		    	// Measure
-		if (calmeasure > maxCalibrated){ 			// If lower than already
-			maxCalibrated = calmeasure; 			// Save new maximum
-		}
+		calmeasure = calmeasure + sens.readRange(); 		    	// Measure
+	  maxCalibrated = calmeasure / i;              //average from the maesurment
 	
 		delay(10);                                  // Measure for one second
 	}
@@ -155,6 +168,47 @@ Serial.print("pos :"); Serial.print(pos);Serial.print(" ");
  Serial.print("ballPos :"); Serial.print(ballPos);Serial.print(" ");
     # endif
 return ballPos;
+}
+
+// returns the filtered value of sensor
+float BOBClass::filterSensorRead(){                       
+	if (calibrated == 1)   {                         // if calibration function was already processed (calibrated flag ==1)
+ pos = sens.readRange();
+ ballPos  = pos - minCalibrated;                   //set actual position to position - calibrated minimum
+}
+   else if   (calibrated ==0) {                        // if calibration function was not processed (calibrated flag ==0)
+  pos = sens.readRange();     
+ ballPos  = pos - MIN_CALIBRATED_DEFAULT;         //set actual position to position - predefined value
+} 
+
+//parameters for Weighted average
+p1=4;
+p2=3;
+p3=2;
+p4=2;
+p5=1;
+k=p1+p2+p3+p4+p5;
+i++;
+v1=ballPos;
+ if (i>5) {
+  average=(v5*p5+v4*p4+v3*p3+v2*p2+v1*p1)/k;
+  v5=v4; 
+  v4=v3; 
+  v3=v2; 
+  v2=v1; 
+ }
+ else {
+  v5=ballPos;
+  v4=ballPos; 
+  v3=ballPos; 
+  v2=ballPos; 
+    average=(v5*p5+v4*p4+v3*p3+v2*p2+v1*p1)/k;
+ }
+  # if ECHO_TO_SERIAL 
+Serial.print("pos :"); Serial.print(pos);Serial.print(" ");
+ Serial.print("average :"); Serial.print(average);Serial.print(" ");
+    # endif
+return average;
 }
 
 BOBClass BOBShield;

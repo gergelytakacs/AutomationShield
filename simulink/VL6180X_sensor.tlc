@@ -1,0 +1,98 @@
+%%    Simulink implementation of arduino library for
+%%    VL6180X Time-of-Flight distance sensor.
+%%
+%%    This code is part of the AutomationShield hardware and software
+%%    ecosystem. Visit http://www.automationshield.com for more
+%%    details. This code is licensed under a Creative Commons
+%%    Attribution-NonCommercial 4.0 International License.
+
+%%    Created by Matej Simovec using S-Function Builder.
+%%    Last update: 28.12.2020.
+
+%implements  VL6180X_sensor "C"
+%% Function: BlockTypeSetup ===================================================
+%%
+%% Purpose:
+%%      Set up external references for wrapper functions in the 
+%%      generated code.
+%%
+%function BlockTypeSetup(block, system) Output
+  %openfile externs
+
+
+    extern void VL6180X_sensor_Start_wrapper(real_T *xD);
+
+    extern void VL6180X_sensor_Outputs_wrapper(real_T *distance,
+			const real_T *xD);
+    extern void VL6180X_sensor_Update_wrapper(real_T *distance,
+			real_T *xD);
+
+    extern void VL6180X_sensor_Terminate_wrapper(real_T *xD);
+
+  %closefile externs
+  %<LibCacheExtern(externs)>
+  %%
+%endfunction
+
+%% InitializeConditions =========================================================
+%%
+%function InitializeConditions(block, system) Output
+  /* %<Type> Block: %<Name> */
+{
+  real_T initVector[1] = {0};
+  %assign rollVars = ["<dwork>/DSTATE"]
+  %assign rollRegions = [0:%<LibBlockDWorkWidth(DSTATE)-1>]
+  %roll sigIdx = rollRegions, lcv = 1, block, "Roller", rollVars
+    %if %<LibBlockDWorkWidth(DSTATE)> == 1
+      %<LibBlockDWork(DSTATE, "", lcv, sigIdx)> = initVector[0];
+    %else
+      %<LibBlockDWork(DSTATE, "", lcv, sigIdx)> = initVector[%<lcv>];
+    %endif
+  %endroll
+}
+
+
+%endfunction
+
+%% Function: Start ============================================================
+%%
+%function Start(block, system) Output
+   /* %<Type> Block: %<Name> */
+  %assign pxd = LibBlockDWorkAddr(DSTATE, "", "", 0)
+  VL6180X_sensor_Start_wrapper(%<pxd>);
+%endfunction
+%% Function: Outputs ==========================================================
+%%
+%% Purpose:
+%%      Code generation rules for mdlOutputs function.
+%%
+%function Outputs(block, system) Output
+  %%
+  %assign py0 = LibBlockOutputSignalAddr(0, "", "", 0)
+  %assign pxd = LibBlockDWorkAddr(DSTATE, "", "", 0)
+  VL6180X_sensor_Outputs_wrapper(%<py0>, %<pxd>);
+  %%
+%endfunction
+
+%% Function: Update ==========================================================
+%% Abstract:
+%%    Update
+%%
+%%
+%function Update(block, system) Output
+    /* S-Function "VL6180X_sensor_wrapper" Block: %<Name> */
+  %assign py0 = LibBlockOutputSignalAddr(0, "", "", 0)
+  %assign pxd = LibBlockDWorkAddr(DSTATE, "", "", 0)
+  VL6180X_sensor_Update_wrapper(%<py0>, %<pxd>);
+  %%
+%endfunction
+%% Function: Terminate ========================================================
+%%
+%function Terminate(block, system) Output
+   /* %<Type> Block: %<Name> */
+  %assign pxd = LibBlockDWorkAddr(DSTATE, "", "", 0)
+  VL6180X_sensor_Terminate_wrapper(%<pxd>);
+%endfunction
+
+%% [EOF] VL6180X_sensor.tlc
+
