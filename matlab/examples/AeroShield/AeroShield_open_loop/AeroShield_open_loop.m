@@ -1,3 +1,25 @@
+%{
+  AeroShield Open Loop
+  
+  Performs continuous sensor readings with manual motor speed control.
+  
+  The example initializes the AeroShield and performs
+  calibration. Then it reads current position
+  of the potentiometer and sets the motor speed accordingly.
+  
+  The current position of the potentiometer and current
+  angle of the pendulum are periodically (with specified
+  sampling period) updated in running graph.
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+  
+  Created by Peter Tibenský.
+  Last update: 17.5.2022.
+%}
+
 % clear all objects and variables
 clear all;
 clc 

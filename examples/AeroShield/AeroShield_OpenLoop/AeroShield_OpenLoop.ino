@@ -8,7 +8,7 @@
   of the potentiometer and sets the motor speed accordingly.
   
   The current position of the potentiometer and current
-  angle of the pendulum is periodically (with specified
+  angle of the pendulum are periodically (with specified
   sampling period) sent out through the serial communication,
   and can be displayed using Serial Plotter tool of Arduino IDE.
   
@@ -18,7 +18,7 @@
   Attribution-NonCommercial 4.0 International License.
   
   Created by Peter Tibenský.
-  Last update: 24.2.2022.
+  Last update: 17.5.2022.
 */
 
 #include "AeroShield.h"           //  Include main library
@@ -39,10 +39,10 @@ void setup() {                // Setup - runs only once
 
 void loop() {
   
-if(pendulumAngle>120){
-  AeroShield.actuatorWrite(0);
-  while(1);
-  }
+     if(pendulumAngle>120){        // If pendulum agle too big 
+      AeroShield.actuatorWrite(0);  // Turn off motor 
+      while(1);                     // Stop program 
+      } 
   
 pendulumAngle= AutomationShield.mapFloat(AeroShield.getRawAngle(),startAngle,lastAngle,0.00,90.00);    //  mapping the pendulum angle 
 referencePercent= AeroShield.referenceRead();   //  Function for mapping the potentiometer input
@@ -50,9 +50,9 @@ AeroShield.actuatorWrite(referencePercent);     //  Actuate
 currentMean= AeroShield.currentMeasure();       //  Read current drawn by motor 
   
 Serial.print(pendulumAngle);      //  Printing the mapped angle value
-Serial.print(", ");
+Serial.print(" ");
 Serial.print(referencePercent);    // Printing potentiometer value in %
-Serial.print(", ");
+Serial.print(" ");
 Serial.println(currentMean);    // Printing current value in A
 
 }
