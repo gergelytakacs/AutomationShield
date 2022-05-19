@@ -1,3 +1,25 @@
+%{
+  AeroShield closed-loop PID response example
+  
+  PID feedback control of pendulum angle of the AeroShield.
+  
+  This example initialises the sampling and PID control
+  subsystems from the AutomationShield library and allows user
+  to select whether the reference is given by the potentiometer
+  or by a predetermined reference trajectory. Start the script and graph will 
+  automatically started.
+  
+  Tested on Arduino UNO Rev3 and Mega 2560 Rev3. 
+  
+  This code is part of the AutomationShield hardware and software
+  ecosystem. Visit http://www.automationshield.com for more
+  details. This code is licensed under a Creative Commons
+  Attribution-NonCommercial 4.0 International License.
+  
+  Created by Peter Tibenský.
+  Last update: 17.5.2022.
+%}
+
 % clear all objects and variables
 clear all
 clc 
@@ -15,15 +37,15 @@ lastangle=startangle+1024; % save startangle value + 1024(90°).(for mapping pur
 % initialisation of PID library 
 PID = PID;
 
-Ts = 0.002;             % sampling period           
-Kp=0.035 ;              % PID Gain
-Ti=0.00038 ;            % PID Integral time constant
-Td=0.0000025 ;          % PID Derivative time constant
+Ts = 0.0017;             % sampling period           
+Kp=0.015 ;              % PID Gain
+Ti=0.00020 ;            % PID Integral time constant
+Td=0.0003 ;          % PID Derivative time constant
 PID.setParameters(Kp, Ti, Td, Ts); % set parameters in PID library 
 
 MANUAL= 0;              % manual reference using potentiometer (1)  automatic reference trajectory (0) 
-R=[23 48 70 12 40 19 9 43 80];     % closed-loop reference in percent
-secLength=25;           % length of a reference trajectory section, measured in samples
+R=[23 48 69 45 19 37 78];     % closed-loop reference in percent
+secLength=30;           % length of a reference trajectory section, measured in samples
 stepEnable = 0;         % bool value for step enabling
 k=1;                    % sample/step counter
 j=1;                    % counter for reference trajectory
@@ -54,12 +76,12 @@ while(1)                % infinite loop, until "break" command is used
         end
    
      % compute PID: Error, SaturationMin, SaturationMax, AntiWindupMin, AntiWindupMax
-        u = PID.compute(r-y, 0, 80, 0, 80); 
+        u = PID.compute(r-y, 0, 90, 0, 90); 
         
      % actuate
-         coercedInput = constrain(u, 0, 100);       % safety precaution 
-         PWM=remappedValue(coercedInput, 0, 100, 0, 5);    % remap from percent to voltage value
-         AeroShield.actuatorWrite(PWM);             % actuate
+        coercedInput = constrain(u, 0, 100);       % safety precaution 
+        PWM=map(coercedInput, 0, 100, 0, 5);    % remap from percent to voltage value
+        AeroShield.actuatorWrite(PWM);             % actuate
 
         PIDresponse(k,:)=[r y u];           % store data
         plotLive(PIDresponse(k,:));         % plot data

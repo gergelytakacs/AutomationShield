@@ -24,7 +24,7 @@ classdef AeroShield < handle
     methods
         function begin(AeroShieldObject)          % Initialization function
             AeroShieldObject.arduino = arduino();
-            AeroShieldObject.as5600 = device(AeroShieldObject.arduino,'I2CAddress',0x36,'bus',1);
+            AeroShieldObject.as5600 = device(AeroShieldObject.arduino,'I2CAddress',0x36,'bus',0);
             configurePin(AeroShieldObject.arduino,AeroShieldObject.AERO_UPIN, 'DigitalOutput')
             disp('AeroShield initialized.')
         end

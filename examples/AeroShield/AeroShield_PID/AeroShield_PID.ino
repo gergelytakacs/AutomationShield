@@ -58,9 +58,9 @@ void setup() {                                                  //  Setup - runs
 }
 
 void loop() {
-      if(pendulumAngle>120){
-      AeroShield.actuatorWrite(0);
-      while(1);
+      if(pendulumAngle>120){        // If pendulum agle too big 
+      AeroShield.actuatorWrite(0);  // Turn off motor 
+      while(1);                     // Stop program 
       } 
       if (nextStep) {               // If ISR enables step flag
         step();                     // Run step function
@@ -96,9 +96,9 @@ void step() {                              // Define step function
     AeroShield.actuatorWrite(u);          // Actuate
 
     Serial.print(r);           // Print reference
-    Serial.print(", ");
+    Serial.print(" ");
     Serial.print(y);           // Print output
-    Serial.print(", ");
+    Serial.print(" ");
     Serial.println(u);         // Print input
 
     k++;                       // Increment index
