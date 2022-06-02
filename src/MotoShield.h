@@ -58,7 +58,11 @@ class MotoShieldClass{ //--creating a class for the MotoShield
 #include "getKalmanEstimate.inl"
 #if SHIELDRELEASE == 2
     MotoShieldClass(){
+      #if ARDUINO_ARCH_AVR
       analogReference(EXTERNAL); //External AREF
+      #elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM
+      analogReference(AR_DEFAULT);
+      #endif
     }
   float sensorReadCurrentRaw();
 #endif
