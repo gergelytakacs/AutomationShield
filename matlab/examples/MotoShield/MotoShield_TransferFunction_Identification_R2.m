@@ -11,8 +11,8 @@
 % 
 %   Created by Gergely Takács and Ján Boldocký.
 
-clear
-clc
+startScript;
+
 %% Data preprocessing
 load identification_data.mat
 Ts = 0.02;                                      %_Sampling Period
@@ -59,7 +59,7 @@ compare(data,model);                           %_Model/data comparison
                                                
 grid on                                       
 save MotoShield_GreyboxModel_TF model zmodel
-%% Step Response Tanget
+%% Step Response Tangent
 opt = stepDataOptions('InputOffset',0,'StepAmplitude',5);
 [y,t] = step(zmodel,opt)
 dy=diff(y,1)

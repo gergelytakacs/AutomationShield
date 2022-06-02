@@ -1,4 +1,16 @@
-clear
+%   MotoShield Linear Quadratic Controller Gain Calculation.
+% 
+%   
+%
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+% 
+%   Created by Ján Boldocký.
+
+startScript;
+
 load identification_data.mat                             % Read identification results
 load MotoShield_LinearSS.mat 
 %%

@@ -62,18 +62,3 @@ end
 save response response                            %-Saving data in response.mat file
 disp('The example finished its trajectory. Results have been saved to "response.mat" file.')
 plotResults('response.mat')                 %-Plot data from response.mat
-%%
-subplot(2,1,1)
-plot(ans,response(1:200,1))
-hold on
-plot(ans,response(1:200,2))
-grid on
-legend('Referencia','Vystup')
-ylabel('Amplituda (rad/s)')
-
-subplot(2,1,2)
-plot(ans,response(1:200,3))
-ylabel('Akcny zasah (V)')
-xlabel('Cas (s)')
-grid on
-

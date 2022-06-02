@@ -1,5 +1,13 @@
-clear
-clc
+%   MotoShield Lag Compensator Design based on Transfer Function.
+%
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+% 
+%   Created by Ján Boldocký.
+
+startScript;
 %%
 load MotoShield_GreyboxModel_TF.mat
 margin(model) %

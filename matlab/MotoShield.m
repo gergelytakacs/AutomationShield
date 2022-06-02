@@ -55,7 +55,7 @@ classdef MotoShield < handle %-class definition
                 MotoShieldObject.SHIELDRELEASE=release;
             end
             if ~(strcmp(MotoShieldObject.SHIELDRELEASE,'R1') || strcmp(MotoShieldObject.SHIELDRELEASE,'R2'))
-                error("Availible versions of MotoShield are 'R1' and 'R2'")
+                error("Available versions of MotoShield are 'R1' and 'R2'")
             end
             switch MotoShieldObject.SHIELDRELEASE
                 case 'R1'
