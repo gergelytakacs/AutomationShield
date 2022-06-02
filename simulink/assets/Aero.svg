@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1108 529.9" style="enable-background:new 0 0 1108 529.9;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
+	.st1{stroke:#000000;stroke-miterlimit:10;}
+	.st2{fill:none;}
+	.st3{stroke:#000000;stroke-width:0.75;stroke-miterlimit:10;}
+	.st4{font-family:'MyriadPro-Regular';}
+	.st5{font-size:100px;}
+	.st6{enable-background:new    ;}
+	.st7{fill:#FFFFFF;stroke:#000000;stroke-width:8;stroke-miterlimit:10;}
+</style>
+<rect x="566.5" y="129.4" class="st0" width="278" height="278"/>
+<line class="st0" x1="705.7" y1="129.4" x2="705.7" y2="48.9"/>
+<line class="st0" x1="844.5" y1="268.4" x2="915" y2="268.4"/>
+<line class="st0" x1="705.7" y1="407.4" x2="705.7" y2="484.9"/>
+<line class="st0" x1="566.5" y1="268.4" x2="480" y2="268.4"/>
+<line class="st0" x1="705.5" y1="268.4" x2="766.7" y2="206.6"/>
+<line class="st0" x1="644.3" y1="330.3" x2="705.5" y2="268.4"/>
+<line class="st0" x1="705.3" y1="268.6" x2="766.8" y2="330.1"/>
+<line class="st0" x1="644.2" y1="206.8" x2="705.7" y2="268.3"/>
+<circle class="st1" cx="480" cy="268.4" r="11"/>
+<circle class="st1" cx="915" cy="268.4" r="11"/>
+<line class="st0" x1="705.7" y1="48.9" x2="981.3" y2="48.9"/>
+<line class="st0" x1="705.7" y1="484.9" x2="981.3" y2="484.9"/>
+<circle class="st1" cx="981.3" cy="48.9" r="11"/>
+<circle class="st1" cx="981.3" cy="484.9" r="11"/>
+<rect x="933" y="220.4" class="st2" width="168.4" height="131.5"/>
+<text transform="matrix(1 0 0 1 933 291.429)" class="st3 st4 st5">y(k)</text>
+<polyline id="XMLID_37_" class="st0" points="226.5,48.3 309.4,48.3 309.4,198.9 "/>
+<polyline id="XMLID_8_" class="st0" points="226.5,481.7 309.4,481.7 309.4,331.5 "/>
+<ellipse id="XMLID_214_" class="st1" cx="226.5" cy="48.3" rx="8" ry="8.8"/>
+<ellipse id="XMLID_215_" class="st1" cx="226.5" cy="481.7" rx="8" ry="8.8"/>
+<g class="st6">
+	<path d="M72.2,295.8v-8.3c-4,6.2-9.5,9.3-16.5,9.3c-3,0-6-0.5-8.5-2.1s-4.5-2.6-6-4.7c-1.5-2.1-2-4.1-2.5-6.7
+		c-0.5-1.6-0.5-4.7-0.5-8.3v-33.1h9v30c0,4.7,0,7.8,0.5,9.8c0.5,2.6,1.5,4.1,3.5,5.7c2,1.6,4,2.1,6.5,2.1s5-0.5,7.5-2.1
+		c2.5-1.6,4-3.1,5-5.7c1-2.6,1.5-5.7,1.5-10.4v-29h9v53.9h-8.5V295.8z"/>
+	<path d="M110.7,317.5c-5-6.2-9-14-12.5-22.3c-3.5-8.3-5-17.1-5-26.4c0-7.8,1.5-15.5,4-23.3c3-8.3,7.5-17.1,13.5-25.4h6.5
+		c-4,7.2-6.5,11.9-8,15c-2,4.7-3.5,9.3-4.5,14.5c-1.5,6.2-2,12.4-2,19.2c0,16.1,5,32.6,14.5,48.7H110.7z"/>
+	<path d="M127.2,295.8v-74.6h9v42.5l21-21.7h11.5l-20,19.7l22,33.7h-11l-17-27.4l-6,6.2v21.2h-9.5V295.8z"/>
+	<path d="M183.1,317.5h-6.5c9.5-16.1,14.5-32.6,14.5-48.7c0-6.2-0.5-12.4-2-18.6c-1-5.2-2.5-9.8-4.5-14.5c-1.5-3.1-4-8.3-8-15h6.5
+		c6,8.3,10.5,17.1,13.5,25.4c2.5,7.2,4,15,4,23.3c0,9.3-1.5,18.1-5,26.4C192.1,304.1,187.6,310.8,183.1,317.5z"/>
+</g>
+<ellipse class="st7" cx="309.4" cy="267.8" rx="96.4" ry="99.9"/>
+<g>
+	<path d="M363.4,326.3h-14V230h-0.5l-32,96.3h-13l-32-97.9h-0.5v97.9H258v-115h22l26.5,81.3c3,8.8,4.5,14.5,5,17.1h0.5
+		c1.5-4.7,3.5-10.4,6-18.6l26.5-79.7h19.5v115H363.4z"/>
+</g>
+<line class="st0" x1="407.8" y1="267.8" x2="432.3" y2="267.8"/>
+<g>
+	<path class="st0" d="M431.3,483.2c46.9-1.6-0.5-211.8-0.5-211.8S384.3,484.8,431.3,483.2z"/>
+	<path class="st0" d="M431.3,51.4c46.9,1.6-0.5,211.8-0.5,211.8S384.3,49.8,431.3,51.4z"/>
+</g>
+</svg>
