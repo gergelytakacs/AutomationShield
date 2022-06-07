@@ -10,7 +10,7 @@ jobs:
       - name: Install MATLAB
         uses: matlab-actions/setup-matlab@v1.1.1
         with:
-          release: R2021a        
+          release: R2021a
       - name: Run script
         uses: matlab-actions/run-command@v1.0.1
         with:
