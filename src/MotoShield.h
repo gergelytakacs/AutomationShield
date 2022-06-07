@@ -86,6 +86,7 @@ class MotoShieldClass{ //--creating a class for the MotoShield
   static volatile uint16_t count; //--counting pulses of hall sensor encoder
     static volatile uint16_t counted; //--memorizing number of pulses per sample
       static volatile bool stepEnable; //--auxiliary variable # simplifies the creation of examples
+  
   private:
   float _K; //--number of samples in one minute 
   #if SHIELDRELEASE == 2
