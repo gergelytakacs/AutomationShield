@@ -12,6 +12,6 @@ jobs:
         with:
           release: R2021a
       - name: Run script
-        uses: matlab-actions/run-command@v1.0.1
+        uses: matlab-actions/run-command@v1.1.2
         with:
           command: build_matlab
