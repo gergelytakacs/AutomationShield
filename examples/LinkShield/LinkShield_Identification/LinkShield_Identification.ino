@@ -25,9 +25,10 @@ bool nextStep=false;                  // Flag for sampling
 bool realTimeViolation = false;       // Flag for real-time sampling violation
 bool endExperiment = false;           // Boolean flag to end the experiment
 
-float y = 0.0;                        // Output variable
+float y1 = 0.0;                        // Output variable
+float y2 = 0.0;                        // Output variable
 float u = 0.0;                        // Input (open-loop), initialized to zero
-float U[]={0.0, 90.0}; // Input trajectory
+float U[]={45.0, 20.0, 75.0, 90.0};   // Input trajectory
 int T = 2000;                         // Section length (appr. '/.+2 s)
 int i = 0;                            // Section counter
 
@@ -75,10 +76,13 @@ if(i>(sizeof(U)/sizeof(U[0]))) {      // If at end of trajectory
         i++;                          // Increment section counter
     }
                  
-y = LinkShield.sensorRead();          // Read sensor 
+y1 = LinkShield.flexRead();          // Read sensor 
+y2 = LinkShield.servoRead();
 LinkShield.actuatorWrite(u);          // Actuate
    
-Serial.print(y);                      // Print output  
+Serial.print(y1);                      // Print output  
+Serial.print(", ");
+Serial.print(y2);                      // Print output  
 Serial.print(", ");
 Serial.println(u);                    // Print input
 
