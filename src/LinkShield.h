@@ -22,8 +22,6 @@
 #include <Arduino.h>                
 #include <Servo.h>
 #include "AutomationShield.h"
-
-
 #include <Wire.h>  
 
 //Defining pins used by LinkShield
@@ -32,8 +30,30 @@
 #define LINK_SERVO_ANGLE_PIN 2      //Servo feedback pin
 #define LINK_UPIN 9         		//Servo control pin
 
+//Define slave address
+#define MPU_6050 0b01101000   //pin AD0 is logic low
+//#define MPU_6050 0b01101001 //pin AD0 is logic high
 
-#define ADXL345 0x53        //Define default address for ADXL345 sensor
+#define SMPRT_DIV 0x19 // Sample rate divider
+#define CONFIG 0x1A // DLPF config
+#define GYRO_CONFIG 0x1B
+#define ACCEL_CONFIG 0x1C
+#define ACCEL_XOUT_H 0x3B // Accelerometer measurement
+#define ACCEL_XOUT_L 0x3C
+#define ACCEL_YOUT_H 0x3D
+#define ACCEL_YOUT_L 0x3E
+#define ACCEL_ZOUT_H 0x3F
+#define ACCEL_ZOUT_L 0x40
+#define TEMP_OUT_H 0x41 // Temperature measurement
+#define TEMP_OUT_L 0x42
+#define GYRO_XOUT_H 0x43 // Gyroscope measurement
+#define GYRO_XOUT_L 0x44
+#define GYRO_YOUT_H 0x45
+#define GYRO_YOUT_L 0x46
+#define GYRO_ZOUT_H 0x47
+#define GYRO_ZOUT_L 0x48
+#define PWR_MGMT_1 0x6B // Power management
+
 
 class LinkClass {                         //Creating class
   public:
@@ -45,6 +65,7 @@ class LinkClass {                         //Creating class
     float flexRead();                  	//y(t)
 	float servoRead();
    
+    float sensorGyroRead();
 
   private:
   
@@ -59,12 +80,12 @@ class LinkClass {                         //Creating class
     float _flexBias;
 	int   _zeroBendValue = 0;
    
-    void  ADXL_POWER_CTL();               //Set ADXL345 to measure mode
-    void  ADXL345_BW_RATE();              //Set ADXL345 data and bandwidth rate
-    void  ADXL_DATA_FORMAT();             //ADXL345 output data formatting
-    void  ADXL345_OFSZ();                 //Set offset to Z axis
-    float ADXL345_DATAZ();                //Read Z accel
-	float sensorRead();
+    void  MPU_6050_Init();
+	int16_t read_gyro_X_raw();
+	int16_t _gyro_x_raw;
+	float   gyro_lsb_to_degsec = 16.4;
+	
+   
    
     float _accelZ;
     float _angle;
@@ -91,11 +112,10 @@ void LinkClass::begin() {
 	Wire.begin(); // Initialize I2C communication
   #endif
 
-  /* 
-  LinkShield.ADXL_POWER_CTL();
-  LinkShield.ADXL_DATA_FORMAT();
-  LinkShield.ADXL345_BW_RATE(); 
-  */
+  MPU_6050_Init();
+  
+  
+  
 }
 
 void LinkClass::calibrate() {
@@ -143,50 +163,54 @@ void LinkClass::actuatorWrite(float _angle) {		//Turn servo to desired angle
   myservo.write(_modAngle);
 }
 
-float LinkClass::sensorRead() {			//Execute reading from sensor
-  _accelZ = ADXL345_DATAZ();
-  return _accelZ;
-}
 
-void LinkClass::ADXL_POWER_CTL() {    	//Power-saving features control
-  Wire.beginTransmission(ADXL345);
-  Wire.write(0x2D);
-  Wire.write(0b1000);
+void LinkClass::MPU_6050_Init(){
+	 Wire.beginTransmission(MPU_6050);
+  Wire.write(PWR_MGMT_1);
+  Wire.write(0b10000000);
+  Wire.endTransmission();
+  delay(50);
+
+  Wire.beginTransmission(MPU_6050);
+  Wire.write(PWR_MGMT_1);
+  Wire.write(0b00000000);
   Wire.endTransmission();
   delay(10);
-}
 
-void LinkClass::ADXL_DATA_FORMAT() {    //Data format function - Range, justify, etc...
-  Wire.beginTransmission(ADXL345);
-  Wire.write(0x31);
-  Wire.write(0b1101);
+
+  Wire.beginTransmission(MPU_6050);
+  Wire.write(SMPRT_DIV);
+  Wire.write(0b00000000);
   Wire.endTransmission();
   delay(10);
-}
-
-void LinkClass::ADXL345_BW_RATE() {     //BandWidth and data rate setup - 1600Hz
-  Wire.beginTransmission(ADXL345);
-  Wire.write(0x2C);
-  Wire.write(0b1111);
+  Wire.beginTransmission(MPU_6050);
+  Wire.write(CONFIG);
+  Wire.write(0b00000000);
   Wire.endTransmission();
   delay(10);
-}
-
-void LinkClass::ADXL345_OFSZ() {        //Offset calibration
-  Wire.beginTransmission(ADXL345);
-  Wire.write(0x20);
-  Wire.write((int)(_sensorBias));
+  Wire.beginTransmission(MPU_6050);
+  Wire.write(GYRO_CONFIG);
+  Wire.write(0b00011000);
   Wire.endTransmission();
   delay(10);
+  Wire.beginTransmission(MPU_6050);
+  Wire.write(ACCEL_CONFIG);
+  Wire.write(0b00011000);
+  Wire.endTransmission();
 }
 
-float LinkClass::ADXL345_DATAZ() {      //Reading of Z-axis value(other axis not needed)
-  Wire.beginTransmission(ADXL345);
-  Wire.write(0x36); // Start with register 0x36 (ACCEL_ZOUT_H)
+
+int16_t LinkClass::read_gyro_X_raw(){
+  Wire.beginTransmission(MPU_6050);
+  Wire.write(GYRO_XOUT_H);
   Wire.endTransmission(false);
-  Wire.requestFrom(ADXL345, 2, true);
-  _Z_out = ( Wire.read() | Wire.read() << 8)/4096; // Z-axis value
-  return _Z_out;
+  Wire.requestFrom(MPU_6050, 2, true);
+  _gyro_x_raw = (Wire.read() << 8 | Wire.read());
+  return _gyro_x_raw ;
 }
 
+float LinkClass::sensorGyroRead() {
+  float  _gyro_X = read_gyro_X_raw() / gyro_lsb_to_degsec;
+  return _gyro_X;
+}
 #endif
