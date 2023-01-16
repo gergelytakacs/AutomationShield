@@ -12,16 +12,13 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Peter Tibenský
-  Last update: 24.02.2022.
+  Last update: 24.02.2022
 */
 
 #include "AeroShield.h"         // Include header file
 
 // Initializes hardware pins
 float AeroClass::begin(void){                             // Board initialisation
-    bool isDetected = AeroShield.detectMagnet();
-    pinMode(AERO_UPIN,OUTPUT);  		                                  // Actuator pin
-
   #ifdef ARDUINO_ARCH_AVR                                             // For AVR architecture boards
     Wire.begin();                                                     // Use Wire object
   #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards
@@ -29,70 +26,86 @@ float AeroClass::begin(void){                             // Board initialisatio
   #elif ARDUINO_ARCH_SAMD                                             // For SAMD architecture boards
     Wire.begin();                                                     // Use Wire object
   #endif
-        if(isDetected == 0 ){                                           // If magnet not detected go on
+  bool isDetected = AeroShield.detectMagnet();
+  pinMode(AERO_UPIN, OUTPUT);  		                                  // Actuator pin
+  pinMode(AERO_RPIN, INPUT);
+  pinMode(AERO_VOLTAGE_SENSOR_PIN, INPUT);
+  if(isDetected == 0){                                           // If magnet not detected go on
     while(1){                                                           // Go forever until magnet detected 
-        if(isDetected == 1 ){                                           // If magnet detected
+        if(isDetected == 1){                                           // If magnet detected
             AutomationShield.serialPrint("Magnet detected \n");         // Print information then break
             break;
         }
         else{                                                           // If magnet not detected 
             AutomationShield.serialPrint("Can not detect magnet \n");   // Print information then go back to check while statement
-      }
+        }
     }
   }       
 } 
 
-float AeroClass::convertRawAngleToDegrees(word newAngle) {             // Function for converting raw angle(0-4096) to degrees(0-360°) 
-  float retVal = newAngle * 0.087;                                      // 360°/4096=0.087° times the raw value
-  ang = retVal;                               
-  return ang;                                                           // Return angle value in degrees 
-}
-
-float AeroClass::calibration(word RawAngle) {                          // Calibration 
+float AeroClass::calibration(void){                          // Calibration 
   AutomationShield.serialPrint("Calibration running...\n");             // Print info 
-  startAngle=0;                                                         // Zero out Variable(precaution)
-  analogWrite(AERO_UPIN,50);                                            // Power the actuator, swing the pendulum 
-  delay(250);                                                           // Wait for 0.25s 
-  analogWrite(AERO_UPIN,0);                                             // Actuator powered off, pendulum goes to zero position
-  delay(4000);                                                          // Wait for pendulum to stop oscillating 
-  startAngle = RawAngle;                                                // Save the value of zero pozition in raw format 
-  analogWrite(AERO_UPIN,0);                                             // Actuator powered off(precaution)
+  startAngle = AeroShield.getRawAngle();
     for(int i=0;i<3;i++){                                               // Simple sound indication of successful calibration 3 beeps
       analogWrite(AERO_UPIN,1);                                         // Actuator powereded just a bit so the rotor doesn't turn just beep 
       delay(200);                                                       // wait 
       analogWrite(AERO_UPIN,0);                                         // Actuator powered off
       delay(200);                                                       // wait 
       }
-
+  wasCalibrated = true;
   AutomationShield.serialPrint("Calibration done");
-    return startAngle;                                                  // Return start angle
+  AutomationShield.serialPrint("\n");
+  AutomationShield.serialPrint("The starting angle value is: ");
+  Serial.print(startAngle);
+  return startAngle;                                                  // Return start angle
 }
 
-  float AeroClass::referenceRead(void) {                                                  // Reference read
-  referencePercent = AutomationShield.mapFloat(analogRead(AERO_RPIN), 0.0, 1024.0, 0.0, 100.0);   // Remapps the analog value from original range 0.0-1023 to percentual range 0.0-100.0
-  return referencePercent;                                                                 // Returns the percentual position of potentiometer runner
+float AeroClass::referenceRead(void) {                                                  // Reference read
+  return AutomationShield.mapFloat(analogRead(AERO_RPIN), 0.0, 1024.0, 0.0, 100.0);   // Returns the percentual position of potentiometer runner
 }
 
-void AeroClass::actuatorWrite(float PotPercent) {                                         // Actuator write
-  float mappedValue = AutomationShield.mapFloat(PotPercent, 0.0, 100.0, 0.0, 255.0);       // Takes the float type percentual value 0.0-100.0 and remapps it to range 0.0-255.0
-  mappedValue = AutomationShield.constrainFloat(mappedValue, 0.0, 255.0);                  // Constrains the remapped value to fit the range 0.0-255.0 - safety precaution
-  analogWrite(AERO_UPIN, (int)mappedValue);                                                // Write remapped value to actuator pin 
+void AeroClass::actuatorWrite(float percentValue) {                     // Actuator write - expected input 0 - 100 %
+  analogWrite(AERO_UPIN, AutomationShield.percToPwm(percentValue));          // Write remapped value to actuator pin 
 }
 
-float AeroClass::currentMeasure(void){                                                    // Measuring current drawn by DC motor 
-  for(int i=0 ; i<repeatTimes ; i++){                                                      // Function for callculating mean current value 
-     voltageValue= analogRead(VOLTAGE_SENSOR_PIN);                                         // Read a value from the INA169 
-     voltageValue= (voltageValue * voltageReference) / 1024;                               // Remap the ADC value into a voltage number (5V reference)
-     current= current + correction1-(voltageValue / (10 * ShuntRes));                      // Equation given by the INA169 datasheet to                                                                                    // determine the current flowing through ShuntRes. RL = 10k
-     }                                                                                     // Is = (Vout x 1k) / (RS x RL)
-   float currentMean= current/repeatTimes;                                                 // Callculating mean current value 
-   currentMean= currentMean-correction2;                                                   // Small correction of current value(determined by multimeter)
-   if(currentMean < 0.000){                                                                // Correction for occasional bug causing the value to be negative. 
-      currentMean= 0.000;                                                                  // When it so happens, zero out the value. 
-      }
-  current= 0;                                                                              // Zero out current value        
-  voltageValue= 0;                                                                         // Zero out voltage value  
-  return currentMean;                                                                      // Return mean current value 
+void AeroClass::actuatorWriteVolt(float voltageValue){        // Expects Root Mean Square Voltage value as input - maximum 3.7
+  analogWrite(AERO_UPIN, sq(AutomationShield.constrainFloat(voltageValue, 0.0, 3.7))*255.0/sq(3.7)); //--Convert Urms -> PWM duty 8-bit
+}
+
+float AeroClass::sensorRead(float maximumDegrees){          // Read relative angle in percentage. Maximum angle defined by the argument. Default maximum 90 degrees.
+ if(wasCalibrated) return AutomationShield.mapFloat((float)((int)readTwoBytes(_raw_ang_hi, _raw_ang_lo) - startAngle)*360.0/4096.0, -maximumDegrees, maximumDegrees, -100.0, 100.0);  //  Relative angle degrees to percentage conversion.
+ else{ 
+  AutomationShield.serialPrint("The device was *not calibrated*, please run the calibration() method.");
+  return -1;
+ }
+}
+
+float AeroClass::sensorReadDegree(){
+ if(wasCalibrated) return (float)((int)readTwoBytes(_raw_ang_hi, _raw_ang_lo) - startAngle)*360.0/4096.0; // Read relative angle in degrees
+ else{ 
+  AutomationShield.serialPrint("The device was *not calibrated*, please run the calibration() method.");
+  return -1;
+ }
+}
+
+float AeroClass::sensorReadRadian(){
+ if(wasCalibrated) return (float)((int)readTwoBytes(_raw_ang_hi, _raw_ang_lo) - startAngle)*3.14159*2.0/4096.0; // Read relative angle in radians
+ else{
+  AutomationShield.serialPrint("The device was *not calibrated*, please run the calibration() method.");
+  return -1;
+ }
+}
+
+float AeroClass::sensorReadAbsolute(){
+  return readTwoBytes(_raw_ang_hi, _raw_ang_lo)*360.0/4096.0; // Read absolute angle of pendulum arm in degrees
+}
+
+float AeroClass::sensorReadCurrent(){ // Measure current in A
+  return analogRead(AERO_VOLTAGE_SENSOR_PIN)*ARES/10/ShuntRes;
+}
+
+uint16_t AeroClass::sensorReadCurrentRaw(){
+  return analogRead(AERO_VOLTAGE_SENSOR_PIN); // Read voltage indicating the current draw in 10-bit scale
 }
 
 word AeroClass::getRawAngle()                                                             // Function for getting raw pendulum angle data 0-4096
