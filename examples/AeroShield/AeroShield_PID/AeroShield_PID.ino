@@ -17,7 +17,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Peter Tibenský.
-  Last update: 24.4.2022.
+  Last update: 16.1.2023.
 */
 
 #include "AeroShield.h"               // Include main library  

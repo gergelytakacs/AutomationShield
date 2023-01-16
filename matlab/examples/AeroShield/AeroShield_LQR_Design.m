@@ -1,3 +1,9 @@
+%   This code is part of the AutomationShield hardware and software
+%   ecosystem. Visit http://www.automationshield.com for more
+%   details. This code is licensed under a Creative Commons
+%   Attribution-NonCommercial 4.0 International License.
+%   Created by Jan Boldocky.
+%   Last update: 16.1.2023.
 clear;clc;close all
 
 load AeroShield_GreyboxModel_Linear.mat

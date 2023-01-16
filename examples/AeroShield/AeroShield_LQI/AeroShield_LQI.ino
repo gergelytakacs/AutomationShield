@@ -1,6 +1,6 @@
 
 /*
-  MotoShield LQ control example.
+  AeroShield LQI control example.
 
 
     The following code is an example of MotoShield API in use with
@@ -13,7 +13,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Ján Boldocký.
-  Last update: 27.5.2022.
+  Last update: 16.1.2023.
 */
 #include <AeroShield.h>     //--Include API
 #include <Sampling.h>
