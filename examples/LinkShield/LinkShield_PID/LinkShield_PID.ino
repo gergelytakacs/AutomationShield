@@ -17,12 +17,6 @@
 */
 
 #include <LinkShield.h>            // Include header for hardware API
-#include <SamplingServo.h>            // Include sampling
-
-// PID Tuning
-#define KP 3.5                        // PID Kp
-#define TI 0.6                        // PID Ti
-#define TD 0.025                      // PID Td
 
 
 unsigned long Ts = 3;                 // Sampling in milliseconds
@@ -39,6 +33,11 @@ float u = 0.0;
 float R[] = {45.0, 20.0, 75.0, 90.0}; // Input trajectory
 int T = 2000;                         // Section length (appr. '/.+2 s)
 int i = 0;                            // Section counter
+
+// PID Tuning
+#define KP 3.5                        // PID Kp
+#define TI 0.6                        // PID Ti
+#define TD 0.025                      // PID Td
 
 
 void setup() {
@@ -89,8 +88,9 @@ void step() {
     i++;                          // Increment section counter
   }
 
-  y1 = LinkShield.flexRead();          // Read sensor
-  y2 = LinkShield.servoRead();
+	y1 = LinkShield.encoderRead();
+	y2 = LinkShield.flexRead();          // Read sensor
+  
   y  = y1 + y2;
   u = PIDAbs.compute(-(r - y), 0, 90, -10, 10); // Compute constrained absolute-form PID
   LinkShield.actuatorWrite(u);         // [V] actuate
