@@ -33,6 +33,7 @@
 
 #define ENCODER_RESOLUTION 2100
 
+#define I2C_CONNECTED 0
 //Define slave address
 #define MPU_6050 0b01101000   //pin AD0 is logic low
 //#Define MPU_6050 0b01101001 //pin AD0 is logic high
@@ -136,7 +137,6 @@ void LinkClass::begin() {
   pinMode(DC_PWM_PIN, OUTPUT);
   pinMode(DC_DIR_PIN, OUTPUT);
 
-
   // define interrupt pins
   pinMode(encoderPinA, INPUT_PULLUP);
   pinMode(encoderPinB, INPUT_PULLUP);
@@ -211,13 +211,6 @@ float LinkClass::flexRead() {
   return _flexValue;
 }
 
-
-/*
-  float LinkClass::encoderRead(int gearRatio, int encoderResolution){
-  _encoderAngle = LinkShield.count/(gearRatio*encoderResolution);
-  return _encoderAngle;
-  } */
-
 float LinkClass::encoderRead() {
   _encoderAngle = float(LinkShield.count) / (ENCODER_RESOLUTION/360)*DEG_TO_RAD;
   return _encoderAngle;
@@ -266,7 +259,7 @@ void  LinkClass::actuatorWriteVoltage(float _voltageValue) {
   }
 }
 
-
+#if I2C_CONNECTED
 void LinkClass::MPU_6050_Init() {
   Wire.beginTransmission(MPU_6050);
   Wire.write(PWR_MGMT_1);
@@ -318,4 +311,7 @@ float LinkClass::sensorGyroRead() {
   float  _gyro_X = read_gyro_X_raw() / gyro_lsb_to_degsec;
   return _gyro_X;
 }
+
+#endif
+
 #endif

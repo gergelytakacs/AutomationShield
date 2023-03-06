@@ -35,7 +35,7 @@ float y2prev = 0.0;
 float u = 0.0;                        // Input (open-loop), initialized to zero
 float R[]={0.00, PI/4, -PI/4, 0.00};   // Input trajectory
 int T = 500;                         // Section length (appr. '/.+2 s)
-unsigned long int i = 0;                            // Section counter
+unsigned int i = 0;                            // Section counter
 
 
 BLA::Matrix<6, 6> A = {1.0000, -0.0061, 0.0049, 0.0006, 0, 0, 0, 0.9711, -0.0001, 0.0049, 0, 0, 0, -2.8489, 0.9400, 0.2229, 0, 0, 0, -11.4728, -0.0465, 0.9662, 0, 0, -1.0000, 0, 0, 0, 1.0000, 0, 0, -1.0000, 0, 0, 0, 1.0000};
@@ -73,11 +73,7 @@ void loop() {
 
 void stepEnable(){                                     // ISR 
   if(endExperiment == true){                           // If the experiment is over
-	LinkShield.actuatorWritePercent(0.00);
-	
-	
-
-	//digitalWrite(9,LOW);
+	LinkShield.actuatorWriteVoltage(0.00);
     while(1);      								// Do nothing
   }
   if(nextStep) {                               // If previous sample still running
@@ -94,13 +90,13 @@ void step(){
 // Switching between experiment sections
 
 if (i > sizeof(R) / sizeof(R[0])) {      // If at end of trajectory
-        endExperiment=true;           // Stop program execution at next ISR		
+		endExperiment=true;           // Stop program execution at next ISR		
     }
 	else if (k % (T*i) == 0) {      // If at the end of section
         Xr(0) = R[i];                     // Progress in trajectory
         i++;                          // Increment section counter
     }				  
-        
+
 y1 = LinkShield.encoderRead();          // Read sensor 
 //y2 = LinkShield.flexRead();
 
@@ -114,18 +110,10 @@ X(5) = X(5) + (Xr(1)-X(1));
 u = -(K * (X - Xr))(0);
 
 
-	if(y1>HALF_PI)
-	{
-		u = AutomationShield.constrainFloat(u,0.0,5.0);	
-	}
-else if(y1<-HALF_PI)
-	{
-		u = AutomationShield.constrainFloat(u,-5.0,0.0);	
-	}
-else 
-	{
-		u = AutomationShield.constrainFloat(u,-5.0,5.0);// Calculate LQ system input
-	}
+  	if		(y1>HALF_PI)	{u = AutomationShield.constrainFloat(u, 0.0,5.0);}
+	else if	(y1<-HALF_PI)	{u = AutomationShield.constrainFloat(u,-5.0,0.0);}
+	else					{u = AutomationShield.constrainFloat(u,-5.0,5.0);}
+	
 y1prev = y1;
 y2prev = y2;
 

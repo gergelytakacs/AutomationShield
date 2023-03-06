@@ -19,7 +19,7 @@
 #include <LinkShield.h>            // Include header for hardware API
 
 
-unsigned long Ts = 3;                 // Sampling in milliseconds
+unsigned long Ts = 5;                 // Sampling in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep = false;                // Flag for sampling
 bool realTimeViolation = false;       // Flag for real-time sampling violation
@@ -30,14 +30,17 @@ float y1 = 0.0;                        // Output variable
 float y2 = 0.0;                        // Output variable
 float r = 0.0;                        // Input (open-loop), initialized to zero
 float u = 0.0;
-float R[] = {45.0, 20.0, 75.0, 90.0}; // Input trajectory
-int T = 2000;                         // Section length (appr. '/.+2 s)
-int i = 0;                            // Section counter
+float R[]={0.00, PI/4, -PI/4, 0.00};
+int T = 1000;                         // Section length (appr. '/.+2 s)
+unsigned int i = 0;                            // Section counter
 
 // PID Tuning
-#define KP 3.5                        // PID Kp
-#define TI 0.6                        // PID Ti
-#define TD 0.025                      // PID Td
+#define KP 80                        // PID Kp
+#define KI 20.5
+#define KD 0.0001
+
+#define TI 0.1                        // PID Ti
+#define TD 0.15                     // PID Td
 
 
 void setup() {
@@ -46,7 +49,7 @@ void setup() {
 
   // Initialize linkshield hardware
   LinkShield.begin();                  // Define hardware pins
-  LinkShield.calibrate();              // Remove sensor bias
+  //LinkShield.calibrate();              // Remove sensor bias
 
   // Initialize sampling function
   Sampling.period(Ts * 1000);          // Sampling init.
@@ -54,8 +57,11 @@ void setup() {
 
   // Set the PID constants
   PIDAbs.setKp(KP); // Proportional
-  PIDAbs.setTi(TI); // Integral
-  PIDAbs.setTd(TD); // Derivative
+  PIDAbs.setKi(KI); // Integral
+  PIDAbs.setKd(KD); // Derivative
+  
+  //PIDAbs.setTi(TI); // Integral
+  //PIDAbs.setTd(TD); // Derivative
   PIDAbs.setTs(Sampling.samplingPeriod); // Sampling
 }
 
@@ -69,6 +75,7 @@ void loop() {
 
 void stepEnable() {                                    // ISR
   if (endExperiment == true) {                         // If the experiment is over
+  LinkShield.actuatorWriteVoltage(0.00);
     while (1);                                         // Do nothing
   }
   if (nextStep == true) {                              // If previous sample still running
@@ -81,19 +88,29 @@ void stepEnable() {                                    // ISR
 
 // A single algorithm step
 void step() {
+	
+	// Switching between experiment sections
+	
   if (i > (sizeof(R) / sizeof(R[0]))) { // If at end of trajectory
-    endExperiment = true;         // Stop program execution at next ISR
-  } else if (k % (T * i) == 0) {    // If at the end of section
+		endExperiment = true;         // Stop program execution at next ISR
+	
+	} 
+	else if (k % (T * i) == 0) {    // If at the end of section
     r = R[i];                     // Progress in trajectory
     i++;                          // Increment section counter
   }
 
 	y1 = LinkShield.encoderRead();
-	y2 = LinkShield.flexRead();          // Read sensor
+	//y2 = LinkShield.flexRead();          // Read sensor
   
   y  = y1 + y2;
-  u = PIDAbs.compute(-(r - y), 0, 90, -10, 10); // Compute constrained absolute-form PID
-  LinkShield.actuatorWrite(u);         // [V] actuate
+  u = PIDAbs.compute((r - y), -5, 5, -100, 100); // Compute constrained absolute-form PID
+  
+  	if(y>HALF_PI){u = AutomationShield.constrainFloat(u, -5.0,0.0);}
+	if(y<-HALF_PI){u = AutomationShield.constrainFloat(u,0.0,5.0);}
+	u = AutomationShield.constrainFloat(u,-5.0,5.0);
+  
+  LinkShield.actuatorWriteVoltage(u);         // [V] actuate
 
   // Print to serial port
   Serial.print(r);                        // Print reference
