@@ -15,7 +15,7 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Takács. 
+%   Created by Gergely Takï¿½cs. 
 %   Created on: 27.1.2020
 %   Last update: 27.1.2020.  
 
@@ -44,7 +44,7 @@ save sys sys                                   % Save transfer function
 %% Data and display
 
 % Data
-disp('---The model paramters are---')
+disp('---The model parameters are---')
 omega= sqrt(sys.Denominator(3))               % Angular natural frequency
 zeta = sys.Denominator(2)/2/omega             % Damping ratio
 c=sys.Numerator(1)/(-omega^2)                 % Actuator constant
