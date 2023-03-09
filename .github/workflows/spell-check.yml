@@ -14,8 +14,8 @@ jobs:
         uses: codespell-project/actions-codespell@master
         with:
          only_warn: 1
-         #ignore_words_file: ./etc/codespell-ignore-words-list.txt
-         #skip: ./etc/codespell-ignore-words-list.txt
+         ignore_words_file: ./etc/codespell-ignore-words-list.txt
+         skip: ./etc/codespell-ignore-words-list.txt
         #skip-paths: src/lib #not necessary since submodules are not pulled in
 
       - name: Spell Check Python (w/ PySpelling)
