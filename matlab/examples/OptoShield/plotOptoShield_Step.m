@@ -1,6 +1,6 @@
 %   OptoShield system identification experiment
 % 
-%   Aquires data for system identification and plots
+%   Acquires data for system identification and plots
 %   the data.
 %
 %   This code is part of the AutomationShield hardware and software
@@ -8,7 +8,7 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Takács. 
+%   Created by Gergely Takï¿½cs. 
 %   Last update: 01.10.2018.
 
 resultID=readExperiment(7*200,'COM22',9600);

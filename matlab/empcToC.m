@@ -31,14 +31,14 @@ global MPTOPTIONS
 % 
 %    Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) 
 %    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    
-%    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)
+%    Adapted for MCU use by Gergely Takï¿½cs in 2020 (gergely.takacs@stuba.sk)
 
 AVR = 0;                        % Initialize default value
 if strcmp(architecture,'AVR')
     AVR = 1;                    % Switch to enable PROGMEM functionality
     precision = 'float';        % The AVR architecture does not implement double
 else
-    precision = 'float';        % Most MCU cannot hande double properly anyways
+    precision = 'float';        % Most MCU cannot handle double properly anyways
 end
    
 obj = obj.optimizer;            % Extract optimizer from object
@@ -117,7 +117,7 @@ header = {
 ''
 '    Copyright (C) 2005 by Michal Kvasnica (michal.kvasnica@stuba.sk) '
 '    Revised in 2012-2013 by Martin Herceg (herceg@control.ee.ethz.ch)    '
-'    Adapted for MCU use by Gergely Takács in 2020 (gergely.takacs@stuba.sk)'
+'    Adapted for MCU use by Gergely Takï¿½cs in 2020 (gergely.takacs@stuba.sk)'
 '*/'
 };
 
