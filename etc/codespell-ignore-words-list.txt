@@ -69,7 +69,9 @@ mA
 mV
 ma
 mata
+matA
 matc
+matC
 maxCalibrated
 mechatronics
 mem
@@ -86,6 +88,7 @@ ok
 potentiometer
 pre
 setts
+setTs
 shorthands
 sk
 stuba
@@ -125,3 +128,14 @@ ee
 ethz
 bytecode
 FloatShield
+nd
+Fo
+JKD
+Te
+Ue
+FO
+Nd
+WyA
+
+
+

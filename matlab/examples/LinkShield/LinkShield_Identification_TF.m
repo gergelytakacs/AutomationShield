@@ -4,7 +4,7 @@
 %   single vibration mode, on real measured data.
 %
 %   The example takes input-output identification results from the
-%   LinkShield device, where input is requested degrees suplied to the
+%   LinkShield device, where input is requested degrees supplied to the
 %   servo and output is the acceleration of the beam tip in m/s^2. Note
 %   that the resulting transfer function captures acceleration behavior,
 %   the position signal is out-of phase to acceleration and omega^2

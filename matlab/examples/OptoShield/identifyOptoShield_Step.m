@@ -1,6 +1,6 @@
 %   OptoShield system identification experiment
 % 
-%   Aquires data from the OptoShield then fits 1st order model to
+%   Acquires data from the OptoShield then fits 1st order model to
 %   identification results.
 %
 %   This code is part of the AutomationShield hardware and software
@@ -8,7 +8,7 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Takács. 
+%   Created by Gergely Takï¿½cs. 
 %   Last update: 01.10.2018.
 
 %plotOptoShield_Step
