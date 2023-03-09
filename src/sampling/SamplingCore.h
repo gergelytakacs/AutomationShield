@@ -52,7 +52,7 @@ class SamplingClass {
       In case the required period is larger than what the given
       timer resolution can handle with the highest prescaler (fireFlag=1),
       the ISR will "fire" without launching the algorithm step until
-      (fireCount) the desired sampling is reached, then the conter is
+      (fireCount) the desired sampling is reached, then the counter is
       reset. The "firing" of the ISR is a portion of the full sampling
       by "fireResolution" microseconds.
     */
@@ -120,7 +120,7 @@ class SamplingClass {
       In case the required period is larger than what the given
       timer resolution can handle with the highest prescaler (fireFlag=1),
       the ISR will "fire" without launching the algorithm step until
-      (fireCount) the desired sampling is reached, then the conter is
+      (fireCount) the desired sampling is reached, then the counter is
       reset. The "firing" of the ISR is a portion of the full sampling
       by "fireResolution" microseconds.
     */
