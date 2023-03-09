@@ -52,7 +52,7 @@ void BOBClass::begin() {
   myservo.attach(BOB_UPIN);			                	// set Servo pin
 }
 
-// Check if Adafruit VL6180 sensor is available, prints if usere sets ECHO_TO_SERIAL flag
+// Check if Adafruit VL6180 sensor is available, prints if user sets ECHO_TO_SERIAL flag
 void BOBClass::initialize() {
 	sens.begin();
 	 # if ECHO_TO_SERIAL 
