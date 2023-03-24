@@ -171,7 +171,7 @@ unsigned long int val=PressureShield.readPressure();                // Read sens
 if (val>102000) {                                                   // Sensor max value safety control
   digitalWrite(PRESSURE_UPIN,LOW);
 }
-  float percento = map((long int)val, _minPressure,_maxPressure, 0.00, 100.00);   // Mapping sensor value to 0 - 100         
+  float percento = AutomationShield.mapFloat((long int)val, _minPressure,_maxPressure, 0.00, 100.00);   // Mapping sensor value to 0 - 100         
   return percento;
 }
 
