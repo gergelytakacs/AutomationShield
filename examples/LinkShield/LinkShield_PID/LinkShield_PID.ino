@@ -16,22 +16,22 @@
   Last update: 3.12.2022.
 */
 
-#include <LinkShield.h>            // Include header for hardware API
+#include <LinkShield.h>            	// Include header for hardware API
 
 
-unsigned long Ts = 5;                 // Sampling in milliseconds
-unsigned long k = 0;                  // Sample index
-bool nextStep = false;                // Flag for sampling
-bool realTimeViolation = false;       // Flag for real-time sampling violation
-bool endExperiment = false;           // Boolean flag to end the experiment
+unsigned long Ts = 5;               // Sampling in milliseconds
+unsigned long k = 0;                // Sample index
+bool nextStep = false;              // Flag for sampling
+bool realTimeViolation = false;     // Flag for real-time sampling violation
+bool endExperiment = false;         // Boolean flag to end the experiment
 
 float y = 0.0;
-float y1 = 0.0;                        // Output variable
-float y2 = 0.0;                        // Output variable
-float r = 0.0;                        // Input (open-loop), initialized to zero
+float y1 = 0.0;                     // Output variable
+float y2 = 0.0;                     // Output variable
+float r = 0.0;                        	// Input (open-loop), initialized to zero
 float u = 0.0;
 float R[]={0.00, PI/4, -PI/4, 0.00};
-int T = 1000;                         // Section length (appr. '/.+2 s)
+int T = 1000;                         	// Section length (appr. '/.+2 s)
 unsigned int i = 0;                            // Section counter
 
 // PID Tuning
