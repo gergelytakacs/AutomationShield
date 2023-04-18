@@ -17,8 +17,8 @@
 %    details. This code is licensed under a Creative Commons
 %    Attribution-NonCommercial 4.0 International License.
 %
-%    Inspired by the book "ZÁKLADY PREDIKTÍVNEHO RIADENIA"
-%    (from authors: Gergely Takács, Martin Gulan, STU 2018)
+%    Inspired by the book "Zï¿½KLADY PREDIKTï¿½VNEHO RIADENIA"
+%    (from authors: Gergely Takï¿½cs, Martin Gulan, STU 2018)
 %    see https://github.com/gergelytakacs/Zaklady-prediktivneho-riadenia
 %    for the book in PDF (in Slovak) and the original examples.
 %
@@ -36,8 +36,8 @@ end
 
 % Get prediction matrix N
 N = zeros(nx*np, nu*np);    % Preallocate matrix N with zeros
-NN = zeros(nx*np, nu);      % Preallocate auxilliary matrix NN with zeros
-for i = 1:np                % Calculate auxilliary matrix NN
+NN = zeros(nx*np, nu);      % Preallocate auxiliary matrix NN with zeros
+for i = 1:np                % Calculate auxiliary matrix NN
     NN(i*nx-nx+1:i*nx, :) = A^(i - 1) * B; 
 end
 for i = 1:np                % By shifting NN matrix create matrix N

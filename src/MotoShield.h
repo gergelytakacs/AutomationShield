@@ -22,7 +22,7 @@
 #include "lib/BasicLinearAlgebra/BasicLinearAlgebra.h"
 
 #ifndef SHIELDRELEASE
-  #define SHIELDRELEASE 2 // R2 vsrsion as default
+  #define SHIELDRELEASE 1 // R2 vsrsion as default
 #endif
 
 #if SHIELDRELEASE == 1 //--defining pins for MotoShield_R1
@@ -113,8 +113,8 @@ void MotoShieldClass::setDirection(bool direction = true) { //--default directio
   }
 #elif SHIELDRELEASE == 2
   MotoShieldClass::_direction=direction;
-}
 #endif
+}
 
 void MotoShieldClass::begin(float _Ts = 50.0){ //--default sample duration Ts=50 millis
 #if SHIELDRELEASE == 1

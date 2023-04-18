@@ -6,12 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install MATLAB
-        uses: matlab-actions/setup-matlab@v1.1.1
+        uses: matlab-actions/setup-matlab@v1.2.4
         with:
           release: R2021a
       - name: Run script
-        uses: matlab-actions/run-command@v1.0.1
+        uses: matlab-actions/run-command@v1.1.3
         with:
           command: build_matlab
