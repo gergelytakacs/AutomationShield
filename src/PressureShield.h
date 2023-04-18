@@ -74,6 +74,9 @@ class PressureClass {           // Class for PressureShield device
     void actuatorWrite(float);                                   // Write actuator - function takes input 0.0-100.0 and sets pump speed accordingly
     float referenceRead(void);                                   // Reference read - returns potentiometer position in percentual range 0.0-100.0
     float sensorRead(void);                                      // Sensor read - returns the pressure in percentual range 0.0-100.0
+	float getMin(void);
+	float getMax(void);
+	void actuatorWriteScaled(float);
    // #include <getGainLQ.inl>                                     // Include template function for calculating K gain for LQ control applications
     #include <getKalmanEstimate.inl>                             // Include template function for estimating internal states of linear SISO system (Kalman filter)
     
