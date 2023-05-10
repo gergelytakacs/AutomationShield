@@ -40,7 +40,7 @@ Bl = 0.00002;
 %Jl = 0.5;
 pomer=1.00001; %(Jl+Jeq)/Jl
 Ks = 0.75;
-c1=0.0; %z prevodu torque na voltage
+c1=1.0; %z prevodu torque na voltage
 c2=1.0; %z prevodu torque na voltage
 
 
@@ -51,13 +51,10 @@ c2=1.0; %z prevodu torque na voltage
 %     0 -Ks*pomer/Jeq ((Beq/Jeq)-c1)/Jeq Bl/Jeq]
 
 % A = [0 0 1 0;
-%     0 0 0 1;
-%     0 Ks/Jeq -Beq/Jeq Bl/Jeq;
-%     0 -Ks*((Jeq+Jl)/(Jeq*Jl)) Beq/Jeq Bl*((Jl+Jeq)/(Jl*Jeq))];
-
-
-% B = [0 0 c2/Jeq -c2/Jeq]';
-
+%      0 0 0 1;
+%      0 Ks/Jeq -(Beq-c2)/Jeq 0;
+%      0 -Ks*((Jeq+Jl)/(Jeq*Jl)) (Beq-c2)/Jeq 0];
+% B = [0 0 c1/Jeq -c1/Jeq]';
 C = eye(2,4);
 D = zeros(2,1);
 K = zeros(4,2); 
@@ -65,8 +62,8 @@ K = zeros(4,2);
 
 A = [0 0 1 0;
      0 0 0 1;
-     0    2746  -127.25   0;
-     0    -7804  227.066  0];
+     0    2746  -12.25   0;
+     0    -7804  22.066  0];
 B = [0;
      0;
      50.84
@@ -83,7 +80,7 @@ sys.Structure.A.Free=  [0  0  0  0;
 
 sys.Structure.A.Minimum = [0 0 0 0;
                            0 0 0 0;
-                           0 -inf -inf 0;
+                           0 -inf -inf -inf;
                            0 -inf -inf -inf];
 
 sys.Structure.A.Maximum = [0 0 0 0;
@@ -127,23 +124,61 @@ dB=dmodel.B;
 dC=dmodel.C;
 
 x0=[Theta0; Alpha0; dTheta0; dAlpha0 ]; 
-x(:,1)=x0;
-y = zeros(2,length(U));
+x(:,1)=model(1, 1).Report.Parameters.X0  ;
 
-for i=1:length(U)
-    x(:,i+1) = dA*x(:,i)+dB*U(i);
-    y(:,i) = dC*x(:,i);
+Uval = ones(277,1)*5;
+Uval(1:10)=0;
+Uval=U;
+y = zeros(2,length(Uval));
+
+R_Kalman = [5.808465952461661e-03 0;
+            0 1.266009518986769e-07];
+
+Q_Kalman = diag([50 20 1 1]);
+
+
+for i=1:length(Uval)
+
+%     Y(1,1) = Theta(i);  
+%     Y(2,1) = Alpha(i);
+% 
+%  [xhat(:,i), yhat(:,i)] = estimateKalmanState(U(i), Y, dA, dB, dC, Q_Kalman, R_Kalman);
+
+x(:,i+1) = dA*x(:,i) + dB*Uval(i);
+y(:,i+1) = dC*x(:,i+1); 
+
+
+ 
 end
-figure('Name','Simulation')
+%%
+tplot = 0:5:299*5;
+tplot = t/1000;
 
-subplot(2,1,1)
-plot(y(1,:)); 
-hold on
-plot(Theta)
 
-subplot(2,1,2)
-plot(y(2,:)); 
-hold on
-plot(Alpha)
 
+subplot(3,1,1)
+stairs(t,U,LineWidth=1.5)
+legend("U")
+title("Priebeh identifikačného experimentu")
+xticks(0:0.25:1.5)
+ylim([-0.2 5.2])
+grid on
+ylabel("Napätie (V)")
+subplot(3,1,2)
+plot(t,Theta,LineWidth=1.5)
+legend("Theta","Location","southeast")
+xticks(0:0.25:1.5)
+ylim([-0.2 1.7])
+grid on
+ylabel("Uhol (Rad)")
+subplot(3,1,3)
+plot(t,Alpha,LineWidth=1.5)
+legend("Alpha","Location","southeast")
+xticks(0:0.25:1.5)
+ylim([-0.1 0.05])
+grid on
+ylabel("Uhol (Rad)")
+xlabel ("Čas (s)")
+
+%%
 save('LinkShield_SSID.mat','model','Ts')

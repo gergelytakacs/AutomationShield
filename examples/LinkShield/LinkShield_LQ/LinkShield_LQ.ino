@@ -17,8 +17,11 @@
 */
 
 #include <LinkShield.h>               // Include the library
-#include <BasicLinearAlgebra.h>
 
+ 
+
+#define USE_DIFFERENTIATION 0
+#define USE_KALMAN 1
 
 unsigned long Ts = 5;                 // Sampling in milliseconds
 unsigned long k = 0;                  // Sample index
@@ -26,36 +29,41 @@ bool nextStep=false;                  // Flag for sampling
 bool realTimeViolation = false;       // Flag for real-time sampling violation
 bool endExperiment = false;           // Boolean flag to end the experiment
 
-float y1 = 0.0;                        // Output variable
-float y2 = 0.0;                        // Output variable
-float y1prev = 0.0;
-float y2prev = 0.0;
+float y_1 = 0.0;                        // Output variable
+float y_2 = 0.0;                        // Output variable
+float y_1prev = 0.0;
+float y_2prev = 0.0;
 
 
 float u = 0.0;                        // Input (open-loop), initialized to zero
-float R[]={0.00, PI/4, -PI/4, 0.00};   // Input trajectory
-int T = 500;                         // Section length (appr. '/.+2 s)
+float R[]={0.00, PI/6, -PI/4, 0.00};   // Input trajectory
+int T = 1000;                         // Section length (appr. '/.+2 s)
 unsigned int i = 0;                            // Section counter
 
 
-BLA::Matrix<4, 4> A = {1, 0.03275, 0.00475, 6e-05, 0, 0.9043, 6e-05, 0.00484, 0, 12.665, 0.90339, 0.03275, 0, -37.606, 0.0223, 0.9043};
-BLA::Matrix<4, 1> B = {0.00068, -0.0004, 0.26794, -0.15681};
+
+
+BLA::Matrix<4, 1> X = {0, 0, 0, 0};
+BLA::Matrix<4, 1> Xr = {0, 0, 0, 0};
+BLA::Matrix<4, 1> U = {0, 0, 0, 0};
+BLA::Matrix<2, 1> Y = {0, 0};
+BLA::Matrix<4, 1> Xk = {0, 0, 0, 0};
+BLA::Matrix<4, 1> xIC = {0, 0, 0, 0};
+
+
+BLA::Matrix<1, 4> K = {6.0679*4, -15.234/10, 0.40104, -3.6504/5};
+BLA::Matrix<4, 4> A = {1, 0.03235, 0.00475, 5e-05, 0, 0.9043, 6e-05, 0.00484, 0, 12.508, 0.90345, 0.03235, 0, -37.604, 0.02245, 0.9043};
+BLA::Matrix<4, 1> B = {0.00068, -0.0004, 0.26726, -0.15689};
 BLA::Matrix<2, 4> C = {1, 0, 0, 0, 0, 1, 0, 0};
-BLA::Matrix<1, 6> K = {-0.93176, -1.6286, 20.242, 3.6138, 0.62938, 0.25456};
-BLA::Matrix<6, 1> X = {0, 0, 0, 0, 0, 0};
-BLA::Matrix<6, 1> Xr = {0, 0, 0, 0, 0, 0};
-
-
-//BLA::Matrix<4, 4> Q_Kalman = {};
-//BLA::Matrix<1, 1> R_Kalman = {};
-
+BLA::Matrix<4, 4> Q_Kalman = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+BLA::Matrix<2, 2> R_Kalman = {0.05, 0, 0.015, 0};
 
 
 
 
 
 void setup() {
- Serial.begin(2000000);               // Initialize serial
+ Serial.begin(250000);               // Initialize serial
 
  // Initialize linkshield hardware
  LinkShield.begin();                  // Define hardware pins
@@ -76,7 +84,7 @@ void loop() {
 
 void stepEnable(){                                     // ISR
   if(endExperiment == true){                           // If the experiment is over
-	LinkShield.actuatorWriteVoltage(0.00);
+	LinkShield.actuatorWrite(0.00);
     while(1);      								// Do nothing
   }
   if(nextStep) {                               // If previous sample still running
@@ -100,41 +108,58 @@ if (i > sizeof(R) / sizeof(R[0])) {      // If at end of trajectory
         i++;                          // Increment section counter
     }
 
-y1 = LinkShield.servoPotRead();          // Read sensor
-y2 = LinkShield.flexRead();
+y_1 = LinkShield.servoPotRead();          // Read sensor
+y_2 = LinkShield.flexRead();
 
-X(0) = X(0) + (Xr(0)-X(2));
-X(1) = X(1) + (Xr(1)-X(3));
+Y(0) = y_1;
+Y(1) = y_2;
 
-X(2) = y1;
-X(3) = y2;
-X(4) = (y1 - y1prev)/Ts;
-X(5) = (y2 - y2prev)/Ts;
+#if USE_DIFFERENTIATION
+X(0) = y_1;
+X(1) = y_2;
+X(2) = (y_1 - y_1prev)/Ts;
+X(3) = (y_2 - y_2prev)/Ts;
+#endif
 
-u = -(K * X)(0);
+#if USE_KALMAN
+LinkShield.getKalmanEstimate(Xk, u, Y, A, B, C, Q_Kalman, R_Kalman, xIC);
+X(0) = Xk(0);
+X(1) = Xk(1);
+X(2) = Xk(2);
+X(3) = Xk(3);
+#endif
 
 
-  	if		(y1>HALF_PI)	{u = AutomationShield.constrainFloat(u, 0.0,5.0);}
-	else if	(y1<-HALF_PI)	{u = AutomationShield.constrainFloat(u,-5.0,0.0);}
+U = Xr - X;
+u = (K*U)(0);
+
+
+  	if		(y_1<-HALF_PI)	{u = AutomationShield.constrainFloat(u, 0.0,5.0);}
+	else if	(y_1>HALF_PI)	{u = AutomationShield.constrainFloat(u,-5.0,0.0);}
 	else					{u = AutomationShield.constrainFloat(u,-5.0,5.0);}
 
-y1prev = y1;
-y2prev = y2;
-
+#if USE_DIFFERENTIATION
+y_1prev = y_1;
+y_2prev = y_2;
+#endif
 
 
 //LinkShield.actuatorWritePWM(u);          // Actuate
 //LinkShield.actuatorWritePercent(u);
-LinkShield.actuatorWriteVoltage(u);
+LinkShield.actuatorWrite(u);
 
 
-Serial.print(y1,4);                      // Print output
+Serial.print(y_1,4);                      // Print output
 Serial.print(", ");
-Serial.print(y2,4);
+//Serial.print(X(0),4);
+//Serial.print(", "); */
+Serial.print(y_2,4);
+//Serial.print(", ");
+//Serial.println(X(1),4);
 Serial.print(", ");
-Serial.print(X(0),4);
+Serial.print(Xr(0),4);
 Serial.print(", ");
-Serial.println(u);                    // Print input
+Serial.println(u);                  // Print input
 
 k++;                                  // Sample counter
 }

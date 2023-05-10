@@ -22,14 +22,17 @@ Last update: 20.5.2020.
 #include <Arduino.h>
 #include "AutomationShield.h"
 #include <Wire.h>
-#include <SamplingServo.h>
+//#include <SamplingServo.h>
+#include <Sampling.h>
+#include "lib/BasicLinearAlgebra/BasicLinearAlgebra.h"
+//#include <BasicLinearAlgebra.h>
 
 //Defining pins used by LinkShield
 #define LINK_RPIN 0             //Potentiometer pin
 #define LINK_FLEX1_PIN 1          //1st FlexSensor pin
 #define LINK_FLEX2_PIN 2          //2nd FlexSensor pin
-#define DC_PWM_PIN 9            //DC motor PWM control pin
-#define DC_DIR_PIN 10       //DC motor direction pin
+#define DC_PWM_PIN 5            //DC motor PWM control pin
+#define DC_DIR_PIN 6       //DC motor direction pin
 #define SERVO_POT_PIN 5
 
 #define ENCODER 0
@@ -90,6 +93,8 @@ public:
 	
 	float 	_voltageToPwm;
 	float 	_voltageToPwmNew;
+
+	#include "getKalmanEstimate.inl" 
 
 private:
 

@@ -1,0 +1,44 @@
+<?xml-stylesheet href="defaultstyles.css" type="text/css"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:d="http://www.mathworks.com/blockgraphics" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg_3" width="360" height="368" d:options="PreserveAspect:On;ScalingOnResizeMax:2.0;Rotate:Off;Resize:FitToBlock">
+	<defs>
+		<style>
+			.font-size-extra-large {
+				font-size:72px;}
+					</style>
+	</defs>
+	<g id="layer_5" title="layer_0">
+		<g id="group_192">
+			<line id="line_14" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,-1e-10,0)" x1="94.25" y1="278.78" x2="115.47" y2="264.6"/>
+			<line id="line_15" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="250.43" x2="115.46" y2="264.6"/>
+			<line id="line_16" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="250.43" x2="115.47" y2="236.26"/>
+			<line id="line_17" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="222.09" x2="115.47" y2="236.27"/>
+			<line id="line_22" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="222.09" x2="115.47" y2="207.92"/>
+			<line id="line_23" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="193.76" x2="115.46" y2="207.93"/>
+			<line id="line_24" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="193.76" x2="115.47" y2="179.59"/>
+			<line id="line_25" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="165.42" x2="115.47" y2="179.6"/>
+			<line id="line_26" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="165.42" x2="115.47" y2="151.25"/>
+			<line id="line_27" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="137.08" x2="115.47" y2="151.25"/>
+			<line id="line_28" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="137.09" x2="115.47" y2="122.92"/>
+			<line id="line_29" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="108.75" x2="115.47" y2="122.93"/>
+			<line id="line_30" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="108.75" x2="115.47" y2="94.58"/>
+			<line id="line_31" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="80.41" x2="115.47" y2="94.58"/>
+			<line id="line_32" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.26" y1="80.42" x2="115.47" y2="66.24"/>
+			<line id="line_40" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="115.47" y1="66.25" x2="123.95" y2="66.25"/>
+			<line id="line_58" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="123.95" y1="66.25" x2="123.95" y2="314.19"/>
+			<line id="line_68" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="94.25" y1="278.77" x2="98.5" y2="282.31"/>
+			<line id="line_75" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,1e-10)" x1="98.49" y1="282.31" x2="98.49" y2="314.19"/>
+			<path id="path_145" class="path" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" d=" M 90,80.42 Q 90,45 111.22,45 Q 132.44,45 132.44,80.42"/>
+			<line id="line_159" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="132.44" y1="80.41" x2="132.44" y2="300.02"/>
+			<line id="line_176" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="90" y1="80.42" x2="90" y2="300.02"/>
+			<line id="line_191" class="line" style="stroke-width:2;" transform="matrix(1,0,0,1,0,0)" x1="90.01" y1="300.02" x2="132.44" y2="300.02"/>
+		</g>
+		<line id="line_203" class="line" style="stroke-width:2;" x1="123.95" y1="314.19" x2="297.7" y2="314.19"/>
+		<line id="line_208" class="line" style="stroke-width:2;" x1="98.49" y1="314.19" x2="64.65" y2="314.19"/>
+		<ellipse id="ellipse_242" class="ellipse" style="fill:#000000;stroke-width:2;" cx="64.65" cy="314.19" rx="7.41" ry="7.41"/>
+		<text id="text_244" class="text font-size-extra-large" x="233.78" y="143.56">
+			<tspan dx="0" dy="65.22" x="233.78">y(k</tspan>
+			<tspan dx="96.5" dy="0" x="233.78">)</tspan>
+		</text>
+		<ellipse id="ellipse_6" class="ellipse" style="fill:#000000;stroke-width:2;" cx="297.7" cy="315.51" rx="7.41" ry="7.41"/>
+	</g>
+</svg>

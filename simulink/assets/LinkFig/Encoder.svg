@@ -1,0 +1,54 @@
+<?xml-stylesheet href="defaultstyles.css" type="text/css"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:d="http://www.mathworks.com/blockgraphics" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg_3" width="360" height="360" d:options="PreserveAspect:On;ScalingOnResizeMax:2.0;Rotate:Off;Resize:FitToBlock">
+	<defs>
+		<style>
+			.font-size-default {
+				font-size:60px;}
+					</style>
+	</defs>
+	<g id="layer_4" title="layer_0">
+		<g id="group_117">
+			<line id="line_33" class="line" style="stroke-width: 2;" x1="216" y1="342" x2="234" y2="342"/>
+			<line id="line_49" class="line" style="stroke-width: 2;" x1="234" y1="342" x2="234" y2="315"/>
+			<line id="line_53" class="line" style="stroke-width: 2;" x1="234" y1="315" x2="252" y2="315"/>
+			<line id="line_72" class="line" style="stroke-width: 2;" x1="252" y1="315" x2="252" y2="342"/>
+			<line id="line_73" class="line" style="stroke-width: 2;" x1="252" y1="342" x2="270" y2="342"/>
+			<line id="line_74" class="line" style="stroke-width: 2;" x1="270" y1="342" x2="270" y2="315"/>
+			<line id="line_75" class="line" style="stroke-width: 2;" x1="270" y1="315" x2="288" y2="315"/>
+			<line id="line_76" class="line" style="stroke-width: 2;" x1="288" y1="315" x2="288" y2="342"/>
+			<line id="line_77" class="line" style="stroke-width: 2;" x1="288" y1="342" x2="306" y2="342"/>
+			<line id="line_78" class="line" style="stroke-width: 2;" x1="306" y1="342" x2="306" y2="315"/>
+			<line id="line_79" class="line" style="stroke-width: 2;" x1="306" y1="315" x2="324" y2="315"/>
+			<line id="line_80" class="line" style="stroke-width: 2;" x1="324" y1="315" x2="324" y2="342"/>
+			<line id="line_81" class="line" style="stroke-width: 2;" x1="324" y1="342" x2="342" y2="342"/>
+			<line id="line_82" class="line" style="stroke-width: 2;" x1="342" y1="342" x2="342" y2="315"/>
+		</g>
+		<g id="group_118">
+			<line id="line_85" class="line" style="stroke-width: 2;" x1="216" y1="45" x2="225" y2="45"/>
+			<line id="line_86" class="line" style="stroke-width: 2;" x1="225" y1="45" x2="225" y2="18"/>
+			<line id="line_87" class="line" style="stroke-width: 2;" x1="225" y1="18" x2="243" y2="18"/>
+			<line id="line_88" class="line" style="stroke-width: 2;" x1="243" y1="18" x2="243" y2="45"/>
+			<line id="line_89" class="line" style="stroke-width: 2;" x1="243" y1="45" x2="261" y2="45"/>
+			<line id="line_90" class="line" style="stroke-width: 2;" x1="261" y1="45" x2="261" y2="18"/>
+			<line id="line_91" class="line" style="stroke-width: 2;" x1="261" y1="18" x2="279" y2="18"/>
+			<line id="line_92" class="line" style="stroke-width: 2;" x1="279" y1="18" x2="279" y2="45"/>
+			<line id="line_93" class="line" style="stroke-width: 2;" x1="279" y1="45" x2="297" y2="45"/>
+			<line id="line_94" class="line" style="stroke-width: 2;" x1="297" y1="45" x2="297" y2="18"/>
+			<line id="line_95" class="line" style="stroke-width: 2;" x1="297" y1="18" x2="315" y2="18"/>
+			<line id="line_96" class="line" style="stroke-width: 2;" x1="315" y1="18" x2="315" y2="45"/>
+			<line id="line_97" class="line" style="stroke-width: 2;" x1="315" y1="45" x2="333" y2="45"/>
+			<line id="line_98" class="line" style="stroke-width: 2;" x1="333" y1="45" x2="333" y2="18"/>
+			<line id="line_99" class="line" style="stroke-width: 2;" x1="333" y1="18" x2="342" y2="18"/>
+		</g>
+		<text id="text_116" class="text font-size-default" x="252" y="144">
+			<tspan dx="0" dy="53.85" x="252">y(k)</tspan>
+		</text>
+		<image id="image_130" class="image" transform="matrix(0,-1,1,0,-51.5099945068,307.3899993896)" x="1.94" y="62.45" width="252" height="234" preserveAspectRatio="none" xlink:href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8IS0tIENyZWF0b3I6IENvcmVsRFJBVyBYNiAtLT4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTIyLjEwM21tIiBoZWlnaHQ9IjExMS4zMDFtbSIgdmVyc2lvbj0iMS4xIiBzdHlsZT0ic2hhcGUtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiDQp2aWV3Qm94PSIwIDAgMTIyMTAgMTExMzAiDQogeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPg0KIDxkZWZzPg0KICA8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KICAgPCFbQ0RBVEFbDQogICAgLnN0cjEge3N0cm9rZTojMkIyQTI5O3N0cm9rZS13aWR0aDoyMH0NCiAgICAuc3RyMCB7c3Ryb2tlOiMyQjJBMjk7c3Ryb2tlLXdpZHRoOjUwfQ0KICAgIC5maWwwIHtmaWxsOm5vbmV9DQogICAgLmZpbDMge2ZpbGw6IzJCMkEyOX0NCiAgICAuZmlsMiB7ZmlsbDojMkIyQTI5fQ0KICAgIC5maWwxIHtmaWxsOiNGRUZFRkV9DQogICBdXT4NCiAgPC9zdHlsZT4NCiA8L2RlZnM+DQogPGcgaWQ9IlZyc3R2YV94MDAyMF8xIj4NCiAgPG1ldGFkYXRhIGlkPSJDb3JlbENvcnBJRF8wQ29yZWwtTGF5ZXIiLz4NCiAgPGcgaWQ9Il83MTU5Njk2ODAiPg0KICAgPHBhdGggY2xhc3M9ImZpbDAgc3RyMCIgZD0iTTYxMDUgMTAwMjVjOTExLDAgMTc2NSwtMjQ0IDI1MDAsLTY2OWwtMjQ5OCAtNDMyNiAtMyAtNCAtMjUwMCA0MzMxIDcgNGM3MzQsNDIzIDE1ODUsNjY1IDI0OTQsNjY1em0yNTAwIC05MzMxYy03MzYsLTQyNiAtMTU4OSwtNjY5IC0yNTAwLC02NjkgLTkxMSwwIC0xNzY0LDI0NCAtMjUwMCw2NjlsLTEgMCAyNDk3IDQzMjYgMyA1IDUwMDAgMG0tNTAwMCAwbDMgLTUgMjQ5NyAtNDMyNm0wIDg2NjFsLTI0OTggLTQzMjYgLTMgLTQgNTAwMCAwYzAsMTg0OCAtMTAwMiwzNDYxIC0yNDkzLDQzMjdsLTcgNHptLTI1MDAgLTQzMzFsNTAwMCAwIC01MDAwIDAgLTI1MDAgNDMzMWMtMTQ5NCwtODY1IC0yNTAwLC0yNDgwIC0yNTAwLC00MzMxbDUwMDAgMHptMCAwbDMgLTUgMjQ5NyAtNDMyNiAxIDBjMTQ5NCw4NjUgMjQ5OSwyNDgwIDI0OTksNDMzMGwwIDEgLTUwMDAgMHptMCAwbC0zIC01IC0yNDk3IC00MzI2Yy0xNDkyLDg2MyAtMjQ5NiwyNDc1IC0yNTAwLDQzMjJsMCA5IDUwMDAgMHoiLz4NCiAgIDxjaXJjbGUgY2xhc3M9ImZpbDEgc3RyMCIgY3g9IjYxMDUiIGN5PSI1MDI1IiByPSIyNTAwIi8+DQogICA8cGF0aCBjbGFzcz0iZmlsMiBzdHIxIiBkPSJNNzM1NSAyODYwbDEyNTAgLTIxNjVjLTczNiwtNDI2IC0xNTg5LC02NjkgLTI1MDAsLTY2OSAtOTExLDAgLTE3NjQsMjQ0IC0yNTAwLDY2OWwtMSAwIDEyNTAgMjE2NWMzNjgsLTIxMyA3OTUsLTMzNSAxMjUwLC0zMzUgNDU1LDAgODgyLDEyMiAxMjUwLDMzNXoiLz4NCiAgIDxwYXRoIGNsYXNzPSJmaWwyIHN0cjEiIGQ9Ik0xMTEwNSA1MDI1bC0yNTAwIDBjMCw5MjUgLTUwMywxNzMzIC0xMjUwLDIxNjVsMTI1MCAyMTY1IDcgLTRjMTQ5MCwtODY2IDI0OTMsLTI0NzkgMjQ5MywtNDMyN3oiLz4NCiAgIDxwYXRoIGNsYXNzPSJmaWwyIHN0cjEiIGQ9Ik00ODU1IDcxOTBjLTc0NywtNDMyIC0xMjUwLC0xMjQwIC0xMjUwLC0yMTY1bC0yNTAwIDBjMCwxODUxIDEwMDUsMzQ2NiAyNTAwLDQzMzFsMTI1MCAtMjE2NXoiLz4NCiAgIDxyZWN0IGNsYXNzPSJmaWwzIHN0cjEiIHRyYW5zZm9ybT0ibWF0cml4KDAuNzE1ODU5IC0wLjcxNTg1OSAwLjcyODg3MSAwLjcyODg3MSAxNC4xMzk4IDg5OTQuNjcpIiB3aWR0aD0iMTQ4MiIgaGVpZ2h0PSIyOTEwIi8+DQogICA8cmVjdCBjbGFzcz0iZmlsMyBzdHIxIiB0cmFuc2Zvcm09Im1hdHJpeCgtMC43MTU4NTkgLTAuNzE1ODU5IC0wLjcyODg3MSAwLjcyODg3MSAxMjE5Ni4xIDg5OTQuNjcpIiB3aWR0aD0iMTQ4MiIgaGVpZ2h0PSIyOTEwIi8+DQogIDwvZz4NCiA8L2c+DQo8L3N2Zz4NCg=="/>
+		<text id="text_131" class="text font-size-default" x="144" y="9">
+			<tspan dx="0" dy="53.85" x="144">A</tspan>
+		</text>
+		<text id="text_132" class="text font-size-default" x="144" y="288">
+			<tspan dx="0" dy="53.85" x="144">B</tspan>
+		</text>
+	</g>
+</svg>

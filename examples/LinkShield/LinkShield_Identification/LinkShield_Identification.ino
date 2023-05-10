@@ -24,15 +24,15 @@ bool nextStep=false;                  	// Flag for sampling
 bool realTimeViolation = false;       	// Flag for real-time sampling violation
 bool endExperiment = false;           	// Boolean flag to end the experiment
 
-float y1 = 0.0;                        	// Output variable
-float y2 = 0.0;                        	// Output variable
+float y_1 = 0.0;                        	// Output variable
+float y_2 = 0.0;                        	// Output variable
 float u = 0.0;                        	// Input (open-loop), initialized to zero
-float U[]={0.00, 0.00, 4.00, 0.00, -4.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00};   	// Input trajectory
+float U[]={0.00, 5.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00};   	// Input trajectory
 int T = 25;                         	// Section length (appr. '/.+2 s)
 unsigned long int i = 0;                            	// Section counter
 
 void setup() {
-	Serial.begin(2000000);              // Initialize serial
+	Serial.begin(250000);              // Initialize serial
 
 	// Initialize linkshield hardware
 	LinkShield.begin();                 // Define hardware pins
@@ -78,21 +78,21 @@ void step(){
 		i++;                          	// Increment section counter
 	}				  
 	
-	//y1 = LinkShield.encoderRead();          // Read motor position
-	//y1 = LinkShield.servoPotRead();
-	//y2 = LinkShield.flexRead();				// Read link bend
+	//y_1 = LinkShield.encoderRead();          // Read motor position
+	y_1 = LinkShield.servoPotRead();
+	y_2 = LinkShield.flexRead();				// Read link bend
 
 	//u = LinkShield.referenceRead();
 	//LinkShield.actuatorWritePWM(u);       // Actuate with PWM duty cicle
 	//LinkShield.actuatorWritePercent(u);	// Actuate with percent of PWM duty cicle
 
 	//Actuate with voltage converted to PWM duty cicle with square root and direction(+/-5V) 
-	LinkShield.actuatorWriteNew(u);	
+	LinkShield.actuatorWrite(u);	
 
-	//Serial.print(analogRead(5));                     // Print outputs
-	//Serial.print(", ");
-	//Serial.print(y2,4);                     // Print outputs
-	//Serial.print(", ");
+	Serial.print(y_1,8);                     // Print outputs
+	Serial.print(", ");
+	Serial.print(y_2,8);                     // Print outputs
+	Serial.print(", ");
 	Serial.println(u);                    	// Print input
 
 
