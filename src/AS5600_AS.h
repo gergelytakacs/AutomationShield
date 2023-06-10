@@ -18,8 +18,8 @@
   Last update: 09.05.2023.
 */
 
-#ifndef AS5600AS_H			       // Include guard
-#define AS5600AS_H	
+#ifndef AS5600_AS_H			       // Include guard
+#define AS5600_AS_H	
 
 
 #include "Arduino.h"

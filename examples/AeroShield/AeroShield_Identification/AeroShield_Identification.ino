@@ -32,7 +32,7 @@ int k;
 void setup() {
   Serial.begin(500000);
   AeroShield.begin();
-  AeroShield.calibration();
+  AeroShield.calibrate();
   Serial.println("u, y, i"); //--Print header
   Sampling.interrupt(stepEnable);
   Sampling.period(TS * 1000);
