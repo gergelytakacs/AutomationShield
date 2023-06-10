@@ -113,8 +113,8 @@ void MotoShieldClass::setDirection(bool direction = true) { //--default directio
   }
 #elif SHIELDRELEASE == 2
   MotoShieldClass::_direction=direction;
-}
 #endif
+}
 
 void MotoShieldClass::begin(float _Ts = 50.0){ //--default sample duration Ts=50 millis
 #if SHIELDRELEASE == 1

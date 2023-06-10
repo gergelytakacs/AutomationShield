@@ -20,8 +20,8 @@
 %    details. This code is licensed under a Creative Commons
 %    Attribution-NonCommercial 4.0 International License.
 %
-%    Inspired by the book "ZÁKLADY PREDIKTÍVNEHO RIADENIA"
-%    (from authors: Gergely Takács, Martin Gulan, STU 2018)
+%    Inspired by the book "Zï¿½KLADY PREDIKTï¿½VNEHO RIADENIA"
+%    (from authors: Gergely Takï¿½cs, Martin Gulan, STU 2018)
 %    see https://github.com/gergelytakacs/Zaklady-prediktivneho-riadenia
 %    for the book in PDF (in Slovak) and the original examples.
 %
@@ -51,8 +51,8 @@ switch nargin
         end        
         % Get prediction matrix N
         N = zeros(nx*p3, nu*p3);    % Fill matrix N with zeros
-        NN = zeros(nx*p3, nu);      % Fill auxilliary matrix NN with zeros
-        for i = 1:p3                % Calculate auxilliary matrix NN
+        NN = zeros(nx*p3, nu);      % Fill auxiliary matrix NN with zeros
+        for i = 1:p3                % Calculate auxiliary matrix NN
             NN(i*nx-nx+1:i*nx, :) = p4^(i - 1) * p5;
         end
         for i = 1:p3                % By shifting NN matrix create matrix N
@@ -83,8 +83,8 @@ switch nargin
             M(i*nx-nx+1:i*nx, :) = p6^i;
         end
         N = zeros(nx*p5, nu*p5);    % Fill matrix N with zeros
-        NN = zeros(nx*p5, nu);      % Fill auxilliary matrix NN with zeros        
-        for i = 1:p5                % Calculate auxilliary matrix NN
+        NN = zeros(nx*p5, nu);      % Fill auxiliary matrix NN with zeros        
+        for i = 1:p5                % Calculate auxiliary matrix NN
             NN(i*nx-nx+1:i*nx, :) = p6^(i - 1) * p7;
         end        
         for i = 1:p5                % By shifting NN matrix create matrix N

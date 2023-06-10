@@ -4,7 +4,7 @@
 %   single vibration mode, on real measured data.
 %
 %   The example takes input-output identification results from the
-%   LinkShield device, where input is requested degrees suplied to the
+%   LinkShield device, where input is requested degrees supplied to the
 %   servo and output is the acceleration of the beam tip in m/s^2. Note
 %   that the resulting transfer function captures acceleration behavior,
 %   the position signal is out-of phase to acceleration and omega^2
@@ -15,7 +15,7 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Takács. 
+%   Created by Gergely Takï¿½cs. 
 %   Created on: 27.1.2020
 %   Last update: 27.1.2020.  
 
@@ -44,7 +44,7 @@ save sys sys                                   % Save transfer function
 %% Data and display
 
 % Data
-disp('---The model paramters are---')
+disp('---The model parameters are---')
 omega= sqrt(sys.Denominator(3))               % Angular natural frequency
 zeta = sys.Denominator(2)/2/omega             % Damping ratio
 c=sys.Numerator(1)/(-omega^2)                 % Actuator constant

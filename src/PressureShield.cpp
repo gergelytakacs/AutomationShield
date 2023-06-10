@@ -38,7 +38,7 @@ void PressureClass::readCoefficients() {
 void PressureClass::begin_config() {        //configuration -> do begin
   Wire.beginTransmission(BMP280_addr);
   Wire.write(0xF4);
-  Wire.write(0b111111);   //temp -> full, press -> full, 20-bit (oversampling x 16), mode -> normal
+   Wire.write(0b00001011);   //temp -> none, press -> x2, mode -> normal 
   Wire.write(0xF5);
   Wire.write(0b0);     //standby time, filter
   Wire.endTransmission();
@@ -48,7 +48,7 @@ void PressureClass::begin_config() {        //configuration -> do begin
 void PressureClass::measure_config() {       //configuration -> do begin
   Wire.beginTransmission(BMP280_addr);
   Wire.write(0xF4);
-  Wire.write(0b1111);   //temp -> full, press -> full, 20-bit (oversampling x 16), mode -> normal
+  Wire.write(0b00001011);   //temp -> none, press -> x2, mode -> normal 
   Wire.write(0xF5);
   Wire.write(0b1000);     //standby time, filter
   
