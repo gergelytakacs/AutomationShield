@@ -30,16 +30,16 @@ float current;
 void setup() {                // Setup - runs only once
   Serial.begin(115200);       // Begin serial communication
   AeroShield.begin();         // Initialise AeroShield board
-  AeroShield.calibration();   //  Calibrate AeroShield board + store the 0° value of the pendulum
+  AeroShield.calibrate();   //  Calibrate AeroShield board + store the 0° value of the pendulum
 }
 
 void loop() {
-  if (pendulumAngle > 120) {    // If pendulum agle too big
+  if (pendulumAngle > 190) {    // If pendulum agle too big
     AeroShield.actuatorWrite(0);  // Turn off motor
     while (1);                    // Stop program
   }
 
-  pendulumAngle = AeroShield.sensorRead();   //  mapping the pendulum angle
+  pendulumAngle = AeroShield.sensorReadDegree();   //  mapping the pendulum angle
   reference = AeroShield.referenceRead();   //  Function for mapping the potentiometer input
   AeroShield.actuatorWrite(reference);     //  Actuate
   current = AeroShield.sensorReadCurrent();       //  Read current drawn by motor

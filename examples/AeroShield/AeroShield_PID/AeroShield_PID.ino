@@ -42,8 +42,8 @@ float u = 0.0;                // Input (motor power)
 
 void setup() {                                                  //  Setup - runs only once
   Serial.begin(2000000);                                         //  Begin serial communication
-  AeroShield.begin();                  //  Initialise AeroShield board
-  AeroShield.calibration();   //  Calibrate AeroShield board + store the 0° value of the pendulum
+  AeroShield.begin();                    //  Initialise AeroShield board
+  AeroShield.calibrate();              //  Calibrate AeroShield board + store the 0° value of the pendulum
   Sampling.period(Ts * 1000);            // Set sampling period in milliseconds
   PIDAbs.setKp(KP);                      // Set Proportional constant
   PIDAbs.setTi(TI);                      // Set Integral constant
@@ -53,7 +53,7 @@ void setup() {                                                  //  Setup - runs
 }
 
 void loop() {
-  if (y > 120 || y < -120) {    // If pendulum agle too big
+  if (y > 100.0) {    // If pendulum agle too big
     AeroShield.actuatorWrite(0);  // Turn off motor
     while (1);                    // Stop program
   }
@@ -86,7 +86,7 @@ void step() {                              // Define step function
     i++;                               // Increment section counter
   }
 #endif
-  y = AeroShield.sensorRead();             //  mapping the pendulum angle into % value where 90 degrees is maximum
+  y = AeroShield.sensorRead();            //  read pendulum angle in %
   u = PIDAbs.compute(r - y, 0, 100, 0, 100); // PID
   AeroShield.actuatorWrite(u);          // Actuate
 

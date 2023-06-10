@@ -26,7 +26,6 @@ float r = 0.0;            //--Reference
 float R[]={0.8,1.0,0.35,1.3,1.0,0.35,0.8,1.2,0.0};  //--Input trajectory
 float y = 0.0;           //--Output
 float u = 0.0;          //--Input
-float startAngle = 0;
 float yprev = 0;
 
 bool realTimeViolation = false;
@@ -53,11 +52,14 @@ void setup() {
  Serial.println("r, y, u"); //--Print header
  Sampling.period(TS*1000.0);
  Sampling.interrupt(stepEnable);
- startAngle = AeroShield.getRawAngle();
  //delay(1000);
 }
 
 void loop(){
+  if (y > PI) {    // If pendulum agle too big
+    AeroShield.actuatorWrite(0);  // Turn off motor
+    while (1);                    // Stop program
+  }
   if (nextStep) {      //--Running the algorithm once every sample
     step();               
 
@@ -94,7 +96,7 @@ void step(){ //--Algorith ran once per sample
 u = -(K*(X-Xr))(0);
 u = constrain(u,0,3.7);
 
-y = (AeroShield.getRawAngle() - startAngle)*0.0015; // Angle in radians
+y = AeroShield.sensorReadRadian(); // Angle in radians
 //u=MotoShield.referenceRead()*5.0/100.0;
 AeroShield.actuatorWriteVolt(u);          //--Actuation
 X(1) = y;
