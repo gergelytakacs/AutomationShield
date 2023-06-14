@@ -42,12 +42,10 @@ void loop() {
   pendulumAngle = AeroShield.sensorReadDegree();   //  mapping the pendulum angle
   reference = AeroShield.referenceRead();   //  Function for mapping the potentiometer input
   AeroShield.actuatorWrite(reference);     //  Actuate
-  current = AeroShield.sensorReadCurrent();       //  Read current drawn by motor
 
   Serial.print(pendulumAngle);      //  Printing the mapped angle value
   Serial.print(" ");
-  Serial.print(reference);    // Printing potentiometer value in %
-  Serial.print(" ");
-  Serial.println(current);    // Printing current value in A
+  Serial.println(reference);    // Printing potentiometer value in %
+
 
 }

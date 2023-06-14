@@ -26,6 +26,7 @@ float AeroClass::begin(void){                             // Board initialisatio
   #elif ARDUINO_ARCH_SAMD                                             // For SAMD architecture boards
     Wire.begin();                                                     // Use Wire object
   #endif
+  
   as5600.begin();
   bool isDetected = as5600.detectMagnet();
   pinMode(AERO_UPIN, OUTPUT);  		                                  // Actuator pin
@@ -94,13 +95,15 @@ float AeroClass::sensorReadRadian(){
  }
 }
 
-float AeroClass::sensorReadCurrent(){ // Measure current in A
-  return analogRead(AERO_VOLTAGE_SENSOR_PIN)*ARES/10/ShuntRes;
-}
+#if SHIELDRELEASE == 2
+  float AeroClass::sensorReadCurrent(){ // Measure current in A
+    return analogRead(AERO_VOLTAGE_SENSOR_PIN)*ARES/10/ShuntRes;
+  }
 
-uint16_t AeroClass::sensorReadCurrentRaw(){
-  return analogRead(AERO_VOLTAGE_SENSOR_PIN); // Read voltage indicating the current draw in 10-bit scale
-}
+  uint16_t AeroClass::sensorReadCurrentRaw(){
+    return analogRead(AERO_VOLTAGE_SENSOR_PIN); // Read voltage indicating the current draw in 10-bit scale
+  }
+#endif
 
 word AeroClass::getRawAngle()                                                             // Function for getting raw pendulum angle data 0-4096
 {
