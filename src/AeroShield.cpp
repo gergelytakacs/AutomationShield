@@ -24,7 +24,7 @@ float AeroClass::begin(void){                                 // Board initialis
     as5600.setWirePtr(&Wire);                                                    
   #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards
     Wire1.begin();                                                    // Use Wire1 object
-    as5600.setWirePtr(&1Wire);                                                   
+    as5600.setWirePtr(&Wire1);                                                   
   #elif ARDUINO_ARCH_SAMD                                             // For SAMD architecture boards
     Wire.begin();                                                     // Use Wire object
     as5600.setWirePtr(&Wire);
