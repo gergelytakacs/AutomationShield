@@ -124,6 +124,9 @@ class AS5600
         //  returns false if parameter out of range
         bool     setFastFilter(uint8_t mask);
 
+        // set Wire pointer
+        void     setWirePtr(TwoWire* wire);
+
 
     private:
         

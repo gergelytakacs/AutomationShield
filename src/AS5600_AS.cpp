@@ -246,6 +246,10 @@ bool AS5600::magnetTooWeak()
 }
 
 
+// set Wire pointer
+void AS5600::setWirePtr(TwoWire* wire){
+  _wire = wire;
+}
 
 /////////////////////////////////////////////////////////
 //

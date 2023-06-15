@@ -25,7 +25,6 @@ float startAngle = 0;
 float y;
 float u;
 float r;
-float i;
 bool flag = false;
 bool realTimeViolation = false;
 int k;
@@ -64,10 +63,8 @@ void step() {
   }
   y = AeroShield.sensorReadRadian();   // Read sensor
   AeroShield.actuatorWriteVolt(u);           // Actuate
-  i = AeroShield.sensorReadCurrent();
+
   Serial.print(y, 5);          // Print output
-  Serial.print(" ");
-  Serial.print(i, 5);
   Serial.print(" ");
   Serial.println(u, 5);        // Print input
   k++;                       // Increment index

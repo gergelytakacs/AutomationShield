@@ -27,7 +27,7 @@
 #include "AS5600_AS.h"
 
 #ifndef SHIELDRELEASE
-	#define SHIELDRELEASE 3   					//  Use number only: e.g. for R3 is 3
+  #define SHIELDRELEASE 3   					//  Use number only: e.g. for R3 is 3
 #endif
 
 // Defining pins used by the AeroShield 
@@ -68,8 +68,8 @@ class AeroClass{		    	                           // Class for the AeroShield de
 
    float _min_angle = 60;                            // minimal measured angle in negative direction (relative to zero position)
    float _max_angle = 210;                           // maximal measured angle in positive direction (relative to zero position)
-     
-    AS5600 as5600;
+
+   AS5600 as5600;
 };
 extern AeroClass AeroShield; 
 

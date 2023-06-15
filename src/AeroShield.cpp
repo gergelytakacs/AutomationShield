@@ -18,14 +18,18 @@
 #include "AeroShield.h"         // Include header file
 
 // Initializes hardware pins
-float AeroClass::begin(void){                             // Board initialisation
+float AeroClass::begin(void){                                 // Board initialisation
   #ifdef ARDUINO_ARCH_AVR                                             // For AVR architecture boards
     Wire.begin();                                                     // Use Wire object
+    as5600.setWirePtr(&Wire);                                                    
   #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards
     Wire1.begin();                                                    // Use Wire1 object
+    as5600.setWirePtr(&1Wire);                                                   
   #elif ARDUINO_ARCH_SAMD                                             // For SAMD architecture boards
     Wire.begin();                                                     // Use Wire object
+    as5600.setWirePtr(&Wire);
   #endif
+                                                        
   
   as5600.begin();
   bool isDetected = as5600.detectMagnet();
