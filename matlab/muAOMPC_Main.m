@@ -11,9 +11,9 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 %
-%   Created by:     Gergely Takács
+%   Created by:     Gergely Takács and Erik Mikuláš
 %   Created on:     9.9.2020
-%   Last update on: 9.9.2020
+%   Last update on: 8.8.2023
 
 function muAOMPC_Main(fileName)
   
@@ -25,11 +25,11 @@ function muAOMPC_Main(fileName)
     fprintf(filehandle, ['# ========================================================\n']);
     fprintf(filehandle, '\n');
 
-    fprintf(filehandle, ['import muaompc']);
+    fprintf(filehandle, ['from muaompc import ldt']);
     fprintf(filehandle, '\n');
-    fprintf(filehandle, ['mpc = muaompc.ltidt.setup_mpc_problem("',fileName,'")']);
+    fprintf(filehandle, ['mpc = ldt.setup_mpc_problem("',fileName,'.prb",numeric="float32")']);
     fprintf(filehandle, '\n');
-    fprintf(filehandle, ['mpc.generate_c_files(numeric="float32",singledir=True)']);
+    fprintf(filehandle, ['ldt.generate_mpc_data(mpc,"',fileName,'.dat")']);
     fclose(filehandle);
 
     disp(['MPC problem main file for muAOMPC is: "', fileName, '.py".'])
