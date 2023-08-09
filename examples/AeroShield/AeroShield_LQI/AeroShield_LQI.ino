@@ -49,6 +49,7 @@ BLA::Matrix<3, 1> Xr = {0, 0, 0};                                //--Initial sta
 void setup() {
  Serial.begin(250000);               //--Initialize serial communication # 2 Mbaud
  AeroShield.begin();               //--Initialize MotoShield
+ AeroShield.calibrate();              //  Calibrate AeroShield board + store the 0° value of the pendulum
  Serial.println("r, y, u"); //--Print header
  Sampling.period(TS*1000.0);
  Sampling.interrupt(stepEnable);
@@ -68,10 +69,10 @@ void loop(){
 }
 
 void stepEnable() {                                    // ISR
-    if(nextStep) {                             // If previous sample still running
+    if(nextStep) {                                     // If previous sample still running
         realTimeViolation = true;                      // Real-time has been violated
         Serial.println("Real-time samples violated."); // Print error message
-        AeroShield.actuatorWrite(0.0);                // Turn off the fan
+        AeroShield.actuatorWrite(0.0);                 // Turn off the fan
         while(1);                                      // Stop program execution
     }
     nextStep = true;                                   // Enable step flag
@@ -79,36 +80,36 @@ void stepEnable() {                                    // ISR
 
 
 void step(){ //--Algorith ran once per sample
-#if !AUTO
-  r = MotoShield.referenceRead();          //--Sensing Pot reference
-#elif AUTO
-  if(i >= sizeof(R)/sizeof(float)){ //--If trajectory ended
-    AeroShield.actuatorWriteVolt(0.0); //--Stop the Motor
-    while(true); //--End of program execution
-  }
-  if (k % (T*i) == 0){ //--Moving through trajectory values    
-   //r = R[i];        
-   Xr(1) = R[i];
-    i++;             //--Change input value after defined amount of samples
-  }
-  k++;                              //--Increment
-#endif
-u = -(K*(X-Xr))(0);
-u = constrain(u,0,3.7);
+  #if !AUTO
+    r = MotoShield.referenceRead();          //--Sensing Pot reference
+  #elif AUTO
+    if(i >= sizeof(R)/sizeof(float)){ //--If trajectory ended
+      AeroShield.actuatorWriteVolt(0.0); //--Stop the Motor
+      while(true); //--End of program execution
+    }
+    if (k % (T*i) == 0){ //--Moving through trajectory values    
+    //r = R[i];        
+    Xr(1) = R[i];
+      i++;             //--Change input value after defined amount of samples
+    }
+    k++;                              //--Increment
+  #endif
+  u = -(K*(X-Xr))(0);
+  u = constrain(u,0,3.7);
 
-y = AeroShield.sensorReadRadian(); // Angle in radians
-//u=MotoShield.referenceRead()*5.0/100.0;
-AeroShield.actuatorWriteVolt(u);          //--Actuation
-X(1) = y;
-X(2) = (y-yprev)/(TS/1000.0);
-BLA::Matrix<2, 1> Y = {X(0), X(1)};
-//AeroShield.getKalmanEstimate(X, u, Y, A, B, C, Q_Kalman, R_Kalman, xIC);   //--State estimation using Kalman filter
-X(0) = X(0) + (Xr(1) - X(1));  // Integracna zlozka
-    yprev=y;
+  y = AeroShield.sensorReadRadian(); // Angle in radians
+  //u=MotoShield.referenceRead()*5.0/100.0;
+  AeroShield.actuatorWriteVolt(u);          //--Actuation
+  X(1) = y;
+  X(2) = (y-yprev)/(TS/1000.0);
+  BLA::Matrix<2, 1> Y = {X(0), X(1)};
+  //AeroShield.getKalmanEstimate(X, u, Y, A, B, C, Q_Kalman, R_Kalman, xIC);   //--State estimation using Kalman filter
+  X(0) = X(0) + (Xr(1) - X(1));  // Integracna zlozka
+  yprev=y;
 
-Serial.print(Xr(1),3);            //--Printing reference
-Serial.print(" ");            
-Serial.print(X(1),3);        //--Printing output
-Serial.print(" ");
-Serial.println(u,3);
+  Serial.print(Xr(1),3);            //--Printing reference
+  Serial.print(" ");            
+  Serial.print(X(1),3);        //--Printing output
+  Serial.print(" ");
+  Serial.println(u,3);
 }
