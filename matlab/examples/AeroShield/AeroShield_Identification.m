@@ -8,8 +8,9 @@ clear
 close all
 clc
 
-load Identification_Data.mat
-Ts = 0.015;
+%load Identification_Data2.mat
+[yrad, u] = import_ident_data('ident_data.txt');
+Ts = 0.01;
 data = iddata(yrad, u, Ts, 'Name', 'Experiment');
 data = detrend(data);
 %data = data(800:end);
@@ -20,8 +21,9 @@ data.OutputUnit = 'rad';
 data.Tstart = 0;
 data.TimeUnit = 's';
 
-load Validation_Data.mat
-Ts = 0.015;
+%load Validation_Data2.mat
+[yradval, uval] = import_ident_data('val_data.txt');
+Ts = 0.01;
 v_data = iddata(yradval, uval, Ts, 'Name', 'Experiment');
 [v_data, trendData] = detrend(v_data);
 
@@ -132,9 +134,10 @@ switch modelType
         
         Options = ssestOptions;
         Options.Display = 'on';                    
-        Options.Focus = 'simulation';              % Focus on simulation
-        %Options.SearchMethod = 'grad'
-        Options.SearchOptions.MaxIterations = 40;  % Max iterations
+        Options.Focus = 'prediction';              % Focus on simulation
+        Options.SearchMethod = 'auto'
+        Options.SearchOptions.MaxIterations = 1000;  % Max iterations
+        Options.SearchOptions.Tolerance = 0.0000001;  % Tolerance
         Options.InitialState = 'estimate';         % Estimate initial condition
         disp('Estimated model:')                       
         linsys = ssest(data,sys,Options);           % Identified Model

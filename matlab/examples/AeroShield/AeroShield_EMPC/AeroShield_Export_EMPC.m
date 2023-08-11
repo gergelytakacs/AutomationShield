@@ -35,7 +35,7 @@ startScript;                                    % Clears screen and variables, e
 load ../AeroShield_GreyboxModel_Linear                          % Include linearized state-space model
                                                                
 Ts=0.01;                                                        % [s] sampling for discrete control
-N=3;                                                            % [steps] prediction horizon
+N=5;                                                            % [steps] prediction horizon
 ul=0;                                                           % [V] Adjust lower input constraint
 uh=3.7;                                                         % [V] Adjust upper input constraint
 

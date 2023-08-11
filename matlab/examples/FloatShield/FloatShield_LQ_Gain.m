@@ -106,7 +106,7 @@ Options.SearchMethod = 'lsqnonlin'; % 'auto'/'gn'/'gna'/'lm'/'grad'/'lsqnonlin'/
 estimatedModel = ssest(data, sys, Options) % Run estimation procedure
 
 % Save the identified continuous state-space model
-% save FloatShield_GreyboxModel_LinearSS estimatedModel
+ save FloatShield_GreyboxModel_LinearSS estimatedModel
 
 %% Calculate LQ gain with included integrator
 % Create continuous state-space object
@@ -172,7 +172,7 @@ velFromEstimate = [diff(yEstimated), 0] ./ Ts;
 
 %% Plot test results
 % Plot figures as tabs in separate window
-if ~exist('CI_Testing','var') %If the script is not running on CI
+if exist('CI_Testing','var') %If the script is not running on CI
     set(0,'DefaultFigureWindowStyle','docked');
 end
 

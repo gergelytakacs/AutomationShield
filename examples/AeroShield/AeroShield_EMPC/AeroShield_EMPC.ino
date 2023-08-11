@@ -28,7 +28,7 @@
 #include <AeroShield.h>                            // Include main library  
 #include <Sampling.h>                              // Include sampling library
 
-#include "ectrl.h"
+#include "ectrl_mega.h"
 
 #include <empcSequential.h>
 
@@ -46,7 +46,7 @@ float y = 0.0;                      // [rad] Output (Current object height)
 float yprev= 0.0;                   // [rad] Previous output (Object height in previous sample)
 float u = 0.0;                      // [V] Input (Magnet voltage)
 
-int T = 1000;               // Section length
+int T = 600;               // Section length
 int i = 0;                  // Section counter
 
 // Kalman filter
@@ -69,15 +69,15 @@ extern struct mpc_ctl ctl;          // Object representing presets for MPC contr
 void setup() {
   Serial.begin(250000);                 //--Initialize serial communication
   AeroShield.begin();                   //--Initialize AeroShield
+  delay(1000);
   AeroShield.calibrate();               //  Calibrate AeroShield board + store the 0° value of the pendulum
   Serial.println("r, y, u");            //--Print header
   Sampling.period(Ts*1000.0);
   Sampling.interrupt(stepEnable);
-  //delay(1000);
 }
 
 void loop(){
-  if (y > PI) {                   // If pendulum agle too big
+  if (y > M_PI) {                   // If pendulum agle too big
     AeroShield.actuatorWrite(0);  // Turn off motor
     while (1);                    // Stop program
   }
@@ -100,7 +100,7 @@ void stepEnable() {                                // ISR
 
 void step() {                                      // Define step function
   #if MANUAL
-    r = AeroShield.referenceRead();          //--Sensing Pot reference
+    r =  AutomationShield.mapFloat(AeroShield.referenceRead(),0,100,0,M_PI_2);          //--Sensing Pot reference
   #elif !MANUAL
     if(i >= sizeof(R)/sizeof(float)){ // If trajectory ended
       AeroShield.actuatorWriteVolt(0.0); // Stop the Motor
@@ -132,10 +132,9 @@ void step() {                                      // Define step function
   AeroShield.actuatorWriteVolt(u);              // Actuation
 
   Serial.print(Xr[1],3);            // Printing reference
-  Serial.print(" ");            
+  Serial.print(", ");            
   Serial.print(X[1],3);             // Printing output
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.println(u,3);              // Print input
 
-  k++;                                             // Increment sample index
 }

@@ -12,13 +12,13 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Ján Boldocký.
-  Last update: 16.1.2023.
+  Last update: 11.8.2023.
 */
 
 #include "AeroShield.h"
 #include "Sampling.h"
 #include "aprbsU.h"
-#define TS 15
+#define TS 10
 
 
 float startAngle = 0;
@@ -29,10 +29,10 @@ bool flag = false;
 bool realTimeViolation = false;
 int k;
 void setup() {
-  Serial.begin(500000);
+  Serial.begin(250000);
   AeroShield.begin();
   AeroShield.calibrate();
-  Serial.println("u, y, i"); //--Print header
+  Serial.println("y, u"); //--Print header
   Sampling.interrupt(stepEnable);
   Sampling.period(TS * 1000);
 }
@@ -65,7 +65,7 @@ void step() {
   AeroShield.actuatorWriteVolt(u);           // Actuate
 
   Serial.print(y, 5);          // Print output
-  Serial.print(" ");
+  Serial.print(", ");
   Serial.println(u, 5);        // Print input
   k++;                       // Increment index
 }
