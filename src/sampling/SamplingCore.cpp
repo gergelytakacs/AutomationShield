@@ -120,8 +120,9 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds) {
   TC1->TC_CHANNEL[2].TC_IER = TC_IER_CPCS;          //  enable interrupt for the TC1 block, channel 2 = TC5
   TC1->TC_CHANNEL[2].TC_IDR = ~TC_IER_CPCS;         //  remove disable interrupt for the TC1 block, channel 2 = TC5
   NVIC_EnableIRQ(TC5_IRQn);                         //  ISR for the interrupt
+#elif ARDUINO_ARCH_RENESAS_UNO
 #else
-#error "Architecture not supported."
+//#error "Architecture not supported."
 #endif
 }
 
@@ -244,8 +245,9 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
   // 32 bit timer w/ prescaler 2 = 143 minutes max period
   TC_Configure(TC1, 2, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);
   TC_SetRC(TC1, 2, (uint32_t)(cycles / 2) - 1);               // Prescaler 2
+#elif ARDUINO_ARCH_RENESAS_UNO
 #else
-#error "Architecture not supported."
+//#error "Architecture not supported."
 #endif
 
   samplingPeriod = microseconds / 1000000.0;           // in seconds
@@ -347,8 +349,9 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds) {
   TC0->TC_CHANNEL[1].TC_IER = TC_IER_CPCS;          //  enable interrupt for the TC0 block, channel 1 = TC1
   TC0->TC_CHANNEL[1].TC_IDR = ~TC_IER_CPCS;         //  remove disable interrupt for the TC0 block, channel 1 = TC1
   NVIC_EnableIRQ(TC1_IRQn);                         //  ISR for the interrupt
+#elif ARDUINO_ARCH_RENESAS_UNO
 #else
-#error "Architecture not supported."
+//#error "Architecture not supported."
 #endif
 }
 
@@ -464,8 +467,9 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
   // 32 bit timer w/ prescaler 2 = 143 minutes max period
   TC_Configure(TC0, 1, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK1);
   TC_SetRC(TC0, 1, (uint32_t)(cycles / 2) - 1);               // Prescaler 2
+#elif ARDUINO_ARCH_RENESAS_UNO
 #else
-#error "Architecture not supported."
+//#error "Architecture not supported."
 #endif
 
   samplingPeriod = microseconds / 1000000.0;           // in seconds

@@ -29,7 +29,7 @@
 #ifdef ARDUINO_ARCH_AVR                     // Chip uses 10-bit ADC
 
 	#define ADCREF 1023.0					// 10-bit resolution for AD converter
-#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM // Chip uses 12-bit ADC
+#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM || ARDUINO_ARCH_RENESAS_UNO  // Chip uses 12-bit ADC
 	#define ADCREF 4095.0					// 12-bit resolution for AD converter
 #endif
 

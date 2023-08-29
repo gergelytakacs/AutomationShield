@@ -93,7 +93,7 @@ class SamplingClass {
 #elif ARDUINO_ARCH_SAM
     // Default: Timer5 in both cases (No servo and servo)
     const unsigned char cpuFrequency = VARIANT_MCK / 1000000; // CPU frequency in mega Hertz (84 for Due)
-
+#elif ARDUINO_ARCH_RENESAS_UNO
 #else
 #error "Architecture not supported."
 #endif
@@ -159,6 +159,7 @@ class SamplingClass {
 #elif ARDUINO_ARCH_SAM
     const unsigned char cpuFrequency = VARIANT_MCK / 1000000; // CPU frequency in mega Hertz (84 for Due)
 
+#elif ARDUINO_ARCH_RENESAS_UNO
 #else
 #error "Architecture not supported."
 #endif
