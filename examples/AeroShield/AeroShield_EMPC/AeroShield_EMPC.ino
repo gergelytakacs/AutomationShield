@@ -22,7 +22,7 @@
 
   Created by Erik Mikuláš.
   Created on:  8.8.2023
-  Last update: 9.8.2023
+  Last update: 19.9.2023
 */
 
 #include <AeroShield.h>                            // Include main library  
@@ -100,7 +100,7 @@ void stepEnable() {                                // ISR
 
 void step() {                                      // Define step function
   #if MANUAL
-    r =  AutomationShield.mapFloat(AeroShield.referenceRead(),0,100,0,M_PI_2);          //--Sensing Pot reference
+    Xr[1] =  AutomationShield.mapFloat(AeroShield.referenceRead(),0,100,0,M_PI_2);          //--Sensing Pot reference
   #elif !MANUAL
     if(i >= sizeof(R)/sizeof(float)){ // If trajectory ended
       AeroShield.actuatorWriteVolt(0.0); // Stop the Motor
