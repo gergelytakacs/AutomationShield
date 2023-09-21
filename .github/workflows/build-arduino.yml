@@ -30,7 +30,7 @@ jobs:
 
       # For more information: https://github.com/arduino/compile-sketches#readme
       - name: Build (Arduino)
-        uses: arduino/compile-sketches@v1
+        uses: arduino/compile-sketches@v1.1.0
         with:
           fqbn: ${{ matrix.fqbn }}
           sketch-paths: |
