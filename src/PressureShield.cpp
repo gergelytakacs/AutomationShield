@@ -38,7 +38,8 @@ void PressureClass::readCoefficients() {
 void PressureClass::begin_config() {        //configuration -> do begin
   Wire.beginTransmission(BMP280_addr);
   Wire.write(0xF4);
-   Wire.write(0b00001011);   //temp -> none, press -> x2, mode -> normal 
+//  Wire.write(0b111111);   //temp -> full, press -> full, 20-bit (oversampling x 16), mode -> normal
+  Wire.write(0b00001011);   //temp -> none, press -> x2, mode -> normal 
   Wire.write(0xF5);
   Wire.write(0b0);     //standby time, filter
   Wire.endTransmission();
@@ -48,6 +49,7 @@ void PressureClass::begin_config() {        //configuration -> do begin
 void PressureClass::measure_config() {       //configuration -> do begin
   Wire.beginTransmission(BMP280_addr);
   Wire.write(0xF4);
+//  Wire.write(0b1111);   //temp -> full, press -> full, 20-bit (oversampling x 16), mode -> normal
   Wire.write(0b00001011);   //temp -> none, press -> x2, mode -> normal 
   Wire.write(0xF5);
   Wire.write(0b1000);     //standby time, filter
@@ -151,7 +153,11 @@ delay(5000);
 
 void PressureClass::calibration(void) {                       // Board calibration
 _minPressure=PressureShield.readPressure();               // Read pressure during initialization
-_maxPressure=102000.00;                                   // Maximum sensor pressure
+PressureShield.actuatorWrite(100);
+delay(500);
+_maxPressure=(float)PressureShield.readPressure();                                   // Maximum sensor pressure
+PressureShield.actuatorWrite(0);
+delay(2000);
 _wasCalibrated=true;
 }
 
@@ -166,13 +172,24 @@ float inPercento = aPercent*255/100;
 analogWrite(PRESSURE_UPIN,inPercento);                                  // Turn on pump
 }
 
+void PressureClass::actuatorWriteScaled(float aPercent) {                     // Pump activator
+float inPercento = (aPercent+65)*255/165;                                
+analogWrite(PRESSURE_UPIN,inPercento);                                  // Turn on pump
+}
+
 float PressureClass::sensorRead(void) {                                 // Sensor read
 unsigned long int val=PressureShield.readPressure();                // Read sensor value
 if (val>102000) {                                                   // Sensor max value safety control
   digitalWrite(PRESSURE_UPIN,LOW);
 }
-  float percento = map((long int)val, _minPressure,_maxPressure, 0.00, 100.00);   // Mapping sensor value to 0 - 100         
+  float percento = AutomationShield.mapFloat((long int)val, _minPressure,_maxPressure, 0.00, 100.00);   // Mapping sensor value to 0 - 100         
   return percento;
 }
+float PressureClass::getMin(){
+return _minPressure;
+}
 
+float PressureClass::getMax(){
+return _maxPressure;
+}
 PressureClass PressureShield;                                   // Creation of PressureClass object

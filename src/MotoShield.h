@@ -22,7 +22,7 @@
 #include "lib/BasicLinearAlgebra/BasicLinearAlgebra.h"
 
 #ifndef SHIELDRELEASE
-  #define SHIELDRELEASE 2 // R2 vsrsion as default
+  #define SHIELDRELEASE 1 // R2 vsrsion as default
 #endif
 
 #if SHIELDRELEASE == 1 //--defining pins for MotoShield_R1
