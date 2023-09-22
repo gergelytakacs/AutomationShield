@@ -28,7 +28,7 @@
 #include <AeroShield.h>                            // Include main library  
 #include <Sampling.h>                              // Include sampling library
 
-#include "ectrl_mega.h"
+#include "ectrl_uno.h"
 
 #include <empcSequential.h>
 
