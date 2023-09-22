@@ -122,13 +122,13 @@ void step() {                                      // Define step function
     X[1] = Xkal[0];
     X[2] = Xkal[1];
 
-  #elif
+  #else
     // Direct angle and simple difference for speed
     // Saving valuable milliseconds for MPC algorithm
     X[1] = y;                      // Arm angle
     X[2] = (y-yprev)/(float(Ts)/1000.0);  // Angular speed of the arm
   #endif
-  
+
   X[0] = X[0] + (Xr[1] - X[1]);  // Integral state 
   yprev=y;
 
