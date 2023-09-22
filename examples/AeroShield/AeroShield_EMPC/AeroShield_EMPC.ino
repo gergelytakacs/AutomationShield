@@ -51,12 +51,13 @@ int i = 0;                  // Section counter
 
 // Kalman filter
 #if USE_KALMAN 
-  BLA::Matrix<3, 3> A = {-1, 0, 1, 0.9998, 0.003, 0, -0.1355, 0.9896, 0};
-  BLA::Matrix<3, 1> B = {0, 0.00014989, 0.0997};
-  BLA::Matrix<1, 3> C = {0, 1, 0};
-  BLA::Matrix<3, 3> Q_Kalman = {1, 0, 0, 0, 1, 0 ,0, 0, 0};    //--process noise  covariance matrix
-  BLA::Matrix<3, 3> R_Kalman = {1,0,0,1};                    //--measurement noise covariance matrix
-  BLA::Matrix<3, 1> xIC = {0, 0, 0};                                //--Kalman filter initial conditions
+  BLA::Matrix<2, 2> A = {0.99669, 0.00992, -0.66063, 0.98304};
+  BLA::Matrix<2, 1> B = {0.00208, 0.41466};
+  BLA::Matrix<1, 2> C = {1, 0};
+  BLA::Matrix<2, 2> Q_Kalman = {0.01, 0, 0, 0.1};  //--process noise  covariance matrix
+  BLA::Matrix<1, 1> R_Kalman = {0.001};            //--measurement noise covariance matrix
+  BLA::Matrix<2, 1> xIC = {0, 0};                  //--Kalman filter initial conditions
+  float Xkal[2]  = {0.0, 0.0};                     // Estimated initial state vector
 #endif
 
 float X[3]  = {0.0, 0.0, 0.0};    // Estimated initial state vector
@@ -116,14 +117,18 @@ void step() {                                      // Define step function
 
   y = AeroShield.sensorReadRadian(); // Angle in radians
   
-  // Direct angle and simple difference for speed
-  // Saving valuable milliseconds for MPC algorithm
-  X[1] = y;                      // Arm angle
-  X[2] = (y-yprev)/(float(Ts)/1000.0);  // Angular speed of the arm
   #if USE_KALMAN
-    BLA::Matrix<2, 1> Y = {X(1), X(2)};
-    AeroShield.getKalmanEstimate(X, u, Y, A, B, C, Q_Kalman, R_Kalman, xIC);   // State estimation using Kalman filter
+    AeroShield.getKalmanEstimate(Xkal, u, y, A, B, C, Q_Kalman, R_Kalman);   // State estimation using Kalman filter
+    X[1] = Xkal[0];
+    X[2] = Xkal[1];
+
+  #elif
+    // Direct angle and simple difference for speed
+    // Saving valuable milliseconds for MPC algorithm
+    X[1] = y;                      // Arm angle
+    X[2] = (y-yprev)/(float(Ts)/1000.0);  // Angular speed of the arm
   #endif
+  
   X[0] = X[0] + (Xr[1] - X[1]);  // Integral state 
   yprev=y;
 

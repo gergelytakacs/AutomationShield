@@ -55,8 +55,8 @@ A=modeld.a;                                                     % Extract A
 B=modeld.b;                                                     % Extract B
 C=[1 0];                                                        % C for introducing an integration component
 
-Q_Kalman = diag([0.0001, 100, 100]);                            %process noise  covariance matrix 
-R_Kalman = diag([0.001, 0.001]);                                %measurement noise covariance matrix
+Q_Kalman = diag([0.01, 0.1]);                            %process noise  covariance matrix 
+R_Kalman = diag([0.001]);                                %measurement noise covariance matrix
 
                                  
 %% Model augmentation by integration
@@ -91,6 +91,7 @@ x0=[0 0]';                                                      % Initial condit
 X=x0;                                                           % State logging (initialization)
 xI=0;                                                           % Integrator initialization
 y=[0]';                                                         % Output logging (initialization)
+Xhat=[0;0];
 x1p=0;                                                          % Previous state
 xICWhole = [0;0];                                               % Initial conditions for Kalman filter
 
@@ -130,6 +131,7 @@ end
     X(:,k+1)=A*X(:,k)+B*(U(k+1));                            % System model
     X(1,k+1)=constrain(X(1,k+1),-pi,pi);                     % angle limits
     y(1,k+1)=X(1,k);                                         % Position measurement on the real system
+    Xhat(:,k+1)=xhat;                                        % Estimated state vector for logging
 end
 disp('...done.')
 
@@ -152,16 +154,41 @@ grid on                                                         % Allow grid
 xlabel('Time (s)')                                              % X axis label
 ylabel('Input (V)')                                             % Y axis label
 
+% if kalman filter is used print comparation between system state and estimated state
+if strcmp(filter,'Kalman')
+    figure(2);
 
-%% Print matrices in specific format to be used in Arduino example
-disp(' ')
-disp('Discrete SS Matrices: ')
-printSSMatrix(modeld.a, 'A')
-printSSMatrix(modeld.b, 'B')
-printSSMatrix(modeld.c, 'C')
-printSSMatrix(Q_Kalman, 'Q_Kalman')
-printSSMatrix(R_Kalman, 'R_Kalman')
+    subplot(2,1,1)                                                  % Top subplot
+    plot(t,X(1,:));                                            % Plot reference
+    hold on                                                         % Draw on top of this
+    plot(t,Xhat(1,:));                                  % Plot the output (position)
+    hold off
+    grid on                                                         % Grid is enabled
+    xlabel('Time (s)')                                              % X axis label
+    ylabel('Position (rad)')                                         % Y axis label
+    legend('X','X kalman')
+    
+    subplot(2,1,2)                                                  % Bottom subplot
+    plot(t,X(2,:));                                            % Plot reference
+    hold on                                                         % Draw on top of this
+    plot(t,Xhat(2,:));                                  % Plot the output (position)
+    hold off
+    grid on                                                         % Grid is enabled
+    xlabel('Time (s)')                                              % X axis label
+    ylabel('Angular velocity (rad/s)')                              % Y axis label
 
+
+    % Print matrices in specific format to be used in Arduino example
+    disp(' ')
+    disp('Discrete SS Matrices: ')
+    printSSMatrix(modeld.a, 'A')
+    printSSMatrix(modeld.b, 'B')
+    printSSMatrix(modeld.c, 'C')
+    printSSMatrix(Q_Kalman, 'Q_Kalman')
+    printSSMatrix(R_Kalman, 'R_Kalman')
+end
+
+%% export controller files for usage in arduino example and Python
 if exportempc
     ectrl.exportToC('ectrl','cmpc')                              % Export to C
     empcToC(ectrl,'AVR');                                        % Export to code, for ARM MCU use 'generic', for AVR use 'AVR'
