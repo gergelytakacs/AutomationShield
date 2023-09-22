@@ -54,8 +54,8 @@ int i = 0;                  // Section counter
   BLA::Matrix<2, 2> A = {0.99669, 0.00992, -0.66063, 0.98304};
   BLA::Matrix<2, 1> B = {0.00208, 0.41466};
   BLA::Matrix<1, 2> C = {1, 0};
-  BLA::Matrix<2, 2> Q_Kalman = {0.01, 0, 0, 0.1};  //--process noise  covariance matrix
-  BLA::Matrix<1, 1> R_Kalman = {0.001};            //--measurement noise covariance matrix
+  BLA::Matrix<2, 2> Q_Kalman = {0.001, 0, 0, 10};  //--process noise  covariance matrix
+  BLA::Matrix<1, 1> R_Kalman = {0.0001};            //--measurement noise covariance matrix
   BLA::Matrix<2, 1> xIC = {0, 0};                  //--Kalman filter initial conditions
   float Xkal[2]  = {0.0, 0.0};                     // Estimated initial state vector
 #endif
