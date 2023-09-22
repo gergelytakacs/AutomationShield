@@ -29,7 +29,7 @@
 #include <MagnetoShield.h>                            // Include main library  
 #include <Sampling.h>                                 // Include sampling library
 
-#include "ectrl.h"
+#include "ectrl_AVR.h"
 
 #include <empcSequential.h>
 
