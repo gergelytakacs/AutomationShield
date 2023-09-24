@@ -148,7 +148,7 @@ for ii = 1:total_nr,
             if ctr>=nctotal*nx,
                     fprintf(fid, ' ');
             elseif mod(ctr, 5)==0,
-                    fprintf(fid, ',\n');
+                    fprintf(fid, ',\t\n');
             else
                 fprintf(fid, ',\t');
             end
@@ -170,7 +170,7 @@ for ii = 1:total_nr,
         if ctr>=nctotal,
                 fprintf(fid, ' ');
         elseif mod(ctr, 5)==0,
-                fprintf(fid, ',\n');
+                fprintf(fid, ',\t\n');
         else
             fprintf(fid, ',\t');
         end
@@ -185,7 +185,7 @@ for ii = 1:total_nr,
     if ii >= total_nr,
         fprintf(fid, ' ');
     elseif mod(ii, 5)==0,
-        fprintf(fid, ',\n');
+        fprintf(fid, ',\t\n');
     else
         fprintf(fid, ',\t');
     end
@@ -230,7 +230,7 @@ for ii = 1:nr,
             if ctr >= nctotalh,
                 fprintf(fid, ' ');
             elseif mod(ctr, 5)==0,
-                fprintf(fid, ',\n');
+                fprintf(fid, ',\t\n');
             else
                 fprintf(fid, ',\t');
             end
