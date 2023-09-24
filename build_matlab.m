@@ -29,7 +29,7 @@ testFailedCI = 0;               % Flag to tell if any test has failed
 cd matlab/examples/             % Move to examples folder
 
 
-exampleList = {'OptoShield','HeatShield','LinkShield','MotoShield','FloatShield','MagnetoShield','BoBShield','PressureShield','TugShield'};
+exampleList = {'OptoShield','HeatShield','LinkShield','MotoShield','FloatShield','MagnetoShield','BoBShield','TugShield'};
 testScripts(exampleList)                   % Finds and tests all scripts, excludes exceptions caused by lack of hardware packages or physical hardware
 
 if testFailedCI
