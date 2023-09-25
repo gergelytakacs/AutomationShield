@@ -32,7 +32,7 @@
 
 startScript;                                    % Clears screen and variables, except allows CI testing
 
-load ../AeroShield_GreyboxModel_Linear                          % Include linearized state-space model
+load FloatShield_GreyboxModel_LinearSS                          % Include linearized state-space model
                                                                
 Ts=0.01;                                                        % [s] sampling for discrete control
 N=3;                                                            % [steps] prediction horizon
@@ -41,10 +41,10 @@ uh=3.7;                                                         % [V] Adjust upp
 
 
 %% Model discretization
-modeld=c2d(linsys,Ts);                                          % Discretized linear state-space model
+modeld=c2d(model,Ts);                                          % Discretized linear state-space model
 A=modeld.a;                                                     % Extract A
 B=modeld.b;                                                     % Extract B
-C=[1 0];                                                        % C for introducing an integration component    
+C=[1 0 0];                                                        % C for introducing an integration component    
 
 %% Model augmentation by the integrator
 [ny, ~]=size(C);                                                % Sizing C
@@ -55,7 +55,7 @@ Bi=[zeros(ny,nu); B];                                           % Augmenting B b
 Ci=[zeros(ny,ny) C];                                            % Augmenting C by the integrator
 
 %% MPC Penalty
-Qmpc=diag([5 1 100]);                                           % State penalty matrix
+Qmpc=diag([100 5 100 100]);                                           % State penalty matrix
 Rmpc=2e3;                                                       % Input penalty matrix
 
 %% Model and EMPC controller using the MPT 3.0

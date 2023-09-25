@@ -68,8 +68,8 @@ Bi=[zeros(ny,nu); B];                                           % Augmenting B b
 Ci=[zeros(ny,ny) C];                                            % Augmenting C by the integrator
 
 %% MPC penalty
-Qmpc=diag([100 5 100 100]);                                           % State penalty matrix
-Rmpc=1e-3;                                                       % Input penalty matrix
+Qmpc=diag([10 5 10 100]);                                           % State penalty matrix
+Rmpc=2e2;                                                       % Input penalty matrix
 
 %% Model and EMPC controller using the MPT 3.0
 model = LTISystem('A', Ai, 'B', Bi, 'C', Ci, 'Ts', Ts);         % LTI model by the MPT 3.0
