@@ -9,7 +9,7 @@
 %   model (relative to this equilibrium) expressed by 
 %   the classical mechanical equation for the position 
 %   of the disc, where the incoming current is related 
-%   to voltage accross the electromagnet by Kirchoff's 
+%   to voltage across the electromagnet by Kirchoff's 
 %   law. After linearization this becomes a third order 
 %   TF, as modeled below.
 %   
@@ -26,7 +26,7 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Tak·cs. 
+%   Created by Gergely Tak√°cs. 
 %   Last update: 7.9.2020.
   
 startScript;                                    % Clears screen and variables, except allows CI testing

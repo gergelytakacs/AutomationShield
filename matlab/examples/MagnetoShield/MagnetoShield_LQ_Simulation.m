@@ -2,7 +2,7 @@
 %
 %   This example reads the linearized model of the MagnetoShield device,
 %   then expands it with an integrator and then computes the LQ gain. This
-%   LQ gain is used to crate a simulation run for the trajectory tracking
+%   LQ gain is used to create a simulation run for the trajectory tracking
 %   of magnetic levitation. The user may switch between direct state
 %   measurement, numerical differentiation and a Kalman filter. Disturbance
 %   may be added to the signal to make it more realistic. The Kalman filter
@@ -20,9 +20,9 @@
 %   project is available at: 
 %   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
 %
-%   Created by:       Gergely Tak·cs and G·bor penzinger. 
+%   Created by:       Gergely Tak√°cs and G√°bor penzinger. 
 %   Created on:       23.9.2020
-%   Last updated by:  Gergely Tak·cs
+%   Last updated by:  Gergely Tak√°cs
 %   Last update on:   24.9.2020
 
 
