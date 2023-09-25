@@ -6,7 +6,7 @@
 %   Toolbox of Kvasnica et al. The code has been tested with v. 3.0 of the
 %   MPT. Please see https://www.mpt3.org/ for the free download and
 %   installation instruction. 
-%   The EMPC controller is used to crate a simulation run for the trajectory 
+%   The EMPC controller is used to create a simulation run for the trajectory 
 %   tracking of aero pendulum. The user may switch between direct state
 %   measurement, numerical differentiation and a Kalman filter. 
 %   The Kalman filter matrices and are exported into the BLA matrix format, that
@@ -23,9 +23,9 @@
 %   project is available at: 
 %   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
 %
-%   Created by:       Gergely Tak�cs and Erik Mikul�
+%   Created by:       Gergely Takács and Erik Mikuláš
 %   Created on:       9.8.2023
-%   Last updated by:  Erik Mikul�
+%   Last updated by:  Erik Mikuláš
 %   Last update on:   9.8.2023
 
 

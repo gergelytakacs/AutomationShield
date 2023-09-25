@@ -8,7 +8,7 @@
 %   installation instruction. The code exports the controller into a C
 %   language code. To use this with our examples, please note that
 %   - for AVR architecture Arduinos use 'AVR' in "empcToC()" 
-%       (UNO does not have enaugh memory for contoller with prediction
+%       (UNO does not have enough memory for controller with prediction
 %       horizon larger than 3)
 %   - for DUE and other ARM-based boards use 'generic' in "empcToC()"
 %
