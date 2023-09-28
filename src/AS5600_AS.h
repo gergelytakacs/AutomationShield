@@ -75,10 +75,10 @@ class AS5600
         //  returns false if parameter out of range
         bool setEndPositionRaw(uint16_t value);
 
-        // set zero of the senzor at currnet position
+        // set zero of the senzor at current position
         void zeroSensor(void);
 
-        // calibrate the sensor, zero is set to curent position. 
+        // calibrate the sensor, zero is set to current position. 
         // Start and end represents angle measurement range relative to zero.
         // when star and end are not provided the renge will be full circle and 
         // optional argument mode can be 180_180_MODE (-180, 180> deg. or 0_360_MODE <0, 360) deg.

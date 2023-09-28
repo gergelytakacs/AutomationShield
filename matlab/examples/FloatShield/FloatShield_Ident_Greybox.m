@@ -9,15 +9,16 @@
 %
 %   Created by Martin Gulan, Gergely Takacs and Peter Chmurciak.
 
-%startScript;                                    % Clears screen and variables, except allows CI testing
+startScript;                                    % Clears screen and variables, except allows CI testing
 
 %% Data preprocessing
 load APRBS_R4_2.mat                               % Read identificaiton results
 
 Ts = 0.025;                                     % Sampling period
 data = iddata(y, u, Ts, 'Name', 'Experiment');  % Create identification data object
-data = data(600:2000);                         % Select a relatively stable segment
 
+data = data(600:2000);                         % Select a relatively stable segment
+datand=data;
 data = detrend(data);               % Remove offset and linear trends
 data.InputName = 'Fan Power';       % Input name
 data.InputUnit = '%';               % Input unit
@@ -27,16 +28,18 @@ data.Tstart = 0;                    % Starting time
 data.TimeUnit = 's';                % Time unit
 
 %% Initial guess of model parameters
-m = 0.003;        % [kg] Weight of the ball
-r = 0.015;           % [m] Radius of the ball
-cd = 0.74;          % [-] Drag coefficient
+m = 0.003;          % [kg] Weight of the ball
+r = 0.015;          % [m] Radius of the ball
+cd = 0.47;          % [-] Drag coefficient
 ro = 1.23;          % [kg/m3] Density of air
 % A = pi*r^2;       % [m2] Exposed area of the ball; circle's...
 A = 2 * pi * r^2;   % ...or half of a sphere's area
 g = 9.81;           % [m/s2] Gravitataional acceleration
+vEq = sqrt(m*g/(0.5 * cd * ro * A)); % [m/s] Theoretical equilibrium air velocity
+
 
 k = 7.78;           % Fan's gain
-tau = 0.14;         % Fan's time constant
+tau = vEq / (2 * g);    % Fan's time constant
 tau2 = 0.6;         % Ball's time constant
 
 h0 = data.y(1, 1);                          % Initial ball position estimate
@@ -45,7 +48,7 @@ v0 = 0;                                     % Initial airspeed estimate
 
 %% Choose the type of grey-box model to identify
 % model = 'nonlinear';                        % Nonlinear state-space model
-model = 'linearSS';                       % Linear state-space model
+ model = 'linearSS';                       % Linear state-space model
 % model = 'linearTF';                       % Linear transfer function
 
 switch model
@@ -85,50 +88,59 @@ switch model
         opt.SearchOption.MaxIter = 50;      % Maximal number of iterations
         model = nlgreyest(data, nlgr, opt); % Run identification procedure
 
+        % Save results
+        save FloatShield_GreyboxModel_Nonlinear.mat model
+
+
     case 'linearSS'
 
 
+        
+        % Unknown parameters
+        alpha = 1/tau;
+        beta  = 1/tau2;
+        gamma = k/tau;
+        
+        % Model structure
+        A = [0     1       0;                         % State-transition matrix
+             0 -alpha  alpha;
+             0     0   -beta];
+        B = [    0;
+                 0;
+             gamma];                               % Input matrix
+        C = [1 0 0];                               % Output matrix
+        D = 0;                                     % No direct feed-through                                            
+        K = zeros(3,1);                            % Disturbance
+        K(2) = 25;                                 % State noise
     
-    % Unknown parameters
-    alpha = 1/tau;
-    beta  = 1/tau2;
-    gamma = k/tau;
+        x0 = [h0; dh0; v0];                        % Initial condition
+        disp('Initial guess:')
+        sys = idss(A,B,C,D,K,x0,0)                 % Construct state-space representation
     
-    % Model structure
-    A = [0     1      0;                         % State-transition matrix
-         0 -beta   beta;
-         0     0 -alpha];
-    B = [    0;
-         gamma;
-             0];                               % Input matrix
-    C = [1 0 0];                               % Output matrix
-    D = 0;                                     % No direct feed-through                                            
-    K = zeros(3,1);                            % Disturbance
-    K(2) = 25;                                 % State noise
-
-    x0 = [h0; dh0; v0];                        % Initial condition
-    disp('Initial guess:')
-    sys = idss(A,B,C,D,K,x0,0)                 % Construct state-space representation
-
-    % Mark the free parameters
-    sys.Structure.A.Free = [0  0  0;           % Free and fixed variables
-                            0  1  1;
-                            0  0  1];        
-    sys.Structure.B.Free = [0  1  0]';         % Free and fixed variables
-    sys.Structure.C.Free = false;              % No free parameters
-
-    sys.DisturbanceModel = 'estimate';         % Estimate disturbance model
-    sys.InitialState = 'estimate';             % Estimate initial states
-
-    % Set identification options
-    Options = ssestOptions;                    % State-space estimation options
-    Options.Display = 'on';                    % Show progress
-    Options.Focus = 'simulation';              % Focus on simulation
-                                               % 'stability'
-    Options.InitialState = 'estimate';         % Estimate initial condition
+        % Mark the free parameters
+        sys.Structure.A.Free = [0  0  0;           % Free and fixed variables
+                                0  1  1;
+                                0  0  1];        
+        sys.Structure.B.Free = [0  1  0]';         % Free and fixed variables
+        sys.Structure.C.Free = false;              % No free parameters
     
-    % Identify model
-    model = ssest(data,sys,Options);           % Run estimation procedure
+        sys.DisturbanceModel = 'estimate';         % Estimate disturbance model
+        sys.InitialState = 'estimate';             % Estimate initial states
+    
+        % Set identification options
+        Options = ssestOptions;                    % State-space estimation options
+        Options.Display = 'on';                    % Show progress
+        Options.Focus = 'simulation';              % Focus on simulation
+                                                   % 'stability'
+        Options.InitialState = 'estimate';         % Estimate initial condition
+        Options.SearchMethod = 'lsqnonlin'; % 'auto'/'gn'/'gna'/'lm'/'grad'/'lsqnonlin'/'fmincon'
+        
+        % Identify model
+        model = ssest(data,sys,Options);           % Run estimation procedure
+    
+        % Save results
+        save FloatShield_GreyboxModel_LinearSS.mat model
+
     
     case 'linearTF'
 
@@ -157,16 +169,15 @@ switch model
         % Identify model
         model = procest(data, model, Opt); % Estimate a process model
 
+        % Save results
+        save FloatShield_GreyboxModel_LinearTF.mat model
+
 end
 
-compare(data, model);   % Compare data to model
+compare(datand, model);   % Compare data to model
 model                   % List model parameters
 grid on                 % Turn on grid
 
 return
 
-% Save results
 
-save FloatShield_GreyboxModel_Nonlinear.mat model
-save FloatShield_GreyboxModel_LinearSS.mat model
-save FloatShield_GreyboxModel_LinearTF.mat model

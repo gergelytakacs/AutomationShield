@@ -144,13 +144,13 @@ for ii = 1:total_nr,
         a = Ai(jj, :);
         for kk = 1:length(a),
             ctr = ctr + 1;
-            if ctr<nctotal*nx,
-                    fprintf(fid, '%.14e,\t', a(kk));
+            fprintf(fid, '%.14e', a(kk));
+            if ctr>=nctotal*nx,
+                    fprintf(fid, ' ');
+            elseif mod(ctr, 5)==0,
+                    fprintf(fid, ',\t\n');
             else
-                    fprintf(fid, '%.14e ', a(kk));
-            end
-            if mod(ctr, 5)==0,
-                fprintf(fid, '\n');
+                fprintf(fid, ',\t');
             end
         end
     end
@@ -166,13 +166,13 @@ for ii = 1:total_nr,
     nc = size(bi, 1);
     for jj = 1:nc,
         ctr = ctr + 1;
-        if ctr<nctotal,
-                fprintf(fid, '%.14e,\t', bi(jj));
+        fprintf(fid, '%.14e', bi(jj));
+        if ctr>=nctotal,
+                fprintf(fid, ' ');
+        elseif mod(ctr, 5)==0,
+                fprintf(fid, ',\t\n');
         else
-                fprintf(fid, '%.14e ', bi(jj));
-        end
-        if mod(ctr, 5)==0,
-            fprintf(fid, '\n');
+            fprintf(fid, ',\t');
         end
     end
 end
@@ -181,13 +181,13 @@ fprintf(fid, ']\n\n');
 fprintf(fid, 'MPT_NC = [\n');
 
 for ii = 1:total_nr,
-    if ii < total_nr,
-        fprintf(fid, '%d,\t', size(Pn(ii).H,1));
+    fprintf(fid, '%d', size(Pn(ii).H,1));
+    if ii >= total_nr,
+        fprintf(fid, ' ');
+    elseif mod(ii, 5)==0,
+        fprintf(fid, ',\t\n');
     else
-        fprintf(fid, '%d ', size(Pn(ii).H,1));
-    end
-    if mod(ii, 5)==0,
-        fprintf(fid, '\n');
+        fprintf(fid, ',\t');
     end
 end
 fprintf(fid, ']\n\n');
@@ -226,13 +226,13 @@ for ii = 1:nr,
         h = M(jj, :);
         for kk = 1:nx,
             ctr = ctr + 1;
-            if ctr<nctotalh,
-                    fprintf(fid, '%.14e,\t', h(kk));
+            fprintf(fid, '%.14e', h(kk));
+            if ctr >= nctotalh,
+                fprintf(fid, ' ');
+            elseif mod(ctr, 5)==0,
+                fprintf(fid, ',\t\n');
             else
-                    fprintf(fid, '%.14e ', h(kk));
-            end
-            if mod(ctr, 5)==0,
-                fprintf(fid, '\n');
+                fprintf(fid, ',\t');
             end
         end
     end

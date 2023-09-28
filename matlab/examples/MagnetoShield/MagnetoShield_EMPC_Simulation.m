@@ -6,7 +6,7 @@
 %   Toolbox of Kvasnica et al. The code has been tested with v. 3.0 of the
 %   MPT. Please see https://www.mpt3.org/ for the free download and
 %   installation instruction. 
-%   The EMPC controller is used to crate a simulation run for the trajectory 
+%   The EMPC controller is used to create a simulation run for the trajectory 
 %   tracking of magnetic levitation. The user may switch between direct state
 %   measurement, numerical differentiation and a Kalman filter. Disturbance
 %   may be added to the signal to make it more realistic. The Kalman filter
@@ -24,9 +24,9 @@
 %   project is available at: 
 %   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
 %
-%   Created by:       Gergely Tak·cs
+%   Created by:       Gergely Tak√°cs
 %   Created on:       9.11.2020
-%   Last updated by:  Gergely Tak·cs
+%   Last updated by:  Gergely Tak√°cs
 %   Last update on:   9.11.2020
 
 
