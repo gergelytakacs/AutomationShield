@@ -172,7 +172,7 @@ velFromEstimate = [diff(yEstimated), 0] ./ Ts;
 
 %% Plot test results
 % Plot figures as tabs in separate window
-if exist('CI_Testing','var') %If the script is not running on CI
+if ~exist('CI_Testing','var') %If the script is not running on CI
     set(0,'DefaultFigureWindowStyle','docked');
 end
 
@@ -219,7 +219,7 @@ legend('Velocity differentiated from raw data', ...
 grid on
 
 % Estimated ball velocity in detailed view
-figure
+figure(4)
 plot(xEstimated(2, :), 'b', 'LineWidth', 1.5)
 xlabel('k'); ylabel('mm/s')
 xlim([-25, length(xEstimated(2, :)) + 25])
