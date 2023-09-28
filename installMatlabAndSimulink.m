@@ -5,8 +5,8 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Tak·cs. 
-%   Last update: 22.10.2018.
+%   Created by Gergely Tak√°cs. 
+%   Last update: 22.10.2018
 
 function installForMATLAB()
     thisdir=pwd;
