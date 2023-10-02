@@ -10,7 +10,7 @@
 %   represented using third order state-space model, 
 %   that is based on the second order mechanical 
 %    equation and the first order electrical
-%   equation. Most literature asssumes that the 
+%   equation. Most literature assumes that the 
 %   inductance L of the solenoid is fixed 
 %   (fixedInductance=1), here you also may choose to
 %   model it as a distance-dependent variable 
@@ -23,8 +23,8 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 % 
-%   Created by Gergely Takács. 
-%   Last updated by: Jakub Mihalík
+%   Created by Gergely Takï¿½cs. 
+%   Last updated by: Jakub Mihalï¿½k
 %   Last update: 12.10.2020.
   
 startScript;                                    % Clears screen and variables, except allows CI testing

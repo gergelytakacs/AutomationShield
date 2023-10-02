@@ -33,9 +33,9 @@ float AeroClass::begin(void){                                 // Board initialis
   
   as5600.begin();
   bool isDetected = as5600.detectMagnet();
-  pinMode(AERO_UPIN, OUTPUT);  		                                  // Actuator pin
-  pinMode(AERO_RPIN, INPUT);
-  pinMode(AERO_VOLTAGE_SENSOR_PIN, INPUT);
+  //pinMode(AERO_UPIN, OUTPUT);  		                                  // Actuator pin
+  //pinMode(AERO_RPIN, INPUT);
+  //pinMode(AERO_VOLTAGE_SENSOR_PIN, INPUT);
   if(isDetected == 0){                                           // If magnet not detected go on
     while(1){                                                           // Go forever until magnet detected 
         if(isDetected == 1){                                           // If magnet detected

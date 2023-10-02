@@ -3,7 +3,7 @@
 %   Flex sensor feedback in the TugShield.
 %
 %   This example initialises and calibrates the board then set 
-%   servo to 8 diferent position and watch the response of flexi
+%   servo to 8 different position and watch the response of flexi
 %   senzor.
 %
 %   This code is part of the AutomationShield hardware and software
@@ -11,7 +11,7 @@
 %   details. This code is licensed under a Creative Commons
 %   Attribution-NonCommercial 4.0 International License.
 %
-%   Created by Eva Vargov·.
+%   Created by Eva Vargov√°.
 %   Last update: 16.5.2021.
 
 startScript;   

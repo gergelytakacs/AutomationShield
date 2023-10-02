@@ -1,4 +1,4 @@
-clear, clc
+startScript
 %define LQR
 Ts=0.01;
 load('myModel.mat')%load model

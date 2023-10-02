@@ -29,11 +29,8 @@
 #include <MagnetoShield.h>                            // Include main library  
 #include <Sampling.h>                                 // Include sampling library
 
-#ifdef ARDUINO_ARCH_AVR
-  #include "AVR/ectrl.h"                                    // include EMPC matrices
-#else
-  #include "ectrl.h"
-#endif
+#include "ectrl_AVR.h"
+
 #include <empcSequential.h>
 
 #define MANUAL 0                    // Choose manual reference using potentiometer (1) or automatic reference trajectory (0)

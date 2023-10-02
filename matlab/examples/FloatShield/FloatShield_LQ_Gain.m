@@ -106,7 +106,7 @@ Options.SearchMethod = 'lsqnonlin'; % 'auto'/'gn'/'gna'/'lm'/'grad'/'lsqnonlin'/
 estimatedModel = ssest(data, sys, Options) % Run estimation procedure
 
 % Save the identified continuous state-space model
-% save FloatShield_GreyboxModel_LinearSS estimatedModel
+ save FloatShield_GreyboxModel_LinearSS estimatedModel
 
 %% Calculate LQ gain with included integrator
 % Create continuous state-space object
@@ -219,7 +219,7 @@ legend('Velocity differentiated from raw data', ...
 grid on
 
 % Estimated ball velocity in detailed view
-figure
+figure(4)
 plot(xEstimated(2, :), 'b', 'LineWidth', 1.5)
 xlabel('k'); ylabel('mm/s')
 xlim([-25, length(xEstimated(2, :)) + 25])

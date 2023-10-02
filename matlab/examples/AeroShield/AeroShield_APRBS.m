@@ -8,9 +8,9 @@
 %   Attribution-NonCommercial 4.0 International License.
 close all
 
-N = 4800;                 % Length (samples)
+N = 5000;                 % Length (samples)
 seed = 10;               % Seed value for generating pseudorandom values
-minu = 0.7;                % Minimum input
-maxu = 2;                 % Maximum input
-B = 1 / 185;               % Upper passband (Unit sample / slow-down)
+minu = 0.5;                % Minimum input
+maxu = 1.5;                 % Maximum input
+B = 1 / 200;               % Upper passband (Unit sample / slow-down)
 aprbsGenerate('aprbsU', N, seed, minu, maxu, B) % Generate header "aprbsU.h"
