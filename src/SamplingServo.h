@@ -48,9 +48,14 @@ void TC1_Handler(void){
   TC_GetStatus(TC0, 1);
  (Sampling.getInterruptCallback())();
 }
+
+#elif ARDUINO_ARCH_RENESAS_UNO
+  #include "sampling/SamplingUNO_R4_ISR.h"
+
 #else
   #error "Architecture not supported."
 #endif
+
 #endif
 
 

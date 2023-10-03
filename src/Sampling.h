@@ -25,7 +25,7 @@
   SAM51 Timer: 	 Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
   Last update: 3.6.2019.
-*/
+*/ 
 
 #ifndef SAMPLING_H                     //Include guard
 #define SAMPLING_H
@@ -48,6 +48,10 @@ void TC5_Handler(void){
   TC_GetStatus(TC1, 2);
  (Sampling.getInterruptCallback())();
 }
+
+#elif ARDUINO_ARCH_RENESAS_UNO
+  #include "sampling/SamplingUNO_R4_ISR.h"
+  //(Sampling.setTimerISR(GPTimerCbk))();
 
 #else
   #error "Architecture not supported."

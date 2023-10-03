@@ -53,7 +53,7 @@
 	float quality(float, char *method); 															// Quality metric for feedback control input
 	
 	// Printing functions
-    void serialPrint(const char *str); 														// Should be renamed to diagnostic printLowHigh
+  void serialPrint(const char *str); 														// Should be renamed to diagnostic printLowHigh
 	void print(float, float, float);
 	void printLowHigh(char *named, float low, float high, char *unit, short int precision); // Prints a single line for range measurements in an ordered form
 	void printSeparator(char); 																// Prints a line of dashes, 60 characters wide, then a new line.

@@ -34,140 +34,173 @@
 
 #include "Arduino.h"
 
+#ifdef ARDUINO_ARCH_RENESAS_UNO
+    #include <FspTimer.h>
+#endif
+
 typedef void (*p_to_void_func)(); /*define a term p_to_void_func for pointer to function, which
                   has a return type void and has no input parameters*/
+
+typedef void (*p_to_GPT_cb)(st_timer_callback_args*);
+
 namespace SamplingNoServo {
 
-class SamplingClass {
-  public:
-    SamplingClass();
-    void period(unsigned long microseconds);
-    void interrupt(p_to_void_func interruptCallback);
-    p_to_void_func getInterruptCallback ();
-    float getSamplingPeriod();
-    unsigned long int getSamplingMicroseconds();
-    float samplingPeriod; // Sampling period in seconds
+    class SamplingClass {
+      public:
+        SamplingClass();
+        void period(unsigned long microseconds);
+        void interrupt(p_to_void_func interruptCallback);
+        p_to_void_func getInterruptCallback ();
+        float getSamplingPeriod();
+        unsigned long int getSamplingMicroseconds();
+        float samplingPeriod; // Sampling period in seconds
 
-    /*
-      In case the required period is larger than what the given
-      timer resolution can handle with the highest prescaler (fireFlag=1),
-      the ISR will "fire" without launching the algorithm step until
-      (fireCount) the desired sampling is reached, then the counter is
-      reset. The "firing" of the ISR is a portion of the full sampling
-      by "fireResolution" microseconds.
-    */
-#if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAMD_ZERO) || defined(ADAFRUIT_METRO_M4_EXPRESS))
-    bool fireFlag = 0;                                     // Repeat launches of ISR
-    unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
-    unsigned short int fireResolution;                     // Resolution of the timer over the maximum
-#endif
+        /*
+        In case the required period is larger than what the given
+        timer resolution can handle with the highest prescaler (fireFlag=1),
+        the ISR will "fire" without launching the algorithm step until
+        (fireCount) the desired sampling is reached, then the counter is
+        reset. The "firing" of the ISR is a portion of the full sampling
+        by "fireResolution" microseconds.
+        */
+        #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAMD_ZERO) || defined(ADAFRUIT_METRO_M4_EXPRESS) || defined(ARDUINO_ARCH_RENESAS_UNO))
+            bool fireFlag = 0;                                     // Repeat launches of ISR
+            unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
+            unsigned short int fireResolution;                     // Resolution of the timer over the maximum
+        #endif
 
-  private:
-    static void defaultInterrupt();
-    p_to_void_func interruptCallback;
+        
+        #if ARDUINO_ARCH_RENESAS_UNO
+            void setTimerISR(p_to_GPT_cb cbk);
+        #endif
 
-#if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))
-    // Default: Timer1
-    const unsigned long timerResolution = 65536;     // AVR Timer 5 is 16bit
-    const unsigned char cpuFrequency = 16;       // CPU frequency in micro Hertz
-    // For Timer 2 (Servo)
-#define CYCLES_100MS   16000000                    // CPU cycles @ 16 MHz for 100 ms
-#define CYCLES_1S     160000000                    // CPU cycles @ 16 MHz for 1 s
-#define COMPARE_100US       200                    // Compare @ 16 MHz, prescaler 8, for 100 us
-#define COMPARE_1MS         250                    // Compare @ 16 MHz, prescaler 64, for 1 ms
-#define COMPARE_10MS        156                    // Compare @ 16 MHz, prescaler 1024, for 10 ms
-    // For Timer 1 (No servo)
-#define COMPARE_10MS_16B    20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
+      private:
+            static void defaultInterrupt();
+            p_to_void_func interruptCallback;
 
-#elif ARDUINO_SAMD_ZERO
-    // Default: Timer5 in both cases (No servo and servo)
-    const unsigned long timerResolution = 65536;          // Configured to 16bit
-    const unsigned char cpuFrequency = VARIANT_MCK / 1000000; // CPU frequency in mega Hertz (48 for Zero)
-#define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
+        #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560))
+            // Default: Timer1
+            const unsigned long timerResolution = 65536;     // AVR Timer 5 is 16bit
+            const unsigned char cpuFrequency = 16;       // CPU frequency in micro Hertz
+            // For Timer 2 (Servo)
+            #define CYCLES_100MS   16000000                    // CPU cycles @ 16 MHz for 100 ms
+            #define CYCLES_1S     160000000                    // CPU cycles @ 16 MHz for 1 s
+            #define COMPARE_100US       200                    // Compare @ 16 MHz, prescaler 8, for 100 us
+            #define COMPARE_1MS         250                    // Compare @ 16 MHz, prescaler 64, for 1 ms
+            #define COMPARE_10MS        156                    // Compare @ 16 MHz, prescaler 1024, for 10 ms
+                // For Timer 1 (No servo)
+            #define COMPARE_10MS_16B    20000                  // Compare @ 16 MHz, prescaler 8, for 10 ms
 
-#elif ADAFRUIT_METRO_M4_EXPRESS
-    const unsigned long timerResolution = 65536;          // Configured to 16bit
-    const unsigned char cpuFrequency = 48;                  // Clock bus frequency (not CPU) in mega Hertz
-#define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
+        #elif ARDUINO_SAMD_ZERO
+            // Default: Timer5 in both cases (No servo and servo)
+            const unsigned long timerResolution = 65536;          // Configured to 16bit
+            const unsigned char cpuFrequency = VARIANT_MCK / 1000000; // CPU frequency in mega Hertz (48 for Zero)
+            #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
 
-#elif ARDUINO_ARCH_SAM
-    // Default: Timer5 in both cases (No servo and servo)
-    const unsigned char cpuFrequency = VARIANT_MCK / 1000000; // CPU frequency in mega Hertz (84 for Due)
-#elif ARDUINO_ARCH_RENESAS_UNO
-#else
-#error "Architecture not supported."
-#endif
+        #elif ADAFRUIT_METRO_M4_EXPRESS
+            const unsigned long timerResolution = 65536;          // Configured to 16bit
+            const unsigned char cpuFrequency = 48;                  // Clock bus frequency (not CPU) in mega Hertz
+            #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
+
+        #elif ARDUINO_ARCH_SAM
+            // Default: Timer5 in both cases (No servo and servo)
+            const unsigned char cpuFrequency = VARIANT_MCK / 1000000; // CPU frequency in mega Hertz (84 for Due)
+        #elif ARDUINO_ARCH_RENESAS_UNO
+            FspTimer sampling_timer;
+            unsigned long long timerResolution = 65536;            // Resolution of 16bit timer
+            const unsigned char cpuFrequency = 48;                    // Clock bus frequency (not CPU) in mega Hertz
+            #define COMPARE_10MS        30000                         // Compare @ 48 MHz, prescaler 16, for 10 ms
+            uint32_t  period_counts = 0;
+            timer_source_div_t prescaler = TIMER_SOURCE_DIV_1;
+            p_to_GPT_cb cbk;
+
+        #else
+            #error "Architecture not supported."
+        #endif
 
 
-    unsigned long int samplingMicroseconds; // Sampling period in microseconds
-    bool setSamplingPeriod(unsigned long microseconds);
-};
+        unsigned long int samplingMicroseconds; // Sampling period in microseconds
+        bool setSamplingPeriod(unsigned long microseconds);
+    };
 } // end of namespace
 
 namespace SamplingServo {
 
-class SamplingClass {
-  public:
-    SamplingClass();
-    void period(unsigned long microseconds);
-    void interrupt(p_to_void_func interruptCallback);
-    p_to_void_func getInterruptCallback ();
-    float getSamplingPeriod();
-    unsigned long int getSamplingMicroseconds();
-    float samplingPeriod; // Sampling period in seconds
+    class SamplingClass {
+      public:
+        SamplingClass();
+        void period(unsigned long microseconds);
+        void interrupt(p_to_void_func interruptCallback);
+        p_to_void_func getInterruptCallback ();
+        float getSamplingPeriod();
+        unsigned long int getSamplingMicroseconds();
+        float samplingPeriod; // Sampling period in seconds
 
-    /*
-      In case the required period is larger than what the given
-      timer resolution can handle with the highest prescaler (fireFlag=1),
-      the ISR will "fire" without launching the algorithm step until
-      (fireCount) the desired sampling is reached, then the counter is
-      reset. The "firing" of the ISR is a portion of the full sampling
-      by "fireResolution" microseconds.
-    */
-	
-#if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAMD_ZERO) || defined(ADAFRUIT_METRO_M4_EXPRESS))
-    bool fireFlag = 0;                                     // Repeat launches of ISR
-    unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
-    unsigned short int fireResolution;                     // Resolution of the timer over the maximum
-#endif
+        /*
+        In case the required period is larger than what the given
+        timer resolution can handle with the highest prescaler (fireFlag=1),
+        the ISR will "fire" without launching the algorithm step until
+        (fireCount) the desired sampling is reached, then the counter is
+        reset. The "firing" of the ISR is a portion of the full sampling
+        by "fireResolution" microseconds.
+        */
+        
+        #if (defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560) || defined(ARDUINO_SAMD_ZERO) || defined(ADAFRUIT_METRO_M4_EXPRESS) || defined(ARDUINO_ARCH_RENESAS_UNO))
+            bool fireFlag = 0;                                     // Repeat launches of ISR
+            unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
+            unsigned short int fireResolution;                     // Resolution of the timer over the maximum
+        #endif
 
-  private:
-    static void defaultInterrupt();
-    p_to_void_func interruptCallback;
+        #if ARDUINO_ARCH_RENESAS_UNO
+            void setTimerISR(p_to_GPT_cb cbk);
+        #endif
 
-#ifdef ARDUINO_AVR_UNO
-    // Default: Timer2
-    const unsigned long timerResolution = 256;             // AVR Timer 2 is 8bit
-    const unsigned char cpuFrequency = 16;                 // CPU frequency in mega Hertz
+      private:
+        static void defaultInterrupt();
+        p_to_void_func interruptCallback;
 
-#elif ARDUINO_AVR_MEGA2560
-    // Default: Timer2
-    const unsigned long timerResolution = 256;           // AVR Timer 2 is 8bit
-    const unsigned char cpuFrequency = 16;                 // CPU frequency in mega Hertz
+        #ifdef ARDUINO_AVR_UNO
+            // Default: Timer2
+            const unsigned long timerResolution = 256;             // AVR Timer 2 is 8bit
+            const unsigned char cpuFrequency = 16;                 // CPU frequency in mega Hertz
 
-#elif ARDUINO_SAMD_ZERO
-    // Default TC5
-    const unsigned long timerResolution = 65536;            // Configured to 16bit
-    const unsigned char cpuFrequency = 48;                   // CPU frequency in mega Hertz (48 for Zero)
-#define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
+        #elif ARDUINO_AVR_MEGA2560
+            // Default: Timer2
+            const unsigned long timerResolution = 256;           // AVR Timer 2 is 8bit
+            const unsigned char cpuFrequency = 16;                 // CPU frequency in mega Hertz
 
-#elif ADAFRUIT_METRO_M4_EXPRESS
-    const unsigned long timerResolution = 65536;             // Configured to 16bit
-    const unsigned char cpuFrequency = 48;                   // Clock bus frequency (not CPU) in mega Hertz
-#define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
+        #elif ARDUINO_SAMD_ZERO
+            // Default TC5
+            const unsigned long timerResolution = 65536;            // Configured to 16bit
+            const unsigned char cpuFrequency = 48;                   // CPU frequency in mega Hertz (48 for Zero)
+        #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
 
-#elif ARDUINO_ARCH_SAM
-    const unsigned char cpuFrequency = VARIANT_MCK / 1000000; // CPU frequency in mega Hertz (84 for Due)
+        #elif ADAFRUIT_METRO_M4_EXPRESS
+            const unsigned long timerResolution = 65536;             // Configured to 16bit
+            const unsigned char cpuFrequency = 48;                   // Clock bus frequency (not CPU) in mega Hertz
+        #define COMPARE_10MS        60000                         // Compare @ 48 MHz, prescaler 8, for 10 ms
 
-#elif ARDUINO_ARCH_RENESAS_UNO
-#else
-#error "Architecture not supported."
-#endif
+        #elif ARDUINO_ARCH_SAM
+            const unsigned char cpuFrequency = VARIANT_MCK / 1000000; // CPU frequency in mega Hertz (84 for Due)
+
+        #elif ARDUINO_ARCH_RENESAS_UNO
+            FspTimer sampling_timer;
+            unsigned long long timerResolution = 65536;            // Resolution of 16bit timer
+            const unsigned char cpuFrequency = 48;                    // Clock bus frequency (not CPU) in mega Hertz
+            #define COMPARE_10MS        30000                         // Compare @ 48 MHz, prescaler 16, for 10 ms
+            uint32_t  period_counts = 0;
+            timer_source_div_t prescaler = TIMER_SOURCE_DIV_1;
+            p_to_GPT_cb cbk;
+            //static void GPTimerCbk (timer_callback_args_t);
+
+        #else
+            #error "Architecture not supported."
+        #endif
 
 
-    unsigned long int samplingMicroseconds; // Sampling period in microseconds
-    bool setSamplingPeriod(unsigned long microseconds);
-};
+        unsigned long int samplingMicroseconds; // Sampling period in microseconds
+        bool setSamplingPeriod(unsigned long microseconds);
+    };
 } // end of namespace
 
 #endif
