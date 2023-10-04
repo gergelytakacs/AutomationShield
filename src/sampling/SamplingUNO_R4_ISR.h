@@ -10,8 +10,8 @@
   Last update: 3.10.2023.
 */
 
-#ifndef SAMPLINGUNOR4_ISR_H
-#define SAMPLINGUNOR4_ISR_H
+#ifndef SAMPLINGUNO_R4_ISR_H
+#define SAMPLINGUNO_R4_ISR_H
 
 void GPTimerCbk(timer_callback_args_t __attribute((unused)) *p_args) {
 
