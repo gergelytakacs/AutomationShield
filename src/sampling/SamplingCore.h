@@ -4,8 +4,8 @@
   The file forward declares the classes necessary for configuring
   an interrupt-driven system for deploying digital control systems
   on AVR, SAMD and SAM-based Arduino prototyping boards with the
-  R3 pinout. The module should be compatible with the Uno, Mega
-  2560, Arduino Zero, Adafruit Metro M4 Express and Arduino Due.
+  R3 pinout. The module should be compatible with the Arduino Uno, 
+  Mega 2560, Zero, Due, Uno R4 and Adafruit Metro M4 Express.
   There should be no timer conflicts when using the Servo library.
 
   This file contains the forward declarations of two classes
@@ -26,7 +26,8 @@
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM51 Timer:   Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 29.4.2021 by Martin Vrican
+  RA4M1 Timer:   Erik Mikuláš,   2023 (UNO R4)
+  Last update: 4.10.2021 by Erik Mikuláš
 */
 
 #ifndef SAMPLINGCORE_H
@@ -34,14 +35,17 @@
 
 #include "Arduino.h"
 
+
+
 #ifdef ARDUINO_ARCH_RENESAS_UNO
     #include <FspTimer.h>
+    void GPTimerCbk(timer_callback_args_t __attribute((unused)) *p_args);
 #endif
 
 typedef void (*p_to_void_func)(); /*define a term p_to_void_func for pointer to function, which
                   has a return type void and has no input parameters*/
 
-typedef void (*p_to_GPT_cb)(st_timer_callback_args*);
+
 
 namespace SamplingNoServo {
 
@@ -67,11 +71,6 @@ namespace SamplingNoServo {
             bool fireFlag = 0;                                     // Repeat launches of ISR
             unsigned long int  fireCount = 0;                      // Counter for repeat launches of ISR
             unsigned short int fireResolution;                     // Resolution of the timer over the maximum
-        #endif
-
-        
-        #if ARDUINO_ARCH_RENESAS_UNO
-            void setTimerISR(p_to_GPT_cb cbk);
         #endif
 
       private:
@@ -108,11 +107,10 @@ namespace SamplingNoServo {
         #elif ARDUINO_ARCH_RENESAS_UNO
             FspTimer sampling_timer;
             unsigned long long timerResolution = 65536;            // Resolution of 16bit timer
-            const unsigned char cpuFrequency = 48;                    // Clock bus frequency (not CPU) in mega Hertz
+            const unsigned int cpuFrequency = 48;                    // Clock bus frequency (not CPU) in mega Hertz
             #define COMPARE_10MS        30000                         // Compare @ 48 MHz, prescaler 16, for 10 ms
             uint32_t  period_counts = 0;
             timer_source_div_t prescaler = TIMER_SOURCE_DIV_1;
-            p_to_GPT_cb cbk;
 
         #else
             #error "Architecture not supported."
@@ -151,10 +149,6 @@ namespace SamplingServo {
             unsigned short int fireResolution;                     // Resolution of the timer over the maximum
         #endif
 
-        #if ARDUINO_ARCH_RENESAS_UNO
-            void setTimerISR(p_to_GPT_cb cbk);
-        #endif
-
       private:
         static void defaultInterrupt();
         p_to_void_func interruptCallback;
@@ -190,8 +184,7 @@ namespace SamplingServo {
             #define COMPARE_10MS        30000                         // Compare @ 48 MHz, prescaler 16, for 10 ms
             uint32_t  period_counts = 0;
             timer_source_div_t prescaler = TIMER_SOURCE_DIV_1;
-            p_to_GPT_cb cbk;
-            //static void GPTimerCbk (timer_callback_args_t);
+            
 
         #else
             #error "Architecture not supported."

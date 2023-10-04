@@ -4,8 +4,8 @@
   The file forward declares the classes necessary for configuring
   an interrupt-driven system for deploying digital control systems
   on AVR, SAMD and SAM-based Arduino prototyping boards with the
-  R3 pinout. The module should be compatible with the Uno, Mega
-  2560, Arduino Zero, Adafruit Metro M4 Express and Arduino Due.
+  R3 pinout. The module should be compatible with the Arduino Uno, 
+  Mega 2560, Zero, Due, Uno R4 and Adafruit Metro M4 Express.
   There should be no timer conflicts when using the Servo library.
 
   This file contains the forward declarations of two classes
@@ -27,7 +27,7 @@
   SAM51 Timer:   Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
   RA4M1 Timer:   Erik Mikuláš,   2023 (UNO R4)
-  Last update: 3.10.2023.
+  Last update: 4.10.2023 by Erik Mikuláš
 */
 
 #include "SamplingCore.h"
@@ -145,7 +145,7 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds) {
     }
     FspTimer::force_use_of_pwm_reserved_timer();
 
-    if(!sampling_timer.begin(TIMER_MODE_PERIODIC, timer_type, tindex, period_counts, 0.0f, prescaler, cbk)){
+    if(!sampling_timer.begin(TIMER_MODE_PERIODIC, timer_type, tindex, period_counts, 0.0f, prescaler, GPTimerCbk)){
       #ifdef ECHO_TO_SERIAL
         Serial.println("Sampling error: did not begin");
       #endif
@@ -173,7 +173,7 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds) {
 }
 
 bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microseconds) {
-  const unsigned long cycles = microseconds * cpuFrequency;
+  const unsigned long int cycles = microseconds * cpuFrequency;
 
   #ifdef ARDUINO_AVR_UNO
     if (cycles < timerResolution) {
@@ -294,51 +294,31 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
 
   #elif ARDUINO_ARCH_RENESAS_UNO
 
-    if(cycles / 1.0 < timerResolution) {
+    if(cycles / 1 < timerResolution) {
         period_counts = (uint32_t) (cycles / 1.0);
         prescaler = TIMER_SOURCE_DIV_1;
     }
-    else if(cycles / 2.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 2.0);
-        prescaler = TIMER_SOURCE_DIV_2;
-    }
-    else if(cycles / 4.0 < timerResolution) {
+    else if(cycles / 4 < timerResolution) {
         period_counts = (uint32_t) (cycles / 4.0);
         prescaler = TIMER_SOURCE_DIV_4;
     }
-    else if(cycles / 8.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 8.0);
-        prescaler = TIMER_SOURCE_DIV_8;
-    }
-    else if(cycles / 16.0 < timerResolution) {
+    else if(cycles / 16 < timerResolution) {
         period_counts = (uint32_t) (cycles / 16.0 );
         prescaler = TIMER_SOURCE_DIV_16;
     }
-    else if(cycles / 32.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 32.0);
-        prescaler = TIMER_SOURCE_DIV_32;
-    }
-    else if(cycles / 64.0 < timerResolution) {
+    else if(cycles / 64 < timerResolution) {
         period_counts = (uint32_t) (cycles / 64.0 );
         prescaler = TIMER_SOURCE_DIV_64;
     }
-    else if(cycles / 128.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 128.0);
-        prescaler = TIMER_SOURCE_DIV_128;
-    }
-    else if(cycles / 256.0 < timerResolution) {
+    else if(cycles / 256 < timerResolution) {
         period_counts = (uint32_t) (cycles / 256.0 );
         prescaler = TIMER_SOURCE_DIV_256;
     }
-    else if(cycles / 512.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 512.0);
-        prescaler = TIMER_SOURCE_DIV_512;
-    }
-    else if(cycles / 1024.0 < timerResolution) {
+    else if(cycles / 1024 < timerResolution) {
         period_counts = (uint32_t) (cycles / 1024.0 );
         prescaler = TIMER_SOURCE_DIV_1024;
     }
-    else if (cycles / 1024.0 >= timerResolution){
+    else if (cycles / 1024 >= timerResolution){
         period_counts = (uint32_t) (COMPARE_10MS);
         prescaler = TIMER_SOURCE_DIV_16;
         fireFlag = 1;                                         // repeat firing
@@ -349,7 +329,7 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
     }
 
   #else
-  //#error "Architecture not supported."
+    #error "Architecture not supported."
   #endif
 
   samplingPeriod = microseconds / 1000000.0;           // in seconds
@@ -370,12 +350,6 @@ unsigned long int SamplingNoServo::SamplingClass::getSamplingMicroseconds() {
 void SamplingNoServo::SamplingClass::interrupt(p_to_void_func interruptCallback) {
   this->interruptCallback = interruptCallback;
 }
-
-#if defined(ARDUINO_ARCH_RENESAS_UNO)
-  void SamplingNoServo::SamplingClass::setTimerISR(p_to_GPT_cb cbk) {
-    this->cbk = cbk;
-  }
-#endif
 
 p_to_void_func SamplingNoServo::SamplingClass::getInterruptCallback () {
   return interruptCallback;
@@ -481,7 +455,7 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds) {
     }
     FspTimer::force_use_of_pwm_reserved_timer();
 
-    if(!sampling_timer.begin(TIMER_MODE_PERIODIC, timer_type, tindex, period_counts, 0.0f, prescaler, cbk)){
+    if(!sampling_timer.begin(TIMER_MODE_PERIODIC, timer_type, tindex, period_counts, 0.0f, prescaler, GPTimerCbk)){
       #ifdef ECHO_TO_SERIAL
         Serial.println("Sampling error: did not begin");
       #endif
@@ -626,41 +600,21 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
         period_counts = (uint32_t) (cycles / 1.0);
         prescaler = TIMER_SOURCE_DIV_1;
     }
-    else if(cycles / 2.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 2.0);
-        prescaler = TIMER_SOURCE_DIV_2;
-    }
     else if(cycles / 4.0 < timerResolution) {
         period_counts = (uint32_t) (cycles / 4.0);
         prescaler = TIMER_SOURCE_DIV_4;
-    }
-    else if(cycles / 8.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 8.0);
-        prescaler = TIMER_SOURCE_DIV_8;
     }
     else if(cycles / 16.0 < timerResolution) {
         period_counts = (uint32_t) (cycles / 16.0 );
         prescaler = TIMER_SOURCE_DIV_16;
     }
-    else if(cycles / 32.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 32.0);
-        prescaler = TIMER_SOURCE_DIV_32;
-    }
     else if(cycles / 64.0 < timerResolution) {
         period_counts = (uint32_t) (cycles / 64.0 );
         prescaler = TIMER_SOURCE_DIV_64;
     }
-    else if(cycles / 128.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 128.0);
-        prescaler = TIMER_SOURCE_DIV_128;
-    }
     else if(cycles / 256.0 < timerResolution) {
         period_counts = (uint32_t) (cycles / 256.0 );
         prescaler = TIMER_SOURCE_DIV_256;
-    }
-    else if(cycles / 512.0 < timerResolution) {
-        period_counts = (uint32_t) (cycles / 512.0);
-        prescaler = TIMER_SOURCE_DIV_512;
     }
     else if(cycles / 1024.0 < timerResolution) {
         period_counts = (uint32_t) (cycles / 1024.0 );

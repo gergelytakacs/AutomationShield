@@ -5,8 +5,8 @@
   The file implements the two classes necessary for configuring
   an interrupt-driven system for deploying digital control systems
   on AVR, SAMD and SAM-based Arduino prototyping boards with the 
-  R3 pinout. The module should be compatible with the Uno, Mega 
-  2560, Arduino Zero, Adafruit Metro M4 Express and Arduino Due. 
+  R3 pinout. The module should be compatible with the Arduino Uno, 
+  Mega 2560, Zero, Due, Uno R4 and Adafruit Metro M4 Express.
   There should be no timer conflicts when using the Servo library.
     
   A "Sampling" object is created first from the namespace referring
@@ -24,13 +24,15 @@
   SAMD21G Timer: Gergely Takacs, 2019 (Zero)
   SAM51 Timer: 	 Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
-  Last update: 3.6.2019.
+  RA4M1 Timer:   Erik Mikuláš,   2023 (UNO R4)
+  Last update: 3.10.2023 by Erik Mikuláš
 */ 
 
 #ifndef SAMPLING_H                     //Include guard
 #define SAMPLING_H
 
-SamplingNoServo::SamplingClass Sampling;
+
+SamplingNoServo::SamplingClass Sampling; 
 
 #ifdef ARDUINO_AVR_UNO
 	#define UNO_ISR_VECT TIMER1_COMPA_vect
@@ -51,7 +53,6 @@ void TC5_Handler(void){
 
 #elif ARDUINO_ARCH_RENESAS_UNO
   #include "sampling/SamplingUNO_R4_ISR.h"
-  //(Sampling.setTimerISR(GPTimerCbk))();
 
 #else
   #error "Architecture not supported."

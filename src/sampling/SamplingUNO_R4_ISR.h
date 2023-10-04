@@ -27,5 +27,4 @@ void GPTimerCbk(timer_callback_args_t __attribute((unused)) *p_args) {
     }
 }
 
-//Sampling.setTimerISR(GPTimerCbk);
 #endif
