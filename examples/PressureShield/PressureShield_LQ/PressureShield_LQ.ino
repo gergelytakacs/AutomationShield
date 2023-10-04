@@ -29,7 +29,7 @@ BLA::Matrix<3, 1> X = {0, 0, 0};                             // Estimated state 
 BLA::Matrix<3, 1> Xr = {0, 0, 0};                            // Reference state vector
 
 void setup() {                     // Setup - runs only once
-  Serial.begin(2000000);           // Begin serial communication
+  Serial.begin(115200);           // Begin serial communication
 
   PressureShield.begin();          // Initialise PressureShield board
   PressureShield.calibration();    // Calibrate PressureShield board

@@ -53,13 +53,16 @@ float u0  =  4.6234;                // [V] Linearization point based on the expe
 int i = 0;                          // Section counter
 
 #if ARDUINO_ARCH_AVR
-float Ts = 5;                       // Sampling in microseconds, lower limit near 5 ms
+  float Ts = 5;                       // Sampling in microseconds, lower limit near 5 ms
   int T = 1000;                     // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAMD
-float Ts = 5;                       // Sampling in microseconds
+  float Ts = 5;                       // Sampling in microseconds
   int T = 1000;                     // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAM
- float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
+  float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
+  int T = 1000;                     // Experiment section length (steps) 
+#elif ARDUINO_ARCH_RENESAS_UNO
+  float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
   int T = 1000;                     // Experiment section length (steps) 
 #endif
 
@@ -85,8 +88,10 @@ void setup() {
       AutomationShield.print("Kalman filter cannot be used with this architecture! Set USE_DIFFERENTIATION to 1  and USE_KALMAN_FILTER to 0 or use Aduino DUE!");
       return 0;
     #endif 
-#elif ARDUINO_ARCH_SAM
+#elif ARDUINO_ARCH_SAM 
     Serial.begin(250000);                  // Initialize serial, maximum for Due (baud mismatch issues)
+#elif ARDUINO_ARCH_RENESAS_UNO
+      Serial.begin(115200);               // Initialize serial, maximum for UNO R4 (serial comunication limitations)
 #endif 
   
   // Initialize and calibrate board

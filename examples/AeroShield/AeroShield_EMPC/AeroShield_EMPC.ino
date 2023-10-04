@@ -68,7 +68,7 @@ static float u_opt[MPT_RANGE];      // predicted inputs
 extern struct mpc_ctl ctl;          // Object representing presets for MPC controller
 
 void setup() {
-  Serial.begin(250000);                 //--Initialize serial communication
+  Serial.begin(115200);                 //--Initialize serial communication
   AeroShield.begin();                   //--Initialize AeroShield
   delay(1000);
   AeroShield.calibrate();               //  Calibrate AeroShield board + store the 0° value of the pendulum

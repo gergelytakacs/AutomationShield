@@ -54,7 +54,7 @@ float Xr[4] = {0, 0, 0, 0};         // Reference state vector
 extern struct mpc_ctl ctl;          // Object representing presets for MPC controller
 
 void setup() {                       // Setup - runs only once
-  Serial.begin(250000);              // Begin serial communication
+  Serial.begin(115200);              // Begin serial communication
 
   FloatShield.begin();               // Initialise FloatShield board
   FloatShield.calibrate();           // Calibrate FloatShield board
