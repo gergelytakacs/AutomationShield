@@ -67,7 +67,7 @@ void setup() {
 #elif ARDUINO_ARCH_SAM
   Serial.begin(250000);                  // Initialize serial, maximum for Due (baud mismatch issues)
 #elif ARDUINO_ARCH_RENESAS_UNO
-      Serial.begin(115200);              // Initialize serial, maximum for UNO R4 (serial comunication limitations)
+      Serial.begin(115200);              // Initialize serial, maximum for UNO R4 (serial communication limitations)
 #endif
 
   // Initialize and calibrate board
