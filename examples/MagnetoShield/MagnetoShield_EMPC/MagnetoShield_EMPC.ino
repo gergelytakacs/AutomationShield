@@ -60,7 +60,7 @@ static float u_opt[MPT_RANGE];      // predicted inputs
 extern struct mpc_ctl ctl;          // Object representing presets for MPC controller
 
 void setup() {                      // Setup - runs only once
-  Serial.begin(250000);             // Begin serial communication
+  Serial.begin(115200);             // Begin serial communication
 
   MagnetoShield.begin();            // Initialize MagnetoShield device
   MagnetoShield.calibration();      // Calibrate MagnetoShield device

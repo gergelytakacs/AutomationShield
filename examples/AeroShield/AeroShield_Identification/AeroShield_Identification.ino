@@ -29,7 +29,7 @@ bool flag = false;
 bool realTimeViolation = false;
 int k;
 void setup() {
-  Serial.begin(250000);
+  Serial.begin(115200);
   AeroShield.begin();
   AeroShield.calibrate();
   Serial.println("y, u"); //--Print header

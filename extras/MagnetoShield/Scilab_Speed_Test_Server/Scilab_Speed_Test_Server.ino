@@ -515,7 +515,7 @@ if (val == 73) { //I -> Provisional I2C
       // no declaration for the moment : wait for encoder mode
       while (Serial.available() == 0) {};               // Waiting char
       int mode = Serial.read() - 48;                    // Read mode 1 ou 2 (1 counting only rising of chA, 2 counting rising and falling)
-      if (mode == 4) {                                  // mode 4x : 2 cases : chA=pin2 / chB=pin3 or chA=pin3/chB=pin2 [Uno retriction]
+      if (mode == 4) {                                  // mode 4x : 2 cases : chA=pin2 / chB=pin3 or chA=pin3/chB=pin2 [Uno restriction]
         pinMode(corresp[encoder_int2], INPUT);         // set interrupt number as input
       } else {
         pinMode(encoder_int2, INPUT);                  // set pin as input

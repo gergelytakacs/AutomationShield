@@ -49,7 +49,7 @@ BLA::Matrix<1, 3> K = {-0.0376, 0.3523, 0.1337};              //--LQ gain with i
 BLA::Matrix<3, 1> Xr = {0, 0, 0};                                //--Initial state reference
  
 void setup() {
- Serial.begin(250000);               //--Initialize serial communication # 2 Mbaud
+ Serial.begin(115200);               //--Initialize serial communication # 2 Mbaud
  AeroShield.begin();               //--Initialize MotoShield
  delay(1000);
  AeroShield.calibrate();              //  Calibrate AeroShield board + store the 0° value of the pendulum

@@ -60,7 +60,7 @@ float powerSpan = 6;                // Span +/- from stabilised value of power [
 #endif
 
 void setup() {                         // Setup - runs only once
-    Serial.begin(250000);              // Begin serial communication
+    Serial.begin(115200);              // Begin serial communication
 
     FloatShield.begin();               // Initialise FloatShield board
     FloatShield.calibrate();           // Calibrate FloatShield board

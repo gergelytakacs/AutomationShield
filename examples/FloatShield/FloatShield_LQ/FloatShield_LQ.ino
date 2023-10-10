@@ -54,7 +54,7 @@ BLA::Matrix<4, 1> X = {0, 0, 0, 0};                                 // Estimated
 BLA::Matrix<4, 1> Xr = {0, 0, 0, 0};                                // Reference state vector
 
 void setup() {                       // Setup - runs only once
-  Serial.begin(250000);              // Begin serial communication
+  Serial.begin(115200);              // Begin serial communication
 
   FloatShield.begin();               // Initialise FloatShield board
   FloatShield.calibrate();           // Calibrate FloatShield board

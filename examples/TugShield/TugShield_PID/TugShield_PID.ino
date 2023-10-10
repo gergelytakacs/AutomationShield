@@ -38,7 +38,7 @@ float u ;                           // Input
 #define TD 0.0                      // PID Td
 
 void setup() {
-  Serial.begin(250000);              // Initialize serial
+  Serial.begin(115200);              // Initialize serial
   
   // Initialize and calibrate board
   TugShield.begin();                // Define hardware pins
