@@ -28,7 +28,7 @@
 #define TI 0.55                        // PID Ti constant
 #define TD 0.25                       // PID Td constant
 
-unsigned long Ts = 3;                 // Sampling period in milliseconds
+unsigned long Ts = 5;                 // Sampling period in milliseconds
 unsigned long k = 0;                  // Sample index
 bool nextStep = false;                // Flag for step function
 bool realTimeViolation = false;       // Flag for real-time sampling violation
@@ -41,7 +41,7 @@ float y = 0.0;                // Output (Current pendulum angle)
 float u = 0.0;                // Input (motor power)
 
 void setup() {                                                  //  Setup - runs only once
-  Serial.begin(2000000);                                         //  Begin serial communication
+  Serial.begin(115200);                                         //  Begin serial communication
   AeroShield.begin();                    //  Initialise AeroShield board
   AeroShield.calibrate();              //  Calibrate AeroShield board + store the 0° value of the pendulum
   Sampling.period(Ts * 1000);            // Set sampling period in milliseconds

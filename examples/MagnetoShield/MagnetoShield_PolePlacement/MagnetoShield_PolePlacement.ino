@@ -59,7 +59,10 @@ float Ts = 5;                       // Sampling in microseconds
   int T = 1000;                     // Experiment section length (steps) 
 #elif ARDUINO_ARCH_SAM
  float Ts = 4;                      // Sampling in microseconds, lower limit 1.3 ms
-  int T = 1000;                     // Experiment section length (steps) 
+  int T = 1000;                     // Experiment section length (steps)
+#elif ARDUINO_ARCH_RENESAS_UNO
+  float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
+  int T = 1000;                     // Experiment section length (steps)  
 #endif
 
 #if USE_KALMAN_FILTER && ARDUINO_ARCH_SAM
@@ -86,6 +89,8 @@ void setup() {
     #endif 
 #elif ARDUINO_ARCH_SAM
     Serial.begin(250000);                  // Initialize serial, maximum for Due (baud mismatch issues)
+#elif ARDUINO_ARCH_RENESAS_UNO
+      Serial.begin(115200);               // Initialize serial, maximum for UNO R4 (serial comunication limitations)
 #endif 
   
   // Initialize and calibrate board

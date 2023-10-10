@@ -58,6 +58,9 @@ float u = 0.0;                        // [V] Input
 #elif ARDUINO_ARCH_SAM
   unsigned long Ts = 5000;                 // Sampling in microseconds, lower limit 1.3 ms
   int T = 1000;                            // Experiment section length (steps) 
+#elif ARDUINO_ARCH_RENESAS_UNO
+  float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
+  int T = 1000;                     // Experiment section length (steps) 
 #endif  
 
 void setup() {
@@ -66,6 +69,8 @@ void setup() {
     Serial.begin(2000000);                 // Initialize serial, maximum for AVR given by hardware    
 #elif ARDUINO_ARCH_SAM
     Serial.begin(250000);                  // Initialize serial, maximum for Due (baud mismatch issues)
+#elif ARDUINO_ARCH_RENESAS_UNO
+      Serial.begin(115200);                  // Initialize serial, maximum for UNO R4 (serial communication limitations)
 #endif 
   
   // Initialize and calibrate board

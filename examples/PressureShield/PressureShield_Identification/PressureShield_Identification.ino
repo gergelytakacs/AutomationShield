@@ -34,7 +34,7 @@ int T = 300;            // Section length
 int i = 0;              // Section counter
 
 void setup() {
-  Serial.begin(2000000);               // Initialize serial
+  Serial.begin(115200);               // Initialize serial
   
   // Initialize and calibrate board
   PressureShield.begin();               // Define hardware pins

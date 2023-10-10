@@ -26,9 +26,25 @@ void MagnetoShieldClass::begin(){
 			analogReference(EXTERNAL);
 		#endif
 	#elif ARDUINO_ARCH_SAM
-		analogReadResolution(12);
-		Wire1.begin();
+		#if SHIELDRELEASE == 1
+			#error "MagnetoShield R1 is not compatible with 3.3V CMOS logic"
+		#else
+			analogReadResolution(12);
+			Wire1.begin();
+		#endif
 	#elif ARDUINO_ARCH_SAMD
+		#if SHIELDRELEASE == 1
+			#error "MagnetoShield R1 is not compatible with 3.3V CMOS logic"
+		#else
+			analogReadResolution(12);
+			Wire.begin();
+		#endif
+	#elif ARDUINO_ARCH_RENESAS_UNO
+		#if SHIELDRELEASE == 1	
+			analogReference(DEFAULT);
+		#elif SHIELDRELEASE == 2 || SHIELDRELEASE == 3 || SHIELDRELEASE == 4
+			analogReference(AR_EXTERNAL);
+		#endif
 		analogReadResolution(12);
 		Wire.begin();
 	#endif
@@ -37,7 +53,7 @@ void MagnetoShieldClass::begin(){
 // Write DAC levels (8-bit) to the PCF8591 chip
 #if SHIELDRELEASE == 1 || SHIELDRELEASE == 2
 void MagnetoShieldClass::dacWrite(uint8_t DAClevel){
-	#ifdef ARDUINO_ARCH_AVR
+	#ifdef ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO
 		Wire.beginTransmission(PCF8591);		// I2C addressing, transmission begin
 		Wire.write(0x40);						// Use DAC (0100 0000)
 		Wire.write(DAClevel);					// 8-bit value of DAC output
@@ -47,17 +63,12 @@ void MagnetoShieldClass::dacWrite(uint8_t DAClevel){
 		Wire1.write(0x40);						// Use DAC (0100 0000)
 		Wire1.write(DAClevel);					// 8-bit value of DAC output
 		Wire1.endTransmission();				// I2C transmission end 
-	#elif ARDUINO_ARCH_SAMD
-		Wire.beginTransmission(PCF8591);		// I2C addressing, transmission begin
-		Wire.write(0x40);						// Use DAC (0100 0000)
-		Wire.write(DAClevel);					// 8-bit value of DAC output
-		Wire.endTransmission();					// I2C transmission end 
 	#endif
 }
 // Write DAC levels (12-bit) to the MCP4725 chip
 #elif SHIELDRELEASE == 3 || SHIELDRELEASE == 4
 void MagnetoShieldClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4,D3,D2,D1,D0)
-	#ifdef ARDUINO_ARCH_AVR
+	#if ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO 
 		Wire.beginTransmission(MCP4725); 					//addressing
 	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
 	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
@@ -75,15 +86,6 @@ void MagnetoShieldClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,
 	    Wire1.write(firstbyte); //first 8 MSB's
 	    Wire1.write(secndbyte); //last 4 LSB's
 	    Wire1.endTransmission();
-	#elif ARDUINO_ARCH_SAMD
-		Wire.beginTransmission(MCP4725); 					//addressing
-	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
-	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive
-	    DAClevel = DAClevel << 12;  						//(D3,D2,D1,D0,0,0,0,0,0,0,0,0,0,0,0,0) 
-	    uint8_t secndbyte=(DAClevel>>8);					//(0,0,0,0,0,0,0,0,D3,D2,D1,D0,0,0,0,0) of which only the 8 LSB's survive.
-	    Wire.write(firstbyte); //first 8 MSB's
-	    Wire.write(secndbyte); //last 4 LSB's
-	    Wire.endTransmission();
 	#endif
 }
 #endif

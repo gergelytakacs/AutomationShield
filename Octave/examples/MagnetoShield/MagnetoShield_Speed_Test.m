@@ -5,7 +5,7 @@
 %   "arduino" package (see pkg) then the script loads it. Although it is possible to
 %   override default I2C speeds, tests show no improvement with increased
 %   I2C communication speeds. AVR-based Arduinos, such as the UNO will
-%   provide the same speed, as the architecture and clock speeed is
+%   provide the same speed, as the architecture and clock speed is
 %   identical in all of them. Due or other non-AVR boards compatible with 
 %   the MagnetoShield are not supported. The script just tests reading the
 %   analog input and sending data to the I2C bus without attempting feedback 
@@ -22,9 +22,9 @@
 %   project is available at: 
 %   https://github.com/gergelytakacs/AutomationShield/wiki/Publications
 %
-%   Created by:       Gergely Takács
+%   Created by:       Gergely Takï¿½cs
 %   Created on:       29.10.2020
-%   Last updated by:  Gergely Takács
+%   Last updated by:  Gergely Takï¿½cs
 %   Last update on:   29.10.2020
 %   Tested on:        Arduino Uno
 

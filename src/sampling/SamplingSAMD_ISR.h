@@ -20,7 +20,7 @@ void TC5_Handler (void) {
    TC5->COUNT16.INTFLAG.bit.MC0 = 1;    	// Clear the interrupt
    (Sampling.getInterruptCallback())();	    // Launch interrupt handler
  }                                          
- else if(Sampling.fireFlag){                // Else, if periodis over the resolution of the counter
+ else if(Sampling.fireFlag){                // Else, if period is over the resolution of the counter
     //Interrupt can fire before step is done!!!
    Sampling.fireCount++;                    // Start counting
    if (Sampling.fireCount==Sampling.getSamplingMicroseconds()/Sampling.fireResolution){ // If done with counting

@@ -12,30 +12,24 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Peter Tibenský, Erik Mikuláš and Ján Boldocký
-  Last update: 09.06.2023
+  Last update: 03.10.2023
 */
 
 #include "AeroShield.h"         // Include header file
 
 // Initializes hardware pins
 float AeroClass::begin(void){                                 // Board initialisation
-  #ifdef ARDUINO_ARCH_AVR                                             // For AVR architecture boards
+  #if  defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_RENESAS_UNO)  // For AVR, SAMD, Renesas architecture boards
     Wire.begin();                                                     // Use Wire object
     as5600.setWirePtr(&Wire);                                                    
   #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards
     Wire1.begin();                                                    // Use Wire1 object
     as5600.setWirePtr(&Wire1);                                                   
-  #elif ARDUINO_ARCH_SAMD                                             // For SAMD architecture boards
-    Wire.begin();                                                     // Use Wire object
-    as5600.setWirePtr(&Wire);
   #endif
                                                         
   
   as5600.begin();
   bool isDetected = as5600.detectMagnet();
-  //pinMode(AERO_UPIN, OUTPUT);  		                                  // Actuator pin
-  //pinMode(AERO_RPIN, INPUT);
-  //pinMode(AERO_VOLTAGE_SENSOR_PIN, INPUT);
   if(isDetected == 0){                                           // If magnet not detected go on
     while(1){                                                           // Go forever until magnet detected 
         if(isDetected == 1){                                           // If magnet detected
