@@ -12,19 +12,19 @@ env:
 jobs:
   compile-sketch:
     runs-on: ubuntu-latest
-    
+
     strategy:
       max-parallel: 6
       matrix:
         fqbn:
           - arduino:avr:uno
           - arduino:avr:mega
-          #- arduino:avr:leonardo # Look at sampling for testing
+          - arduino:avr:leonardo # Look at sampling for testing
           #- arduino:avr:unowifi # Look at sampling for testing
           - arduino:sam:arduino_due_x
           - arduino:samd:arduino_zero_native
       fail-fast: false
-          
+
     steps:
       # This step makes the contents of the repository available to the workflow
       - name: Checkout repository
@@ -47,8 +47,8 @@ jobs:
             - name: Servo
           enable-deltas-report: true
           sketches-report-path: ${{ env.SKETCHES_REPORTS_PATH }}
-          
-  # This step is needed to pass the size data to the report job 
+
+  # This step is needed to pass the size data to the report job
       - name: Upload sketches report to workflow artifact
         uses: actions/upload-artifact@v3
         with:
