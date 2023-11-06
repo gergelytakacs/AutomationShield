@@ -10,6 +10,6 @@ jobs:
       - name: Install MATLAB
         uses: matlab-actions/setup-matlab@v1.2.4
       - name: Run script
-        uses: matlab-actions/run-command@v1.2.1
+        uses: matlab-actions/run-command@v1.2.2
         with:
           command: cd simulink; releaseManagement(); 
