@@ -24,6 +24,7 @@ jobs:
           - arduino:sam:arduino_due_x
           - arduino:samd:arduino_zero_native
           - arduino:renesas_uno:unor4wifi
+          - arduino:renesas_uno:minima
       fail-fast: false
           
     steps:
