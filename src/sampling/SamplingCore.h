@@ -112,6 +112,11 @@ namespace SamplingNoServo {
             uint32_t  period_counts = 0;
             timer_source_div_t prescaler = TIMER_SOURCE_DIV_1;
 
+        #elif ARDUINO_ARCH_STM32
+            TIM_TypeDef *Instance = TIM2;
+            HardwareTimer *sampling_timer = new HardwareTimer(Instance);
+            const unsigned char cpuFrequency = 72;
+
         #else
             #error "Architecture not supported."
         #endif
@@ -184,7 +189,11 @@ namespace SamplingServo {
             #define COMPARE_10MS        30000                         // Compare @ 48 MHz, prescaler 16, for 10 ms
             uint32_t  period_counts = 0;
             timer_source_div_t prescaler = TIMER_SOURCE_DIV_1;
-            
+
+        #elif ARDUINO_ARCH_STM32
+            TIM_TypeDef *Instance = TIM2;
+            HardwareTimer *sampling_timer = new HardwareTimer(Instance);
+            const unsigned char cpuFrequency = 72;
 
         #else
             #error "Architecture not supported."

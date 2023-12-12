@@ -18,8 +18,8 @@
 #include "AeroShield.h"         // Include header file
 
 // Initializes hardware pins
-float AeroClass::begin(void){                                 // Board initialisation
-  #if  defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_RENESAS_UNO)  // For AVR, SAMD, Renesas architecture boards
+void AeroClass::begin(void){                                 // Board initialisation
+  #if  defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_RENESAS_UNO) || defined(ARDUINO_ARCH_STM32) // For AVR, SAMD, Renesas architecture boards
     Wire.begin();                                                     // Use Wire object
     as5600.setWirePtr(&Wire);                                                    
   #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards

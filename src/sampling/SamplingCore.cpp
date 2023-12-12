@@ -166,6 +166,8 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds) {
         Serial.println("Sampling error: timer did not start");
       #endif
     }
+  #elif ARDUINO_ARCH_STM32
+    sampling_timer->setOverflow((uint32_t)microseconds, MICROSEC_FORMAT);
 
   #else
     #error "Architecture not supported."
@@ -327,6 +329,8 @@ bool SamplingNoServo::SamplingClass::setSamplingPeriod(unsigned long microsecond
     else {
         return false;
     }
+  #elif ARDUINO_ARCH_STM32
+  // just nothing to do....
 
   #else
     #error "Architecture not supported."
@@ -349,6 +353,10 @@ unsigned long int SamplingNoServo::SamplingClass::getSamplingMicroseconds() {
 
 void SamplingNoServo::SamplingClass::interrupt(p_to_void_func interruptCallback) {
   this->interruptCallback = interruptCallback;
+  #if defined(ARDUINO_ARCH_STM32)
+  sampling_timer->attachInterrupt(interruptCallback);
+  sampling_timer->resume();
+  #endif
 }
 
 p_to_void_func SamplingNoServo::SamplingClass::getInterruptCallback () {
@@ -476,6 +484,10 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds) {
         Serial.println("Sampling error: timer did not start");
       #endif
     }
+
+  #elif ARDUINO_ARCH_STM32
+    sampling_timer->setOverflow((uint32_t)microseconds, MICROSEC_FORMAT);
+
   #else
     #error "Architecture not supported."
   #endif
@@ -630,6 +642,9 @@ bool SamplingServo::SamplingClass::setSamplingPeriod(unsigned long microseconds)
         return false;
     }
 
+    #elif ARDUINO_ARCH_STM32
+    // nothing to do...
+
   #else
     #error "Architecture not supported."
   #endif
@@ -655,6 +670,10 @@ unsigned long int SamplingServo::SamplingClass::getSamplingMicroseconds() {
 
 void SamplingServo::SamplingClass::interrupt(p_to_void_func interruptCallback) {
   this->interruptCallback = interruptCallback;
+  #if defined(ARDUINO_ARCH_STM32)
+    sampling_timer->attachInterrupt(interruptCallback);
+    sampling_timer->resume();
+  #endif
 }
 
 p_to_void_func SamplingServo::SamplingClass::getInterruptCallback () {

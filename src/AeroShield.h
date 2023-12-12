@@ -40,7 +40,7 @@ class AeroClass{		    	                           // Class for the AeroShield de
  public:
  #include "getGainLQ.inl"
  #include "getKalmanEstimate.inl"
-   float begin(void);                     // Board initialisation - initialisation of pin modes and variables                             
+   void begin(void);                     // Board initialisation - initialisation of pin modes and variables                             
    void actuatorWrite(float PotPercent);             // Write actuator - function takes input 0.0-100.0% and sets motor speed accordingly
    void actuatorWriteVolt(float);
    bool calibrate(void);                 // sensor calibration

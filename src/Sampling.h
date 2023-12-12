@@ -54,6 +54,9 @@ void TC5_Handler(void){
 #elif ARDUINO_ARCH_RENESAS_UNO
   #include "sampling/SamplingUNO_R4_ISR.h"
 
+#elif ARDUINO_ARCH_STM32
+  // nothing to do...
+
 #else
   #error "Architecture not supported."
 #endif

@@ -47,6 +47,9 @@ void MagnetoShieldClass::begin(){
 		#endif
 		analogReadResolution(12);
 		Wire.begin();
+	#elif ARDUINO_ARCH_STM32
+		analogReadResolution(12);
+		Wire.begin();
 	#endif
 }
 
@@ -68,7 +71,7 @@ void MagnetoShieldClass::dacWrite(uint8_t DAClevel){
 // Write DAC levels (12-bit) to the MCP4725 chip
 #elif SHIELDRELEASE == 3 || SHIELDRELEASE == 4
 void MagnetoShieldClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4,D3,D2,D1,D0)
-	#if ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO 
+	#if ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO || ARDUINO_ARCH_STM32
 		Wire.beginTransmission(MCP4725); 					//addressing
 	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
 	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive

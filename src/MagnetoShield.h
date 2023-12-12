@@ -28,7 +28,7 @@
 
 #ifdef ARDUINO_ARCH_AVR
 #define VIN 11.6 							    // [V] Input voltage from source
-#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO
+#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO || ARDUINO_ARCH_STM32
 #define VIN 12.5 							    // [V] Input voltage from source 
 #elif ARDUINO_ARCH_SAM
 #define VIN 11.6 							    // [V] Input voltage from source 
@@ -99,7 +99,7 @@
 	#ifdef ARDUINO_ARCH_AVR
 		#define HALL_LSAT	35							// [10-bit ADC] Lower saturation of the Hall sensor
 		#define HALL_HSAT 621							// [10-bit ADC] Higher (upper) saturation of the Hall sensor
-	#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM || ARDUINO_ARCH_RENESAS_UNO
+	#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_SAM || ARDUINO_ARCH_RENESAS_UNO || ARDUINO_ARCH_STM32
 		#define HALL_LSAT	112							// [12-bit ADC] Lower saturation of the Hall sensor
 		#define HALL_HSAT 2526							// [12-bit ADC] Higher (upper) saturation of the Hall sensor
 	#endif
