@@ -168,6 +168,7 @@ void SamplingNoServo::SamplingClass::period(unsigned long microseconds) {
     }
   #elif ARDUINO_ARCH_STM32
     sampling_timer->setOverflow((uint32_t)microseconds, MICROSEC_FORMAT);
+    setSamplingPeriod(microseconds);
 
   #else
     #error "Architecture not supported."
@@ -487,6 +488,7 @@ void SamplingServo::SamplingClass::period(unsigned long microseconds) {
 
   #elif ARDUINO_ARCH_STM32
     sampling_timer->setOverflow((uint32_t)microseconds, MICROSEC_FORMAT);
+    setSamplingPeriod(microseconds);
 
   #else
     #error "Architecture not supported."
