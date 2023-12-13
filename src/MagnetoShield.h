@@ -11,7 +11,7 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
   Created by Gergely Takács and Jakub Mihalík.
-  Last update: 21.08.2020.
+  Last update: 13.12.2023 by Erik Mikuláš
 */
 
 #ifndef MAGNETOSHIELD_H							// Include guard

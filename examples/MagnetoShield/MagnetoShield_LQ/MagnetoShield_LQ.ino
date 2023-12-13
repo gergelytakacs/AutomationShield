@@ -22,8 +22,7 @@
 //
 //   Created by:       Gergely Takacs and Gabor penzinger. 
 //   Created on:       23.9.2020
-//   Last updated by:  Gergely Takacs
-//   Last update on:   24.9.2020
+//   Last update:      13.12.2023 by Erik Mikuláš
 
 
 #include <MagnetoShield.h>
@@ -64,6 +63,9 @@ int i = 0;                          // Section counter
 #elif ARDUINO_ARCH_RENESAS_UNO
   float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
   int T = 1000;                     // Experiment section length (steps) 
+#elif ARDUINO_ARCH_STM32
+  float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
+  int T = 1000;                     // Experiment section length (steps) 
 #endif
 
 #if USE_KALMAN_FILTER && ARDUINO_ARCH_SAM
@@ -92,6 +94,8 @@ void setup() {
     Serial.begin(250000);                  // Initialize serial, maximum for Due (baud mismatch issues)
 #elif ARDUINO_ARCH_RENESAS_UNO
       Serial.begin(115200);               // Initialize serial, maximum for UNO R4 (serial communication limitations)
+#elif ARDUINO_ARCH_STM32
+     Serial.begin(2000000);  // Initialize serial, maximum for STM32 given by hardware
 #endif 
   
   // Initialize and calibrate board
@@ -99,7 +103,7 @@ void setup() {
   MagnetoShield.calibration();            // Calibrates shield 
      
   // Initialize sampling function
-  Sampling.period(Ts*1000);               // Sampling init.
+  Sampling.period((unsigned long)(Ts*1000)); // Sampling init.
   Sampling.interrupt(stepEnable);         // Interrupt fcn.
 
 }

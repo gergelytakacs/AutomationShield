@@ -71,6 +71,8 @@ void LinkClass::begin() {
   #elif ARDUINO_ARCH_RENESAS_UNO
     Wire.begin();	// Starts the "Wire" library for I2C
 	  analogReference(AR_EXTERNAL); // Set reference voltage
+  #elif ARDUINO_ARCH_STM32
+    Wire.begin();	// Starts the "Wire" library for I2C
   #endif
 
   LinkShield.ADXL_POWER_CTL();

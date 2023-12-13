@@ -11,7 +11,7 @@
   details. This code is licensed under a Creative Commons
   Attribution-NonCommercial 4.0 International License.
   Created by Gergely Takács and Jakub Mihalík. 
-  Last update: 17.09.2020.
+  Last update: 13.12.2023 by Erik Mikuláš
 */
 
 #include "MagnetoShield.h"
@@ -48,15 +48,19 @@ void MagnetoShieldClass::begin(){
 		analogReadResolution(12);
 		Wire.begin();
 	#elif ARDUINO_ARCH_STM32
-		analogReadResolution(12);
-		Wire.begin();
+		#if SHIELDRELEASE == 1
+			#error "MagnetoShield R1 is not compatible with 3.3V CMOS logic"
+		#else
+			analogReadResolution(12);
+			Wire.begin();
+		#endif
 	#endif
 }
 
 // Write DAC levels (8-bit) to the PCF8591 chip
 #if SHIELDRELEASE == 1 || SHIELDRELEASE == 2
 void MagnetoShieldClass::dacWrite(uint8_t DAClevel){
-	#ifdef ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO
+	#ifdef ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO || ARDUINO_ARCH_STM32
 		Wire.beginTransmission(PCF8591);		// I2C addressing, transmission begin
 		Wire.write(0x40);						// Use DAC (0100 0000)
 		Wire.write(DAClevel);					// 8-bit value of DAC output

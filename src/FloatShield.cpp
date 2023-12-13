@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács, Peter Chmurčiak and Erik Mikuláš.
-  Last update: 6.21.2021.
+  Last update: 13.12.2023 by Erik Mikuláš
 
 */
 
@@ -39,7 +39,7 @@ void FloatClass::begin(void) {                                      // Board ini
 #elif ARDUINO_ARCH_SAM                                              // For SAM architecture boards
   analogReadResolution(12);
   Wire1.begin();                                                    // Use Wire1 object
-#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO                 // For SAMD and RA4M1 architecture boards
+#elif ARDUINO_ARCH_SAMD || ARDUINO_ARCH_RENESAS_UNO || ARDUINO_ARCH_STM32  // For SAMD, RA4M1 and STM32 architecture boards
   analogReadResolution(12);
   Wire.begin();                                                     // Use Wire object
 #endif
@@ -94,7 +94,7 @@ void FloatClass::calibrate(void) {                       // Board calibration
 
 #if SHIELDRELEASE == 4
 void FloatClass::dacWrite(uint16_t DAClevel){	// 16 bits in the form (0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4,D3,D2,D1,D0)
-	#if (defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_RENESAS_UNO) || defined(ARDUINO_ARCH_SAMD))
+	#if (defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_RENESAS_UNO) || defined(ARDUINO_ARCH_SAMD)) || defined(ARDUINO_ARCH_STM32)
 		Wire.beginTransmission(MCP4725); 					//addressing
 	    Wire.write(0x40); 								// write dac(DAC and EEPROM is 0x60)
 	    uint8_t firstbyte=(DAClevel>>4);					//(0,0,0,0,0,0,0,0,D11,D10,D9,D8,D7,D6,D5,D4) of which only the 8 LSB's survive

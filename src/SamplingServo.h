@@ -25,7 +25,11 @@
   SAM51 Timer: 	 Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
   RA4M1 Timer:   Erik Mikuláš,   2023 (UNO R4)
-  Last update: 3.10.2023 by Erik Mikuláš
+  STM32 Timer:   Erik Mikuláš,   2023 (STM32 Nucleo 64*)
+  Last update: 13.12.2023 by Erik Mikuláš
+
+  *Note: library was tested only with Nucleo STM32F302 board but it should
+          work with all STM32duino compatible boards.
 */
 
 #ifndef SAMPLINGSERVO_H                     //Include guard
@@ -52,6 +56,9 @@ void TC1_Handler(void){
 
 #elif ARDUINO_ARCH_RENESAS_UNO
   #include "sampling/SamplingUNO_R4_ISR.h"
+
+#elif ARDUINO_ARCH_STM32
+  // nothing to do...
 
 #else
   #error "Architecture not supported."

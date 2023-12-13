@@ -56,7 +56,7 @@ int   wP=(int)wPP*100;                // For (pseudo)-random generator
   unsigned long Ts = 5000;              // Sampling in microseconds                
 #elif ARDUINO_ARCH_SAM
   unsigned long Ts = 3250;              // Sampling in microseconds
-#elif ARDUINO_ARCH_RENESAS_UNO
+#elif ARDUINO_ARCH_RENESAS_UNO || ARDUINO_ARCH_STM32
   unsigned long Ts = 5000;              // Sampling in microseconds
 #endif  
 
@@ -68,6 +68,8 @@ void setup() {
   Serial.begin(250000);                  // Initialize serial, maximum for Due (baud mismatch issues)
 #elif ARDUINO_ARCH_RENESAS_UNO
       Serial.begin(115200);              // Initialize serial, maximum for UNO R4 (serial communication limitations)
+#elif ARDUINO_ARCH_STM32
+      Serial.begin(2000000);                 // Initialize serial, maximum for STM32 given by hardware
 #endif
 
   // Initialize and calibrate board

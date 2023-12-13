@@ -19,7 +19,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Gergely Takács.
-  Last update: 13.10.2020
+  Last update: 13.12.2023 by Erik Mikuláš
 */
 #include <MagnetoShield.h>            // Include header for hardware API
 #include <Sampling.h>            // Include sampling
@@ -59,15 +59,18 @@ float u = 0.0;                        // [V] Input
   unsigned long Ts = 5000;                 // Sampling in microseconds, lower limit 1.3 ms
   int T = 1000;                            // Experiment section length (steps) 
 #elif ARDUINO_ARCH_RENESAS_UNO
-  float Ts = 5;                      // Sampling in microseconds, lower limit 1.3 ms
-  int T = 1000;                     // Experiment section length (steps) 
+  unsigned long Ts = 5000;                 // Sampling in microseconds, lower limit 1.3 ms
+  int T = 1000;                            // Experiment section length (steps) 
+#elif ARDUINO_ARCH_STM32
+  unsigned long Ts = 5000;                 // Sampling in microseconds, lower limit 1.3 ms
+  int T = 1000;                            // Experiment section length (steps) 
 #endif  
 
 void setup() {
     
-#if ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD
+#if ARDUINO_ARCH_AVR || ARDUINO_ARCH_SAMD || ARDUINO_ARCH_STM32
     Serial.begin(2000000);                 // Initialize serial, maximum for AVR given by hardware    
-#elif ARDUINO_ARCH_SAM
+#elif ARDUINO_ARCH_SAM 
     Serial.begin(250000);                  // Initialize serial, maximum for Due (baud mismatch issues)
 #elif ARDUINO_ARCH_RENESAS_UNO
       Serial.begin(115200);                  // Initialize serial, maximum for UNO R4 (serial communication limitations)

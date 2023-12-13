@@ -12,7 +12,7 @@
   Attribution-NonCommercial 4.0 International License.
 
   Created by Peter Tibenský, Erik Mikuláš and Ján Boldocký
-  Last update: 03.10.2023
+  Last update: 13.12.2023 by Erik Mikuláš
 */
 
 #include "AeroShield.h"         // Include header file

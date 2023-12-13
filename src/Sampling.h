@@ -6,8 +6,9 @@
   an interrupt-driven system for deploying digital control systems
   on AVR, SAMD and SAM-based Arduino prototyping boards with the 
   R3 pinout. The module should be compatible with the Arduino Uno, 
-  Mega 2560, Zero, Due, Uno R4 and Adafruit Metro M4 Express.
-  There should be no timer conflicts when using the Servo library.
+  Mega 2560, Zero, Due, Uno R4, Adafruit Metro M4 Express and
+  STM32 Nucleo 64. There should be no timer conflicts 
+  when using the Servo library.
     
   A "Sampling" object is created first from the namespace referring
   to the case that does not assume the use of the Servo library. 
@@ -25,7 +26,11 @@
   SAM51 Timer: 	 Gergely Takacs, 2019 (Metro M4)
   SAM3X Timer:   Gergely Takacs, 2019 (Due)
   RA4M1 Timer:   Erik Mikuláš,   2023 (UNO R4)
-  Last update: 3.10.2023 by Erik Mikuláš
+  STM32 Timer:   Erik Mikuláš,   2023 (STM32 Nucleo 64*)
+  Last update: 13.12.2023 by Erik Mikuláš
+
+  *Note: library was tested only with Nucleo STM32F302 board but it should
+          work with all STM32duino compatible boards.
 */ 
 
 #ifndef SAMPLING_H                     //Include guard
