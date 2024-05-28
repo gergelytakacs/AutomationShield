@@ -68,7 +68,7 @@ xICWhole = [0;0];                         % Initial conditions for Kalman filter
 xhat = zeros(2,1);                        % States estimated by Kalman filter
 yhat = zeros(1,1);                        % Outputs estimated by Kalman filter
 Y = zeros(1,1);
-kalmanrychlost=zeros(1,length(measuredOutput));
+%kalmanrychlost=zeros(1,length(measuredOutput));
 disp('Simulating...')
 for k=1:length(t)-1
     Rr(k)=R(i);                           % Original reference, just for logging
@@ -168,7 +168,7 @@ end
 %% export controller files for usage in arduino example and Python
 if exportempc
     ectrl.exportToC('ectrl','cmpc')       % Export to C
-    empcToC(ectrl,'AVR');                 % Export to code, for ARM MCU use 'generic', for AVR use 'AVR'
+    empcToC(ectrl,'generic');                 % Export to code, for ARM MCU use 'generic', for AVR use 'AVR'
     % empcToPython(ectrl);                  % Export to code suitable for Python
 end
 

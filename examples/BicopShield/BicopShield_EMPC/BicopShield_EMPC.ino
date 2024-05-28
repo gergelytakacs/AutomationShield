@@ -12,7 +12,7 @@
   a predetermined reference trajectory. Upload the code to your board
   and open the Serial Plotter tool in Arduino IDE.
 
-  Tested on an UNO(max prediction horizon 3).
+  Tested on an UNO(max prediction horizon 1).
 
   This code is part of the AutomationShield hardware and software
   ecosystem. Visit http://www.automationshield.com for more
